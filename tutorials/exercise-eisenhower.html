@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Tutorial — Exercise 1: Eisenhower Matrix</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    background: #f4f6f9;
+    color: #222;
+    padding: 0; margin: 0;
+  }
+
+  .tutorial-nav {
+    background: #1A3C6E;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .nav-title {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 8px 20px 0;
+    opacity: 0.7;
+  }
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 12px 0;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 12px 12px;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a.active {
+    color: #fff;
+    border-bottom-color: #FFCD00;
+  }
+
+  .content {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  h1 { color: #1A3C6E; font-size: 26px; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
+
+  .progress-bar-container {
+    background: #ddd;
+    border-radius: 12px;
+    height: 24px;
+    margin-bottom: 28px;
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-bar-fill {
+    background: linear-gradient(90deg, #4472C4, #1A3C6E);
+    height: 100%;
+    width: 0%;
+    border-radius: 12px;
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  .section {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    border-left: 4px solid #4472C4;
+  }
+  .section.done { border-left-color: #27ae60; opacity: 0.7; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .step-number {
+    background: #1A3C6E;
+    color: #fff;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .section.done .step-number { background: #27ae60; }
+  .section-title { font-size: 18px; font-weight: 600; color: #1A3C6E; }
+  .section.done .section-title { text-decoration: line-through; color: #888; }
+
+  .step-body { margin-left: 44px; }
+  .step-body p { margin-bottom: 10px; line-height: 1.6; }
+  .step-body ul { margin: 0 0 12px 20px; line-height: 1.6; }
+  .step-body li { margin-bottom: 4px; }
+
+  .substep {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .substep:last-child { border-bottom: none; }
+  .substep input[type="checkbox"] {
+    width: 20px; height: 20px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: #1A3C6E;
+    flex-shrink: 0;
+  }
+  .substep label { cursor: pointer; line-height: 1.5; }
+  .substep.checked label { text-decoration: line-through; color: #999; }
+
+  .cmd-block {
+    display: flex;
+    align-items: center;
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0 12px 0;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace;
+    font-size: 13px;
+    gap: 10px;
+  }
+  .cmd-text { flex: 1; word-break: break-all; user-select: all; }
+  .copy-btn {
+    background: #4472C4;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .copy-btn:hover { background: #1A3C6E; }
+  .copy-btn.copied { background: #27ae60; }
+
+  .code-block {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 8px 0 14px 0;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-x: auto;
+    position: relative;
+  }
+  .code-block .copy-btn { position: absolute; top: 8px; right: 8px; }
+  .code-block .code-label {
+    display: block;
+    color: #89b4fa;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #313244;
+    padding-bottom: 6px;
+  }
+
+  .note {
+    background: #fff8e1;
+    border-left: 4px solid #FFCD00;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .note strong { color: #b8860b; }
+
+  .success-note {
+    background: #e8f5e9;
+    border-left: 4px solid #27ae60;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .explain-box {
+    background: #e8eef7;
+    border: 1px solid #c5d4e8;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 12px 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .explain-box strong { color: #1A3C6E; }
+
+  .next-page {
+    background: #1A3C6E;
+    color: #fff;
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-top: 28px;
+    text-align: center;
+  }
+  .next-page h3 { margin-bottom: 8px; font-size: 18px; }
+  .next-page p { opacity: 0.8; margin-bottom: 16px; font-size: 14px; }
+  .next-page a {
+    display: inline-block;
+    background: #FFCD00;
+    color: #1A3C6E;
+    text-decoration: none;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    transition: background 0.2s;
+  }
+  .next-page a:hover { background: #ffe066; }
+
+  .prev-link {
+    display: inline-block;
+    color: #4472C4;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  .prev-link:hover { text-decoration: underline; }
+
+  .reset-btn {
+    background: none;
+    border: 1px solid #ccc;
+    color: #888;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  .reset-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+</style>
+</head>
+<body>
+
+<nav class="tutorial-nav">
+  <div class="nav-title">Claude Code Tutorial Series</div>
+  <div class="nav-links">
+    <a href="index.html">1. Setup &amp; Foundation</a>
+    <a href="exercise-eisenhower.html" class="active">2. Eisenhower Matrix</a>
+    <a href="exercise-homework.html">3. Email Form</a>
+    <a href="exercise-middleware.html">4. QBO Middleware</a>
+  </div>
+</nav>
+
+<div class="content">
+
+<a class="prev-link" href="index.html">&larr; Back to Setup &amp; Foundation</a>
+
+<h1>Exercise 1: Eisenhower Matrix</h1>
+<p class="subtitle">Your first real build. You're going to tell Claude to create a four-quadrant task prioritizer with drag-and-drop &mdash; a fully interactive web app &mdash; from a single conversation. Estimated time: 20 minutes.</p>
+
+<div class="progress-bar-container">
+  <div class="progress-bar-fill" id="progressFill"></div>
+  <div class="progress-label" id="progressLabel">0 / 0 steps</div>
+</div>
+
+<!-- ==================== SECTION 1: WHAT YOU'RE BUILDING ==================== -->
+<div class="section" id="section1">
+  <div class="section-header">
+    <div class="step-number">1</div>
+    <div class="section-title">What You're Building</div>
+  </div>
+  <div class="step-body">
+    <div class="explain-box">
+      <strong>The Eisenhower Matrix</strong> is a prioritization tool named after President Eisenhower. It divides tasks into four quadrants based on urgency and importance:<br><br>
+      <strong>Q1 &mdash; Do Now:</strong> Urgent AND important (fires, deadlines)<br>
+      <strong>Q2 &mdash; Schedule:</strong> Important but NOT urgent (planning, training, growth)<br>
+      <strong>Q3 &mdash; Delegate:</strong> Urgent but NOT important (interruptions, some emails)<br>
+      <strong>Q4 &mdash; Backlog:</strong> Neither urgent NOR important (busywork, time-wasters)
+    </div>
+
+    <p>You're going to build this as an interactive HTML page. Cards for each task. Color-coded quadrants. Drag-and-drop to move tasks between quadrants. An "Add Item" button to create new tasks. All in a single file you can open in your browser.</p>
+
+    <p><strong>Why this is a great first project:</strong></p>
+    <ul>
+      <li>It's a single HTML file &mdash; no server, no database, no setup</li>
+      <li>You can see the result instantly by double-clicking the file</li>
+      <li>It's genuinely useful &mdash; you'll actually want to use this</li>
+      <li>It teaches the core workflow: describe &rarr; plan &rarr; approve &rarr; build</li>
+    </ul>
+
+    <div class="substep" data-step="1-1">
+      <input type="checkbox" id="s1-1">
+      <label for="s1-1">I understand what an Eisenhower Matrix is and what I'm about to build</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 2: SET UP THE PROJECT ==================== -->
+<div class="section" id="section2">
+  <div class="section-header">
+    <div class="step-number">2</div>
+    <div class="section-title">Set Up the Project</div>
+  </div>
+  <div class="step-body">
+    <p>Every project gets its own folder. Let's create one for this exercise.</p>
+
+    <div class="substep" data-step="2-1">
+      <input type="checkbox" id="s2-1">
+      <label for="s2-1">Open File Explorer and create a new folder: <code>C:\dev\EisenhowerMatrix</code></label>
+    </div>
+
+    <p>Now open Command Prompt and navigate there:</p>
+    <div class="cmd-block">
+      <span class="cmd-text">cd C:\dev\EisenhowerMatrix</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="2-2">
+      <input type="checkbox" id="s2-2">
+      <label for="s2-2">Opened Command Prompt and navigated to the project folder</label>
+    </div>
+
+    <p>Start Claude Code:</p>
+    <div class="cmd-block">
+      <span class="cmd-text">claude</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="2-3">
+      <input type="checkbox" id="s2-3">
+      <label for="s2-3">Claude is running and waiting for input</label>
+    </div>
+
+    <p>First things first &mdash; let's have Claude set up the project files. Give it this prompt:</p>
+
+    <div class="code-block">
+      <span class="code-label">Prompt: Set up the project</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+Set up this project for me. Create:
+
+1. A CLAUDE.md with my working preferences (I'm [your
+   name], an ISI business consultant. I'm learning Claude
+   Code. Propose plans before building. Deliver complete
+   files. Explain what you're doing.)
+
+2. A PROJECT.md that says: "Building an Eisenhower Matrix
+   - a four-quadrant personal task prioritizer as a single
+   HTML file with drag-and-drop."
+
+3. A MEMORY.md with a first entry: "Started project.
+   Setting up workspace and creating the matrix."</div>
+
+    <div class="substep" data-step="2-4">
+      <input type="checkbox" id="s2-4">
+      <label for="s2-4">Gave Claude the setup prompt and it created all three files (CLAUDE.md, PROJECT.md, MEMORY.md)</label>
+    </div>
+
+    <div class="note">
+      <strong>What just happened:</strong> Claude created three files in your project folder. You can see them in File Explorer if you navigate to <code>C:\dev\EisenhowerMatrix</code>. Open them in Notepad if you're curious &mdash; they're just text files.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 3: THE BIG PROMPT ==================== -->
+<div class="section" id="section3">
+  <div class="section-header">
+    <div class="step-number">3</div>
+    <div class="section-title">Your First Real Prompt</div>
+  </div>
+  <div class="step-body">
+    <p>Now for the main event. You're going to describe what you want, and Claude is going to build it. This is the prompt that creates the entire app:</p>
+
+    <div class="code-block">
+      <span class="code-label">Prompt: Build the Eisenhower Matrix</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+Build me a personal Eisenhower Matrix as a single HTML
+file called matrix.html. Here's what I want:
+
+LAYOUT:
+- A 2x2 grid of quadrants filling the page
+- Q1 (top-left): "Do Now" - red theme
+- Q2 (top-right): "Schedule" - green theme
+- Q3 (bottom-left): "Delegate" - orange theme
+- Q4 (bottom-right): "Backlog" - blue theme
+- Each quadrant shows a count of items in it
+
+CARDS:
+- Each task is a card inside a quadrant
+- Cards are draggable between quadrants
+- Each card has the task text and a delete button
+- Visual feedback when dragging (opacity change, drop
+  zone highlights)
+
+ADD ITEMS:
+- An "Add Item" button at the top
+- Clicking it opens a panel where I type a task and pick
+  which quadrant to put it in
+- Pressing Enter adds the item
+
+STYLE:
+- Clean, modern look
+- Professional fonts
+- Cards should lift slightly on hover (subtle shadow)
+- Make it look like something I'd be proud to show a
+  client
+
+Start me off with a few sample tasks in each quadrant
+so it doesn't look empty.</div>
+
+    <div class="note">
+      <strong>Watch what happens next.</strong> Claude will read your prompt and probably propose a plan before building &mdash; because your CLAUDE.md told it to. It might say something like "I'll create a single HTML file with CSS Grid for the layout, vanilla JavaScript for drag-and-drop, and..." Let it explain. Then approve it.
+    </div>
+
+    <div class="substep" data-step="3-1">
+      <input type="checkbox" id="s3-1">
+      <label for="s3-1">Gave Claude the build prompt</label>
+    </div>
+
+    <div class="substep" data-step="3-2">
+      <input type="checkbox" id="s3-2">
+      <label for="s3-2">Claude proposed a plan &mdash; I read through it and understood the approach</label>
+    </div>
+
+    <p>Now approve it. You can say something as simple as:</p>
+
+    <div class="cmd-block">
+      <span class="cmd-text">Looks good, go ahead and build it.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="3-3">
+      <input type="checkbox" id="s3-3">
+      <label for="s3-3">Approved the plan and Claude is building the file</label>
+    </div>
+
+    <p>Claude will write the entire HTML file. You'll see it working in real-time &mdash; writing HTML, CSS, and JavaScript. When it's done, it'll tell you.</p>
+
+    <div class="substep" data-step="3-4">
+      <input type="checkbox" id="s3-4">
+      <label for="s3-4">Claude finished creating <code>matrix.html</code></label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 4: SEE IT ==================== -->
+<div class="section" id="section4">
+  <div class="section-header">
+    <div class="step-number">4</div>
+    <div class="section-title">See What You Built</div>
+  </div>
+  <div class="step-body">
+    <p>Time for the payoff. Open the file in your browser:</p>
+
+    <div class="substep" data-step="4-1">
+      <input type="checkbox" id="s4-1">
+      <label for="s4-1">Open File Explorer, navigate to <code>C:\dev\EisenhowerMatrix</code></label>
+    </div>
+
+    <div class="substep" data-step="4-2">
+      <input type="checkbox" id="s4-2">
+      <label for="s4-2">Double-click <code>matrix.html</code> &mdash; it opens in your browser</label>
+    </div>
+
+    <p>You should see a color-coded 2x2 grid with task cards in each quadrant. Try these things:</p>
+
+    <div class="substep" data-step="4-3">
+      <input type="checkbox" id="s4-3">
+      <label for="s4-3">Drag a card from one quadrant to another &mdash; it moves!</label>
+    </div>
+
+    <div class="substep" data-step="4-4">
+      <input type="checkbox" id="s4-4">
+      <label for="s4-4">Click "Add Item" and create a new task &mdash; it appears in the quadrant you chose</label>
+    </div>
+
+    <div class="substep" data-step="4-5">
+      <input type="checkbox" id="s4-5">
+      <label for="s4-5">Delete a task by hovering over it and clicking the X</label>
+    </div>
+
+    <div class="success-note">
+      <strong>Pause and absorb this.</strong> You just built a fully interactive web app by describing what you wanted in English. No coding. No Googling. No Stack Overflow. You had a conversation, and Claude built the thing. This is the workflow.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 5: CUSTOMIZE ==================== -->
+<div class="section" id="section5">
+  <div class="section-header">
+    <div class="step-number">5</div>
+    <div class="section-title">Make It Yours</div>
+  </div>
+  <div class="step-body">
+    <p>The first version is never perfect. Maybe you want different colors, or the font is too small, or you want categories for each task. The beauty of this workflow is that changes are just another conversation.</p>
+
+    <p>Go back to your Claude Code window (it should still be running). Try some of these &mdash; or make up your own:</p>
+
+    <div class="code-block">
+      <span class="code-label">Example customization prompts</span>
+"Add category tags to each card - like WORK, PERSONAL,
+HEALTH - with color-coded badges."
+
+"Make the fonts bigger and use a dark mode color scheme."
+
+"Add a daily checklist section above the matrix for
+recurring tasks."
+
+"Save the tasks to localStorage so they persist when
+I close and reopen the browser."
+
+"Add a header with my name and today's date."</div>
+
+    <div class="note">
+      <strong>The localStorage one is highly recommended.</strong> Without it, your tasks disappear when you close the browser. With it, they're saved and come back when you reopen the page. Ask Claude to add this if it didn't already.
+    </div>
+
+    <div class="substep" data-step="5-1">
+      <input type="checkbox" id="s5-1">
+      <label for="s5-1">Asked Claude for at least one customization</label>
+    </div>
+
+    <div class="substep" data-step="5-2">
+      <input type="checkbox" id="s5-2">
+      <label for="s5-2">Refreshed the browser (Ctrl+Shift+R) and saw the change</label>
+    </div>
+
+    <div class="explain-box">
+      <strong>Notice the pattern:</strong> You describe what you want in plain English. Claude modifies the file. You refresh the browser. Repeat until you're happy. That's the development loop. You'll use this exact pattern for everything you build.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 6: SAVE MEMORY ==================== -->
+<div class="section" id="section6">
+  <div class="section-header">
+    <div class="step-number">6</div>
+    <div class="section-title">Save Your Progress &amp; Wrap Up</div>
+  </div>
+  <div class="step-body">
+    <p>Before you leave, tell Claude to update the memory log. This is how future sessions know what you've done.</p>
+
+    <div class="cmd-block">
+      <span class="cmd-text">Update MEMORY.md with everything we did today. Include what we built, any customizations, and what the matrix looks like now.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="6-1">
+      <input type="checkbox" id="s6-1">
+      <label for="s6-1">Asked Claude to update MEMORY.md</label>
+    </div>
+
+    <div class="substep" data-step="6-2">
+      <input type="checkbox" id="s6-2">
+      <label for="s6-2">Typed <code>exit</code> to end the session</label>
+    </div>
+
+    <div class="success-note">
+      <strong>Exercise 1 complete.</strong> You now know the core workflow:<br><br>
+      1. Create a project folder<br>
+      2. Set up your three files (CLAUDE.md, PROJECT.md, MEMORY.md)<br>
+      3. Describe what you want to Claude<br>
+      4. Review the plan, approve it<br>
+      5. Claude builds it<br>
+      6. Test it in the browser<br>
+      7. Request changes until you're happy<br>
+      8. Update memory before you leave
+    </div>
+  </div>
+</div>
+
+<!-- ==================== NEXT ==================== -->
+<div id="allDone" style="display:none; text-align:center; padding: 30px; background: #e8f5e9; border-radius: 12px; margin-top: 20px;">
+  <h2 style="color: #27ae60; margin-bottom: 8px;">Exercise 1 Complete!</h2>
+  <p style="color: #555;">You built a working web app from a conversation. The next exercise adds a backend &mdash; you'll learn how to make things talk to each other.</p>
+</div>
+
+<div class="next-page">
+  <h3>Next Up: Exercise 2</h3>
+  <p>You're going to build a client homework form that collects answers and emails them to you automatically. This introduces Google Apps Script &mdash; your first "backend" &mdash; a piece that runs on Google's servers and does work for you.</p>
+  <a href="exercise-homework.html">Start Exercise 2 &rarr;</a>
+</div>
+
+<div style="text-align:center;">
+  <button class="reset-btn" onclick="resetAll()">Reset all checkboxes</button>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'tutorial_eisenhower_state';
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const totalSteps = checkboxes.length;
+
+  function loadState() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const checked = JSON.parse(saved);
+      checkboxes.forEach(cb => {
+        if (checked.includes(cb.id)) {
+          cb.checked = true;
+          cb.closest('.substep').classList.add('checked');
+        }
+      });
+    }
+    updateProgress();
+  }
+
+  function saveState() {
+    const checked = [];
+    checkboxes.forEach(cb => { if (cb.checked) checked.push(cb.id); });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+  }
+
+  function updateProgress() {
+    let done = 0;
+    checkboxes.forEach(cb => { if (cb.checked) done++; });
+    const pct = Math.round((done / totalSteps) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = done + ' / ' + totalSteps + ' steps (' + pct + '%)';
+
+    document.querySelectorAll('.section').forEach(section => {
+      const subs = section.querySelectorAll('input[type="checkbox"]');
+      let allDone = true;
+      subs.forEach(cb => { if (!cb.checked) allDone = false; });
+      if (allDone && subs.length > 0) {
+        section.classList.add('done');
+      } else {
+        section.classList.remove('done');
+      }
+    });
+
+    document.getElementById('allDone').style.display = (done === totalSteps) ? 'block' : 'none';
+  }
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', function() {
+      this.closest('.substep').classList.toggle('checked', this.checked);
+      saveState();
+      updateProgress();
+    });
+  });
+
+  function copyCmd(btn) {
+    const text = btn.parentElement.querySelector('.cmd-text').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function copyCode(btn) {
+    const block = btn.closest('.code-block');
+    const label = block.querySelector('.code-label');
+    let text = block.textContent;
+    if (label) text = text.replace(label.textContent, '');
+    text = text.replace('Copy', '').replace('Copied!', '').trim();
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function resetAll() {
+    if (confirm('Reset all checkboxes? This cannot be undone.')) {
+      checkboxes.forEach(cb => {
+        cb.checked = false;
+        cb.closest('.substep').classList.remove('checked');
+      });
+      localStorage.removeItem(STORAGE_KEY);
+      updateProgress();
+    }
+  }
+
+  loadState();
+</script>
+
+</body>
+</html>
