@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Tutorial — The Big One: QBO Bill Import Middleware</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    background: #f4f6f9;
+    color: #222;
+    padding: 0; margin: 0;
+  }
+
+  .tutorial-nav {
+    background: #1A3C6E;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .nav-title { color: #fff; font-size: 13px; font-weight: 400; padding: 8px 20px 0; opacity: 0.7; }
+  .nav-links { display: flex; flex-wrap: wrap; padding: 0 12px 0; }
+  .nav-links a {
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 12px 12px;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a.active { color: #fff; border-bottom-color: #FFCD00; }
+
+  .content { max-width: 820px; margin: 0 auto; padding: 24px 20px 60px; }
+  h1 { color: #1A3C6E; font-size: 26px; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
+
+  .progress-bar-container {
+    background: #ddd; border-radius: 12px; height: 24px; margin-bottom: 28px; overflow: hidden; position: relative;
+  }
+  .progress-bar-fill {
+    background: linear-gradient(90deg, #4472C4, #1A3C6E); height: 100%; width: 0%; border-radius: 12px; transition: width 0.4s ease;
+  }
+  .progress-label {
+    position: absolute; top: 0; left: 0; right: 0; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  .section {
+    background: #fff; border-radius: 10px; padding: 20px 24px; margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07); border-left: 4px solid #4472C4;
+  }
+  .section.done { border-left-color: #27ae60; opacity: 0.7; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .step-number {
+    background: #1A3C6E; color: #fff; width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0;
+  }
+  .section.done .step-number { background: #27ae60; }
+  .section-title { font-size: 18px; font-weight: 600; color: #1A3C6E; }
+  .section.done .section-title { text-decoration: line-through; color: #888; }
+
+  .step-body { margin-left: 44px; }
+  .step-body p { margin-bottom: 10px; line-height: 1.6; }
+  .step-body ul { margin: 0 0 12px 20px; line-height: 1.6; }
+  .step-body li { margin-bottom: 4px; }
+
+  .substep {
+    display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0f0f0;
+  }
+  .substep:last-child { border-bottom: none; }
+  .substep input[type="checkbox"] {
+    width: 20px; height: 20px; margin-top: 2px; cursor: pointer; accent-color: #1A3C6E; flex-shrink: 0;
+  }
+  .substep label { cursor: pointer; line-height: 1.5; }
+  .substep.checked label { text-decoration: line-through; color: #999; }
+
+  .cmd-block {
+    display: flex; align-items: center; background: #1e1e2e; color: #cdd6f4; border-radius: 8px;
+    padding: 10px 14px; margin: 8px 0 12px 0;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace; font-size: 13px; gap: 10px;
+  }
+  .cmd-text { flex: 1; word-break: break-all; user-select: all; }
+  .copy-btn {
+    background: #4472C4; color: #fff; border: none; border-radius: 6px;
+    padding: 6px 14px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.2s;
+  }
+  .copy-btn:hover { background: #1A3C6E; }
+  .copy-btn.copied { background: #27ae60; }
+
+  .code-block {
+    background: #1e1e2e; color: #cdd6f4; border-radius: 8px; padding: 16px 18px; margin: 8px 0 14px 0;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace; font-size: 13px;
+    line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; position: relative;
+  }
+  .code-block .copy-btn { position: absolute; top: 8px; right: 8px; }
+  .code-block .code-label {
+    display: block; color: #89b4fa; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;
+    border-bottom: 1px solid #313244; padding-bottom: 6px;
+  }
+
+  .note {
+    background: #fff8e1; border-left: 4px solid #FFCD00; padding: 12px 16px;
+    border-radius: 0 6px 6px 0; margin: 10px 0; font-size: 13px; line-height: 1.6;
+  }
+  .note strong { color: #b8860b; }
+
+  .success-note {
+    background: #e8f5e9; border-left: 4px solid #27ae60; padding: 12px 16px;
+    border-radius: 0 6px 6px 0; margin: 10px 0; font-size: 13px; line-height: 1.6;
+  }
+
+  .warning-note {
+    background: #fbe9e7; border-left: 4px solid #e74c3c; padding: 12px 16px;
+    border-radius: 0 6px 6px 0; margin: 10px 0; font-size: 13px; line-height: 1.6;
+  }
+
+  .explain-box {
+    background: #e8eef7; border: 1px solid #c5d4e8; border-radius: 8px;
+    padding: 16px 18px; margin: 12px 0; font-size: 14px; line-height: 1.6;
+  }
+  .explain-box strong { color: #1A3C6E; }
+
+  .next-page {
+    background: #1A3C6E; color: #fff; border-radius: 10px;
+    padding: 24px 28px; margin-top: 28px; text-align: center;
+  }
+  .next-page h3 { margin-bottom: 8px; font-size: 18px; }
+  .next-page p { opacity: 0.8; margin-bottom: 16px; font-size: 14px; line-height: 1.6; }
+
+  .prev-link { display: inline-block; color: #4472C4; text-decoration: none; font-size: 14px; margin-bottom: 16px; }
+  .prev-link:hover { text-decoration: underline; }
+
+  .reset-btn {
+    background: none; border: 1px solid #ccc; color: #888;
+    padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; margin-top: 20px;
+  }
+  .reset-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+</style>
+</head>
+<body>
+
+<nav class="tutorial-nav">
+  <div class="nav-title">Claude Code Tutorial Series</div>
+  <div class="nav-links">
+    <a href="index.html">1. Setup &amp; Foundation</a>
+    <a href="exercise-eisenhower.html">2. Eisenhower Matrix</a>
+    <a href="exercise-homework.html">3. Email Form</a>
+    <a href="exercise-middleware.html" class="active">4. QBO Middleware</a>
+  </div>
+</nav>
+
+<div class="content">
+
+<a class="prev-link" href="exercise-homework.html">&larr; Back to Exercise 2</a>
+
+<h1>The Big One: QBO Bill Import Middleware</h1>
+<p class="subtitle">This is the graduation exercise. You're going to build a middleware application that connects to QuickBooks Online, authenticates via OAuth, and imports vendor bills through the API. If you finish this, you can build anything. Estimated time: 1.5&ndash;2 hours.</p>
+
+<div class="progress-bar-container">
+  <div class="progress-bar-fill" id="progressFill"></div>
+  <div class="progress-label" id="progressLabel">0 / 0 steps</div>
+</div>
+
+<!-- ==================== SECTION 1: WHAT AND WHY ==================== -->
+<div class="section" id="section1">
+  <div class="section-header">
+    <div class="step-number">1</div>
+    <div class="section-title">What Is Middleware &amp; Why Build It?</div>
+  </div>
+  <div class="step-body">
+    <div class="explain-box">
+      <strong>Middleware is software that sits between two systems and makes them talk to each other.</strong> Your client has QuickBooks. They also have vendor invoices (PDFs, paper, emails). Right now, someone manually types those invoices into QBO. Your middleware automates that &mdash; it takes the invoice data and pushes it into QBO through the API.
+    </div>
+
+    <p><strong>What is an API?</strong></p>
+    <p>An API (Application Programming Interface) is a set of rules for how software talks to other software. When you log into your bank's website, you're using a user interface (UI) &mdash; buttons, forms, visual stuff. An API is like a UI for software. Your code sends a structured request ("create a bill with this vendor for this amount") and QBO processes it, just as if someone had typed it in manually.</p>
+
+    <p><strong>What is OAuth?</strong></p>
+    <p>OAuth is how QBO knows your app is allowed to access the account. Think of it like a valet key &mdash; you give the valet a special key that starts the car but won't open the trunk. OAuth gives your app limited access to QBO without sharing the owner's password. The user clicks "Authorize," QBO confirms, and your app gets a token (a temporary pass) to make requests.</p>
+
+    <p><strong>Sandbox vs. Production:</strong></p>
+    <ul>
+      <li><strong>Sandbox</strong> &mdash; A fake QBO company with fake data. Free, safe, can't break anything. This is where you develop and test. You can create fake bills, fake vendors, fake everything.</li>
+      <li><strong>Production</strong> &mdash; A real QBO company with real data. Requires Intuit to review and approve your app. This is where your middleware would actually run for a client.</li>
+    </ul>
+    <p>You're starting with the sandbox. Same code works in both &mdash; the only difference is the URLs and credentials.</p>
+
+    <p><strong>What Dale built for D&amp;H Meats:</strong></p>
+    <p>Dale built a full invoice processing middleware for a meat distributor. It ingests PDFs, parses line items, maps products to QBO inventory items, learns vendor patterns over time, validates everything, then pushes finished bills into QuickBooks. It handles BOLs, freight calculations, pricing lookups, and drift detection. That took months.</p>
+    <p>Yours does one thing: import a bill. That's the seed. Everything else grows from it.</p>
+
+    <div class="substep" data-step="1-1">
+      <input type="checkbox" id="s1-1">
+      <label for="s1-1">I understand what middleware is, what APIs and OAuth do, and the difference between sandbox and production</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 2: INSTALL PYTHON ==================== -->
+<div class="section" id="section2">
+  <div class="section-header">
+    <div class="step-number">2</div>
+    <div class="section-title">Install Python</div>
+  </div>
+  <div class="step-body">
+    <p>The middleware runs on Python using Flask (a lightweight web framework). The exercises so far were just HTML files &mdash; this one is a real application with a server.</p>
+
+    <div class="substep" data-step="2-1">
+      <input type="checkbox" id="s2-1">
+      <label for="s2-1">Click the button below to download Python (get version 3.11 or newer)</label>
+    </div>
+    <a class="download-btn" href="https://www.python.org/downloads/" target="_blank" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Download Python</a>
+
+    <div class="warning-note">
+      <strong>CRITICAL:</strong> On the very first screen of the installer, check the box that says <strong>"Add python.exe to PATH"</strong> at the bottom. This is the one checkbox you must not skip. If you miss it, nothing that follows will work.
+    </div>
+
+    <div class="substep" data-step="2-2">
+      <input type="checkbox" id="s2-2">
+      <label for="s2-2">Checked <strong>"Add python.exe to PATH"</strong> at the bottom of the installer</label>
+    </div>
+
+    <div class="substep" data-step="2-3">
+      <input type="checkbox" id="s2-3">
+      <label for="s2-3">Clicked <strong>"Install Now"</strong> and let it finish</label>
+    </div>
+
+    <div class="note"><strong>Verify it worked</strong> &mdash; open a NEW Command Prompt (close any old ones first) and type:</div>
+    <div class="cmd-block">
+      <span class="cmd-text">python --version</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="2-4">
+      <input type="checkbox" id="s2-4">
+      <label for="s2-4">Verified &mdash; <code>python --version</code> shows 3.11 or higher</label>
+    </div>
+
+    <div class="note"><strong>If Python was already installed</strong>, skip this section. You just need version 3.11+.</div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 3: INTUIT DEVELOPER ACCOUNT ==================== -->
+<div class="section" id="section3">
+  <div class="section-header">
+    <div class="step-number">3</div>
+    <div class="section-title">Set Up Your Intuit Developer Account</div>
+  </div>
+  <div class="step-body">
+    <p>To talk to QuickBooks through the API, you need a developer account with Intuit (the company that makes QBO). This is free and gives you a sandbox environment to play with.</p>
+
+    <div class="substep" data-step="3-1">
+      <input type="checkbox" id="s3-1">
+      <label for="s3-1">Open the Intuit Developer portal (click the button below)</label>
+    </div>
+    <a class="download-btn" href="https://developer.intuit.com/" target="_blank" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Open Intuit Developer Portal</a>
+
+    <div class="substep" data-step="3-2">
+      <input type="checkbox" id="s3-2">
+      <label for="s3-2">Click <strong>"Sign Up"</strong> and create a developer account (you can use your existing Intuit/QBO login if you have one)</label>
+    </div>
+
+    <div class="substep" data-step="3-3">
+      <input type="checkbox" id="s3-3">
+      <label for="s3-3">Once logged in, go to the <strong>Dashboard</strong></label>
+    </div>
+
+    <p><strong>Create an app:</strong></p>
+
+    <div class="substep" data-step="3-4">
+      <input type="checkbox" id="s3-4">
+      <label for="s3-4">Click <strong>"Create an app"</strong> (or "Add an app")</label>
+    </div>
+
+    <div class="substep" data-step="3-5">
+      <input type="checkbox" id="s3-5">
+      <label for="s3-5">Select <strong>"QuickBooks Online and Payments"</strong> as the platform</label>
+    </div>
+
+    <div class="substep" data-step="3-6">
+      <input type="checkbox" id="s3-6">
+      <label for="s3-6">Give your app a name (like "Bill Importer" or "My Middleware")</label>
+    </div>
+
+    <div class="substep" data-step="3-7">
+      <input type="checkbox" id="s3-7">
+      <label for="s3-7">Select the scopes/permissions: at minimum, check <strong>"Accounting"</strong> (this lets your app create bills)</label>
+    </div>
+
+    <div class="substep" data-step="3-8">
+      <input type="checkbox" id="s3-8">
+      <label for="s3-8">Click <strong>Create</strong></label>
+    </div>
+
+    <p><strong>Get your credentials:</strong></p>
+    <p>After creating the app, you'll be on the app's settings page. You need three things from here:</p>
+
+    <div class="substep" data-step="3-9">
+      <input type="checkbox" id="s3-9">
+      <label for="s3-9">Find and copy your <strong>Client ID</strong> (sometimes called "App ID") &mdash; save it in a text file</label>
+    </div>
+
+    <div class="substep" data-step="3-10">
+      <input type="checkbox" id="s3-10">
+      <label for="s3-10">Find and copy your <strong>Client Secret</strong> &mdash; save it in the same text file</label>
+    </div>
+
+    <div class="warning-note">
+      <strong>Keep these credentials private.</strong> Your Client ID and Client Secret are like a username and password for your app. Don't share them, don't post them online, don't commit them to Git. Claude Code will store them in a config file that stays on your machine.
+    </div>
+
+    <p><strong>Set the redirect URI:</strong></p>
+    <p>This tells Intuit where to send the user after they authorize your app. Since your app runs on your own computer:</p>
+
+    <div class="substep" data-step="3-11">
+      <input type="checkbox" id="s3-11">
+      <label for="s3-11">Go to <strong>"Redirect URIs"</strong> in your app settings</label>
+    </div>
+
+    <div class="substep" data-step="3-12">
+      <input type="checkbox" id="s3-12">
+      <label for="s3-12">Add this as a redirect URI (make sure you're in the <strong>Development/Sandbox</strong> section, not Production):</label>
+    </div>
+
+    <div class="cmd-block">
+      <span class="cmd-text">http://localhost:5000/callback</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="3-13">
+      <input type="checkbox" id="s3-13">
+      <label for="s3-13">Saved the redirect URI</label>
+    </div>
+
+    <p><strong>Find your sandbox company:</strong></p>
+    <p>Intuit automatically creates a sandbox QBO company for testing. It has fake vendors, fake invoices, fake everything.</p>
+
+    <div class="substep" data-step="3-14">
+      <input type="checkbox" id="s3-14">
+      <label for="s3-14">Click on <strong>"Sandbox"</strong> in the left sidebar of the developer portal</label>
+    </div>
+
+    <div class="substep" data-step="3-15">
+      <input type="checkbox" id="s3-15">
+      <label for="s3-15">You should see a sandbox company listed. Note the <strong>Company ID</strong> (a long number). Save it with your other credentials.</label>
+    </div>
+
+    <div class="note">
+      <strong>You can click "Go to company" to open the sandbox QBO.</strong> Poke around &mdash; it looks just like real QBO but with fake data. After you import a bill through your middleware, you'll check for it here.
+    </div>
+
+    <div class="success-note">
+      <strong>You now have everything you need from Intuit:</strong><br>
+      &bull; Client ID<br>
+      &bull; Client Secret<br>
+      &bull; Redirect URI (http://localhost:5000/callback)<br>
+      &bull; Sandbox Company ID<br><br>
+      Keep these in your text file. You'll paste them into Claude Code in a moment.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 4: SET UP PROJECT ==================== -->
+<div class="section" id="section4">
+  <div class="section-header">
+    <div class="step-number">4</div>
+    <div class="section-title">Set Up the Project</div>
+  </div>
+  <div class="step-body">
+    <div class="substep" data-step="4-1">
+      <input type="checkbox" id="s4-1">
+      <label for="s4-1">Create a new folder: <code>C:\dev\BillImporter</code></label>
+    </div>
+
+    <div class="cmd-block">
+      <span class="cmd-text">cd C:\dev\BillImporter</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="4-2">
+      <input type="checkbox" id="s4-2">
+      <label for="s4-2">Opened Command Prompt and navigated to the folder</label>
+    </div>
+
+    <div class="cmd-block">
+      <span class="cmd-text">claude</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="4-3">
+      <input type="checkbox" id="s4-3">
+      <label for="s4-3">Started Claude Code</label>
+    </div>
+
+    <p>First, have Claude set up the project structure. This prompt includes your Intuit credentials &mdash; <strong>replace the placeholders</strong> with your actual values:</p>
+
+    <div class="code-block">
+      <span class="code-label">Prompt: Set up the middleware project</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+Set up this project. Create:
+
+1. CLAUDE.md - I'm [your name], an ISI business
+   consultant. Learning to build middleware with Claude
+   Code. Propose plans before building. Deliver complete
+   files. Explain what you're doing.
+
+2. PROJECT.md - We're building a simple QBO bill import
+   middleware. Flask app on localhost:5000. Connects to
+   QBO sandbox via OAuth. User can enter bill details
+   (vendor, date, amount) and import them to QBO.
+
+3. MEMORY.md - Starting project. Setting up workspace.
+
+4. A .env file with these values (DO NOT commit this to
+   git):
+   QBO_CLIENT_ID=YOUR_CLIENT_ID_HERE
+   QBO_CLIENT_SECRET=YOUR_CLIENT_SECRET_HERE
+   QBO_REDIRECT_URI=http://localhost:5000/callback
+   QBO_ENVIRONMENT=sandbox
+   QBO_COMPANY_ID=YOUR_COMPANY_ID_HERE
+
+5. A .gitignore that excludes .env files
+
+Replace the placeholder values with my credentials,
+which I'll provide now:
+Client ID: [paste yours]
+Client Secret: [paste yours]
+Company ID: [paste yours]</div>
+
+    <div class="substep" data-step="4-4">
+      <input type="checkbox" id="s4-4">
+      <label for="s4-4">Replaced all placeholders with my actual Intuit credentials</label>
+    </div>
+
+    <div class="substep" data-step="4-5">
+      <input type="checkbox" id="s4-5">
+      <label for="s4-5">Gave Claude the prompt and it created all the files</label>
+    </div>
+
+    <div class="warning-note">
+      <strong>Your .env file contains secrets.</strong> The .gitignore ensures it won't get uploaded if you ever use Git. But also: don't copy your .env file to other computers, don't email it, and don't paste its contents into any chat or forum.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 5: BUILD THE MIDDLEWARE ==================== -->
+<div class="section" id="section5">
+  <div class="section-header">
+    <div class="step-number">5</div>
+    <div class="section-title">Build the Middleware</div>
+  </div>
+  <div class="step-body">
+    <p>Now for the big build. This prompt tells Claude to create the entire Flask application. It's longer than previous prompts because there's more to build, but the pattern is the same &mdash; describe what you want, Claude builds it.</p>
+
+    <div class="code-block">
+      <span class="code-label">Prompt: Build the bill importer</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+Build a Flask application for importing bills into
+QuickBooks Online. Here's what I need:
+
+ARCHITECTURE:
+- app.py as the main Flask app (port 5000)
+- Load credentials from .env using python-dotenv
+- Use the intuitlib and quickbooks-python libraries
+  for QBO integration
+- Store OAuth tokens in a local JSON file (tokens.json)
+  so I don't have to re-authorize every time
+
+PAGES:
+1. Home page (/) - Dashboard showing:
+   - Connection status (connected/disconnected to QBO)
+   - "Connect to QuickBooks" button if not connected
+   - Link to the bill import form if connected
+
+2. Bill Import page (/import) - A form with:
+   - Vendor name (dropdown that pulls vendors from QBO)
+   - Invoice/Bill number (text field)
+   - Bill date (date picker, defaults to today)
+   - Due date (date picker)
+   - Line items section:
+     - Description (text)
+     - Amount (number)
+     - A button to add more line items
+   - "Import to QuickBooks" submit button
+
+3. Success page - Shows confirmation after a bill
+   is imported, with the QBO bill ID
+
+OAUTH FLOW:
+- /connect route redirects to Intuit's OAuth page
+- /callback route handles the OAuth callback
+- Store access_token and refresh_token in tokens.json
+- Auto-refresh expired tokens
+
+REQUIREMENTS:
+- Install all Python packages needed (flask,
+  python-dotenv, intuitlib, python-quickbooks, etc.)
+- Create a requirements.txt
+- Clean, professional UI (use Bootstrap 5 for styling)
+- Error handling with user-friendly messages
+- Show clear status messages throughout the process
+
+Keep it simple. No PDF upload for now, no parsing,
+no inventory tracking. Just: enter bill details,
+push to QBO. The simplest possible working middleware.
+
+After building, start the Flask server so I can test.</div>
+
+    <div class="substep" data-step="5-1">
+      <input type="checkbox" id="s5-1">
+      <label for="s5-1">Gave Claude the build prompt</label>
+    </div>
+
+    <div class="substep" data-step="5-2">
+      <input type="checkbox" id="s5-2">
+      <label for="s5-2">Reviewed Claude's plan &mdash; it should mention Flask, OAuth, QBO API, and the page structure</label>
+    </div>
+
+    <div class="substep" data-step="5-3">
+      <input type="checkbox" id="s5-3">
+      <label for="s5-3">Approved the plan</label>
+    </div>
+
+    <div class="note">
+      <strong>This build takes longer than the previous exercises.</strong> Claude is creating multiple files (app.py, templates, requirements.txt), installing Python packages, and possibly setting up the Flask server. Let it work. If it asks you to approve running commands (like <code>pip install</code>), say yes.
+    </div>
+
+    <div class="substep" data-step="5-4">
+      <input type="checkbox" id="s5-4">
+      <label for="s5-4">Claude created all the files and installed the dependencies</label>
+    </div>
+
+    <div class="substep" data-step="5-5">
+      <input type="checkbox" id="s5-5">
+      <label for="s5-5">The Flask server started (Claude should start it, or told me how to)</label>
+    </div>
+
+    <div class="note">
+      <strong>If Claude didn't start the server,</strong> ask it: "Start the Flask server for me." Or you can ask Claude to run <code>python app.py</code>. You should see something like <code>* Running on http://127.0.0.1:5000</code> in the output.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 6: CONNECT TO QBO ==================== -->
+<div class="section" id="section6">
+  <div class="section-header">
+    <div class="step-number">6</div>
+    <div class="section-title">Connect to QuickBooks</div>
+  </div>
+  <div class="step-body">
+    <p>The server is running. Now let's connect it to your QBO sandbox.</p>
+
+    <div class="substep" data-step="6-1">
+      <input type="checkbox" id="s6-1">
+      <label for="s6-1">Open your browser and go to <a href="http://localhost:5000" target="_blank" style="color: #4472C4;">http://localhost:5000</a></label>
+    </div>
+
+    <p>You should see a dashboard page with a "Connect to QuickBooks" button (or something similar). The status should show "Not Connected."</p>
+
+    <div class="substep" data-step="6-2">
+      <input type="checkbox" id="s6-2">
+      <label for="s6-2">I see the dashboard with a connect button</label>
+    </div>
+
+    <div class="substep" data-step="6-3">
+      <input type="checkbox" id="s6-3">
+      <label for="s6-3">Clicked <strong>"Connect to QuickBooks"</strong></label>
+    </div>
+
+    <p>This should redirect you to Intuit's authorization page. You'll log in with your Intuit developer account and authorize the app to access your sandbox company.</p>
+
+    <div class="substep" data-step="6-4">
+      <input type="checkbox" id="s6-4">
+      <label for="s6-4">Logged in with my Intuit developer account</label>
+    </div>
+
+    <div class="substep" data-step="6-5">
+      <input type="checkbox" id="s6-5">
+      <label for="s6-5">Selected my sandbox company and clicked <strong>"Connect"</strong> (or "Authorize")</label>
+    </div>
+
+    <p>After authorizing, Intuit sends you back to your app (the redirect URI). Your app captures the authorization code, exchanges it for tokens, and saves them.</p>
+
+    <div class="substep" data-step="6-6">
+      <input type="checkbox" id="s6-6">
+      <label for="s6-6">Redirected back to my app &mdash; the status now shows <strong>"Connected"</strong></label>
+    </div>
+
+    <div class="success-note">
+      <strong>Your middleware is connected to QuickBooks Online.</strong> The OAuth dance is complete. Your app can now make API calls to QBO on behalf of your sandbox company. The tokens are saved locally, so you won't have to re-authorize every time you restart the server.
+    </div>
+
+    <div class="note">
+      <strong>If the connection failed,</strong> go back to Claude Code and tell it what happened. Paste any error messages. Common issues:<br>
+      &bull; Redirect URI mismatch &mdash; make sure <code>http://localhost:5000/callback</code> is exactly what you entered in the Intuit portal<br>
+      &bull; Wrong Client ID or Secret &mdash; double-check the .env file<br>
+      &bull; Make sure you're using the <strong>sandbox</strong> credentials, not production
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 7: IMPORT A BILL ==================== -->
+<div class="section" id="section7">
+  <div class="section-header">
+    <div class="step-number">7</div>
+    <div class="section-title">Import Your First Bill</div>
+  </div>
+  <div class="step-body">
+    <p>The moment of truth. You're going to create a bill in QBO through your middleware.</p>
+
+    <div class="substep" data-step="7-1">
+      <input type="checkbox" id="s7-1">
+      <label for="s7-1">Click the link to the bill import form (on the dashboard, or go to <a href="http://localhost:5000/import" target="_blank" style="color:#4472C4;">http://localhost:5000/import</a>)</label>
+    </div>
+
+    <div class="substep" data-step="7-2">
+      <input type="checkbox" id="s7-2">
+      <label for="s7-2">Select a vendor from the dropdown (these are pulled from your QBO sandbox &mdash; proof the connection works!)</label>
+    </div>
+
+    <div class="substep" data-step="7-3">
+      <input type="checkbox" id="s7-3">
+      <label for="s7-3">Enter a bill number (anything &mdash; like "TEST-001")</label>
+    </div>
+
+    <div class="substep" data-step="7-4">
+      <input type="checkbox" id="s7-4">
+      <label for="s7-4">Set the bill date and due date</label>
+    </div>
+
+    <div class="substep" data-step="7-5">
+      <input type="checkbox" id="s7-5">
+      <label for="s7-5">Add at least one line item (description: "Test item", amount: 100)</label>
+    </div>
+
+    <div class="substep" data-step="7-6">
+      <input type="checkbox" id="s7-6">
+      <label for="s7-6">Click <strong>"Import to QuickBooks"</strong></label>
+    </div>
+
+    <div class="substep" data-step="7-7">
+      <input type="checkbox" id="s7-7">
+      <label for="s7-7">Saw a success confirmation with a QBO bill ID</label>
+    </div>
+
+    <p>Now verify it actually made it into QBO:</p>
+
+    <div class="substep" data-step="7-8">
+      <input type="checkbox" id="s7-8">
+      <label for="s7-8">Go to your <a href="https://developer.intuit.com/" target="_blank" style="color:#4472C4;">Intuit Developer portal</a>, click Sandbox, then "Go to company" to open your sandbox QBO</label>
+    </div>
+
+    <div class="substep" data-step="7-9">
+      <input type="checkbox" id="s7-9">
+      <label for="s7-9">In the sandbox QBO, go to <strong>Expenses &rarr; Bills</strong> (or search for your bill number)</label>
+    </div>
+
+    <div class="substep" data-step="7-10">
+      <input type="checkbox" id="s7-10">
+      <label for="s7-10">Found the bill! It's in QBO with the vendor, amount, and details I entered.</label>
+    </div>
+
+    <div class="success-note">
+      <strong>You just pushed data into QuickBooks Online through the API.</strong><br><br>
+      Think about what happened: you typed information into YOUR app, your app talked to QBO's servers through the API, and a bill appeared in QuickBooks. No manual data entry. No copy-pasting. Software talking to software.<br><br>
+      This is what middleware does. This is the pattern for everything.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 8: SANDBOX VS PRODUCTION ==================== -->
+<div class="section" id="section8">
+  <div class="section-header">
+    <div class="step-number">8</div>
+    <div class="section-title">Sandbox vs. Production &mdash; What Changes?</div>
+  </div>
+  <div class="step-body">
+    <p>You've been working in the sandbox. When you're ready to go to production (real QBO data for a real client), here's what changes:</p>
+
+    <ul>
+      <li><strong>App review:</strong> Intuit reviews your app before it can access real QBO companies. This takes a few days to a few weeks depending on complexity.</li>
+      <li><strong>Credentials:</strong> You get a separate production Client ID and Client Secret. You update the .env file.</li>
+      <li><strong>Environment flag:</strong> Change <code>QBO_ENVIRONMENT=sandbox</code> to <code>QBO_ENVIRONMENT=production</code> in your .env file.</li>
+      <li><strong>Redirect URI:</strong> You add a production redirect URI in the Intuit portal (same URL if running locally, or your server's URL if hosting it).</li>
+      <li><strong>The code itself:</strong> Doesn't change. Same Flask app, same API calls, same everything.</li>
+    </ul>
+
+    <div class="note">
+      <strong>You don't need to go to production right now.</strong> The sandbox proves you can do it. When a client engagement requires it, you'll go through the app review process. For now, the sandbox is your playground.
+    </div>
+
+    <div class="substep" data-step="8-1">
+      <input type="checkbox" id="s8-1">
+      <label for="s8-1">I understand the difference between sandbox and production, and what changes when I switch</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 9: WRAP UP ==================== -->
+<div class="section" id="section9">
+  <div class="section-header">
+    <div class="step-number">9</div>
+    <div class="section-title">Save Progress &amp; Wrap Up</div>
+  </div>
+  <div class="step-body">
+    <p>Update your memory log with everything you accomplished:</p>
+
+    <div class="cmd-block">
+      <span class="cmd-text">Update MEMORY.md with everything we did. Include the QBO connection status, what the app looks like, what we tested, and ideas for next features.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="9-1">
+      <input type="checkbox" id="s9-1">
+      <label for="s9-1">Updated MEMORY.md</label>
+    </div>
+
+    <div class="substep" data-step="9-2">
+      <input type="checkbox" id="s9-2">
+      <label for="s9-2">Typed <code>exit</code> to end the Claude Code session</label>
+    </div>
+
+    <div class="note">
+      <strong>To stop the Flask server:</strong> Go to the Command Prompt window where the server is running and press <code>Ctrl+C</code>. To start it again later, navigate to the folder and run <code>python app.py</code>.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 10: WHERE TO GO ==================== -->
+<div class="section" id="section10">
+  <div class="section-header">
+    <div class="step-number">10</div>
+    <div class="section-title">Where to Go From Here</div>
+  </div>
+  <div class="step-body">
+    <p>You've built three things of increasing complexity:</p>
+
+    <ul>
+      <li><strong>A standalone tool</strong> (Eisenhower Matrix) &mdash; HTML only, no backend</li>
+      <li><strong>A connected form</strong> (Homework Email) &mdash; HTML + Google Apps Script backend</li>
+      <li><strong>A real middleware</strong> (Bill Importer) &mdash; Python + Flask + OAuth + QBO API</li>
+    </ul>
+
+    <p>The pattern is always the same:</p>
+    <ol>
+      <li>Create a project folder with CLAUDE.md, PROJECT.md, MEMORY.md</li>
+      <li>Describe what you want to Claude</li>
+      <li>Review the plan, approve it, let Claude build it</li>
+      <li>Test, customize, iterate</li>
+      <li>Save your memory before closing</li>
+    </ol>
+
+    <p><strong>Ideas for what to build next:</strong></p>
+    <ul>
+      <li>Add PDF upload to the bill importer &mdash; attach the vendor invoice to the QBO bill</li>
+      <li>Build a client reporting dashboard that pulls data from QBO and visualizes it</li>
+      <li>Create a scheduling tool for your consulting sessions</li>
+      <li>Build a client portal where your clients can see their own data</li>
+      <li>Connect to other APIs &mdash; Mailchimp, HubSpot, Stripe, whatever your clients use</li>
+    </ul>
+
+    <p>Every one of these follows the same pattern you just learned. The only difference is which API you're talking to and what the UI looks like. Claude handles the technical details. You handle the vision.</p>
+
+    <div class="substep" data-step="10-1">
+      <input type="checkbox" id="s10-1">
+      <label for="s10-1">I finished the tutorial series. I understand the workflow. Time to build real things.</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DONE ==================== -->
+<div id="allDone" style="display:none; text-align:center; padding: 30px; background: #e8f5e9; border-radius: 12px; margin-top: 20px;">
+  <h2 style="color: #27ae60; margin-bottom: 8px;">Tutorial Complete!</h2>
+  <p style="color: #555; line-height: 1.6;">You went from "what's a terminal?" to building middleware that talks to QuickBooks. That's not a small thing. The tools are yours now &mdash; Claude Code, the three-file methodology (CLAUDE.md, PROJECT.md, MEMORY.md), and the workflow. Go build something your clients need.</p>
+</div>
+
+<div class="next-page" style="background: linear-gradient(135deg, #1A3C6E, #4472C4);">
+  <h3>You Made It.</h3>
+  <p>Three exercises. Three levels of complexity. One workflow that scales to anything.<br>Open a terminal, type <code style="background:rgba(255,255,255,0.2); padding:2px 6px; border-radius:4px;">claude</code>, and start building.</p>
+</div>
+
+<div style="text-align:center;">
+  <button class="reset-btn" onclick="resetAll()">Reset all checkboxes</button>
+  <br><br>
+  <a href="index.html" style="color: #4472C4; font-size: 13px;">Back to the beginning</a>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'tutorial_middleware_state';
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const totalSteps = checkboxes.length;
+
+  function loadState() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const checked = JSON.parse(saved);
+      checkboxes.forEach(cb => {
+        if (checked.includes(cb.id)) {
+          cb.checked = true;
+          cb.closest('.substep').classList.add('checked');
+        }
+      });
+    }
+    updateProgress();
+  }
+
+  function saveState() {
+    const checked = [];
+    checkboxes.forEach(cb => { if (cb.checked) checked.push(cb.id); });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+  }
+
+  function updateProgress() {
+    let done = 0;
+    checkboxes.forEach(cb => { if (cb.checked) done++; });
+    const pct = Math.round((done / totalSteps) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = done + ' / ' + totalSteps + ' steps (' + pct + '%)';
+    document.querySelectorAll('.section').forEach(section => {
+      const subs = section.querySelectorAll('input[type="checkbox"]');
+      let allDone = true;
+      subs.forEach(cb => { if (!cb.checked) allDone = false; });
+      if (allDone && subs.length > 0) section.classList.add('done');
+      else section.classList.remove('done');
+    });
+    document.getElementById('allDone').style.display = (done === totalSteps) ? 'block' : 'none';
+  }
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', function() {
+      this.closest('.substep').classList.toggle('checked', this.checked);
+      saveState();
+      updateProgress();
+    });
+  });
+
+  function copyCmd(btn) {
+    const text = btn.parentElement.querySelector('.cmd-text').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function copyCode(btn) {
+    const block = btn.closest('.code-block');
+    const label = block.querySelector('.code-label');
+    let text = block.textContent;
+    if (label) text = text.replace(label.textContent, '');
+    text = text.replace('Copy', '').replace('Copied!', '').trim();
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function resetAll() {
+    if (confirm('Reset all checkboxes? This cannot be undone.')) {
+      checkboxes.forEach(cb => { cb.checked = false; cb.closest('.substep').classList.remove('checked'); });
+      localStorage.removeItem(STORAGE_KEY);
+      updateProgress();
+    }
+  }
+
+  loadState();
+</script>
+
+</body>
+</html>

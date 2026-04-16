@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Tutorial — Exercise 2: Client Homework Form</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    background: #f4f6f9;
+    color: #222;
+    padding: 0; margin: 0;
+  }
+
+  .tutorial-nav {
+    background: #1A3C6E;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .nav-title { color: #fff; font-size: 13px; font-weight: 400; padding: 8px 20px 0; opacity: 0.7; }
+  .nav-links { display: flex; flex-wrap: wrap; padding: 0 12px 0; }
+  .nav-links a {
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 12px 12px;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a.active { color: #fff; border-bottom-color: #FFCD00; }
+
+  .content { max-width: 820px; margin: 0 auto; padding: 24px 20px 60px; }
+  h1 { color: #1A3C6E; font-size: 26px; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
+
+  .progress-bar-container {
+    background: #ddd; border-radius: 12px; height: 24px; margin-bottom: 28px; overflow: hidden; position: relative;
+  }
+  .progress-bar-fill {
+    background: linear-gradient(90deg, #4472C4, #1A3C6E); height: 100%; width: 0%; border-radius: 12px; transition: width 0.4s ease;
+  }
+  .progress-label {
+    position: absolute; top: 0; left: 0; right: 0; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  .section {
+    background: #fff; border-radius: 10px; padding: 20px 24px; margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07); border-left: 4px solid #4472C4;
+  }
+  .section.done { border-left-color: #27ae60; opacity: 0.7; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .step-number {
+    background: #1A3C6E; color: #fff; width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0;
+  }
+  .section.done .step-number { background: #27ae60; }
+  .section-title { font-size: 18px; font-weight: 600; color: #1A3C6E; }
+  .section.done .section-title { text-decoration: line-through; color: #888; }
+
+  .step-body { margin-left: 44px; }
+  .step-body p { margin-bottom: 10px; line-height: 1.6; }
+  .step-body ul { margin: 0 0 12px 20px; line-height: 1.6; }
+  .step-body li { margin-bottom: 4px; }
+
+  .substep {
+    display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0f0f0;
+  }
+  .substep:last-child { border-bottom: none; }
+  .substep input[type="checkbox"] {
+    width: 20px; height: 20px; margin-top: 2px; cursor: pointer; accent-color: #1A3C6E; flex-shrink: 0;
+  }
+  .substep label { cursor: pointer; line-height: 1.5; }
+  .substep.checked label { text-decoration: line-through; color: #999; }
+
+  .cmd-block {
+    display: flex; align-items: center; background: #1e1e2e; color: #cdd6f4; border-radius: 8px;
+    padding: 10px 14px; margin: 8px 0 12px 0;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace; font-size: 13px; gap: 10px;
+  }
+  .cmd-text { flex: 1; word-break: break-all; user-select: all; }
+  .copy-btn {
+    background: #4472C4; color: #fff; border: none; border-radius: 6px;
+    padding: 6px 14px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.2s;
+  }
+  .copy-btn:hover { background: #1A3C6E; }
+  .copy-btn.copied { background: #27ae60; }
+
+  .code-block {
+    background: #1e1e2e; color: #cdd6f4; border-radius: 8px; padding: 16px 18px; margin: 8px 0 14px 0;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace; font-size: 13px;
+    line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; position: relative;
+  }
+  .code-block .copy-btn { position: absolute; top: 8px; right: 8px; }
+  .code-block .code-label {
+    display: block; color: #89b4fa; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;
+    border-bottom: 1px solid #313244; padding-bottom: 6px;
+  }
+
+  .note {
+    background: #fff8e1; border-left: 4px solid #FFCD00; padding: 12px 16px;
+    border-radius: 0 6px 6px 0; margin: 10px 0; font-size: 13px; line-height: 1.6;
+  }
+  .note strong { color: #b8860b; }
+
+  .success-note {
+    background: #e8f5e9; border-left: 4px solid #27ae60; padding: 12px 16px;
+    border-radius: 0 6px 6px 0; margin: 10px 0; font-size: 13px; line-height: 1.6;
+  }
+
+  .warning-note {
+    background: #fbe9e7; border-left: 4px solid #e74c3c; padding: 12px 16px;
+    border-radius: 0 6px 6px 0; margin: 10px 0; font-size: 13px; line-height: 1.6;
+  }
+
+  .explain-box {
+    background: #e8eef7; border: 1px solid #c5d4e8; border-radius: 8px;
+    padding: 16px 18px; margin: 12px 0; font-size: 14px; line-height: 1.6;
+  }
+  .explain-box strong { color: #1A3C6E; }
+
+  .next-page {
+    background: #1A3C6E; color: #fff; border-radius: 10px;
+    padding: 24px 28px; margin-top: 28px; text-align: center;
+  }
+  .next-page h3 { margin-bottom: 8px; font-size: 18px; }
+  .next-page p { opacity: 0.8; margin-bottom: 16px; font-size: 14px; }
+  .next-page a {
+    display: inline-block; background: #FFCD00; color: #1A3C6E; text-decoration: none;
+    padding: 12px 32px; border-radius: 8px; font-weight: 700; font-size: 15px; transition: background 0.2s;
+  }
+  .next-page a:hover { background: #ffe066; }
+
+  .prev-link { display: inline-block; color: #4472C4; text-decoration: none; font-size: 14px; margin-bottom: 16px; }
+  .prev-link:hover { text-decoration: underline; }
+
+  .reset-btn {
+    background: none; border: 1px solid #ccc; color: #888;
+    padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; margin-top: 20px;
+  }
+  .reset-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+</style>
+</head>
+<body>
+
+<nav class="tutorial-nav">
+  <div class="nav-title">Claude Code Tutorial Series</div>
+  <div class="nav-links">
+    <a href="index.html">1. Setup &amp; Foundation</a>
+    <a href="exercise-eisenhower.html">2. Eisenhower Matrix</a>
+    <a href="exercise-homework.html" class="active">3. Email Form</a>
+    <a href="exercise-middleware.html">4. QBO Middleware</a>
+  </div>
+</nav>
+
+<div class="content">
+
+<a class="prev-link" href="exercise-eisenhower.html">&larr; Back to Exercise 1</a>
+
+<h1>Exercise 2: Client Homework Form</h1>
+<p class="subtitle">Now you're connecting two systems: a form your clients fill out, and a Google backend that emails the answers to you. This is the bridge between "static page" and "real software." Estimated time: 45 minutes.</p>
+
+<div class="progress-bar-container">
+  <div class="progress-bar-fill" id="progressFill"></div>
+  <div class="progress-label" id="progressLabel">0 / 0 steps</div>
+</div>
+
+<!-- ==================== SECTION 1: WHAT YOU'RE BUILDING ==================== -->
+<div class="section" id="section1">
+  <div class="section-header">
+    <div class="step-number">1</div>
+    <div class="section-title">What You're Building (and Why It Matters)</div>
+  </div>
+  <div class="step-body">
+    <p>You're building two things that talk to each other:</p>
+    <ul>
+      <li><strong>The front end:</strong> An HTML form your clients open in their browser. It has questions, text fields, and a "Submit" button.</li>
+      <li><strong>The back end:</strong> A tiny script running on Google's servers that receives the form data and sends you an email with the answers.</li>
+    </ul>
+
+    <div class="explain-box">
+      <strong>Why does this matter?</strong> This is the exact same pattern used by every piece of middleware you'll ever build. Front end (what the user sees) talks to back end (what does the work). The Eisenhower Matrix was a standalone page &mdash; it didn't talk to anything. This exercise teaches you to connect things. If you can connect an HTML form to Google Apps Script, you can connect a Flask app to QuickBooks. Same pattern, bigger scale.
+    </div>
+
+    <p><strong>What the client experiences:</strong></p>
+    <ul>
+      <li>They open a link you send them</li>
+      <li>They see a professional-looking form with questions</li>
+      <li>They type their answers</li>
+      <li>Their work auto-saves in their browser (so they can close and come back)</li>
+      <li>They click "Submit" and see a confirmation</li>
+      <li>You get an email with all their answers, neatly formatted</li>
+    </ul>
+
+    <div class="substep" data-step="1-1">
+      <input type="checkbox" id="s1-1">
+      <label for="s1-1">I understand the two-part architecture (front end + back end) and why it matters</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 2: GOOGLE APPS SCRIPT ==================== -->
+<div class="section" id="section2">
+  <div class="section-header">
+    <div class="step-number">2</div>
+    <div class="section-title">Build the Email Backend (Google Apps Script)</div>
+  </div>
+  <div class="step-body">
+    <p>Google Apps Script is Google's free automation tool. It runs JavaScript on Google's servers and can send emails, read spreadsheets, and respond to web requests. You're going to create a tiny script that does one thing: receive data from your form and email it to you.</p>
+
+    <div class="note">
+      <strong>You need a Gmail account for this.</strong> If you don't have one, go to <a href="https://accounts.google.com/signup" target="_blank" style="color: #b8860b;">accounts.google.com</a> and create one. It takes 2 minutes.
+    </div>
+
+    <div class="substep" data-step="2-1">
+      <input type="checkbox" id="s2-1">
+      <label for="s2-1">Open Google Apps Script (click the button below)</label>
+    </div>
+    <a class="download-btn" href="https://script.google.com/" target="_blank" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Open Google Apps Script</a>
+
+    <div class="substep" data-step="2-2">
+      <input type="checkbox" id="s2-2">
+      <label for="s2-2">Click <strong>"New project"</strong> (the big + button)</label>
+    </div>
+
+    <p>You'll see a code editor with some default text (<code>function myFunction() { }</code>). Delete all of it and replace it with the code below:</p>
+
+    <div class="code-block">
+      <span class="code-label">Google Apps Script &mdash; paste this</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+function doPost(e) {
+  // Parse the incoming data from the form
+  var data = JSON.parse(e.postData.contents);
+
+  // Send an email with the homework answers
+  MailApp.sendEmail({
+    to: "YOUR_EMAIL@gmail.com",
+    subject: "Homework: " + (data.clientName || "Unknown"),
+    body: data.body
+  });
+
+  // Tell the form it worked
+  return ContentService
+    .createTextOutput(JSON.stringify({result: "success"}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doGet(e) {
+  // If someone opens the URL directly, show a message
+  return ContentService.createTextOutput(
+    "This endpoint receives homework submissions. " +
+    "Use the form to submit."
+  );
+}</div>
+
+    <div class="substep" data-step="2-3">
+      <input type="checkbox" id="s2-3">
+      <label for="s2-3">Deleted the default code and pasted the script above</label>
+    </div>
+
+    <div class="warning-note">
+      <strong>Change <code>YOUR_EMAIL@gmail.com</code></strong> to your actual Gmail address. This is where the homework submissions will be sent.
+    </div>
+
+    <div class="substep" data-step="2-4">
+      <input type="checkbox" id="s2-4">
+      <label for="s2-4">Changed the email address to my real Gmail</label>
+    </div>
+
+    <div class="substep" data-step="2-5">
+      <input type="checkbox" id="s2-5">
+      <label for="s2-5">Clicked the project name at the top left (says "Untitled project") and renamed it to something like "Homework Email Handler"</label>
+    </div>
+
+    <div class="substep" data-step="2-6">
+      <input type="checkbox" id="s2-6">
+      <label for="s2-6">Clicked the save icon (or Ctrl+S) to save the script</label>
+    </div>
+
+    <p><strong>Now deploy it as a web app:</strong></p>
+
+    <div class="substep" data-step="2-7">
+      <input type="checkbox" id="s2-7">
+      <label for="s2-7">Click <strong>Deploy</strong> (top right) &rarr; <strong>New deployment</strong></label>
+    </div>
+
+    <div class="substep" data-step="2-8">
+      <input type="checkbox" id="s2-8">
+      <label for="s2-8">Click the gear icon next to "Select type" and choose <strong>"Web app"</strong></label>
+    </div>
+
+    <div class="substep" data-step="2-9">
+      <input type="checkbox" id="s2-9">
+      <label for="s2-9">Set "Execute as" to <strong>"Me"</strong></label>
+    </div>
+
+    <div class="substep" data-step="2-10">
+      <input type="checkbox" id="s2-10">
+      <label for="s2-10">Set "Who has access" to <strong>"Anyone"</strong></label>
+    </div>
+
+    <div class="note">
+      <strong>"Anyone" sounds scary, but it's fine.</strong> This just means the form can send data to the script without the client needing a Google login. The script only does one thing &mdash; email you. There's nothing to hack, nothing to steal. This is the same approach Dale uses for his client homework forms.
+    </div>
+
+    <div class="substep" data-step="2-11">
+      <input type="checkbox" id="s2-11">
+      <label for="s2-11">Clicked <strong>"Deploy"</strong></label>
+    </div>
+
+    <p>Google will ask you to authorize the script. This is Google making sure YOU approve the script to send emails on your behalf.</p>
+
+    <div class="substep" data-step="2-12">
+      <input type="checkbox" id="s2-12">
+      <label for="s2-12">Clicked <strong>"Authorize access"</strong></label>
+    </div>
+
+    <div class="substep" data-step="2-13">
+      <input type="checkbox" id="s2-13">
+      <label for="s2-13">Chose your Google account</label>
+    </div>
+
+    <div class="note">
+      <strong>You might see a scary "Google hasn't verified this app" screen.</strong> That's normal for personal scripts. Click <strong>"Advanced"</strong> (small text at bottom left), then click <strong>"Go to Homework Email Handler (unsafe)"</strong>. It's not actually unsafe &mdash; this is YOUR script, running on YOUR account. Google just warns about any script it hasn't reviewed.
+    </div>
+
+    <div class="substep" data-step="2-14">
+      <input type="checkbox" id="s2-14">
+      <label for="s2-14">Got through the authorization screen (clicked Advanced &rarr; Go to &hellip; if needed)</label>
+    </div>
+
+    <div class="substep" data-step="2-15">
+      <input type="checkbox" id="s2-15">
+      <label for="s2-15">Clicked <strong>"Allow"</strong> to grant permission</label>
+    </div>
+
+    <p>You should now see a deployment confirmation with a <strong>Web app URL</strong>. It looks something like <code>https://script.google.com/macros/s/ABC123.../exec</code>.</p>
+
+    <div class="substep" data-step="2-16">
+      <input type="checkbox" id="s2-16">
+      <label for="s2-16">Copied the Web app URL and saved it somewhere (you'll need it in a few minutes)</label>
+    </div>
+
+    <div class="success-note">
+      <strong>Your email backend is live.</strong> That URL is a working endpoint on the internet. When anything sends a POST request to it with the right data, you'll get an email. Free, hosted by Google, no server to maintain.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 3: TEST THE BACKEND ==================== -->
+<div class="section" id="section3">
+  <div class="section-header">
+    <div class="step-number">3</div>
+    <div class="section-title">Quick Test &mdash; Is the Backend Alive?</div>
+  </div>
+  <div class="step-body">
+    <p>Before building the form, let's make sure the backend works.</p>
+
+    <div class="substep" data-step="3-1">
+      <input type="checkbox" id="s3-1">
+      <label for="s3-1">Open a new browser tab and paste your Web app URL into the address bar, then hit Enter</label>
+    </div>
+
+    <p>You should see the message: <em>"This endpoint receives homework submissions. Use the form to submit."</em> That's the <code>doGet()</code> function responding &mdash; it means the script is deployed and reachable.</p>
+
+    <div class="substep" data-step="3-2">
+      <input type="checkbox" id="s3-2">
+      <label for="s3-2">I see the message. The backend is alive.</label>
+    </div>
+
+    <div class="note">
+      <strong>If you see an error instead:</strong> Go back to the Apps Script editor, check that you saved the code, and make sure the deployment completed. You can also click Deploy &rarr; Manage deployments to see the status.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 4: SET UP PROJECT ==================== -->
+<div class="section" id="section4">
+  <div class="section-header">
+    <div class="step-number">4</div>
+    <div class="section-title">Set Up the Project &amp; Build the Form</div>
+  </div>
+  <div class="step-body">
+    <p>Now you'll use Claude Code to build the front end &mdash; the HTML form your clients will see and fill out.</p>
+
+    <div class="substep" data-step="4-1">
+      <input type="checkbox" id="s4-1">
+      <label for="s4-1">Create a new folder: <code>C:\dev\HomeworkForm</code></label>
+    </div>
+
+    <div class="cmd-block">
+      <span class="cmd-text">cd C:\dev\HomeworkForm</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="4-2">
+      <input type="checkbox" id="s4-2">
+      <label for="s4-2">Opened Command Prompt and navigated to the folder</label>
+    </div>
+
+    <div class="cmd-block">
+      <span class="cmd-text">claude</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="4-3">
+      <input type="checkbox" id="s4-3">
+      <label for="s4-3">Started Claude Code</label>
+    </div>
+
+    <p>Now give Claude the big prompt. <strong>Replace the placeholder URL</strong> with your actual Google Apps Script Web app URL:</p>
+
+    <div class="code-block">
+      <span class="code-label">Prompt: Build the homework form</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+Set up this project with CLAUDE.md, PROJECT.md, and
+MEMORY.md. Then build me a client homework form.
+
+PROJECT CONTEXT:
+I'm an ISI business consultant. I send this form to
+clients before our first meeting so I understand their
+business.
+
+BUILD a single HTML file called homework.html with:
+
+QUESTIONS (organize into sections):
+Section "About Your Business":
+- What does your business do?
+- How many employees do you have?
+- What's your annual revenue range?
+
+Section "Your Challenges":
+- What's the biggest problem in your business right now?
+- What have you tried that didn't work?
+- If you could fix one thing overnight, what would it be?
+
+Section "Goals":
+- Where do you want to be in 12 months?
+- What does success look like for this engagement?
+
+FEATURES:
+- Clean, professional design
+- Auto-save to localStorage (client can close and come
+  back without losing work)
+- "Client Name" field at the top
+- A "Submit" button that sends the data to this Google
+  Apps Script URL:
+  PASTE_YOUR_WEB_APP_URL_HERE
+- The submit should POST a JSON body with:
+  { clientName: "...", body: "formatted text of all
+    answers" }
+- Show a success confirmation after sending
+- Also include a "Download as .txt" backup button
+- A status bar at the bottom showing save state
+
+Make it look professional enough that I'd be comfortable
+sending it to a real client.</div>
+
+    <div class="substep" data-step="4-4">
+      <input type="checkbox" id="s4-4">
+      <label for="s4-4">Replaced <code>PASTE_YOUR_WEB_APP_URL_HERE</code> with my actual URL</label>
+    </div>
+
+    <div class="substep" data-step="4-5">
+      <input type="checkbox" id="s4-5">
+      <label for="s4-5">Gave Claude the prompt</label>
+    </div>
+
+    <div class="substep" data-step="4-6">
+      <input type="checkbox" id="s4-6">
+      <label for="s4-6">Reviewed Claude's plan and approved it</label>
+    </div>
+
+    <div class="substep" data-step="4-7">
+      <input type="checkbox" id="s4-7">
+      <label for="s4-7">Claude built the homework.html file</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 5: TEST END-TO-END ==================== -->
+<div class="section" id="section5">
+  <div class="section-header">
+    <div class="step-number">5</div>
+    <div class="section-title">Test the Full Loop</div>
+  </div>
+  <div class="step-body">
+    <p>This is the moment of truth. You're going to fill out the form and check if the email arrives.</p>
+
+    <div class="substep" data-step="5-1">
+      <input type="checkbox" id="s5-1">
+      <label for="s5-1">Open <code>C:\dev\HomeworkForm\homework.html</code> in your browser (double-click it)</label>
+    </div>
+
+    <div class="substep" data-step="5-2">
+      <input type="checkbox" id="s5-2">
+      <label for="s5-2">Type a client name (use "Test Client" for now)</label>
+    </div>
+
+    <div class="substep" data-step="5-3">
+      <input type="checkbox" id="s5-3">
+      <label for="s5-3">Fill in a few answers (doesn't need to be real &mdash; just enough to test)</label>
+    </div>
+
+    <div class="substep" data-step="5-4">
+      <input type="checkbox" id="s5-4">
+      <label for="s5-4">Click the <strong>Submit</strong> button</label>
+    </div>
+
+    <div class="substep" data-step="5-5">
+      <input type="checkbox" id="s5-5">
+      <label for="s5-5">Saw a success confirmation on screen</label>
+    </div>
+
+    <div class="substep" data-step="5-6">
+      <input type="checkbox" id="s5-6">
+      <label for="s5-6">Checked my Gmail inbox &mdash; the homework email arrived!</label>
+    </div>
+
+    <div class="note">
+      <strong>Email not showing up?</strong> Check your Spam folder first. If it's not there either, go back to your Apps Script editor, click <strong>Executions</strong> in the left sidebar, and look for error messages. Common issues: the email address is wrong in the script, or the deployment needs to be updated (Deploy &rarr; Manage deployments &rarr; edit the pencil icon &rarr; set version to "New version" &rarr; Deploy).
+    </div>
+
+    <p>Now test the backup feature:</p>
+
+    <div class="substep" data-step="5-7">
+      <input type="checkbox" id="s5-7">
+      <label for="s5-7">Click the <strong>"Download as .txt"</strong> button &mdash; a text file downloads with all the answers</label>
+    </div>
+
+    <p>And test the auto-save:</p>
+
+    <div class="substep" data-step="5-8">
+      <input type="checkbox" id="s5-8">
+      <label for="s5-8">Close the browser tab, reopen homework.html &mdash; your answers are still there</label>
+    </div>
+
+    <div class="success-note">
+      <strong>You just built a full client-facing tool with an email backend.</strong> Your client opens a link, fills out a form, hits Submit, and you get a formatted email. No server to maintain, no hosting costs, no passwords to manage. The HTML file can live anywhere &mdash; on your computer, in Google Drive, on a website.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 6: CUSTOMIZE ==================== -->
+<div class="section" id="section6">
+  <div class="section-header">
+    <div class="step-number">6</div>
+    <div class="section-title">Make It Yours</div>
+  </div>
+  <div class="step-body">
+    <p>The questions above are generic. Customize them for YOUR practice. Go back to Claude Code and try:</p>
+
+    <div class="code-block">
+      <span class="code-label">Example customization prompts</span>
+"Change the questions to focus on [your industry].
+Add a section about their current software and tools."
+
+"Add my company logo at the top. Here's the URL: ..."
+
+"Change the color scheme to match my branding.
+Primary: #2C5F2D, Accent: #97BC62"
+
+"Add a slider at the bottom where the client rates
+their urgency from 1-10."
+
+"Change 'Submit' to 'Send to [Your Name]' and update
+the success message with my name."</div>
+
+    <div class="substep" data-step="6-1">
+      <input type="checkbox" id="s6-1">
+      <label for="s6-1">Asked Claude for at least one customization to make the form mine</label>
+    </div>
+
+    <div class="substep" data-step="6-2">
+      <input type="checkbox" id="s6-2">
+      <label for="s6-2">Tested the change in the browser</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 7: WRAP UP ==================== -->
+<div class="section" id="section7">
+  <div class="section-header">
+    <div class="step-number">7</div>
+    <div class="section-title">Save Your Progress &amp; Wrap Up</div>
+  </div>
+  <div class="step-body">
+    <div class="cmd-block">
+      <span class="cmd-text">Update MEMORY.md with everything we built. Include the GAS URL, what the form looks like, and any customizations.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="7-1">
+      <input type="checkbox" id="s7-1">
+      <label for="s7-1">Updated MEMORY.md</label>
+    </div>
+
+    <div class="substep" data-step="7-2">
+      <input type="checkbox" id="s7-2">
+      <label for="s7-2">Typed <code>exit</code> to end the session</label>
+    </div>
+
+    <div class="success-note">
+      <strong>Exercise 2 complete.</strong> New skills unlocked:<br><br>
+      <strong>Google Apps Script</strong> &mdash; free serverless backend for email, spreadsheets, and automation<br>
+      <strong>Front-to-back communication</strong> &mdash; HTML form sends data to a backend via <code>fetch()</code><br>
+      <strong>Deployment</strong> &mdash; you deployed a live web endpoint that anyone can send data to<br>
+      <strong>Error handling</strong> &mdash; fallback download button in case the email fails<br><br>
+      This is the exact same pattern used to talk to any API. Google Apps Script today, QuickBooks tomorrow.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== NEXT ==================== -->
+<div id="allDone" style="display:none; text-align:center; padding: 30px; background: #e8f5e9; border-radius: 12px; margin-top: 20px;">
+  <h2 style="color: #27ae60; margin-bottom: 8px;">Exercise 2 Complete!</h2>
+  <p style="color: #555;">You connected a front end to a back end. That's the fundamental pattern of all middleware. Now you're ready for the real thing.</p>
+</div>
+
+<div class="next-page">
+  <h3>Next Up: The Big One</h3>
+  <p>You're going to build a middleware that connects to QuickBooks Online's API and imports bills. This is real production-grade work &mdash; OAuth authentication, API calls, file uploads. If you can do this, you can build anything your clients need.</p>
+  <a href="exercise-middleware.html">Start The Big Task &rarr;</a>
+</div>
+
+<div style="text-align:center;">
+  <button class="reset-btn" onclick="resetAll()">Reset all checkboxes</button>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'tutorial_homework_state';
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const totalSteps = checkboxes.length;
+
+  function loadState() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const checked = JSON.parse(saved);
+      checkboxes.forEach(cb => {
+        if (checked.includes(cb.id)) {
+          cb.checked = true;
+          cb.closest('.substep').classList.add('checked');
+        }
+      });
+    }
+    updateProgress();
+  }
+
+  function saveState() {
+    const checked = [];
+    checkboxes.forEach(cb => { if (cb.checked) checked.push(cb.id); });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+  }
+
+  function updateProgress() {
+    let done = 0;
+    checkboxes.forEach(cb => { if (cb.checked) done++; });
+    const pct = Math.round((done / totalSteps) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = done + ' / ' + totalSteps + ' steps (' + pct + '%)';
+    document.querySelectorAll('.section').forEach(section => {
+      const subs = section.querySelectorAll('input[type="checkbox"]');
+      let allDone = true;
+      subs.forEach(cb => { if (!cb.checked) allDone = false; });
+      if (allDone && subs.length > 0) section.classList.add('done');
+      else section.classList.remove('done');
+    });
+    document.getElementById('allDone').style.display = (done === totalSteps) ? 'block' : 'none';
+  }
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', function() {
+      this.closest('.substep').classList.toggle('checked', this.checked);
+      saveState();
+      updateProgress();
+    });
+  });
+
+  function copyCmd(btn) {
+    const text = btn.parentElement.querySelector('.cmd-text').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function copyCode(btn) {
+    const block = btn.closest('.code-block');
+    const label = block.querySelector('.code-label');
+    let text = block.textContent;
+    if (label) text = text.replace(label.textContent, '');
+    text = text.replace('Copy', '').replace('Copied!', '').trim();
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function resetAll() {
+    if (confirm('Reset all checkboxes? This cannot be undone.')) {
+      checkboxes.forEach(cb => { cb.checked = false; cb.closest('.substep').classList.remove('checked'); });
+      localStorage.removeItem(STORAGE_KEY);
+      updateProgress();
+    }
+  }
+
+  loadState();
+</script>
+
+</body>
+</html>

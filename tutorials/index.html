@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Tutorial — Setup &amp; Foundation</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    background: #f4f6f9;
+    color: #222;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* ---- NAV BAR ---- */
+  .tutorial-nav {
+    background: #1A3C6E;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .nav-title {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 8px 20px 0;
+    opacity: 0.7;
+  }
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 12px 0;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 12px 12px;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a.active {
+    color: #fff;
+    border-bottom-color: #FFCD00;
+  }
+
+  /* ---- MAIN CONTENT ---- */
+  .content {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  h1 {
+    color: #1A3C6E;
+    font-size: 26px;
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  /* ---- PROGRESS BAR ---- */
+  .progress-bar-container {
+    background: #ddd;
+    border-radius: 12px;
+    height: 24px;
+    margin-bottom: 28px;
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-bar-fill {
+    background: linear-gradient(90deg, #4472C4, #1A3C6E);
+    height: 100%;
+    width: 0%;
+    border-radius: 12px;
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  /* ---- SECTIONS ---- */
+  .section {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    border-left: 4px solid #4472C4;
+  }
+  .section.done {
+    border-left-color: #27ae60;
+    opacity: 0.7;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .step-number {
+    background: #1A3C6E;
+    color: #fff;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .section.done .step-number { background: #27ae60; }
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1A3C6E;
+  }
+  .section.done .section-title {
+    text-decoration: line-through;
+    color: #888;
+  }
+
+  .step-body { margin-left: 44px; }
+  .step-body p { margin-bottom: 10px; line-height: 1.6; }
+  .step-body ul { margin: 0 0 12px 20px; line-height: 1.6; }
+  .step-body li { margin-bottom: 4px; }
+
+  /* ---- SUBSTEPS (CHECKBOXES) ---- */
+  .substep {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .substep:last-child { border-bottom: none; }
+  .substep input[type="checkbox"] {
+    width: 20px; height: 20px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: #1A3C6E;
+    flex-shrink: 0;
+  }
+  .substep label { cursor: pointer; line-height: 1.5; }
+  .substep.checked label { text-decoration: line-through; color: #999; }
+
+  /* ---- COMMAND BLOCKS ---- */
+  .cmd-block {
+    display: flex;
+    align-items: center;
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0 12px 0;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace;
+    font-size: 13px;
+    gap: 10px;
+  }
+  .cmd-text { flex: 1; word-break: break-all; user-select: all; }
+  .copy-btn {
+    background: #4472C4;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .copy-btn:hover { background: #1A3C6E; }
+  .copy-btn.copied { background: #27ae60; }
+
+  /* ---- CODE BLOCKS (multi-line) ---- */
+  .code-block {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 8px 0 14px 0;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-x: auto;
+    position: relative;
+  }
+  .code-block .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+  .code-block .code-label {
+    display: block;
+    color: #89b4fa;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #313244;
+    padding-bottom: 6px;
+  }
+
+  /* ---- DOWNLOAD BUTTONS ---- */
+  .download-btn {
+    display: inline-block;
+    background: #1A3C6E;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 6px 4px;
+    transition: background 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+  .download-btn:hover { background: #4472C4; }
+
+  /* ---- NOTE BOXES ---- */
+  .note {
+    background: #fff8e1;
+    border-left: 4px solid #FFCD00;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .note strong { color: #b8860b; }
+
+  .success-note {
+    background: #e8f5e9;
+    border-left: 4px solid #27ae60;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .warning-note {
+    background: #fbe9e7;
+    border-left: 4px solid #e74c3c;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* ---- EXPLANATION BOXES ---- */
+  .explain-box {
+    background: #e8eef7;
+    border: 1px solid #c5d4e8;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 12px 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .explain-box strong { color: #1A3C6E; }
+
+  /* ---- NEXT PAGE FOOTER ---- */
+  .next-page {
+    background: #1A3C6E;
+    color: #fff;
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-top: 28px;
+    text-align: center;
+  }
+  .next-page h3 { margin-bottom: 8px; font-size: 18px; }
+  .next-page p { opacity: 0.8; margin-bottom: 16px; font-size: 14px; }
+  .next-page a {
+    display: inline-block;
+    background: #FFCD00;
+    color: #1A3C6E;
+    text-decoration: none;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    transition: background 0.2s;
+  }
+  .next-page a:hover { background: #ffe066; }
+
+  .reset-btn {
+    background: none;
+    border: 1px solid #ccc;
+    color: #888;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  .reset-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+</style>
+</head>
+<body>
+
+<!-- ======== NAV ======== -->
+<nav class="tutorial-nav">
+  <div class="nav-title">Claude Code Tutorial Series</div>
+  <div class="nav-links">
+    <a href="index.html" class="active">1. Setup &amp; Foundation</a>
+    <a href="exercise-eisenhower.html">2. Eisenhower Matrix</a>
+    <a href="exercise-homework.html">3. Email Form</a>
+    <a href="exercise-middleware.html">4. QBO Middleware</a>
+  </div>
+</nav>
+
+<div class="content">
+
+<h1>Setup &amp; Foundation</h1>
+<p class="subtitle">Everything you need to go from zero to building real tools with Claude Code. This page gets you installed, authenticated, and thinking the right way about how to work with an AI coding partner.</p>
+
+<div class="progress-bar-container">
+  <div class="progress-bar-fill" id="progressFill"></div>
+  <div class="progress-label" id="progressLabel">0 / 0 steps</div>
+</div>
+
+<!-- ==================== SECTION 1: WHAT IS CLAUDE CODE ==================== -->
+<div class="section" id="section1">
+  <div class="section-header">
+    <div class="step-number">1</div>
+    <div class="section-title">What Is Claude Code?</div>
+  </div>
+  <div class="step-body">
+    <p>Claude Code is an AI coding assistant made by Anthropic. It runs right in your terminal (that black window with the blinking cursor) and you talk to it in plain English. You describe what you want to build, and it writes the code, creates the files, runs commands, and debugs problems &mdash; all while you watch.</p>
+
+    <div class="explain-box">
+      <strong>Think of it this way:</strong> You're the architect. Claude is the builder. You say "I want a four-quadrant task board with drag-and-drop" and Claude draws the blueprints, cuts the lumber, and hands you a finished product. If you don't like the paint color, you say "make it darker" and Claude repaints it.
+    </div>
+
+    <p><strong>What you'll build in this tutorial series:</strong></p>
+    <ul>
+      <li><strong>Exercise 1:</strong> An Eisenhower Matrix &mdash; a personal task prioritizer you open in your browser</li>
+      <li><strong>Exercise 2:</strong> A client homework form that emails responses to you via Google</li>
+      <li><strong>The Big One:</strong> A middleware app that imports bills into QuickBooks Online via API</li>
+    </ul>
+
+    <p>Each one is harder than the last. By the end, you'll be dangerous.</p>
+
+    <p><strong>What you need to get started:</strong></p>
+    <ul>
+      <li>A Windows computer (you're on one &mdash; good)</li>
+      <li>Internet access</li>
+      <li>A Gmail account (if you don't have one, make one now &mdash; if you can't make a Gmail account, the rest of this tutorial is going to be a bad time)</li>
+      <li>A credit card for the Anthropic account (usage-based billing, learning costs a few dollars total)</li>
+    </ul>
+
+    <div class="substep" data-step="1-1">
+      <input type="checkbox" id="s1-1">
+      <label for="s1-1">I've read the above and I have everything I need. Let's go.</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 2: ANTHROPIC ACCOUNT ==================== -->
+<div class="section" id="section2">
+  <div class="section-header">
+    <div class="step-number">2</div>
+    <div class="section-title">Create an Anthropic Account &amp; Get Your API Key</div>
+  </div>
+  <div class="step-body">
+    <p>Anthropic is the company that makes Claude. You need an account with them so Claude Code knows who you are and can bill for usage. Think of the API key as your personal password that lets your computer talk to Claude's brain.</p>
+
+    <div class="substep" data-step="2-1">
+      <input type="checkbox" id="s2-1">
+      <label for="s2-1">Go to the Anthropic Console (click the button below)</label>
+    </div>
+    <a class="download-btn" href="https://console.anthropic.com/" target="_blank">Open Anthropic Console</a>
+
+    <div class="substep" data-step="2-2">
+      <input type="checkbox" id="s2-2">
+      <label for="s2-2">Click <strong>"Sign Up"</strong> and create an account with your email</label>
+    </div>
+
+    <div class="substep" data-step="2-3">
+      <input type="checkbox" id="s2-3">
+      <label for="s2-3">Check your email and verify your account</label>
+    </div>
+
+    <div class="substep" data-step="2-4">
+      <input type="checkbox" id="s2-4">
+      <label for="s2-4">Go to <strong>Settings &rarr; Billing</strong> and add a payment method</label>
+    </div>
+
+    <div class="note">
+      <strong>How much does this cost?</strong> Claude Code charges per use &mdash; you pay for what you use, no monthly minimum. Working through this entire tutorial series will probably cost $5&ndash;15 total. A typical day of building costs $1&ndash;5. It's not a subscription &mdash; if you don't use it, you don't pay.
+    </div>
+
+    <div class="substep" data-step="2-5">
+      <input type="checkbox" id="s2-5">
+      <label for="s2-5">Go to <strong>Settings &rarr; API Keys</strong></label>
+    </div>
+
+    <div class="substep" data-step="2-6">
+      <input type="checkbox" id="s2-6">
+      <label for="s2-6">Click <strong>"Create Key"</strong> &mdash; give it a name like "My Laptop"</label>
+    </div>
+
+    <div class="substep" data-step="2-7">
+      <input type="checkbox" id="s2-7">
+      <label for="s2-7">Copy the key and paste it somewhere safe (a text file, a note &mdash; you'll need it in a few minutes)</label>
+    </div>
+
+    <div class="warning-note">
+      <strong>Your API key is like a credit card number.</strong> Don't share it, don't post it anywhere, don't email it. If someone gets it, they can run up charges on your account. You'll only need to enter it once &mdash; Claude Code remembers it after that.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 3: INSTALL NODE.JS ==================== -->
+<div class="section" id="section3">
+  <div class="section-header">
+    <div class="step-number">3</div>
+    <div class="section-title">Install Node.js</div>
+  </div>
+  <div class="step-body">
+    <p>Claude Code is built on Node.js, which is a tool that lets JavaScript (a programming language) run on your computer. You don't need to learn JavaScript &mdash; you just need Node.js installed so Claude Code has something to run on.</p>
+
+    <div class="substep" data-step="3-1">
+      <input type="checkbox" id="s3-1">
+      <label for="s3-1">Click the button below and download the <strong>LTS</strong> version (the big green button)</label>
+    </div>
+    <a class="download-btn" href="https://nodejs.org/" target="_blank">Download Node.js</a>
+
+    <div class="substep" data-step="3-2">
+      <input type="checkbox" id="s3-2">
+      <label for="s3-2">Run the installer &mdash; click <strong>Next</strong> on every screen (all defaults are fine)</label>
+    </div>
+
+    <div class="substep" data-step="3-3">
+      <input type="checkbox" id="s3-3">
+      <label for="s3-3">When it finishes, click <strong>Finish</strong></label>
+    </div>
+
+    <div class="note">
+      <strong>How do I know it worked?</strong> Open a Command Prompt (click the Start button and search for <strong>"cmd"</strong>), then type the command below and hit Enter. You should see a version number like <code>v20.x.x</code> or higher.
+    </div>
+    <div class="cmd-block">
+      <span class="cmd-text">node --version</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="3-4">
+      <input type="checkbox" id="s3-4">
+      <label for="s3-4">Verified &mdash; <code>node --version</code> shows a version number</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 4: INSTALL CLAUDE CODE ==================== -->
+<div class="section" id="section4">
+  <div class="section-header">
+    <div class="step-number">4</div>
+    <div class="section-title">Install Claude Code</div>
+  </div>
+  <div class="step-body">
+    <p>Now that Node.js is installed, you can install Claude Code with a single command. This downloads it from the internet and sets it up on your machine.</p>
+
+    <div class="note"><strong>Run this in Command Prompt</strong> (the same window from the last step, or open a new one):</div>
+    <div class="cmd-block">
+      <span class="cmd-text">npm install -g @anthropic-ai/claude-code</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="4-1">
+      <input type="checkbox" id="s4-1">
+      <label for="s4-1">Ran the install command &mdash; it printed a bunch of text and finished without red error messages</label>
+    </div>
+
+    <div class="note"><strong>Verify it installed:</strong></div>
+    <div class="cmd-block">
+      <span class="cmd-text">claude --version</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="4-2">
+      <input type="checkbox" id="s4-2">
+      <label for="s4-2">Verified &mdash; <code>claude --version</code> shows a version number</label>
+    </div>
+
+    <div class="success-note">Claude Code is installed. Two tools down, zero code written. That's about to change.</div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 5: CREATE YOUR WORKSPACE ==================== -->
+<div class="section" id="section5">
+  <div class="section-header">
+    <div class="step-number">5</div>
+    <div class="section-title">Create Your Workspace</div>
+  </div>
+  <div class="step-body">
+    <p>Before you start building, you need a home base. Every project you build will live under one root folder: <code>C:\dev</code>. This keeps things organized and gives Claude Code a consistent place to work.</p>
+
+    <div class="explain-box">
+      <strong>Why C:\dev?</strong> It's short, easy to type, and keeps all your work in one place. Dale uses this same structure across all his client projects &mdash; Los Gatos Auto, D&amp;H Meats, Anthem Mechanical &mdash; each one is a folder under <code>C:\dev</code>. When you open a terminal and type <code>cd C:\dev\MyProject</code>, you're in your project. Clean and simple.
+    </div>
+
+    <div class="substep" data-step="5-1">
+      <input type="checkbox" id="s5-1">
+      <label for="s5-1">Open File Explorer (the yellow folder icon in your taskbar)</label>
+    </div>
+
+    <div class="substep" data-step="5-2">
+      <input type="checkbox" id="s5-2">
+      <label for="s5-2">Navigate to <code>C:\</code> (click "This PC" in the sidebar, then double-click your C: drive)</label>
+    </div>
+
+    <div class="substep" data-step="5-3">
+      <input type="checkbox" id="s5-3">
+      <label for="s5-3">Create a new folder called <strong>dev</strong> (right-click &rarr; New &rarr; Folder &rarr; type "dev")</label>
+    </div>
+
+    <div class="note">
+      <strong>If <code>C:\dev</code> already exists</strong>, skip this step. If Windows won't let you create folders on C:\, create <code>dev</code> in your user folder instead (like <code>C:\Users\Stephanie\dev</code>) and use that path everywhere in this tutorial.
+    </div>
+
+    <div class="substep" data-step="5-4">
+      <input type="checkbox" id="s5-4">
+      <label for="s5-4">Inside <code>dev</code>, create a folder called <strong>Sandbox</strong> (this is your practice area)</label>
+    </div>
+
+    <div class="success-note">Your workspace is ready. Every project gets its own folder under <code>C:\dev</code>.</div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 6: WAKE UP CLAUDE ==================== -->
+<div class="section" id="section6">
+  <div class="section-header">
+    <div class="step-number">6</div>
+    <div class="section-title">Wake Up Claude for the First Time</div>
+  </div>
+  <div class="step-body">
+    <p>This is the moment. You're about to open a terminal, navigate to your project folder, and start talking to an AI that writes code. Don't worry &mdash; the terminal is just a text box where you type commands. Nothing scary.</p>
+
+    <div class="substep" data-step="6-1">
+      <input type="checkbox" id="s6-1">
+      <label for="s6-1">Open Command Prompt (Start menu &rarr; search "cmd" &rarr; click <strong>Command Prompt</strong>)</label>
+    </div>
+
+    <div class="note"><strong>Navigate to your sandbox folder:</strong></div>
+    <div class="cmd-block">
+      <span class="cmd-text">cd C:\dev\Sandbox</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="6-2">
+      <input type="checkbox" id="s6-2">
+      <label for="s6-2">Typed the <code>cd</code> command above and hit Enter</label>
+    </div>
+
+    <div class="note"><strong>Now start Claude Code:</strong></div>
+    <div class="cmd-block">
+      <span class="cmd-text">claude</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="6-3">
+      <input type="checkbox" id="s6-3">
+      <label for="s6-3">Typed <code>claude</code> and hit Enter</label>
+    </div>
+
+    <p>The first time you run Claude Code, it will ask you to authenticate. It'll open a browser window or ask you to paste your API key.</p>
+
+    <div class="substep" data-step="6-4">
+      <input type="checkbox" id="s6-4">
+      <label for="s6-4">Followed the prompts &mdash; pasted my API key when asked (the one you saved earlier)</label>
+    </div>
+
+    <p>You should now see Claude's prompt &mdash; a cursor waiting for you to type. Try saying hello:</p>
+
+    <div class="cmd-block">
+      <span class="cmd-text">Hello! What can you do?</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="6-5">
+      <input type="checkbox" id="s6-5">
+      <label for="s6-5">Claude responded! It told me what it can do. We're in business.</label>
+    </div>
+
+    <div class="explain-box">
+      <strong>Quick reference &mdash; commands you'll use constantly:</strong><br><br>
+      <code>claude</code> &mdash; Start a conversation (from your project folder)<br>
+      <code>/help</code> &mdash; See all available commands<br>
+      <code>/clear</code> &mdash; Clear the conversation context (do this often &mdash; it prevents crashes)<br>
+      <code>Escape or Ctrl+C</code> &mdash; Cancel what Claude is doing<br>
+      <code>exit</code> &mdash; End the conversation and go back to the terminal<br>
+      <code>Up arrow</code> &mdash; Recall your previous message
+    </div>
+
+    <p>Take a minute to play around. Ask Claude some questions. When you're done exploring, type <code>exit</code> to leave. We'll come back to Claude in a moment with a plan.</p>
+
+    <div class="substep" data-step="6-6">
+      <input type="checkbox" id="s6-6">
+      <label for="s6-6">Played around, typed <code>exit</code> to leave. I get the basics.</label>
+    </div>
+
+    <div class="success-note">You just had your first conversation with Claude Code. Everything from here is learning how to have BETTER conversations.</div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 7: CLAUDE.MD ==================== -->
+<div class="section" id="section7">
+  <div class="section-header">
+    <div class="step-number">7</div>
+    <div class="section-title">Your CLAUDE.md &mdash; Teaching Claude How to Work With You</div>
+  </div>
+  <div class="step-body">
+    <p>Here's the most important concept in this entire tutorial:</p>
+
+    <div class="explain-box">
+      <strong>Claude doesn't remember you between sessions.</strong> Every time you type <code>claude</code> and start a new conversation, it's like meeting a brilliant contractor who has total amnesia. It has no idea who you are, what you've built before, or how you like to work. CLAUDE.md fixes that.
+    </div>
+
+    <p>A <strong>CLAUDE.md</strong> file sits in your project folder. When Claude Code starts up, it reads this file automatically &mdash; before you say a word. It's your instruction manual for Claude. It tells Claude who you are, how you work, and what rules to follow.</p>
+
+    <p>Without a CLAUDE.md, Claude is a generic assistant. With one, Claude is <em>your</em> assistant.</p>
+
+    <p><strong>What goes in a CLAUDE.md?</strong></p>
+
+    <p>Here's a template. Don't just copy it blindly &mdash; read through the annotations (the explanations in parentheses) and think about what matters to YOU. You'll create your own version in a moment.</p>
+
+    <div class="code-block">
+      <span class="code-label">CLAUDE.md template</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+# [Your Name] &mdash; Rules of Engagement
+
+## Who I Am
+(Tell Claude about yourself so it adjusts its communication
+style. A senior developer gets different answers than a
+business consultant learning to build tools.)
+
+I'm [name], a business consultant with [organization].
+I work with [type of clients]. I'm comfortable with
+[your tech level] and learning [what you're learning].
+
+## How We Work
+(This is THE critical section. Without it, Claude will
+just start building without asking. That's dangerous.)
+
+1. I give requirements.
+2. You propose a plan and WAIT for my approval.
+3. On approval, you deliver complete working files.
+4. I test and confirm.
+
+Ask first, don't run ahead. When debugging, gather info
+before patching.
+
+## Delivery Standards
+(Rules about what "done" looks like.)
+
+- Complete files, not fragments. No stubs, no placeholders.
+- If it's not obvious, document it.
+- No hardcoded values. Settings live in config files, not code.
+
+## Session Management
+(Claude Code can crash if the context window fills up.
+These rules prevent that.)
+
+- Update MEMORY.md before ending sessions.
+- Use /clear after heavy tool use or big file reads.
+- When in doubt, /clear. It costs 10 seconds. A crash
+  costs the whole session.</div>
+
+    <p><strong>How Dale uses his:</strong></p>
+    <p>Dale's CLAUDE.md has all of the above plus some extras that have evolved over months of daily use:</p>
+    <ul>
+      <li><strong>A "Brown M&amp;M" rule</strong> &mdash; a small test at the top of his file that forces Claude to prove it actually read the instructions. (Van Halen used to put "no brown M&amp;Ms" in their concert riders to verify promoters read the whole contract. Same idea.) If Claude skips the test, Dale knows it skipped the file.</li>
+      <li><strong>Naming conventions</strong> &mdash; rules about how to name variables and database fields so everything stays consistent</li>
+      <li><strong>"Archive, don't delete"</strong> &mdash; instead of deleting old files, move them to an archive folder. You never lose work.</li>
+      <li><strong>"Claude runs commands"</strong> &mdash; Claude executes terminal commands itself instead of telling Dale to do it. Dale shouldn't have to touch the terminal for routine tasks.</li>
+    </ul>
+
+    <p>Other ISI consultants might add rules like:</p>
+    <ul>
+      <li>"All client-facing documents use our company letterhead"</li>
+      <li>"Use metric units, not imperial"</li>
+      <li>"My clients speak Spanish &mdash; build bilingual interfaces"</li>
+      <li>"I'm working on a Mac, not Windows"</li>
+    </ul>
+
+    <p>The CLAUDE.md grows over time. Every time Claude does something you don't like, add a rule. Every time it does something great, add a rule to keep doing it. It's a living document.</p>
+
+    <p><strong>Let's create yours now.</strong> Start Claude Code in your Sandbox folder and ask it to create one for you. Personalize the prompt below before sending it &mdash; replace the bracketed parts with your actual info:</p>
+
+    <div class="code-block">
+      <span class="code-label">Prompt to give Claude</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+Create a CLAUDE.md file in this directory. Here's what
+I want in it:
+
+# Who I Am
+I'm [your name], a business consultant with ISI.
+I work with small trade businesses ([your industries]).
+I'm learning Claude Code for the first time.
+I'm comfortable following instructions but I'm not a
+developer.
+
+# How We Work
+1. I give requirements.
+2. You propose a plan and WAIT for my approval.
+3. On approval, you deliver complete working files.
+4. I test and confirm.
+
+Ask first, don't run ahead.
+
+# Delivery Standards
+- Complete files, not fragments
+- No stubs or placeholders
+- Explain what you're doing as you go
+- If something could go wrong, warn me first
+
+# Session Management
+- Update MEMORY.md before I end a session
+- Use /clear after heavy work
+- Remind me to /clear if things get slow</div>
+
+    <div class="substep" data-step="7-1">
+      <input type="checkbox" id="s7-1">
+      <label for="s7-1">Started Claude Code in my Sandbox folder (<code>cd C:\dev\Sandbox</code> then <code>claude</code>)</label>
+    </div>
+
+    <div class="substep" data-step="7-2">
+      <input type="checkbox" id="s7-2">
+      <label for="s7-2">Personalized the prompt above with my actual info</label>
+    </div>
+
+    <div class="substep" data-step="7-3">
+      <input type="checkbox" id="s7-3">
+      <label for="s7-3">Gave Claude the prompt and it created my CLAUDE.md file</label>
+    </div>
+
+    <div class="note">
+      <strong>Test that it works:</strong> Type <code>/clear</code> (this restarts the conversation so Claude re-reads the CLAUDE.md). Then ask Claude: "What do you know about me?" Claude should repeat back the details from your CLAUDE.md. If it does, the file is working.
+    </div>
+
+    <div class="substep" data-step="7-4">
+      <input type="checkbox" id="s7-4">
+      <label for="s7-4">Typed <code>/clear</code>, asked Claude what it knows about me, and it repeated my info back. The CLAUDE.md is working.</label>
+    </div>
+
+    <div class="success-note">You now have a CLAUDE.md. Claude will read it at the start of every conversation in this folder. You'll never have to re-introduce yourself.</div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 8: PROJECT.MD ==================== -->
+<div class="section" id="section8">
+  <div class="section-header">
+    <div class="step-number">8</div>
+    <div class="section-title">Your PROJECT.md &mdash; What You're Building Right Now</div>
+  </div>
+  <div class="step-body">
+    <p>CLAUDE.md tells Claude who YOU are. PROJECT.md tells Claude what you're BUILDING.</p>
+
+    <div class="explain-box">
+      <strong>Think of it like a briefing.</strong> If you hired a contractor and said "build me a deck," they'd ask a hundred questions. But if you handed them a one-page brief &mdash; dimensions, materials, budget, timeline &mdash; they'd get to work. PROJECT.md is that one-page brief.
+    </div>
+
+    <p>You create a new PROJECT.md (or update the existing one) every time you start a new module or feature. It answers:</p>
+    <ul>
+      <li><strong>What are we building?</strong> (the goal)</li>
+      <li><strong>Who is it for?</strong> (the user)</li>
+      <li><strong>What technology are we using?</strong> (HTML? Python? Both?)</li>
+      <li><strong>What's the current status?</strong> (starting fresh? halfway done?)</li>
+      <li><strong>Any constraints?</strong> (must work offline, must be a single file, etc.)</li>
+    </ul>
+
+    <p>Here's a simple example. Don't create this one &mdash; we'll make real ones in the exercises.</p>
+
+    <div class="code-block">
+      <span class="code-label">Example PROJECT.md</span>
+# Project: Client Intake Form
+
+## Goal
+Build a web form that new clients fill out before their
+first meeting. Responses get emailed to me.
+
+## User
+My clients. Non-technical. They'll open this in a browser
+on their phone or computer.
+
+## Tech
+- Single HTML file (no server needed for the form itself)
+- Google Apps Script backend for email delivery
+
+## Status
+Starting from scratch.
+
+## Constraints
+- Must work on mobile
+- Must save progress if they close the tab (localStorage)
+- Must look professional, not like a government form</div>
+
+    <div class="substep" data-step="8-1">
+      <input type="checkbox" id="s8-1">
+      <label for="s8-1">I understand what PROJECT.md is for. I'll create one in each exercise.</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 9: MEMORY.MD ==================== -->
+<div class="section" id="section9">
+  <div class="section-header">
+    <div class="step-number">9</div>
+    <div class="section-title">Your MEMORY.md &mdash; The Running Context Log</div>
+  </div>
+  <div class="step-body">
+    <p>Remember how Claude doesn't remember between sessions? CLAUDE.md tells it who you are. PROJECT.md tells it what you're building. But what about everything that happened DURING your work sessions?</p>
+
+    <p>"We tried approach A and it didn't work because of X. We switched to approach B. The form is done but the email backend still needs the authorization step." &mdash; Claude needs to know all of this when you pick up where you left off.</p>
+
+    <div class="explain-box">
+      <strong>MEMORY.md is your session journal.</strong> At the end of every work session, you tell Claude: "Update MEMORY.md with what we did today." Claude writes a dated entry summarizing the decisions, progress, and next steps. When you start a new session tomorrow, Claude reads the MEMORY.md and picks up right where you left off.
+    </div>
+
+    <p><strong>Without MEMORY.md:</strong> "Hey Claude, I was working on a form yesterday and..." (then you spend 20 minutes re-explaining everything)</p>
+    <p><strong>With MEMORY.md:</strong> Claude reads the log, says "I see we finished the form layout yesterday and the next step is wiring up the email backend. Ready to continue?"</p>
+
+    <p>Here's what an entry looks like:</p>
+
+    <div class="code-block">
+      <span class="code-label">Example MEMORY.md</span>
+# Memory Log
+
+## 2026-04-15
+- Created the project folder and CLAUDE.md
+- Built the Eisenhower Matrix (eisenhower.html)
+- Added drag-and-drop between quadrants
+- Customized colors to match company branding
+- NEXT: Add localStorage so tasks persist between sessions
+
+## 2026-04-14
+- Set up Claude Code for the first time
+- Created workspace at C:\dev
+- Practiced basic commands (/clear, exit, etc.)</div>
+
+    <p><strong>How to maintain it:</strong> At the end of every session, before you type <code>exit</code>, say this to Claude:</p>
+
+    <div class="cmd-block">
+      <span class="cmd-text">Update MEMORY.md with what we did today. Include decisions, what works, what doesn't, and what's next.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <p>That's it. Claude writes the entry. Next session, Claude reads it. No context lost.</p>
+
+    <div class="substep" data-step="9-1">
+      <input type="checkbox" id="s9-1">
+      <label for="s9-1">I understand the three files: CLAUDE.md (who I am), PROJECT.md (what I'm building), MEMORY.md (what's happened so far)</label>
+    </div>
+
+    <div class="success-note"><strong>The Three Files</strong><br>Every project you build will have these three files. They are the difference between Claude being a stranger every time and Claude being a partner who knows you, knows the project, and knows the history. This is the methodology. Everything else is just typing.</div>
+  </div>
+</div>
+
+<!-- ==================== DONE / NEXT ==================== -->
+<div id="allDone" style="display:none; text-align:center; padding: 30px; background: #e8f5e9; border-radius: 12px; margin-top: 20px;">
+  <h2 style="color: #27ae60; margin-bottom: 8px;">Setup Complete!</h2>
+  <p style="color: #555;">You have Claude Code installed, authenticated, and a workspace ready to go. You understand the three-file methodology. Time to build something.</p>
+</div>
+
+<div class="next-page">
+  <h3>Next Up: Exercise 1</h3>
+  <p>You're going to tell Claude to build you a personal Eisenhower Matrix &mdash; a four-quadrant task board with drag-and-drop. It'll take about 20 minutes and you'll have a real, working tool when you're done.</p>
+  <a href="exercise-eisenhower.html">Start Exercise 1 &rarr;</a>
+</div>
+
+<div style="text-align:center;">
+  <button class="reset-btn" onclick="resetAll()">Reset all checkboxes</button>
+</div>
+
+</div><!-- end .content -->
+
+<script>
+  const STORAGE_KEY = 'tutorial_setup_state';
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const totalSteps = checkboxes.length;
+
+  function loadState() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const checked = JSON.parse(saved);
+      checkboxes.forEach(cb => {
+        if (checked.includes(cb.id)) {
+          cb.checked = true;
+          cb.closest('.substep').classList.add('checked');
+        }
+      });
+    }
+    updateProgress();
+  }
+
+  function saveState() {
+    const checked = [];
+    checkboxes.forEach(cb => { if (cb.checked) checked.push(cb.id); });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+  }
+
+  function updateProgress() {
+    let done = 0;
+    checkboxes.forEach(cb => { if (cb.checked) done++; });
+    const pct = Math.round((done / totalSteps) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = done + ' / ' + totalSteps + ' steps (' + pct + '%)';
+
+    document.querySelectorAll('.section').forEach(section => {
+      const subs = section.querySelectorAll('input[type="checkbox"]');
+      let allDone = true;
+      subs.forEach(cb => { if (!cb.checked) allDone = false; });
+      if (allDone && subs.length > 0) {
+        section.classList.add('done');
+      } else {
+        section.classList.remove('done');
+      }
+    });
+
+    document.getElementById('allDone').style.display = (done === totalSteps) ? 'block' : 'none';
+  }
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', function() {
+      this.closest('.substep').classList.toggle('checked', this.checked);
+      saveState();
+      updateProgress();
+    });
+  });
+
+  function copyCmd(btn) {
+    const text = btn.parentElement.querySelector('.cmd-text').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function copyCode(btn) {
+    const block = btn.closest('.code-block');
+    const label = block.querySelector('.code-label');
+    let text = block.textContent;
+    // Remove the label text and button text from the copy
+    if (label) text = text.replace(label.textContent, '');
+    text = text.replace('Copy', '').replace('Copied!', '').trim();
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function resetAll() {
+    if (confirm('Reset all checkboxes? This cannot be undone.')) {
+      checkboxes.forEach(cb => {
+        cb.checked = false;
+        cb.closest('.substep').classList.remove('checked');
+      });
+      localStorage.removeItem(STORAGE_KEY);
+      updateProgress();
+    }
+  }
+
+  loadState();
+</script>
+
+</body>
+</html>
