@@ -376,7 +376,7 @@
       <li>A Windows computer (you're on one &mdash; good)</li>
       <li>Internet access</li>
       <li>A Gmail account (if you don't have one, make one now &mdash; if you can't make a Gmail account, the rest of this tutorial is going to be a bad time)</li>
-      <li>A credit card for the Anthropic account (usage-based billing, learning costs a few dollars total)</li>
+      <li>A credit card for a Claude subscription (flat monthly fee &mdash; no surprises)</li>
     </ul>
 
     <div class="substep" data-step="1-1">
@@ -390,54 +390,42 @@
 <div class="section" id="section2">
   <div class="section-header">
     <div class="step-number">2</div>
-    <div class="section-title">Create an Anthropic Account &amp; Get Your API Key</div>
+    <div class="section-title">Sign Up for a Claude Subscription</div>
   </div>
   <div class="step-body">
-    <p>Anthropic is the company that makes Claude. You need an account with them so Claude Code knows who you are and can bill for usage. Think of the API key as your personal password that lets your computer talk to Claude's brain.</p>
+    <p>Anthropic is the company that makes Claude. You need a Claude account with a subscription plan so Claude Code knows who you are. This is a flat monthly fee &mdash; no metering, no token tracking, no surprises on your credit card.</p>
 
     <div class="substep" data-step="2-1">
       <input type="checkbox" id="s2-1">
-      <label for="s2-1">Go to the Anthropic Console (click the button below)</label>
+      <label for="s2-1">Go to Claude's website (click the button below)</label>
     </div>
-    <a class="download-btn" href="https://console.anthropic.com/" target="_blank">Open Anthropic Console</a>
+    <a class="download-btn" href="https://claude.ai/" target="_blank">Open Claude.ai</a>
 
     <div class="substep" data-step="2-2">
       <input type="checkbox" id="s2-2">
-      <label for="s2-2">Click <strong>"Sign Up"</strong> and create an account with your email</label>
+      <label for="s2-2">Click <strong>"Sign Up"</strong> and create an account with your email (or Google login)</label>
     </div>
 
     <div class="substep" data-step="2-3">
       <input type="checkbox" id="s2-3">
-      <label for="s2-3">Check your email and verify your account</label>
+      <label for="s2-3">Once you're logged in, upgrade to a paid plan &mdash; click your name or the plan badge and choose <strong>"Upgrade"</strong></label>
+    </div>
+
+    <div class="note">
+      <strong>Which plan?</strong> You need at least <strong>Claude Pro</strong> ($20/month) to use Claude Code. There's also <strong>Claude Max</strong> ($100/month or $200/month) for heavier usage. Start with Pro &mdash; you can upgrade later if you hit limits. This is a flat monthly fee, like Netflix. Use it as much or as little as you want.
     </div>
 
     <div class="substep" data-step="2-4">
       <input type="checkbox" id="s2-4">
-      <label for="s2-4">Go to <strong>Settings &rarr; Billing</strong> and add a payment method</label>
-    </div>
-
-    <div class="note">
-      <strong>How much does this cost?</strong> Claude Code charges per use &mdash; you pay for what you use, no monthly minimum. Working through this entire tutorial series will probably cost $5&ndash;15 total. A typical day of building costs $1&ndash;5. It's not a subscription &mdash; if you don't use it, you don't pay.
+      <label for="s2-4">Added a payment method and subscribed to a plan</label>
     </div>
 
     <div class="substep" data-step="2-5">
       <input type="checkbox" id="s2-5">
-      <label for="s2-5">Go to <strong>Settings &rarr; API Keys</strong></label>
+      <label for="s2-5">I can see my subscription is active on the account page</label>
     </div>
 
-    <div class="substep" data-step="2-6">
-      <input type="checkbox" id="s2-6">
-      <label for="s2-6">Click <strong>"Create Key"</strong> &mdash; give it a name like "My Laptop"</label>
-    </div>
-
-    <div class="substep" data-step="2-7">
-      <input type="checkbox" id="s2-7">
-      <label for="s2-7">Copy the key and paste it somewhere safe (a text file, a note &mdash; you'll need it in a few minutes)</label>
-    </div>
-
-    <div class="warning-note">
-      <strong>Your API key is like a credit card number.</strong> Don't share it, don't post it anywhere, don't email it. If someone gets it, they can run up charges on your account. You'll only need to enter it once &mdash; Claude Code remembers it after that.
-    </div>
+    <div class="success-note">That's it for the account. No API keys to manage, no usage dashboards to watch. You pay the monthly fee, Claude Code works. When you launch Claude Code for the first time, it'll open a browser window to log you in &mdash; same email and password you just created.</div>
   </div>
 </div>
 
@@ -593,11 +581,11 @@
       <label for="s6-3">Typed <code>claude</code> and hit Enter</label>
     </div>
 
-    <p>The first time you run Claude Code, it will ask you to authenticate. It'll open a browser window or ask you to paste your API key.</p>
+    <p>The first time you run Claude Code, it will open a browser window and ask you to log in to your Claude account &mdash; the same one you just created. Log in, authorize Claude Code, and the browser will confirm you're connected. Switch back to the terminal.</p>
 
     <div class="substep" data-step="6-4">
       <input type="checkbox" id="s6-4">
-      <label for="s6-4">Followed the prompts &mdash; pasted my API key when asked (the one you saved earlier)</label>
+      <label for="s6-4">Followed the prompts &mdash; logged in through the browser and authorized Claude Code</label>
     </div>
 
     <p>You should now see Claude's prompt &mdash; a cursor waiting for you to type. Try saying hello:</p>
