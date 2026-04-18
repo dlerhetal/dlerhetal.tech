@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harness &amp; Memory &mdash; Claude Code Tutorial</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    background: #f4f6f9;
+    color: #222;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* ---- NAV BAR ---- */
+  .tutorial-nav {
+    background: #1A3C6E;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .nav-title {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 8px 20px 0;
+    opacity: 0.7;
+  }
+  .nav-links { display: flex; flex-wrap: wrap; padding: 0 12px 0; }
+  .nav-links a {
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 12px 12px;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a.active { color: #fff; border-bottom-color: #FFCD00; }
+
+  /* ---- MAIN CONTENT ---- */
+  .content {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  .prev-link {
+    display: inline-block;
+    color: #4472C4;
+    text-decoration: none;
+    font-size: 13px;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .prev-link:hover { text-decoration: underline; }
+
+  h1 { color: #1A3C6E; font-size: 26px; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
+
+  /* ---- PROGRESS BAR ---- */
+  .progress-bar-container {
+    background: #ddd;
+    border-radius: 12px;
+    height: 24px;
+    margin-bottom: 28px;
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-bar-fill {
+    background: linear-gradient(90deg, #4472C4, #1A3C6E);
+    height: 100%;
+    width: 0%;
+    border-radius: 12px;
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  /* ---- SECTIONS ---- */
+  .section {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    border-left: 4px solid #4472C4;
+  }
+  .section.done { border-left-color: #27ae60; opacity: 0.7; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .step-number {
+    background: #1A3C6E;
+    color: #fff;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .section.done .step-number { background: #27ae60; }
+  .section-title { font-size: 18px; font-weight: 600; color: #1A3C6E; }
+  .section.done .section-title { text-decoration: line-through; color: #888; }
+
+  .step-body { margin-left: 44px; }
+  .step-body p { margin-bottom: 10px; line-height: 1.6; }
+  .step-body ul, .step-body ol { margin: 0 0 12px 20px; line-height: 1.6; }
+  .step-body li { margin-bottom: 4px; }
+
+  .substep {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .substep:last-child { border-bottom: none; }
+  .substep input[type="checkbox"] {
+    width: 20px; height: 20px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: #1A3C6E;
+    flex-shrink: 0;
+  }
+  .substep label { cursor: pointer; line-height: 1.5; }
+  .substep.checked label { text-decoration: line-through; color: #999; }
+
+  /* ---- CODE BLOCKS ---- */
+  .cmd-block {
+    display: flex;
+    align-items: center;
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0 12px 0;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace;
+    font-size: 13px;
+    gap: 10px;
+  }
+  .cmd-text { flex: 1; word-break: break-all; user-select: all; }
+  .copy-btn {
+    background: #4472C4;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .copy-btn:hover { background: #1A3C6E; }
+  .copy-btn.copied { background: #27ae60; }
+
+  .code-block {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 8px 0 14px 0;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-x: auto;
+    position: relative;
+  }
+  .code-block .copy-btn { position: absolute; top: 8px; right: 8px; }
+  .code-block .code-label {
+    display: block;
+    color: #89b4fa;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #313244;
+    padding-bottom: 6px;
+  }
+
+  /* ---- NOTE BOXES ---- */
+  .note {
+    background: #fff8e1;
+    border-left: 4px solid #FFCD00;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .note strong { color: #b8860b; }
+
+  .success-note {
+    background: #e8f5e9;
+    border-left: 4px solid #27ae60;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .warning-note {
+    background: #fbe9e7;
+    border-left: 4px solid #e74c3c;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .explain-box {
+    background: #e8eef7;
+    border: 1px solid #c5d4e8;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 12px 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .explain-box strong { color: #1A3C6E; }
+
+  /* ---- NEXT PAGE FOOTER ---- */
+  .next-page {
+    background: linear-gradient(135deg, #1A3C6E, #4472C4);
+    color: #fff;
+    border-radius: 10px;
+    padding: 28px;
+    margin-top: 28px;
+    text-align: center;
+  }
+  .next-page h3 { margin-bottom: 8px; font-size: 20px; }
+  .next-page p { opacity: 0.85; margin-bottom: 0; font-size: 14px; line-height: 1.6; }
+  .next-page code { background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px; }
+
+  .reset-btn {
+    background: none;
+    border: 1px solid #ccc;
+    color: #888;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  .reset-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+</style>
+</head>
+<body>
+
+<nav class="tutorial-nav">
+  <div class="nav-title">Claude Code Tutorial Series</div>
+  <div class="nav-links">
+    <a href="index.html">1. Setup &amp; Foundation</a>
+    <a href="exercise-eisenhower.html">2. Eisenhower Matrix</a>
+    <a href="exercise-homework.html">3. Email Form</a>
+    <a href="exercise-middleware.html">4. QBO Middleware</a>
+    <a href="harness-and-memory.html" class="active">5. Harness &amp; Memory</a>
+  </div>
+</nav>
+
+<div class="content">
+
+<a class="prev-link" href="exercise-middleware.html">&larr; Back to the QBO Middleware exercise</a>
+
+<h1>Harness &amp; Memory</h1>
+<p class="subtitle">You've built three things. You've also felt the friction &mdash; re-explaining context, full-window warnings, forgetting what worked last week. This page is the fix. You'll learn the layer around Claude (the harness) and the system that lets Claude remember you between sessions (auto-memory), plus the small set of habits that separate someone fighting the tool from someone cooperating with it.</p>
+
+<div class="progress-bar-container">
+  <div class="progress-bar-fill" id="progressFill"></div>
+  <div class="progress-label" id="progressLabel">0 / 0 steps</div>
+</div>
+
+<!-- ==================== SECTION 1: WHY YOU'RE HERE ==================== -->
+<div class="section" id="section1">
+  <div class="section-header">
+    <div class="step-number">1</div>
+    <div class="section-title">Why You're Here</div>
+  </div>
+  <div class="step-body">
+    <p>If you worked through the three exercises, you hit some version of these:</p>
+    <ul>
+      <li>Claude asking permission for the same command every single time</li>
+      <li>"Context window almost full" warning in the middle of a good session</li>
+      <li>Re-explaining the project, the stack, or your preferences for the fourth time</li>
+      <li>Digging through old terminal scrollback to remember what approach you tried last Tuesday</li>
+      <li>Claude reading 30 files to answer one question, and now the conversation is sluggish</li>
+    </ul>
+
+    <p>Page 1 taught you the three-file methodology &mdash; CLAUDE.md, PROJECT.md, MEMORY.md. That was the beginner version. It works, but you maintain it by hand. This page is the next level: let Claude maintain memory for you, configure the harness so it stops asking permission for safe things, and use subagents to keep your main conversation lean.</p>
+
+    <div class="explain-box">
+      <strong>Model vs. harness.</strong> Claude is the model &mdash; the thing that generates text. The harness is everything around it: your terminal window, the permission system, the tools it can call, hooks that fire on events, settings files, memory. When people say "Claude won't do X," nine times out of ten they mean "my harness isn't set up to let Claude do X." Once you understand the difference, you stop fighting the model and start configuring the harness.
+    </div>
+
+    <div class="substep" data-step="1-1">
+      <input type="checkbox" id="s1-1">
+      <label for="s1-1">I recognize at least two of those frictions. Let's fix them.</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 2: AUTO-MEMORY ==================== -->
+<div class="section" id="section2">
+  <div class="section-header">
+    <div class="step-number">2</div>
+    <div class="section-title">Auto-Memory &mdash; Claude Remembers You</div>
+  </div>
+  <div class="step-body">
+    <p>Claude Code has a built-in memory system that persists across every conversation in a project. It's separate from the MEMORY.md you maintain by hand. You don't write it. You tell Claude things, and Claude writes them for you.</p>
+
+    <div class="explain-box">
+      <strong>Where it lives:</strong> <code>C:\Users\[you]\.claude\projects\[encoded-project-path]\memory\</code><br><br>
+      Inside that folder is a <code>MEMORY.md</code> index and a bunch of individual <code>.md</code> files, one per memory. Claude reads this folder at the start of every conversation in that project. You can open the files and edit them yourself &mdash; they're just text.
+    </div>
+
+    <p><strong>Four types of memory</strong> (Claude decides which type based on what you're saving):</p>
+    <ul>
+      <li><strong>user</strong> &mdash; who you are, your role, what you know, how you like to communicate</li>
+      <li><strong>feedback</strong> &mdash; corrections and preferences ("don't do X," "keep doing Y")</li>
+      <li><strong>project</strong> &mdash; ongoing goals, deadlines, decisions specific to this project</li>
+      <li><strong>reference</strong> &mdash; pointers to external stuff ("bugs are tracked in Linear project ACME")</li>
+    </ul>
+
+    <p><strong>How to save a memory:</strong> just tell Claude.</p>
+    <div class="cmd-block">
+      <span class="cmd-text">Remember that I prefer TypeScript over JavaScript for new files.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="cmd-block">
+      <span class="cmd-text">Remember that our production database is Postgres 15, not MySQL.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <p><strong>How to forget:</strong></p>
+    <div class="cmd-block">
+      <span class="cmd-text">Forget the thing about TypeScript. I'm back on plain JS for this project.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <p><strong>How to see what Claude remembers:</strong></p>
+    <div class="cmd-block">
+      <span class="cmd-text">What do you remember about me and this project?</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="note">
+      <strong>Manual MEMORY.md vs. auto-memory.</strong> You now have two memory systems and that's fine. The manual <code>MEMORY.md</code> in your project folder is a session log &mdash; a running journal of what you did and what's next. Auto-memory is for durable facts that outlive any single session. Use the session log for "we finished the email backend today, next up is OAuth." Use auto-memory for "my clients are Spanish-speaking HVAC shops."
+    </div>
+
+    <div class="substep" data-step="2-1">
+      <input type="checkbox" id="s2-1">
+      <label for="s2-1">Told Claude to remember something about me. Confirmed with "what do you remember about me?"</label>
+    </div>
+
+    <div class="substep" data-step="2-2">
+      <input type="checkbox" id="s2-2">
+      <label for="s2-2">Opened the memory folder in File Explorer and saw the files Claude wrote. They're just text.</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 3: THE HARNESS ==================== -->
+<div class="section" id="section3">
+  <div class="section-header">
+    <div class="step-number">3</div>
+    <div class="section-title">The Harness &mdash; settings.json, Permissions, Hooks</div>
+  </div>
+  <div class="step-body">
+    <p>Claude Code reads a settings file on startup. Two locations:</p>
+    <ul>
+      <li><strong>Global</strong> (applies everywhere): <code>C:\Users\[you]\.claude\settings.json</code></li>
+      <li><strong>Project</strong> (just this folder): <code>[project]\.claude\settings.json</code></li>
+    </ul>
+
+    <p>Project settings override global settings. Start global and only drop project-specific overrides when you have a real reason.</p>
+
+    <p><strong>Permissions &mdash; stop getting asked the same question every time.</strong></p>
+
+    <p>By default, Claude asks before running most shell commands. That's good. But after the tenth "yes, run <code>npm install</code>" prompt, you want to allowlist the safe ones. Example global <code>settings.json</code>:</p>
+
+    <div class="code-block">
+      <span class="code-label">~/.claude/settings.json</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm run *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Read",
+      "Grep",
+      "Glob"
+    ]
+  }
+}</div>
+
+    <p>Now Claude runs those without asking. Still asks for anything destructive &mdash; <code>rm</code>, <code>git push</code>, <code>git reset --hard</code>, editing files outside your project. That's the point.</p>
+
+    <div class="warning-note">
+      <strong>Don't allowlist things that can't be undone.</strong> Never add <code>rm</code>, <code>git push --force</code>, <code>git reset --hard</code>, database drops, or anything that writes outside your project directory. Those prompts exist for a reason. The two seconds you save aren't worth the bad Tuesday when Claude misreads a file and nukes something you needed.
+    </div>
+
+    <p><strong>Hooks &mdash; run scripts on events.</strong></p>
+
+    <p>Hooks are shell commands the harness runs when certain things happen: before a tool call, after Claude stops, when you submit a prompt. Common uses:</p>
+    <ul>
+      <li>Play a sound when Claude finishes a long task (so you can tab away)</li>
+      <li>Run your linter after every file edit</li>
+      <li>Log every bash command to a file for audit</li>
+      <li>Block edits to files you've marked as protected</li>
+    </ul>
+
+    <p>Hooks are a rabbit hole. You don't need them on day one. File the concept away and come back when you notice yourself repeating the same post-Claude action manually every session &mdash; that's when a hook pays for itself.</p>
+
+    <div class="substep" data-step="3-1">
+      <input type="checkbox" id="s3-1">
+      <label for="s3-1">I know where <code>settings.json</code> lives. I allowlisted a few safe commands I use constantly.</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 4: SLASH COMMANDS & SKILLS ==================== -->
+<div class="section" id="section4">
+  <div class="section-header">
+    <div class="step-number">4</div>
+    <div class="section-title">Slash Commands &amp; Skills</div>
+  </div>
+  <div class="step-body">
+    <p>Slash commands are shortcuts you type inside a Claude conversation. They start with <code>/</code>. The essential ones:</p>
+
+    <ul>
+      <li><code>/clear</code> &mdash; restart the conversation, drop all context. Use this OFTEN.</li>
+      <li><code>/compact</code> &mdash; summarize the conversation so far and drop the raw history. Useful when you want to keep going but the window is tight.</li>
+      <li><code>/init</code> &mdash; scaffold a <code>CLAUDE.md</code> for a project that doesn't have one yet.</li>
+      <li><code>/review</code> &mdash; have Claude review the pending changes on your current branch.</li>
+      <li><code>/help</code> &mdash; list everything available.</li>
+    </ul>
+
+    <p><strong>Skills</strong> are slash commands that come with their own instructions. They're like little pre-built recipes. <code>/review</code> is a skill. <code>/init</code> is a skill. You can install more, and you can write your own.</p>
+
+    <div class="explain-box">
+      <strong>When to write a custom skill.</strong> If you find yourself giving Claude the same multi-paragraph instructions at the start of every session ("review this code for X, Y, Z using these conventions"), turn it into a skill. Next time, you just type <code>/my-review</code> and Claude already knows what to do. Custom skills are folders of instructions under <code>~/.claude/skills/</code> &mdash; ask Claude to build one for you when you need it.
+    </div>
+
+    <p><strong>The /clear habit.</strong> This is the single most important habit in this tutorial. Claude's context window is finite. Every file read, every tool call, every long response eats space. When the window fills, things slow down and eventually crash. <code>/clear</code> resets it in one second.</p>
+
+    <p>Use it:</p>
+    <ul>
+      <li>After a big file read or multi-file search</li>
+      <li>When you switch tasks ("OK, new topic...")</li>
+      <li>After 45+ minutes of heavy work</li>
+      <li>Any time things feel sluggish</li>
+    </ul>
+
+    <p>The cost of <code>/clear</code> is ten seconds of re-reading your CLAUDE.md and auto-memory. The cost of a crash is the whole session.</p>
+
+    <div class="substep" data-step="4-1">
+      <input type="checkbox" id="s4-1">
+      <label for="s4-1">I typed <code>/help</code> and saw the list. I know <code>/clear</code> is the important one.</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 5: SUBAGENTS ==================== -->
+<div class="section" id="section5">
+  <div class="section-header">
+    <div class="step-number">5</div>
+    <div class="section-title">Subagents &mdash; Delegate the Heavy Reading</div>
+  </div>
+  <div class="step-body">
+    <p>Sometimes the right next step is "read 30 files and tell me where we call the QBO API." If Claude does that in your main conversation, those 30 file contents are now in your context window. Two more tasks like that and you're full.</p>
+
+    <p>A <strong>subagent</strong> is a fresh, separate Claude instance with its own context. Your main Claude delegates the task, the subagent does the heavy reading, and comes back with a short summary. The raw file contents never touch your main conversation.</p>
+
+    <div class="explain-box">
+      <strong>Analogy:</strong> Your main Claude is the project manager. Subagents are interns you send to the library. They come back with one-paragraph answers, not stacks of photocopies.
+    </div>
+
+    <p><strong>How to trigger one:</strong> just ask.</p>
+
+    <div class="cmd-block">
+      <span class="cmd-text">Use a subagent to find every place we talk to the QBO API and summarize the pattern.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="cmd-block">
+      <span class="cmd-text">Delegate to an Explore agent: what does our auth flow look like end to end?</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <p><strong>When to use a subagent:</strong></p>
+    <ul>
+      <li>Any task that requires reading more than a handful of files</li>
+      <li>Researching how something works across the codebase</li>
+      <li>"Find all the places where..."</li>
+      <li>Running several independent searches in parallel</li>
+    </ul>
+
+    <p><strong>When NOT to use one:</strong></p>
+    <ul>
+      <li>Tasks that need the context you've built up in the current conversation</li>
+      <li>Single-file edits</li>
+      <li>Anything interactive that needs back-and-forth</li>
+    </ul>
+
+    <div class="substep" data-step="5-1">
+      <input type="checkbox" id="s5-1">
+      <label for="s5-1">I know when to say "use a subagent" instead of doing it in the main thread.</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 6: MCP (BRIEF) ==================== -->
+<div class="section" id="section6">
+  <div class="section-header">
+    <div class="step-number">6</div>
+    <div class="section-title">MCP Servers &mdash; One Paragraph</div>
+  </div>
+  <div class="step-body">
+    <p>MCP stands for Model Context Protocol. It's how Claude Code talks to outside services &mdash; Gmail, Google Calendar, Drive, Slack, databases, custom APIs. You add an MCP server to your settings, authorize it once, and now Claude can "read my inbox" or "create a calendar event" directly.</p>
+
+    <div class="explain-box">
+      <strong>Why you care:</strong> every time you've copy-pasted something from Claude into Gmail, or asked Claude to draft an email you then sent manually, an MCP server would have done it for you. Same for pulling client data out of a Google Sheet, scheduling a meeting, or dropping a file into shared Drive.
+    </div>
+
+    <p>This is a full tutorial on its own. For now, just know:</p>
+    <ul>
+      <li>MCP servers live in <code>settings.json</code> under an <code>mcpServers</code> block</li>
+      <li>Anthropic publishes servers for Gmail, Calendar, and Drive</li>
+      <li>Third parties publish servers for Slack, Notion, Linear, Postgres, and more</li>
+      <li>You can write your own &mdash; that's how Dale's custom middleware tools get hooked into Claude</li>
+    </ul>
+
+    <p>When you're ready, ask Claude to walk you through adding one. The Gmail server is a good first one &mdash; immediate payoff, low risk.</p>
+
+    <div class="substep" data-step="6-1">
+      <input type="checkbox" id="s6-1">
+      <label for="s6-1">I know what MCP is and roughly when I'd want one. Parked for later.</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 7: A WORKING RHYTHM ==================== -->
+<div class="section" id="section7">
+  <div class="section-header">
+    <div class="step-number">7</div>
+    <div class="section-title">A Working Rhythm</div>
+  </div>
+  <div class="step-body">
+    <p>The habits that separate a smooth Claude Code session from a frustrating one. None of these are complicated. They're just the things you forget until they bite you.</p>
+
+    <div class="explain-box">
+      <strong>The rhythm:</strong>
+      <ol style="margin-top: 10px;">
+        <li>Start in the right folder. <code>cd</code> into your project, then <code>claude</code>. Claude reads the right CLAUDE.md and the right auto-memory.</li>
+        <li>If this is a new project, <code>/init</code>.</li>
+        <li>Say what you're doing in one sentence. Claude plans, you approve.</li>
+        <li>Delegate reads of more than a few files to a subagent.</li>
+        <li><code>/clear</code> between tasks. Not between messages &mdash; between tasks.</li>
+        <li>When you catch yourself repeating a preference, say "remember that..." and move on.</li>
+        <li>At the end of the session, ask Claude to update the project's MEMORY.md with what happened.</li>
+      </ol>
+    </div>
+
+    <p><strong>Signs you're losing the plot:</strong></p>
+    <ul>
+      <li>Responses are getting slow &mdash; <code>/clear</code></li>
+      <li>Claude keeps forgetting something you told it this session &mdash; say "remember that" to save it to auto-memory</li>
+      <li>You're scrolling scrollback to find something &mdash; that's a MEMORY.md update you should have done last session</li>
+      <li>Same permission prompt for the fifth time &mdash; allowlist it in <code>settings.json</code></li>
+      <li>You gave a five-paragraph instruction and Claude only followed the last paragraph &mdash; break it into smaller steps</li>
+    </ul>
+
+    <p><strong>Pruning.</strong> Memory gets stale. Every month or two, skim your auto-memory folder and delete anything that's no longer true. Same for MEMORY.md in your projects &mdash; if an entry from four months ago isn't serving you, delete it. Memory is supposed to reduce load, not become its own maintenance burden.</p>
+
+    <div class="substep" data-step="7-1">
+      <input type="checkbox" id="s7-1">
+      <label for="s7-1">I have a mental model for when to <code>/clear</code>, when to delegate, and when to save memory.</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DONE ==================== -->
+<div id="allDone" style="display:none; text-align:center; padding: 30px; background: #e8f5e9; border-radius: 12px; margin-top: 20px;">
+  <h2 style="color: #27ae60; margin-bottom: 8px;">That's the Whole Series.</h2>
+  <p style="color: #555; line-height: 1.6;">Setup, three builds, and the meta-layer. You know the tool, you've used it on real work, and you know how to shape it around how you actually work. Nothing left to learn from a tutorial &mdash; only from building the next thing.</p>
+</div>
+
+<div class="next-page">
+  <h3>You're done with the series.</h3>
+  <p>Open a terminal, <code>cd</code> into whichever project is on your mind, type <code>claude</code>, and build the thing.</p>
+</div>
+
+<div style="text-align:center;">
+  <button class="reset-btn" onclick="resetAll()">Reset all checkboxes</button>
+  <br><br>
+  <a href="index.html" style="color: #4472C4; font-size: 13px;">Back to the beginning</a>
+</div>
+
+</div><!-- end .content -->
+
+<script>
+  const STORAGE_KEY = 'tutorial_harness_state';
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const totalSteps = checkboxes.length;
+
+  function loadState() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const checked = JSON.parse(saved);
+      checkboxes.forEach(cb => {
+        if (checked.includes(cb.id)) {
+          cb.checked = true;
+          cb.closest('.substep').classList.add('checked');
+        }
+      });
+    }
+    updateProgress();
+  }
+
+  function saveState() {
+    const checked = [];
+    checkboxes.forEach(cb => { if (cb.checked) checked.push(cb.id); });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+  }
+
+  function updateProgress() {
+    let done = 0;
+    checkboxes.forEach(cb => { if (cb.checked) done++; });
+    const pct = Math.round((done / totalSteps) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = done + ' / ' + totalSteps + ' steps (' + pct + '%)';
+
+    document.querySelectorAll('.section').forEach(section => {
+      const subs = section.querySelectorAll('input[type="checkbox"]');
+      let allDone = true;
+      subs.forEach(cb => { if (!cb.checked) allDone = false; });
+      if (allDone && subs.length > 0) {
+        section.classList.add('done');
+      } else {
+        section.classList.remove('done');
+      }
+    });
+
+    document.getElementById('allDone').style.display = (done === totalSteps) ? 'block' : 'none';
+  }
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', function() {
+      this.closest('.substep').classList.toggle('checked', this.checked);
+      saveState();
+      updateProgress();
+    });
+  });
+
+  function copyCmd(btn) {
+    const text = btn.parentElement.querySelector('.cmd-text').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function copyCode(btn) {
+    const block = btn.closest('.code-block');
+    const label = block.querySelector('.code-label');
+    let text = block.textContent;
+    if (label) text = text.replace(label.textContent, '');
+    text = text.replace('Copy', '').replace('Copied!', '').trim();
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function resetAll() {
+    if (confirm('Reset all checkboxes? This cannot be undone.')) {
+      checkboxes.forEach(cb => {
+        cb.checked = false;
+        cb.closest('.substep').classList.remove('checked');
+      });
+      localStorage.removeItem(STORAGE_KEY);
+      updateProgress();
+    }
+  }
+
+  loadState();
+</script>
+
+</body>
+</html>
