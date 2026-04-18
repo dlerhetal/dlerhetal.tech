@@ -1,11 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dlerhetal.tech</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dlerhetal.tech — tools and field notes for small trade shops</title>
+<meta name="description" content="Tools I'm building for small trade shops, and field notes on what breaks along the way.">
+<style>
+  :root {
+    --base: #E6E9EE;
+    --surface: #F2F4F7;
+    --navy: #1A3C6E;
+    --navy-dark: #0F2748;
+    --lava: #CF2A27;
+    --lava-dark: #A11F1C;
+    --olive: #556B2F;
+    --text: #14213D;
+    --muted: #5B6777;
+    --border: rgba(26, 60, 110, 0.22);
+    --radius: 6px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--base);
+    color: var(--text);
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--lava); text-decoration: none; }
+  a:hover { color: var(--lava-dark); text-decoration: underline; }
+
+  /* -------- NAV -------- */
+  nav.topbar {
+    background: var(--navy);
+    color: white;
+    border-bottom: 3px solid var(--olive);
+  }
+  .topbar-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .topbar .brand {
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: 0.01em;
+    color: white;
+  }
+  .topbar .brand:hover { color: white; text-decoration: none; }
+  .topbar .brand .dot { color: var(--lava); }
+  .topbar ul {
+    list-style: none;
+    display: flex;
+    gap: 22px;
+    margin: 0;
+    padding: 0;
+  }
+  .topbar ul a {
+    color: rgba(255,255,255,0.82);
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .topbar ul a:hover { color: white; text-decoration: none; }
+  .topbar ul a.active { color: white; border-bottom: 2px solid var(--lava); padding-bottom: 2px; }
+
+  /* -------- MAIN -------- */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* -------- TOOLS GRID -------- */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin: 0 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    margin-bottom: 48px;
+  }
+
+  .tool-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--navy);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .tool-card.live { border-left-color: var(--lava); }
+  .tool-card:hover { border-left-color: var(--lava); transform: translateY(-1px); }
+
+  .tool-card h2 {
+    margin: 0 0 6px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .tool-card .status {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    background: rgba(85, 107, 47, 0.12);
+    color: var(--olive);
+  }
+  .tool-card.live .status {
+    background: rgba(207, 42, 39, 0.1);
+    color: var(--lava-dark);
+  }
+
+  .tool-card p {
+    margin: 0 0 14px 0;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.55;
+    flex: 1;
+  }
+
+  .tool-card .card-cta {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .tool-card.live .card-cta { color: var(--lava); }
+  .tool-card.live .card-cta:hover { color: var(--lava-dark); }
+  .tool-card .card-cta::after { content: " \2192"; }
+
+  /* -------- FOOTER -------- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 0 0 0;
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  footer a { color: var(--navy); font-weight: 600; }
+  footer a:hover { color: var(--lava); text-decoration: none; }
+
+  /* -------- RESPONSIVE -------- */
+  @media (max-width: 560px) {
+    .topbar-inner { padding: 12px 18px; }
+    .topbar ul { gap: 14px; }
+    main { padding: 28px 18px 60px; }
+  }
+</style>
 </head>
 <body>
-    <p>Nothing to see here.</p>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="brand">dlerhetal<span class="dot">.</span>tech</a>
+    <ul>
+      <li><a href="/" class="active">Tools</a></li>
+      <li><a href="/tutorials/">Tutorials</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+  <section id="tools">
+    <p class="section-label">Tools</p>
+    <div class="tools-grid">
+
+      <article class="tool-card">
+        <h2>Cash Flow Forecast</h2>
+        <span class="status">Coming soon</span>
+        <p>A 13-week rolling cash forecast for owner-operators. CSV in, scenarios out. Clean-room rebuild &mdash; simplified, free, no proprietary templates.</p>
+        <span class="card-cta">In development</span>
+      </article>
+
+      <article class="tool-card live">
+        <h2>Claude Code Tutorials</h2>
+        <span class="status">Live</span>
+        <p>A four-part tutorial series: from installing Claude Code through building a QuickBooks Online middleware app.</p>
+        <a href="/tutorials/" class="card-cta">Open the series</a>
+      </article>
+
+      <article class="tool-card">
+        <h2>Field Notes</h2>
+        <span class="status">Coming soon</span>
+        <p>What breaks along the way &mdash; Plaid vs. Teller, bank reconciliation, Apps Script edge cases, the gap between API docs and API reality.</p>
+        <span class="card-cta">First post incoming</span>
+      </article>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="topbar-inner" style="padding: 0;">
+    <span>Dale Linn</span>
+    <span><a href="https://github.com/dlerhetal">github</a> &nbsp;&middot;&nbsp; <a href="mailto:dale.linn@gmail.com">email</a></span>
+  </div>
+</footer>
+
 </body>
 </html>
