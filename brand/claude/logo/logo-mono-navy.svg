@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="dlerhetal.tech mark, navy">
+  <title>dlerhetal.tech (mono navy)</title>
+  <g fill="none" stroke="#1A3C6E" stroke-width="10" stroke-linecap="round">
+    <circle cx="64" cy="64" r="54"/>
+    <circle cx="52" cy="74" r="22"/>
+    <line x1="74" y1="30" x2="74" y2="74"/>
+  </g>
+</svg>
