@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>dlerhetal.tech — brand comparison</title>
+<link rel="icon" type="image/svg+xml" href="/brand/claude/favicon/favicon-source.svg">
+<link rel="stylesheet" href="/brand/claude/brand.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--stone);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--lava); text-decoration: none; }
+  a:hover { color: var(--lava-dark); text-decoration: underline; }
+
+  nav.topbar { background: var(--navy); color: white; border-bottom: 3px solid var(--olive); }
+  .topbar-inner {
+    max-width: 1200px; margin: 0 auto; padding: 14px var(--gutter);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .topbar .brand { display: flex; align-items: center; gap: 10px; color: white; font-weight: 700; font-size: var(--fs-md); }
+  .topbar .brand .dot { color: var(--lava); }
+  .topbar ul { list-style: none; display: flex; gap: 22px; margin: 0; padding: 0; }
+  .topbar ul a { color: rgba(255,255,255,0.82); font-weight: 600; font-size: 14px; }
+  .topbar ul a:hover { color: white; }
+  .topbar ul a.active { color: white; border-bottom: 2px solid var(--lava); padding-bottom: 2px; }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 40px var(--gutter) 80px; }
+
+  h1 { font-size: var(--fs-3xl); margin: 0 0 8px 0; color: var(--navy); letter-spacing: -0.01em; }
+  h1 .dot { color: var(--lava); }
+  .kicker { margin: 0 0 24px 0; color: var(--muted); font-size: var(--fs-md); max-width: 780px; }
+
+  .quick-links {
+    display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0 8px 0;
+    padding-bottom: 24px; border-bottom: 1px solid var(--border);
+  }
+  .quick-links a {
+    padding: 10px 18px; border-radius: var(--radius-md);
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--navy); font-weight: 700; font-size: var(--fs-sm);
+  }
+  .quick-links a:hover { background: var(--navy); color: white; border-color: var(--navy); text-decoration: none; }
+  .quick-links a.gem { border-left: 4px solid #4285F4; }
+  .quick-links a.cla { border-left: 4px solid var(--lava); }
+  .quick-links a.ref { border-left: 4px solid var(--olive); }
+
+  .section-label {
+    font-size: var(--fs-xs); font-weight: 700; letter-spacing: var(--tracking-label);
+    text-transform: uppercase; color: var(--olive);
+    margin: 40px 0 4px 0;
+  }
+  .section-title {
+    font-size: var(--fs-xl); color: var(--navy); margin: 0 0 4px 0;
+  }
+  .section-note {
+    color: var(--muted); font-size: var(--fs-sm); margin: 0 0 16px 0;
+  }
+
+  /* The comparison row: claude on left, gemini on right */
+  .compare {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    margin-bottom: 8px;
+  }
+  .compare > div {
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    background: var(--surface); overflow: hidden;
+  }
+  .compare > div.dark { background: var(--navy); }
+  .compare > div.stone-native { background: rgb(205,205,200); }
+  .compare > div .head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 14px; background: rgba(0,0,0,0.04);
+    font-size: var(--fs-xs); font-weight: 700; letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+  .compare > div .head .src { color: var(--muted); font-family: var(--font-mono); letter-spacing: 0; text-transform: none; font-weight: 400; }
+  .compare > div.dark .head { background: rgba(255,255,255,0.08); color: white; }
+  .compare > div.dark .head .src { color: rgba(255,255,255,0.6); }
+  .compare > div .head .label-claude { color: var(--lava); }
+  .compare > div .head .label-gemini { color: #4285F4; }
+  .compare > div.dark .head .label-claude { color: #ff8a87; }
+  .compare > div.dark .head .label-gemini { color: #94b9ff; }
+
+  .compare > div .body {
+    padding: 32px 24px; text-align: center; display: flex; align-items: center;
+    justify-content: center; min-height: 220px;
+  }
+  .compare > div .body img { max-width: 180px; max-height: 180px; height: auto; display: block; }
+  .compare > div .body img.wide { max-width: 100%; max-height: 90px; }
+  .compare > div .body img.hero { max-width: 280px; max-height: 280px; }
+  .compare > div .body img.og { max-width: 100%; max-height: none; }
+  .compare > div .body img.fav { max-width: none; max-height: none; }
+
+  .fav-row { display: flex; gap: 16px; align-items: flex-end; justify-content: center; flex-wrap: wrap; }
+  .fav-row .cell { text-align: center; }
+  .fav-row .cell small { display: block; margin-top: 6px; color: var(--muted); font-size: var(--fs-xs); }
+  .compare > div.dark .fav-row .cell small { color: rgba(255,255,255,0.7); }
+
+  .verdict-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    margin-bottom: 32px;
+  }
+  .verdict-row .col {
+    padding: 14px 18px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    font-size: var(--fs-sm); color: var(--text);
+  }
+  .verdict-row .col strong { color: var(--navy); }
+
+  .iter-banner {
+    background: #fff8e1; border: 1px solid #f5d97a; border-left: 4px solid #c8932b;
+    border-radius: var(--radius-md); padding: 14px 18px; margin: 16px 0 0 0;
+    font-size: var(--fs-sm); color: #6b4f15;
+  }
+  .iter-banner strong { color: #4a3608; }
+
+  footer { border-top: 1px solid var(--border); padding: 24px 0 0 0; font-size: var(--fs-sm); color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 60px; }
+  footer a { color: var(--navy); font-weight: 600; }
+  footer a:hover { color: var(--lava); }
+
+  @media (max-width: 720px) {
+    .compare, .verdict-row { grid-template-columns: 1fr; }
+    h1 { font-size: var(--fs-2xl); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="brand">
+      <span>dlerhetal<span class="dot">.</span>tech</span>
+    </a>
+    <ul>
+      <li><a href="/">Tools</a></li>
+      <li><a href="/tutorials/">Tutorials</a></li>
+      <li><a href="/brand/" class="active">Brand</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+  <p class="brand-label">Brand &middot; iteration 2 (Gemini track)</p>
+  <h1>Side-by-side: Claude vs Gemini</h1>
+  <p class="kicker">
+    Two parallel brand kits. Each row shows the same artifact rendered from each track. The <strong>palette is shared</strong> — the difference is the mark execution and the supporting hero imagery.
+  </p>
+  <div class="iter-banner" style="background: #e6f4ea; border-color: #7ec48f; border-left-color: #2d7a44; color: #1c4a29;">
+    <strong>Iteration 2 update (Gemini track).</strong>
+    The 2D mark has been re-vectorized end-to-end via the free open-source stack: Gemini's 2D panel extracted with precise color-mask bounding, LANCZOS-upscaled 6&times;, then traced with <a href="https://github.com/visioncortex/vtracer">VTracer</a> in binary mode. No more hand-tracing from a low-res JPG. The Gemini geometry (outer ring, offset inner bowl, ascender, bottom-right design detail) is now faithfully preserved. The 3D hero is still Gemini's native render matted on stone.
+  </div>
+
+  <div class="quick-links">
+    <a class="cla" href="/brand/claude/">Open Claude brand book &rarr;</a>
+    <a class="gem" href="/brand/gemini/">Open Gemini brand book &rarr;</a>
+    <a class="ref" href="/brand/reference/VisualIdentityGuide.jpg">Original Gemini guide (source JPG)</a>
+  </div>
+
+  <div class="iter-banner">
+    <strong>Open tradeoffs.</strong>
+    Gemini's wordmark lockup and mark are now vector-accurate to the source guide. The 3D hero stays Gemini's original render (cropped + matted on native stone); the transparent cut still has some shadow loss. Claude's mark remains its own geometric concept. Favicon at 16px is cramped on the Gemini side — a simplified "small-size" favicon variant would help if the mark wins.
+  </div>
+
+  <!-- ==================== PRIMARY ==================== -->
+  <p class="section-label">Row 1</p>
+  <h2 class="section-title">Primary mark — navy on stone</h2>
+  <p class="section-note">The default mark. Used in nav, headers, anywhere on a light surface.</p>
+  <div class="compare">
+    <div>
+      <div class="head"><span><span class="label-claude">Claude</span></span><span class="src">logo-primary.svg</span></div>
+      <div class="body"><img src="/brand/claude/logo/logo-primary.svg" alt="Claude primary mark"></div>
+    </div>
+    <div>
+      <div class="head"><span><span class="label-gemini">Gemini</span></span><span class="src">logo-primary.svg</span></div>
+      <div class="body"><img src="/brand/gemini/logo/logo-primary.svg" alt="Gemini primary mark"></div>
+    </div>
+  </div>
+
+  <!-- ==================== REVERSED ==================== -->
+  <p class="section-label">Row 2</p>
+  <h2 class="section-title">Reversed mark — stone on navy</h2>
+  <p class="section-note">For dark backgrounds: navy nav bar, dark hero, navy social cards.</p>
+  <div class="compare">
+    <div class="dark">
+      <div class="head"><span><span class="label-claude">Claude</span></span><span class="src">logo-reversed.svg</span></div>
+      <div class="body"><img src="/brand/claude/logo/logo-reversed.svg" alt="Claude reversed mark"></div>
+    </div>
+    <div class="dark">
+      <div class="head"><span><span class="label-gemini">Gemini</span></span><span class="src">logo-reversed.svg</span></div>
+      <div class="body"><img src="/brand/gemini/logo/logo-reversed.svg" alt="Gemini reversed mark"></div>
+    </div>
+  </div>
+
+  <!-- ==================== LAVA ==================== -->
+  <p class="section-label">Row 3</p>
+  <h2 class="section-title">Lava accent — hero only</h2>
+  <p class="section-note">For one-off hero treatments where you want the mark to pop. Use sparingly.</p>
+  <div class="compare">
+    <div>
+      <div class="head"><span><span class="label-claude">Claude</span></span><span class="src">logo-lava.svg</span></div>
+      <div class="body"><img src="/brand/claude/logo/logo-lava.svg" alt="Claude lava mark"></div>
+    </div>
+    <div>
+      <div class="head"><span><span class="label-gemini">Gemini</span></span><span class="src">logo-lava.svg</span></div>
+      <div class="body"><img src="/brand/gemini/logo/logo-lava.svg" alt="Gemini lava mark"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MONO NAVY ==================== -->
+  <p class="section-label">Row 4</p>
+  <h2 class="section-title">Mono navy — single-color, transparent</h2>
+  <div class="compare">
+    <div>
+      <div class="head"><span><span class="label-claude">Claude</span></span><span class="src">logo-mono-navy.svg</span></div>
+      <div class="body"><img src="/brand/claude/logo/logo-mono-navy.svg" alt="Claude mono navy"></div>
+    </div>
+    <div>
+      <div class="head"><span><span class="label-gemini">Gemini</span></span><span class="src">logo-mono-navy.svg</span></div>
+      <div class="body"><img src="/brand/gemini/logo/logo-mono-navy.svg" alt="Gemini mono navy"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MONO STONE ==================== -->
+  <p class="section-label">Row 5</p>
+  <h2 class="section-title">Mono stone — single-color, transparent (for dark bg)</h2>
+  <div class="compare">
+    <div class="dark">
+      <div class="head"><span><span class="label-claude">Claude</span></span><span class="src">logo-mono-stone.svg</span></div>
+      <div class="body"><img src="/brand/claude/logo/logo-mono-stone.svg" alt="Claude mono stone"></div>
+    </div>
+    <div class="dark">
+      <div class="head"><span><span class="label-gemini">Gemini</span></span><span class="src">logo-mono-stone.svg</span></div>
+      <div class="body"><img src="/brand/gemini/logo/logo-mono-stone.svg" alt="Gemini mono stone"></div>
+    </div>
+  </div>
+
+  <!-- ==================== WORDMARK ==================== -->
+  <p class="section-label">Row 6</p>
+  <h2 class="section-title">Wordmark — mark + dlerhetal.tech lockup</h2>
+  <div class="compare">
+    <div>
+      <div class="head"><span><span class="label-claude">Claude</span></span><span class="src">logo-wordmark.svg</span></div>
+      <div class="body"><img src="/brand/claude/logo/logo-wordmark.svg" alt="Claude wordmark" class="wide"></div>
+    </div>
+    <div>
+      <div class="head"><span><span class="label-gemini">Gemini</span></span><span class="src">logo-wordmark.svg</span></div>
+      <div class="body"><img src="/brand/gemini/logo/logo-wordmark.svg" alt="Gemini wordmark" class="wide"></div>
+    </div>
+  </div>
+
+  <!-- ==================== 3D HERO ==================== -->
+  <p class="section-label">Row 7 &middot; Gemini exclusive</p>
+  <h2 class="section-title">3D hero render</h2>
+  <p class="section-note">Gemini provided an actual 3D-rendered version of the mark. Claude has no equivalent — this is a Gemini exclusive. Shown on its native stone bg (clean) and as a transparent cut (best-effort).</p>
+  <div class="compare">
+    <div>
+      <div class="head"><span><span class="label-claude">Claude</span></span><span class="src">— no 3D render —</span></div>
+      <div class="body" style="color: var(--muted); font-style: italic;">Claude track has no 3D render. Use the SVG primary mark or Gemini's hero.</div>
+    </div>
+    <div class="stone-native">
+      <div class="head"><span><span class="label-gemini">Gemini</span></span><span class="src">logo-3d-hero-stone-1024.png</span></div>
+      <div class="body"><img src="/brand/gemini/logo/logo-3d-hero-stone-1024.png" alt="Gemini 3D hero, stone bg" class="hero"></div>
+    </div>
+  </div>
+  <div class="compare" style="margin-top: 12px;">
+    <div style="background: repeating-conic-gradient(#e8eaef 0% 25%, #f5f7fa 0% 50%) 50% / 24px 24px;">
+      <div class="head" style="background: rgba(255,255,255,0.7);"><span><span class="label-gemini">Gemini</span> &middot; transparent</span><span class="src">logo-3d-hero-transparent-1024.png</span></div>
+      <div class="body"><img src="/brand/gemini/logo/logo-3d-hero-transparent-1024.png" alt="Gemini 3D hero, transparent" class="hero"></div>
+    </div>
+    <div style="background: var(--navy);">
+      <div class="head" style="background: rgba(0,0,0,0.2); color: white;"><span><span style="color: #94b9ff;">Gemini</span> &middot; on navy</span><span class="src" style="color: rgba(255,255,255,0.6);">logo-3d-hero-transparent-1024.png</span></div>
+      <div class="body"><img src="/brand/gemini/logo/logo-3d-hero-transparent-1024.png" alt="Gemini 3D hero on navy" class="hero"></div>
+    </div>
+  </div>
+
+  <!-- ==================== FAVICON ==================== -->
+  <p class="section-label">Row 8</p>
+  <h2 class="section-title">Favicons — 16 / 32 / 48 / 180</h2>
+  <p class="section-note">The thing that has to read at 16px in a browser tab. Hardest test of the mark.</p>
+  <div class="compare">
+    <div>
+      <div class="head"><span><span class="label-claude">Claude</span></span><span class="src">favicon/*.png</span></div>
+      <div class="body">
+        <div class="fav-row">
+          <div class="cell"><img src="/brand/claude/favicon/favicon-16.png" width="16" height="16" class="fav"><small>16</small></div>
+          <div class="cell"><img src="/brand/claude/favicon/favicon-32.png" width="32" height="32" class="fav"><small>32</small></div>
+          <div class="cell"><img src="/brand/claude/favicon/favicon-48.png" width="48" height="48" class="fav"><small>48</small></div>
+          <div class="cell"><img src="/brand/claude/favicon/apple-touch-icon.png" width="80" height="80" class="fav"><small>180</small></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="head"><span><span class="label-gemini">Gemini</span></span><span class="src">favicon/*.png</span></div>
+      <div class="body">
+        <div class="fav-row">
+          <div class="cell"><img src="/brand/gemini/favicon/favicon-16.png" width="16" height="16" class="fav"><small>16</small></div>
+          <div class="cell"><img src="/brand/gemini/favicon/favicon-32.png" width="32" height="32" class="fav"><small>32</small></div>
+          <div class="cell"><img src="/brand/gemini/favicon/favicon-48.png" width="48" height="48" class="fav"><small>48</small></div>
+          <div class="cell"><img src="/brand/gemini/favicon/apple-touch-icon.png" width="80" height="80" class="fav"><small>180</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== OG CARD ==================== -->
+  <p class="section-label">Row 9</p>
+  <h2 class="section-title">Social card — 1200 &times; 630</h2>
+  <p class="section-note">Open Graph / Twitter card. The thing that gets seen most when the URL is shared.</p>
+  <div class="compare">
+    <div>
+      <div class="head"><span><span class="label-claude">Claude</span></span><span class="src">social/og-card.png</span></div>
+      <div class="body" style="padding: 0;"><img src="/brand/claude/social/og-card.png" alt="Claude OG card" class="og"></div>
+    </div>
+    <div>
+      <div class="head"><span><span class="label-gemini">Gemini</span></span><span class="src">social/og-card.png</span></div>
+      <div class="body" style="padding: 0;"><img src="/brand/gemini/social/og-card.png" alt="Gemini OG card" class="og"></div>
+    </div>
+  </div>
+
+  <!-- ==================== AVATAR ==================== -->
+  <p class="section-label">Row 10</p>
+  <h2 class="section-title">Avatar — 512&times;512 (GitHub etc.)</h2>
+  <div class="compare">
+    <div>
+      <div class="head"><span><span class="label-claude">Claude</span></span><span class="src">social/avatar-512.png</span></div>
+      <div class="body"><img src="/brand/claude/social/avatar-512.png" alt="Claude avatar" class="hero"></div>
+    </div>
+    <div>
+      <div class="head"><span><span class="label-gemini">Gemini</span></span><span class="src">social/avatar-512.png</span></div>
+      <div class="body"><img src="/brand/gemini/social/avatar-512.png" alt="Gemini avatar" class="hero"></div>
+    </div>
+  </div>
+
+  <!-- ==================== NEXT ==================== -->
+  <h2 style="margin-top: 60px;">Where this goes next</h2>
+  <div class="verdict-row">
+    <div class="col">
+      <strong>If Claude wins:</strong> the SVG geometry is solid (musical-note risk avoided), faviconizes cleanly at 16px, but there's no 3D hero asset. We'd build one.
+    </div>
+    <div class="col">
+      <strong>If Gemini wins:</strong> the 3D hero is the standout — nothing on the Claude side touches it. The 2D vector trace needs another pass to nail the bowl/ascender geometry from a higher-resolution source.
+    </div>
+  </div>
+
+  <p style="font-size: var(--fs-sm); color: var(--muted); margin-top: 32px;">
+    The site root currently points to <code>/brand/claude/...</code> for favicons and OG. Once you pick, swap one path and we're done.
+  </p>
+
+  <footer>
+    <span>Dale Linn &middot; brand comparison &middot; iteration 1</span>
+    <span><a href="/brand/claude/">Claude book</a> &middot; <a href="/brand/gemini/">Gemini book</a> &middot; <a href="/">home</a></span>
+  </footer>
+
+</main>
+
+</body>
+</html>

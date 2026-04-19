@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>dlerhetal.tech — brand book (Gemini track)</title>
+<link rel="icon" type="image/svg+xml" href="/brand/gemini/favicon/favicon-source.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/gemini/favicon/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/brand/gemini/favicon/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/gemini/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/brand/gemini/favicon/site.webmanifest">
+<link rel="stylesheet" href="/brand/gemini/brand.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--stone);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--lava); text-decoration: none; }
+  a:hover { color: var(--lava-dark); text-decoration: underline; }
+
+  nav.topbar { background: var(--navy); color: white; border-bottom: 3px solid var(--olive); }
+  .topbar-inner {
+    max-width: var(--max-width); margin: 0 auto; padding: 14px var(--gutter);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .topbar .brand { display: flex; align-items: center; gap: 10px; color: white; font-weight: 700; font-size: var(--fs-md); }
+  .topbar .brand img { filter: brightness(10); }
+  .topbar .brand .dot { color: var(--lava); }
+  .topbar ul { list-style: none; display: flex; gap: 22px; margin: 0; padding: 0; }
+  .topbar ul a { color: rgba(255,255,255,0.82); font-weight: 600; font-size: 14px; }
+  .topbar ul a:hover { color: white; }
+  .topbar ul a.active { color: white; border-bottom: 2px solid var(--lava); padding-bottom: 2px; }
+
+  main { max-width: var(--max-width); margin: 0 auto; padding: 40px var(--gutter) 80px; }
+
+  h1 { font-size: var(--fs-3xl); margin: 0 0 8px 0; color: var(--navy); letter-spacing: -0.01em; }
+  h1 .dot { color: var(--lava); }
+  h2 { font-size: var(--fs-xl); margin: 48px 0 4px 0; color: var(--navy); }
+  h3 { font-size: var(--fs-lg); margin: 24px 0 8px 0; color: var(--navy); }
+  .kicker { margin: 0 0 16px 0; color: var(--muted); font-size: var(--fs-md); }
+  .rule { border: 0; border-top: 1px solid var(--border); margin: 40px 0 0 0; }
+
+  .section-label {
+    font-size: var(--fs-xs); font-weight: 700; letter-spacing: var(--tracking-label);
+    text-transform: uppercase; color: var(--olive);
+    margin: 32px 0 12px 0; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+
+  .iter-banner {
+    background: #fff8e1; border: 1px solid #f5d97a; border-left: 4px solid #c8932b;
+    border-radius: var(--radius-md); padding: 14px 18px; margin: 0 0 24px 0;
+    font-size: var(--fs-sm); color: #6b4f15;
+  }
+  .iter-banner strong { color: #4a3608; }
+
+  /* ---- Color swatches ---- */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .swatch {
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    overflow: hidden; background: var(--surface);
+  }
+  .swatch .chip { height: 88px; display: flex; align-items: flex-end; padding: 10px 14px; color: white; font-weight: 700; font-size: var(--fs-sm); }
+  .swatch .meta { padding: 10px 14px; font-size: var(--fs-sm); }
+  .swatch .meta code { font-family: var(--font-mono); color: var(--navy); }
+  .swatch .meta small { color: var(--muted); display: block; margin-top: 2px; }
+
+  /* ---- Logo grid ---- */
+  .logo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .logo-cell {
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    background: var(--surface); padding: 24px; text-align: center;
+  }
+  .logo-cell.dark { background: var(--navy); color: white; }
+  .logo-cell.stone-native { background: rgb(205,205,200); }
+  .logo-cell img { max-width: 140px; height: auto; display: block; margin: 0 auto 12px; }
+  .logo-cell h4 { margin: 0 0 2px 0; font-size: var(--fs-sm); font-weight: 700; }
+  .logo-cell small { color: var(--muted); font-size: var(--fs-xs); }
+  .logo-cell.dark small { color: rgba(255,255,255,0.72); }
+
+  /* ---- Hero showcase ---- */
+  .hero-showcase {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .hero-cell {
+    border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0;
+    overflow: hidden; text-align: center;
+  }
+  .hero-cell img { width: 100%; height: auto; display: block; }
+  .hero-cell .caption { padding: 10px 14px; font-size: var(--fs-sm); background: var(--surface); }
+  .hero-cell .caption strong { color: var(--navy); display: block; }
+  .hero-cell .caption small { color: var(--muted); }
+
+  /* ---- Favicon strip ---- */
+  .fav-strip { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); }
+  .fav-strip .cell { text-align: center; }
+  .fav-strip .cell small { display: block; margin-top: 6px; color: var(--muted); font-size: var(--fs-xs); }
+
+  /* ---- Type ---- */
+  .type-row { padding: 12px 0; border-bottom: 1px dashed var(--border); display: flex; gap: 24px; align-items: baseline; flex-wrap: wrap; }
+  .type-row:last-child { border-bottom: 0; }
+  .type-row .sample { flex: 1; min-width: 0; }
+  .type-row .spec { color: var(--muted); font-size: var(--fs-sm); font-family: var(--font-mono); white-space: nowrap; }
+
+  /* ---- Downloads ---- */
+  .dl-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .dl-list a {
+    display: block; padding: 14px 18px; background: var(--surface);
+    border: 1px solid var(--border); border-left: 4px solid var(--navy);
+    border-radius: var(--radius-md); color: var(--text); font-size: var(--fs-sm);
+  }
+  .dl-list a:hover { border-left-color: var(--lava); text-decoration: none; color: var(--lava-dark); }
+  .dl-list a strong { display: block; color: var(--navy); font-size: var(--fs-base); margin-bottom: 2px; }
+  .dl-list a:hover strong { color: var(--lava); }
+  .dl-list code { font-family: var(--font-mono); color: var(--muted); font-size: var(--fs-xs); }
+
+  /* ---- Do/Don't ---- */
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .dos .col { padding: 18px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface); }
+  .dos .col.do   { border-left: 4px solid var(--olive); }
+  .dos .col.dont { border-left: 4px solid var(--lava); }
+  .dos h4 { margin: 0 0 8px 0; font-size: var(--fs-xs); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+  .dos .col.do h4   { color: var(--olive); }
+  .dos .col.dont h4 { color: var(--lava-dark); }
+  .dos ul { margin: 0; padding-left: 20px; font-size: var(--fs-sm); }
+  .dos li { margin-bottom: 6px; }
+
+  footer { border-top: 1px solid var(--border); padding: 24px 0 0 0; font-size: var(--fs-sm); color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 60px; }
+  footer a { color: var(--navy); font-weight: 600; }
+  footer a:hover { color: var(--lava); }
+
+  @media (max-width: 560px) {
+    .dos, .hero-showcase { grid-template-columns: 1fr; }
+    h1 { font-size: var(--fs-2xl); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="brand">
+      <img src="/brand/gemini/logo/logo-mono-stone.svg" width="28" height="28" alt="">
+      <span>dlerhetal<span class="dot">.</span>tech</span>
+    </a>
+    <ul>
+      <li><a href="/">Tools</a></li>
+      <li><a href="/tutorials/">Tutorials</a></li>
+      <li><a href="/brand/" class="active">Brand</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+  <p class="brand-label">Visual identity &middot; Gemini track &middot; v1</p>
+  <h1>dlerhetal<span class="dot">.</span>tech brand book</h1>
+  <p class="kicker">Gemini-authored mark and render direction, run through the production pipeline. <a href="/brand/claude/">Claude track</a> &middot; <a href="/brand/">side-by-side</a>.</p>
+
+  <div class="iter-banner">
+    <strong>Iteration 1.</strong> The 2D <code>d</code> mark was hand-traced from a low-resolution JPG (<a href="/brand/reference/VisualIdentityGuide.jpg">source</a>) — bowl proportions and ascender position will be refined. The 3D hero is Gemini's own render, cropped and matted onto its native stone background. The transparent variant is a best-effort alpha cut.
+  </div>
+
+  <!-- ==================== 3D HERO ==================== -->
+  <p class="section-label">3D hero render (Gemini's signature)</p>
+  <div class="hero-showcase">
+    <div class="hero-cell">
+      <img src="/brand/gemini/logo/logo-3d-hero-stone-1024.png" alt="Gemini 3D mark on native stone background">
+      <div class="caption"><strong>Stone-bg (recommended)</strong><small>Matted on Gemini's native stone — no halo, no extraction artifacts.</small></div>
+    </div>
+    <div class="hero-cell" style="background: repeating-conic-gradient(#e8eaef 0% 25%, #f5f7fa 0% 50%) 50% / 24px 24px;">
+      <img src="/brand/gemini/logo/logo-3d-hero-transparent-1024.png" alt="Gemini 3D mark, transparent">
+      <div class="caption"><strong>Transparent (best-effort)</strong><small>Alpha-cut. Some shadow loss; use stone-bg when possible.</small></div>
+    </div>
+  </div>
+
+  <!-- ==================== THE MARK ==================== -->
+  <p class="section-label">The 2D mark</p>
+  <div class="logo-grid">
+    <div class="logo-cell">
+      <img src="/brand/gemini/logo/logo-primary.svg" alt="Primary mark, navy on stone">
+      <h4>Primary</h4><small>Navy on stone</small>
+    </div>
+    <div class="logo-cell dark">
+      <img src="/brand/gemini/logo/logo-reversed.svg" alt="Reversed mark, stone on navy">
+      <h4>Reversed</h4><small>Stone on navy</small>
+    </div>
+    <div class="logo-cell">
+      <img src="/brand/gemini/logo/logo-lava.svg" alt="Lava accent mark">
+      <h4>Lava accent</h4><small>Hero only</small>
+    </div>
+    <div class="logo-cell">
+      <img src="/brand/gemini/logo/logo-wordmark.svg" alt="Wordmark" style="max-width: 220px;">
+      <h4>Wordmark</h4><small>Mark + dlerhetal.tech</small>
+    </div>
+  </div>
+
+  <!-- ==================== COLOR ==================== -->
+  <p class="section-label">Color palette</p>
+  <p style="font-size: var(--fs-sm); color: var(--muted); margin-top: 0;">Shared across both tracks — the brand colors are the same; only the mark execution differs.</p>
+  <div class="swatches">
+    <div class="swatch">
+      <div class="chip" style="background:#1A3C6E;">Navy</div>
+      <div class="meta"><code>#1A3C6E</code><small>Primary. Nav, headings, mark.</small></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background:#CF2A27;">Lava</div>
+      <div class="meta"><code>#CF2A27</code><small>Accent. Links, live status.</small></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background:#E6E9EE; color: #14213D;">Stone</div>
+      <div class="meta"><code>#E6E9EE</code><small>Page background.</small></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background:#556B2F;">Olive</div>
+      <div class="meta"><code>#556B2F</code><small>Section labels, rules.</small></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background:#F2F4F7; color: #14213D;">Surface</div>
+      <div class="meta"><code>#F2F4F7</code><small>Cards, panels.</small></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background:#0F2748;">Navy dark</div>
+      <div class="meta"><code>#0F2748</code><small>Navy hover.</small></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background:#A11F1C;">Lava dark</div>
+      <div class="meta"><code>#A11F1C</code><small>Lava hover.</small></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background:#14213D;">Text</div>
+      <div class="meta"><code>#14213D</code><small>Body copy.</small></div>
+    </div>
+    <div class="swatch">
+      <div class="chip" style="background:#5B6777;">Muted</div>
+      <div class="meta"><code>#5B6777</code><small>Captions, metadata.</small></div>
+    </div>
+  </div>
+
+  <!-- ==================== TYPE ==================== -->
+  <p class="section-label">Typography</p>
+  <p style="font-size: var(--fs-sm); color: var(--muted);">
+    <strong style="color: var(--navy);">Inter</strong> with system fallbacks: <code>'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif</code>
+  </p>
+
+  <div class="type-row">
+    <div class="sample" style="font-size: 48px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em;">dlerhetal<span style="color: var(--lava);">.</span>tech</div>
+    <div class="spec">48 / 700</div>
+  </div>
+  <div class="type-row">
+    <div class="sample" style="font-size: 32px; font-weight: 700; color: var(--navy);">Page title</div>
+    <div class="spec">32 / 700</div>
+  </div>
+  <div class="type-row">
+    <div class="sample" style="font-size: 24px; font-weight: 700; color: var(--navy);">Section heading</div>
+    <div class="spec">24 / 700</div>
+  </div>
+  <div class="type-row">
+    <div class="sample" style="font-size: 18px; font-weight: 700; color: var(--navy);">Card title</div>
+    <div class="spec">18 / 700</div>
+  </div>
+  <div class="type-row">
+    <div class="sample" style="font-size: 16px;">Body copy. Tools I'm building for small trade shops, and field notes on what breaks along the way.</div>
+    <div class="spec">16 / 400</div>
+  </div>
+  <div class="type-row">
+    <div class="sample brand-label">Section label &middot; uppercase olive</div>
+    <div class="spec">11 / 700 &middot; 0.12em</div>
+  </div>
+
+  <!-- ==================== FAVICONS ==================== -->
+  <p class="section-label">Favicons</p>
+  <div class="fav-strip">
+    <div class="cell"><img src="/brand/gemini/favicon/favicon-16.png" width="16" height="16"><small>16</small></div>
+    <div class="cell"><img src="/brand/gemini/favicon/favicon-32.png" width="32" height="32"><small>32</small></div>
+    <div class="cell"><img src="/brand/gemini/favicon/favicon-48.png" width="48" height="48"><small>48</small></div>
+    <div class="cell"><img src="/brand/gemini/favicon/apple-touch-icon.png" width="64" height="64"><small>180 (apple)</small></div>
+    <div class="cell"><img src="/brand/gemini/favicon/icon-192.png" width="80" height="80"><small>192 (PWA)</small></div>
+    <div class="cell"><img src="/brand/gemini/favicon/icon-512.png" width="96" height="96"><small>512 (PWA)</small></div>
+  </div>
+
+  <!-- ==================== SOCIAL ==================== -->
+  <p class="section-label">Social card</p>
+  <div class="hero-cell" style="max-width: 720px;">
+    <img src="/brand/gemini/social/og-card.png" alt="OG card with Gemini 3D hero on left, wordmark right">
+    <div class="caption"><strong>Open Graph / Twitter card</strong><small>1200 &times; 630 &middot; 3D hero on the native-stone left panel, wordmark right.</small></div>
+  </div>
+
+  <!-- ==================== DOS ==================== -->
+  <p class="section-label">Do / Don't</p>
+  <div class="dos">
+    <div class="col do">
+      <h4>Do</h4>
+      <ul>
+        <li>Lead with the 3D hero on heroes, splash pages, social cards.</li>
+        <li>Use the 2D vector mark for nav, favicons, anywhere the 3D would render too small.</li>
+        <li>Keep the 3D hero on its native stone bg unless you need a transparent cut.</li>
+        <li>Use lava sparingly — links, the dot in the wordmark, live status.</li>
+        <li>Use SVG for the web; PNG when a tool can't consume SVG.</li>
+      </ul>
+    </div>
+    <div class="col dont">
+      <h4>Don't</h4>
+      <ul>
+        <li>Don't use the 3D hero below ~256px — it loses its depth.</li>
+        <li>Don't recolor or restyle the 3D render.</li>
+        <li>Don't place the mark on busy photos or gradients.</li>
+        <li>Don't pair the brand with pastel palettes or magazine layouts.</li>
+        <li>Don't use the full mark below 32px — use the favicon variant.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== DOWNLOADS ==================== -->
+  <p class="section-label">Downloads</p>
+
+  <h3>Logo (SVG, 2D mark)</h3>
+  <div class="dl-list">
+    <a href="/brand/gemini/logo/logo-primary.svg"><strong>Primary</strong><code>logo-primary.svg</code></a>
+    <a href="/brand/gemini/logo/logo-reversed.svg"><strong>Reversed</strong><code>logo-reversed.svg</code></a>
+    <a href="/brand/gemini/logo/logo-lava.svg"><strong>Lava accent</strong><code>logo-lava.svg</code></a>
+    <a href="/brand/gemini/logo/logo-mono-navy.svg"><strong>Mono navy</strong><code>logo-mono-navy.svg</code></a>
+    <a href="/brand/gemini/logo/logo-mono-stone.svg"><strong>Mono stone</strong><code>logo-mono-stone.svg</code></a>
+    <a href="/brand/gemini/logo/logo-wordmark.svg"><strong>Wordmark</strong><code>logo-wordmark.svg</code></a>
+  </div>
+
+  <h3>Logo (PNG, raster)</h3>
+  <div class="dl-list">
+    <a href="/brand/gemini/logo/logo-primary-512.png"><strong>Primary 512</strong><code>logo-primary-512.png</code></a>
+    <a href="/brand/gemini/logo/logo-primary-1024.png"><strong>Primary 1024</strong><code>logo-primary-1024.png</code></a>
+    <a href="/brand/gemini/logo/logo-primary-2048.png"><strong>Primary 2048</strong><code>logo-primary-2048.png</code></a>
+    <a href="/brand/gemini/logo/logo-reversed-512.png"><strong>Reversed 512</strong><code>logo-reversed-512.png</code></a>
+    <a href="/brand/gemini/logo/logo-reversed-1024.png"><strong>Reversed 1024</strong><code>logo-reversed-1024.png</code></a>
+    <a href="/brand/gemini/logo/logo-reversed-2048.png"><strong>Reversed 2048</strong><code>logo-reversed-2048.png</code></a>
+    <a href="/brand/gemini/logo/logo-wordmark-960.png"><strong>Wordmark 960</strong><code>logo-wordmark-960.png</code></a>
+    <a href="/brand/gemini/logo/logo-wordmark-1920.png"><strong>Wordmark 1920</strong><code>logo-wordmark-1920.png</code></a>
+  </div>
+
+  <h3>3D hero (PNG)</h3>
+  <div class="dl-list">
+    <a href="/brand/gemini/logo/logo-3d-hero-stone-512.png"><strong>3D hero 512 (stone)</strong><code>logo-3d-hero-stone-512.png</code></a>
+    <a href="/brand/gemini/logo/logo-3d-hero-stone-1024.png"><strong>3D hero 1024 (stone)</strong><code>logo-3d-hero-stone-1024.png</code></a>
+    <a href="/brand/gemini/logo/logo-3d-hero-stone-2048.png"><strong>3D hero 2048 (stone)</strong><code>logo-3d-hero-stone-2048.png</code></a>
+    <a href="/brand/gemini/logo/logo-3d-hero-transparent-512.png"><strong>3D hero 512 (alpha)</strong><code>logo-3d-hero-transparent-512.png</code></a>
+    <a href="/brand/gemini/logo/logo-3d-hero-transparent-1024.png"><strong>3D hero 1024 (alpha)</strong><code>logo-3d-hero-transparent-1024.png</code></a>
+    <a href="/brand/gemini/logo/logo-3d-hero-transparent-2048.png"><strong>3D hero 2048 (alpha)</strong><code>logo-3d-hero-transparent-2048.png</code></a>
+  </div>
+
+  <h3>Favicon &amp; app icons</h3>
+  <div class="dl-list">
+    <a href="/brand/gemini/favicon/favicon.ico"><strong>favicon.ico</strong><code>multi-size 16/32/48</code></a>
+    <a href="/brand/gemini/favicon/favicon-source.svg"><strong>favicon SVG</strong><code>favicon-source.svg</code></a>
+    <a href="/brand/gemini/favicon/apple-touch-icon.png"><strong>Apple touch icon</strong><code>apple-touch-icon.png &middot; 180</code></a>
+    <a href="/brand/gemini/favicon/icon-192.png"><strong>PWA 192</strong><code>icon-192.png</code></a>
+    <a href="/brand/gemini/favicon/icon-512.png"><strong>PWA 512</strong><code>icon-512.png</code></a>
+    <a href="/brand/gemini/favicon/site.webmanifest"><strong>Web manifest</strong><code>site.webmanifest</code></a>
+  </div>
+
+  <h3>Social</h3>
+  <div class="dl-list">
+    <a href="/brand/gemini/social/og-card.png"><strong>OG card</strong><code>og-card.png &middot; 1200x630</code></a>
+    <a href="/brand/gemini/social/avatar-512.png"><strong>Avatar</strong><code>avatar-512.png</code></a>
+  </div>
+
+  <h3>Tokens &amp; code</h3>
+  <div class="dl-list">
+    <a href="/brand/gemini/tokens.json"><strong>Design tokens (JSON)</strong><code>tokens.json</code></a>
+    <a href="/brand/gemini/brand.css"><strong>CSS custom properties</strong><code>brand.css</code></a>
+    <a href="/brand/gemini/README.md"><strong>README</strong><code>README.md</code></a>
+    <a href="/brand/gemini/build.py"><strong>Build script</strong><code>build.py (regenerates rasters)</code></a>
+    <a href="/brand/gemini/extract.py"><strong>Extract script</strong><code>extract.py (pulls marks from JPG)</code></a>
+  </div>
+
+  <h3>Reference</h3>
+  <div class="dl-list">
+    <a href="/brand/reference/VisualIdentityGuide.jpg"><strong>Gemini identity guide (source)</strong><code>VisualIdentityGuide.jpg</code></a>
+  </div>
+
+  <footer>
+    <span>Dale Linn &middot; dlerhetal.tech brand book &middot; Gemini track</span>
+    <span><a href="/">home</a> &middot; <a href="/brand/">compare</a> &middot; <a href="/brand/claude/">Claude track</a></span>
+  </footer>
+
+</main>
+
+</body>
+</html>
