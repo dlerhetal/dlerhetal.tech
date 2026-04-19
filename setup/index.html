@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Setup — dlerhetal.tech</title>
+<meta name="description" content="Install Claude Code and its prerequisites. The page detects your OS and shows the right commands.">
+<style>
+  :root {
+    --base: #E6E9EE;
+    --surface: #F2F4F7;
+    --navy: #1A3C6E;
+    --navy-dark: #0F2748;
+    --lava: #CF2A27;
+    --lava-dark: #A11F1C;
+    --olive: #556B2F;
+    --text: #14213D;
+    --muted: #5B6777;
+    --border: rgba(26, 60, 110, 0.22);
+    --radius: 6px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--base);
+    color: var(--text);
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--lava); text-decoration: none; }
+  a:hover { color: var(--lava-dark); text-decoration: underline; }
+
+  nav.topbar { background: var(--navy); color: white; border-bottom: 3px solid var(--olive); }
+  .topbar-inner {
+    max-width: 960px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .topbar .brand { font-weight: 700; font-size: 17px; color: white; }
+  .topbar .brand:hover { color: white; text-decoration: none; }
+  .topbar .brand .dot { color: var(--lava); }
+  .topbar ul { list-style: none; display: flex; gap: 22px; margin: 0; padding: 0; }
+  .topbar ul a { color: rgba(255,255,255,0.82); font-weight: 600; font-size: 14px; }
+  .topbar ul a:hover { color: white; text-decoration: none; }
+  .topbar ul a.active { color: white; border-bottom: 2px solid var(--lava); padding-bottom: 2px; }
+
+  main { max-width: 760px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--olive);
+    margin: 0 0 12px 0; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h1 {
+    margin: 0 0 8px 0; font-size: 26px; font-weight: 700; color: var(--navy);
+  }
+  .lede { margin: 0 0 32px 0; color: var(--muted); font-size: 15px; }
+
+  .os-detected {
+    background: rgba(85, 107, 47, 0.08);
+    border: 1px solid rgba(85, 107, 47, 0.28);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--olive);
+    margin-bottom: 24px;
+  }
+  .os-detected strong { color: var(--text); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--navy);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 20px;
+  }
+  .card.primary { border-left-color: var(--lava); }
+  .card h2 { margin: 0 0 6px 0; font-size: 19px; font-weight: 700; color: var(--navy); }
+  .card h3 { margin: 18px 0 6px 0; font-size: 14px; font-weight: 700; color: var(--navy); letter-spacing: 0.02em; }
+  .card p { margin: 0 0 10px 0; font-size: 14px; }
+  .card ul { margin: 0 0 12px 0; padding-left: 20px; font-size: 14px; }
+  .card li { margin-bottom: 4px; }
+  .card li code { background: rgba(26, 60, 110, 0.08); padding: 1px 5px; border-radius: 3px; font-size: 12.5px; }
+
+  .codeblock {
+    position: relative;
+    background: var(--navy-dark);
+    color: #E6E9EE;
+    padding: 12px 14px;
+    padding-right: 70px;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Menlo', 'Monaco', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    overflow-x: auto;
+    margin: 8px 0 12px 0;
+  }
+  .codeblock pre { margin: 0; white-space: pre-wrap; word-break: break-all; }
+  .copy-btn {
+    position: absolute; top: 8px; right: 8px;
+    background: var(--lava); color: white; border: none;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 3px;
+    cursor: pointer; font-family: inherit;
+  }
+  .copy-btn:hover { background: var(--lava-dark); }
+  .copy-btn.copied { background: var(--olive); }
+
+  .toggle-row { text-align: center; margin: 14px 0 20px 0; }
+  .toggle-btn {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--navy); font-weight: 600; font-size: 13px;
+    padding: 8px 16px; border-radius: 4px; cursor: pointer;
+    font-family: inherit;
+  }
+  .toggle-btn:hover { background: var(--surface); }
+
+  .hidden { display: none; }
+
+  .note {
+    background: rgba(207, 42, 39, 0.06);
+    border-left: 3px solid var(--lava);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--text);
+    margin: 12px 0;
+    border-radius: 0 3px 3px 0;
+  }
+
+  footer {
+    max-width: 760px; margin: 0 auto; padding: 0 24px;
+    border-top: 1px solid var(--border);
+    padding-top: 24px; font-size: 13px; color: var(--muted);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  footer a { color: var(--navy); font-weight: 600; }
+  footer a:hover { color: var(--lava); text-decoration: none; }
+
+  @media (max-width: 560px) {
+    .topbar-inner { padding: 12px 18px; }
+    .topbar ul { gap: 14px; }
+    main { padding: 28px 18px 60px; }
+    h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="brand">dlerhetal<span class="dot">.</span>tech</a>
+    <ul>
+      <li><a href="/">Tools</a></li>
+      <li><a href="/tutorials/">Tutorials</a></li>
+      <li><a href="/setup/" class="active">Setup</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+  <p class="section-label">Setup</p>
+  <h1>Install Claude Code</h1>
+  <p class="lede">One page that figures out your system and hands you the right commands. For the conceptual walkthrough, use the <a href="/tutorials/">tutorials</a>.</p>
+
+  <div class="os-detected" id="os-banner">Detecting your system&hellip;</div>
+
+  <!-- ===================== WINDOWS ===================== -->
+  <section id="card-windows" class="card hidden">
+    <h2>Windows</h2>
+    <p>Windows 10 and 11 ship with <strong>winget</strong>, the Windows Package Manager. One command installs everything.</p>
+
+    <h3>1. Open PowerShell (or Windows Terminal)</h3>
+    <p>Press <code>Win</code>, type <code>powershell</code>, hit Enter.</p>
+
+    <h3>2. Install Git, Node.js, and VS Code</h3>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy>Copy</button>
+      <pre>winget install --id Git.Git -e ; winget install --id OpenJS.NodeJS.LTS -e ; winget install --id Microsoft.VisualStudioCode -e</pre>
+    </div>
+    <p>Each one will ask you to accept the license once. Say yes.</p>
+
+    <h3>3. Close and reopen PowerShell</h3>
+    <p>This picks up the new PATH so Node and Git work.</p>
+
+    <h3>4. Install Claude Code</h3>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy>Copy</button>
+      <pre>npm install -g @anthropic-ai/claude-code</pre>
+    </div>
+
+    <h3>5. Launch and log in</h3>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy>Copy</button>
+      <pre>claude</pre>
+    </div>
+    <p>On first run it opens your browser to log in with your Claude subscription. After that it's tied to your account.</p>
+
+    <div class="note"><strong>Don't have winget?</strong> You're on Windows older than the 2020 update. Install <a href="https://apps.microsoft.com/detail/9nblggh4nns1">App Installer from the Microsoft Store</a> first — that's what ships winget.</div>
+  </section>
+
+  <!-- ===================== MAC ===================== -->
+  <section id="card-mac" class="card hidden">
+    <h2>Mac</h2>
+    <p>macOS uses <strong>Homebrew</strong> as its package manager. If you don't have it yet, install that first.</p>
+
+    <h3>1. Open Terminal</h3>
+    <p><code>Cmd</code> + <code>Space</code>, type <code>terminal</code>, hit Enter.</p>
+
+    <h3>2. Install Homebrew (skip if already installed)</h3>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy>Copy</button>
+      <pre>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</pre>
+    </div>
+    <p>To check if you already have it: <code>brew --version</code>. If that prints a version, skip this step.</p>
+
+    <h3>3. Install Git, Node.js, and VS Code</h3>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy>Copy</button>
+      <pre>brew install git node &amp;&amp; brew install --cask visual-studio-code</pre>
+    </div>
+
+    <h3>4. Install Claude Code</h3>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy>Copy</button>
+      <pre>npm install -g @anthropic-ai/claude-code</pre>
+    </div>
+
+    <h3>5. Launch and log in</h3>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy>Copy</button>
+      <pre>claude</pre>
+    </div>
+    <p>On first run it opens your browser to log in with your Claude subscription. After that it's tied to your account.</p>
+  </section>
+
+  <!-- ===================== LINUX ===================== -->
+  <section id="card-linux" class="card hidden">
+    <h2>Linux</h2>
+    <p>On Debian / Ubuntu use <code>apt</code>. On Fedora / RHEL use <code>dnf</code>. VS Code is separate — install from <a href="https://code.visualstudio.com/download">code.visualstudio.com</a> or your distro's package repo.</p>
+
+    <h3>Debian / Ubuntu</h3>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy>Copy</button>
+      <pre>sudo apt update &amp;&amp; sudo apt install -y git nodejs npm</pre>
+    </div>
+
+    <h3>Fedora / RHEL</h3>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy>Copy</button>
+      <pre>sudo dnf install -y git nodejs npm</pre>
+    </div>
+
+    <h3>Install Claude Code</h3>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy>Copy</button>
+      <pre>sudo npm install -g @anthropic-ai/claude-code</pre>
+    </div>
+
+    <h3>Launch and log in</h3>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy>Copy</button>
+      <pre>claude</pre>
+    </div>
+
+    <div class="note"><strong>Old Node on your distro?</strong> If <code>node --version</code> prints below 20, install a newer one via <a href="https://github.com/nvm-sh/nvm">nvm</a> before running <code>npm install -g</code>.</div>
+  </section>
+
+  <!-- ===================== UNKNOWN ===================== -->
+  <section id="card-unknown" class="card hidden">
+    <h2>Can't detect your system</h2>
+    <p>Use one of the cards below. If you're on a Chromebook or phone, Claude Code won't run directly — you'd need a full desktop OS or a dev environment like GitHub Codespaces.</p>
+  </section>
+
+  <div class="toggle-row">
+    <button class="toggle-btn" id="toggle-all">Show all systems</button>
+  </div>
+
+  <section class="card" style="border-left-color: var(--olive);">
+    <h2>After install</h2>
+    <p>You'll want a project folder. Pick a spot and make one:</p>
+    <div class="codeblock">
+      <button class="copy-btn" data-copy>Copy</button>
+      <pre>mkdir C:\dev\MyFirstProject &amp;&amp; cd C:\dev\MyFirstProject &amp;&amp; claude</pre>
+    </div>
+    <p>(On Mac/Linux: <code>mkdir ~/dev/MyFirstProject &amp;&amp; cd ~/dev/MyFirstProject &amp;&amp; claude</code>)</p>
+
+    <p>When the <code>claude</code> prompt comes up, try something small — <em>"Create a file called hello.txt with the words 'hello world' in it."</em> — and watch it work.</p>
+
+    <p>Then jump into the <a href="/tutorials/">tutorials</a> to build something real.</p>
+  </section>
+
+</main>
+
+<footer>
+  <span>Dale Linn</span>
+  <span><a href="https://github.com/dlerhetal">github</a> &nbsp;&middot;&nbsp; <a href="mailto:dale.linn@gmail.com">email</a></span>
+</footer>
+
+<script>
+  function detectOS() {
+    const ua = navigator.userAgent || '';
+    const plat = navigator.platform || '';
+    if (/Win/i.test(plat) || /Windows/i.test(ua)) return 'windows';
+    if (/Mac/i.test(plat) || /Macintosh|Mac OS X/i.test(ua)) return 'mac';
+    if (/Linux/i.test(plat) || /Linux/i.test(ua)) return 'linux';
+    return 'unknown';
+  }
+
+  const OS = detectOS();
+  const NAMES = { windows: 'Windows', mac: 'macOS', linux: 'Linux', unknown: 'an unknown system' };
+
+  const banner = document.getElementById('os-banner');
+  if (OS === 'unknown') {
+    banner.innerHTML = "We couldn't detect your system. Pick a card below.";
+  } else {
+    banner.innerHTML = 'Looks like you\'re on <strong>' + NAMES[OS] + '</strong>. Here\'s the path for your machine.';
+  }
+
+  const card = document.getElementById('card-' + OS);
+  if (card) {
+    card.classList.remove('hidden');
+    card.classList.add('primary');
+  }
+
+  const toggle = document.getElementById('toggle-all');
+  let showingAll = false;
+  toggle.addEventListener('click', () => {
+    showingAll = !showingAll;
+    ['windows', 'mac', 'linux'].forEach((o) => {
+      const c = document.getElementById('card-' + o);
+      if (showingAll) c.classList.remove('hidden');
+      else if (o !== OS) c.classList.add('hidden');
+    });
+    toggle.textContent = showingAll ? 'Show only my system' : 'Show all systems';
+  });
+
+  document.querySelectorAll('[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const code = btn.parentElement.querySelector('pre').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        const original = btn.textContent;
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1500);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
