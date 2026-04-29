@@ -408,17 +408,19 @@
       <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 Set up this project. Create:
 
-1. CLAUDE.md - I'm [your name], a [your role].
-   Learning to build middleware with Claude Code.
-   Propose plans before building. Deliver complete files.
-   Explain what you're doing.
+1. CLAUDE.md (at the project root) - I'm [your name],
+   a [your role]. Learning to build middleware with
+   Claude Code. Propose plans before building. Deliver
+   complete files. Explain what you're doing.
 
-2. PROJECT.md - We're building a simple QBO bill import
-   middleware. Flask app on localhost:5000. Connects to
-   QBO sandbox via OAuth. User can enter bill details
-   (vendor, date, amount) and import them to QBO.
+2. context/PROJECT.md - We're building a simple QBO bill
+   import middleware. Flask app on localhost:5000.
+   Connects to QBO sandbox via OAuth. User can enter
+   bill details (vendor, date, amount) and import them
+   to QBO.
 
-3. MEMORY.md - Starting project. Setting up workspace.
+3. context/JOURNAL.md - Starting project. Setting up
+   workspace.
 
 4. A .env file with these values (DO NOT commit this to
    git):
@@ -715,13 +717,13 @@ After building, start the Flask server so I can test.</div>
     <p>Update your memory log with everything you accomplished:</p>
 
     <div class="cmd-block">
-      <span class="cmd-text">Update MEMORY.md with everything we did. Include the QBO connection status, what the app looks like, what we tested, and ideas for next features.</span>
+      <span class="cmd-text">Update context/JOURNAL.md with everything we did. Include the QBO connection status, what the app looks like, what we tested, and ideas for next features.</span>
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
     </div>
 
     <div class="substep" data-step="9-1">
       <input type="checkbox" id="s9-1">
-      <label for="s9-1">Updated MEMORY.md</label>
+      <label for="s9-1">Updated context/JOURNAL.md</label>
     </div>
 
     <div class="substep" data-step="9-2">
@@ -752,11 +754,11 @@ After building, start the Flask server so I can test.</div>
 
     <p>The pattern is always the same:</p>
     <ol>
-      <li>Create a project folder with CLAUDE.md, PROJECT.md, MEMORY.md</li>
+      <li>Create a project folder with CLAUDE.md and a context/ folder (PROJECT.md, JOURNAL.md)</li>
       <li>Describe what you want to Claude</li>
       <li>Review the plan, approve it, let Claude build it</li>
       <li>Test, customize, iterate</li>
-      <li>Save your memory before closing</li>
+      <li>Update context/JOURNAL.md before closing</li>
     </ol>
 
     <p><strong>Ideas for what to build next:</strong></p>
@@ -780,7 +782,7 @@ After building, start the Flask server so I can test.</div>
 <!-- ==================== DONE ==================== -->
 <div id="allDone" style="display:none; text-align:center; padding: 30px; background: #e8f5e9; border-radius: 12px; margin-top: 20px;">
   <h2 style="color: #27ae60; margin-bottom: 8px;">Tutorial Complete!</h2>
-  <p style="color: #555; line-height: 1.6;">You went from "what's a terminal?" to building middleware that talks to QuickBooks. That's not a small thing. The tools are yours now &mdash; Claude Code, the three-file methodology (CLAUDE.md, PROJECT.md, MEMORY.md), and the workflow. Go build something your clients need.</p>
+  <p style="color: #555; line-height: 1.6;">You went from "what's a terminal?" to building middleware that talks to QuickBooks. That's not a small thing. The tools are yours now &mdash; Claude Code, the foundation (CLAUDE.md plus a context/ folder with PROJECT.md and JOURNAL.md), and the workflow. Go build something your clients need.</p>
 </div>
 
 <div class="next-page" style="background: linear-gradient(135deg, #1A3C6E, #4472C4);">

@@ -684,7 +684,7 @@ before patching.
 (Claude Code can crash if the context window fills up.
 These rules prevent that.)
 
-- Update MEMORY.md before ending sessions.
+- Update context/JOURNAL.md before ending sessions.
 - Use /clear after heavy tool use or big file reads.
 - When in doubt, /clear. It costs 10 seconds. A crash
   costs the whole session.</div>
@@ -738,7 +738,7 @@ Ask first, don't run ahead.
 - If something could go wrong, warn me first
 
 # Session Management
-- Update MEMORY.md before I end a session
+- Update context/JOURNAL.md before I end a session
 - Use /clear after heavy work
 - Remind me to /clear if things get slow</div>
 
@@ -770,32 +770,30 @@ Ask first, don't run ahead.
   </div>
 </div>
 
-<!-- ==================== SECTION 8: PROJECT.MD ==================== -->
+<!-- ==================== SECTION 8: CONTEXT FOLDER ==================== -->
 <div class="section" id="section8">
   <div class="section-header">
     <div class="step-number">8</div>
-    <div class="section-title">Your PROJECT.md &mdash; What You're Building Right Now</div>
+    <div class="section-title">Your context/ folder &mdash; Scope and Journal</div>
   </div>
   <div class="step-body">
-    <p>CLAUDE.md tells Claude who YOU are. PROJECT.md tells Claude what you're BUILDING.</p>
+    <p>CLAUDE.md tells Claude who YOU are. Now you need to tell Claude what you're BUILDING and what's HAPPENED so far. Both of those live in a single folder called <code>context/</code> at the root of your project.</p>
 
     <div class="explain-box">
-      <strong>Think of it like a briefing.</strong> If you hired a contractor and said "build me a deck," they'd ask a hundred questions. But if you handed them a one-page brief &mdash; dimensions, materials, budget, timeline &mdash; they'd get to work. PROJECT.md is that one-page brief.
+      <strong>Two files do the work:</strong>
+      <ul style="margin: 8px 0;">
+        <li><code>context/PROJECT.md</code> &mdash; the project brief. What are you building, who is it for, what's the stack, what's done, what's next.</li>
+        <li><code>context/JOURNAL.md</code> &mdash; the running log. At the end of every session, you ask Claude to add a dated entry: what we did, what worked, what's next.</li>
+      </ul>
+      Claude reads both at the start of every session. You never have to re-explain the project or where you left off.
     </div>
 
-    <p>You create a new PROJECT.md (or update the existing one) every time you start a new module or feature. It answers:</p>
-    <ul>
-      <li><strong>What are we building?</strong> (the goal)</li>
-      <li><strong>Who is it for?</strong> (the user)</li>
-      <li><strong>What technology are we using?</strong> (HTML? Python? Both?)</li>
-      <li><strong>What's the current status?</strong> (starting fresh? halfway done?)</li>
-      <li><strong>Any constraints?</strong> (must work offline, must be a single file, etc.)</li>
-    </ul>
+    <p><strong>Why two files instead of one?</strong> PROJECT.md is the <em>current state</em> &mdash; short, kept up to date, rewritten as the project evolves. JOURNAL.md is the <em>history</em> &mdash; dated entries that pile up, newest first. One file would either get too long for Claude to read every session, or lose the history every time you updated the scope. Two files keep each one focused.</p>
 
-    <p>Here's a simple example. Don't create this one &mdash; we'll make real ones in the exercises.</p>
+    <p>Here's a simple PROJECT.md. Don't create this one &mdash; we'll make real ones in the exercises.</p>
 
     <div class="code-block">
-      <span class="code-label">Example PROJECT.md</span>
+      <span class="code-label">Example context/PROJECT.md</span>
 # Project: Client Intake Form
 
 ## Goal
@@ -811,78 +809,57 @@ on their phone or computer.
 - Google Apps Script backend for email delivery
 
 ## Status
-Starting from scratch.
+Form layout done. Email backend in progress.
 
 ## Constraints
 - Must work on mobile
 - Must save progress if they close the tab (localStorage)
 - Must look professional, not like a government form</div>
 
-    <div class="substep" data-step="8-1">
-      <input type="checkbox" id="s8-1">
-      <label for="s8-1">I understand what PROJECT.md is for. I'll create one in each exercise.</label>
-    </div>
-  </div>
-</div>
-
-<!-- ==================== SECTION 9: MEMORY.MD ==================== -->
-<div class="section" id="section9">
-  <div class="section-header">
-    <div class="step-number">9</div>
-    <div class="section-title">Your MEMORY.md &mdash; The Running Context Log</div>
-  </div>
-  <div class="step-body">
-    <p>Remember how Claude doesn't remember between sessions? CLAUDE.md tells it who you are. PROJECT.md tells it what you're building. But what about everything that happened DURING your work sessions?</p>
-
-    <p>"We tried approach A and it didn't work because of X. We switched to approach B. The form is done but the email backend still needs the authorization step." &mdash; Claude needs to know all of this when you pick up where you left off.</p>
-
-    <div class="explain-box">
-      <strong>MEMORY.md is your session journal.</strong> At the end of every work session, you tell Claude: "Update MEMORY.md with what we did today." Claude writes a dated entry summarizing the decisions, progress, and next steps. When you start a new session tomorrow, Claude reads the MEMORY.md and picks up right where you left off.
-    </div>
-
-    <p><strong>Without MEMORY.md:</strong> "Hey Claude, I was working on a form yesterday and..." (then you spend 20 minutes re-explaining everything)</p>
-    <p><strong>With MEMORY.md:</strong> Claude reads the log, says "I see we finished the form layout yesterday and the next step is wiring up the email backend. Ready to continue?"</p>
-
-    <p>Here's what an entry looks like:</p>
+    <p>And here's a JOURNAL.md after a few sessions:</p>
 
     <div class="code-block">
-      <span class="code-label">Example MEMORY.md</span>
-# Memory Log
+      <span class="code-label">Example context/JOURNAL.md</span>
+# Journal
+
+Newest first.
 
 ## 2026-04-15
-- Created the project folder and CLAUDE.md
-- Built the Eisenhower Matrix (eisenhower.html)
-- Added drag-and-drop between quadrants
-- Customized colors to match company branding
-- NEXT: Add localStorage so tasks persist between sessions
+- Built the form layout (intake.html)
+- Added localStorage so progress saves automatically
+- NEXT: wire up Google Apps Script for email delivery
 
 ## 2026-04-14
-- Set up Claude Code for the first time
-- Created workspace at C:\dev
-- Practiced basic commands (/clear, exit, etc.)</div>
+- Created project folder and CLAUDE.md
+- Sketched out the form fields with Claude
+- Decided on single-HTML-file approach (no server)</div>
 
-    <p><strong>How to maintain it:</strong> At the end of every session, before you type <code>exit</code>, say this to Claude:</p>
+    <p><strong>How to maintain JOURNAL.md:</strong> at the end of every session, before you type <code>exit</code>, say this to Claude:</p>
 
     <div class="cmd-block">
-      <span class="cmd-text">Update MEMORY.md with what we did today. Include decisions, what works, what doesn't, and what's next.</span>
+      <span class="cmd-text">Update context/JOURNAL.md with what we did today. Include decisions, what works, what doesn't, and what's next.</span>
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
     </div>
 
-    <p>That's it. Claude writes the entry. Next session, Claude reads it. No context lost.</p>
+    <p>That's it. Claude appends a dated entry. Next session, Claude reads both files and picks up exactly where you left off.</p>
 
-    <div class="substep" data-step="9-1">
-      <input type="checkbox" id="s9-1">
-      <label for="s9-1">I understand the three files: CLAUDE.md (who I am), PROJECT.md (what I'm building), MEMORY.md (what's happened so far)</label>
+    <div class="note">
+      <strong>About the older "three-file methodology."</strong> Earlier versions of this tutorial taught PROJECT.md and MEMORY.md at the project root. The new model puts both in a <code>context/</code> folder and renames MEMORY.md to JOURNAL.md &mdash; that's because Claude has its own built-in memory system in your user profile (covered on the harness page) with a file also called <code>MEMORY.md</code>, and the collision was confusing. Same idea, sharper boundary: project state lives in the project (<code>context/</code>); facts about <em>you</em> live in the harness.
     </div>
 
-    <div class="success-note"><strong>The Three Files</strong><br>Every project you build will have these three files. They are the difference between Claude being a stranger every time and Claude being a partner who knows you, knows the project, and knows the history. This is the methodology. Everything else is just typing.</div>
+    <div class="substep" data-step="8-1">
+      <input type="checkbox" id="s8-1">
+      <label for="s8-1">I understand: <strong>CLAUDE.md</strong> at the project root tells Claude who I am. <strong>context/PROJECT.md</strong> says what I'm building. <strong>context/JOURNAL.md</strong> tracks what's happened.</label>
+    </div>
+
+    <div class="success-note"><strong>The Foundation</strong><br>Every project you build will have CLAUDE.md at the root and a context/ folder with PROJECT.md and JOURNAL.md. That's the foundation. You'll add other folders (source/, output/, reference/, archive/) as projects grow. Everything else is just typing.</div>
   </div>
 </div>
 
 <!-- ==================== DONE / NEXT ==================== -->
 <div id="allDone" style="display:none; text-align:center; padding: 30px; background: #e8f5e9; border-radius: 12px; margin-top: 20px;">
   <h2 style="color: #27ae60; margin-bottom: 8px;">Setup Complete!</h2>
-  <p style="color: #555;">You have Claude Code installed, authenticated, and a workspace ready to go. You understand the three-file methodology. Time to build something.</p>
+  <p style="color: #555;">You have Claude Code installed, authenticated, and a workspace ready to go. You understand the foundation: CLAUDE.md at the root and a context/ folder for project scope and journal. Time to build something.</p>
 </div>
 
 <div class="next-page">
