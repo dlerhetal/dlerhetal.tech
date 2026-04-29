@@ -310,7 +310,7 @@
       <li>Claude reading 30 files to answer one question, and now the conversation is sluggish</li>
     </ul>
 
-    <p>Page 1 taught you the three-file methodology &mdash; CLAUDE.md, PROJECT.md, MEMORY.md. That was the beginner version. It works, but you maintain it by hand. This page is the next level: let Claude maintain memory for you, configure the harness so it stops asking permission for safe things, and use subagents to keep your main conversation lean.</p>
+    <p>Page 1 taught you the foundation &mdash; CLAUDE.md at the project root, plus a context/ folder with PROJECT.md and JOURNAL.md. Those are project files you maintain by hand (with Claude's help). This page is the next level: a separate, harness-level memory system that Claude maintains for you, configuring the harness so it stops asking permission for safe things, and using subagents to keep your main conversation lean.</p>
 
     <div class="explain-box">
       <strong>Model vs. harness.</strong> Claude is the model &mdash; the thing that generates text. The harness is everything around it: your terminal window, the permission system, the tools it can call, hooks that fire on events, settings files, memory. When people say "Claude won't do X," nine times out of ten they mean "my harness isn't set up to let Claude do X." Once you understand the difference, you stop fighting the model and start configuring the harness.
@@ -330,7 +330,7 @@
     <div class="section-title">Auto-Memory &mdash; Claude Remembers You</div>
   </div>
   <div class="step-body">
-    <p>Claude Code has a built-in memory system that persists across every conversation in a project. It's separate from the MEMORY.md you maintain by hand. You don't write it. You tell Claude things, and Claude writes them for you.</p>
+    <p>Claude Code has a built-in memory system that persists across every conversation in a project. It's separate from the context/JOURNAL.md you maintain by hand. You don't write it. You tell Claude things, and Claude writes them for you.</p>
 
     <div class="explain-box">
       <strong>Where it lives:</strong> <code>C:\Users\[you]\.claude\projects\[encoded-project-path]\memory\</code><br><br>
@@ -369,7 +369,7 @@
     </div>
 
     <div class="note">
-      <strong>Manual MEMORY.md vs. auto-memory.</strong> You now have two memory systems and that's fine. The manual <code>MEMORY.md</code> in your project folder is a session log &mdash; a running journal of what you did and what's next. Auto-memory is for durable facts that outlive any single session. Use the session log for "we finished the email backend today, next up is OAuth." Use auto-memory for "my clients are Spanish-speaking HVAC shops."
+      <strong>Project JOURNAL.md vs. harness auto-memory.</strong> You now have two memory systems and that's fine &mdash; they answer different questions. <code>context/JOURNAL.md</code> lives in the project. It travels with the codebase. It's the record of <em>what happened on this project</em> &mdash; "we finished the email backend today, next up is OAuth." Auto-memory lives in your user profile. It does <em>not</em> travel with the codebase. It's the record of <em>who Dale is and how to work with him</em> &mdash; "my clients are Spanish-speaking HVAC shops," "I prefer terse responses." Different scopes, different lifetimes, different homes.
     </div>
 
     <div class="substep" data-step="2-1">
@@ -585,7 +585,7 @@
         <li>Delegate reads of more than a few files to a subagent.</li>
         <li><code>/clear</code> between tasks. Not between messages &mdash; between tasks.</li>
         <li>When you catch yourself repeating a preference, say "remember that..." and move on.</li>
-        <li>At the end of the session, ask Claude to update the project's MEMORY.md with what happened.</li>
+        <li>At the end of the session, ask Claude to update <code>context/JOURNAL.md</code> with what happened.</li>
       </ol>
     </div>
 
@@ -593,12 +593,12 @@
     <ul>
       <li>Responses are getting slow &mdash; <code>/clear</code></li>
       <li>Claude keeps forgetting something you told it this session &mdash; say "remember that" to save it to auto-memory</li>
-      <li>You're scrolling scrollback to find something &mdash; that's a MEMORY.md update you should have done last session</li>
+      <li>You're scrolling scrollback to find something &mdash; that's a JOURNAL.md update you should have done last session</li>
       <li>Same permission prompt for the fifth time &mdash; allowlist it in <code>settings.json</code></li>
       <li>You gave a five-paragraph instruction and Claude only followed the last paragraph &mdash; break it into smaller steps</li>
     </ul>
 
-    <p><strong>Pruning.</strong> Memory gets stale. Every month or two, skim your auto-memory folder and delete anything that's no longer true. Same for MEMORY.md in your projects &mdash; if an entry from four months ago isn't serving you, delete it. Memory is supposed to reduce load, not become its own maintenance burden.</p>
+    <p><strong>Pruning.</strong> Memory gets stale. Every month or two, skim your auto-memory folder and delete anything that's no longer true. Same for JOURNAL.md in your projects &mdash; if an entry from four months ago isn't serving you, move it to <code>context/archive/</code> (or delete it). Memory is supposed to reduce load, not become its own maintenance burden.</p>
 
     <div class="substep" data-step="7-1">
       <input type="checkbox" id="s7-1">

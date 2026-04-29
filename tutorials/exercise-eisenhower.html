@@ -372,25 +372,26 @@
       <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 Set up this project for me. Create:
 
-1. A CLAUDE.md with my working preferences (I'm [your
-   name], a [your role]. I'm learning Claude Code.
-   Propose plans before building. Deliver complete files.
-   Explain what you're doing.)
+1. A CLAUDE.md at the project root with my working
+   preferences (I'm [your name], a [your role]. I'm
+   learning Claude Code. Propose plans before building.
+   Deliver complete files. Explain what you're doing.)
 
-2. A PROJECT.md that says: "Building an Eisenhower Matrix
-   - a four-quadrant personal task prioritizer as a single
-   HTML file with drag-and-drop."
-
-3. A MEMORY.md with a first entry: "Started project.
-   Setting up workspace and creating the matrix."</div>
+2. A context/ folder with:
+   - context/PROJECT.md: "Building an Eisenhower Matrix
+     - a four-quadrant personal task prioritizer as a
+     single HTML file with drag-and-drop."
+   - context/JOURNAL.md with a first entry: "Started
+     project. Setting up workspace and creating the
+     matrix."</div>
 
     <div class="substep" data-step="2-4">
       <input type="checkbox" id="s2-4">
-      <label for="s2-4">Gave Claude the setup prompt and it created all three files (CLAUDE.md, PROJECT.md, MEMORY.md)</label>
+      <label for="s2-4">Gave Claude the setup prompt and it created CLAUDE.md plus a context/ folder with PROJECT.md and JOURNAL.md</label>
     </div>
 
     <div class="note">
-      <strong>What just happened:</strong> Claude created three files in your project folder. You can see them in File Explorer if you navigate to <code>C:\dev\EisenhowerMatrix</code>. Open them in Notepad if you're curious &mdash; they're just text files.
+      <strong>What just happened:</strong> Claude created your CLAUDE.md at the project root and a context/ folder holding PROJECT.md and JOURNAL.md. You can see them in File Explorer if you navigate to <code>C:\dev\EisenhowerMatrix</code>. Open them in Notepad if you're curious &mdash; they're just text files.
     </div>
   </div>
 </div>
@@ -574,13 +575,13 @@ I close and reopen the browser."
     <p>Before you leave, tell Claude to update the memory log. This is how future sessions know what you've done.</p>
 
     <div class="cmd-block">
-      <span class="cmd-text">Update MEMORY.md with everything we did today. Include what we built, any customizations, and what the matrix looks like now.</span>
+      <span class="cmd-text">Update context/JOURNAL.md with everything we did today. Include what we built, any customizations, and what the matrix looks like now.</span>
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
     </div>
 
     <div class="substep" data-step="6-1">
       <input type="checkbox" id="s6-1">
-      <label for="s6-1">Asked Claude to update MEMORY.md</label>
+      <label for="s6-1">Asked Claude to update context/JOURNAL.md</label>
     </div>
 
     <div class="substep" data-step="6-2">
@@ -591,13 +592,13 @@ I close and reopen the browser."
     <div class="success-note">
       <strong>Exercise 1 complete.</strong> You now know the core workflow:<br><br>
       1. Create a project folder<br>
-      2. Set up your three files (CLAUDE.md, PROJECT.md, MEMORY.md)<br>
+      2. Set up CLAUDE.md plus context/PROJECT.md and context/JOURNAL.md<br>
       3. Describe what you want to Claude<br>
       4. Review the plan, approve it<br>
       5. Claude builds it<br>
       6. Test it in the browser<br>
       7. Request changes until you're happy<br>
-      8. Update memory before you leave
+      8. Update context/JOURNAL.md before you leave
     </div>
   </div>
 </div>
