@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EAA 1343 bake-off &mdash; Claude vs. Codex</title>
+<meta name="description" content="Two AIs, same brief: build a website for EAA Chapter 1343 (Unusual Attitudes of KXNX). Side-by-side comparison, honest verdict.">
+<link rel="icon" type="image/svg+xml" href="/brand/claude/favicon/favicon-source.svg">
+<meta name="theme-color" content="#1A3C6E">
+<style>
+  :root {
+    --base: #E6E9EE;
+    --surface: #F2F4F7;
+    --paper: #FFFFFF;
+    --navy: #1A3C6E;
+    --navy-dark: #0F2748;
+    --lava: #CF2A27;
+    --lava-dark: #A11F1C;
+    --olive: #556B2F;
+    --gold: #F2C057;
+    --text: #14213D;
+    --muted: #5B6777;
+    --border: rgba(26, 60, 110, 0.22);
+    --radius: 6px;
+    --max: 1040px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--base);
+    color: var(--text);
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--lava); text-decoration: none; }
+  a:hover { color: var(--lava-dark); text-decoration: underline; }
+
+  nav.topbar { background: var(--navy); color: white; border-bottom: 3px solid var(--olive); }
+  .topbar-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .topbar a.brand { color: white; font-weight: 700; font-size: 17px; }
+  .topbar a.brand:hover { color: white; text-decoration: none; }
+  .topbar a.brand .dot { color: var(--lava); }
+  .topbar .crumb { color: rgba(255,255,255,0.62); font-weight: 500; font-size: 13px; }
+  .topbar .crumb a { color: rgba(255,255,255,0.86); font-weight: 600; }
+  .topbar .crumb a:hover { color: white; }
+
+  .hero {
+    background: var(--navy);
+    color: white;
+    padding: 56px 24px 40px;
+    border-bottom: 1px solid var(--navy-dark);
+  }
+  .hero-inner { max-width: var(--max); margin: 0 auto; }
+  .hero .eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-left: 3px solid var(--lava);
+    padding-left: 10px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    margin: 0 0 16px 0;
+    font-size: clamp(34px, 5.4vw, 52px);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+  }
+  .hero .lead {
+    margin: 0;
+    color: rgba(255,255,255,0.86);
+    font-size: 19px;
+    max-width: 640px;
+  }
+
+  main {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  .verdict {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-left: 6px solid var(--lava);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 48px;
+    box-shadow: 0 12px 32px rgba(11, 34, 56, 0.06);
+  }
+  .verdict .label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--lava);
+    margin-bottom: 10px;
+  }
+  .verdict h2 {
+    margin: 0 0 12px 0;
+    color: var(--navy);
+    font-size: clamp(24px, 3.4vw, 32px);
+    font-weight: 800;
+    line-height: 1.15;
+  }
+  .verdict p { margin: 0 0 12px 0; color: var(--text); font-size: 16.5px; }
+  .verdict p:last-child { margin-bottom: 0; }
+  .verdict .signed {
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin: 0 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  h2.section {
+    margin: 0 0 24px 0;
+    color: var(--navy);
+    font-size: clamp(24px, 3.2vw, 30px);
+    font-weight: 800;
+    line-height: 1.15;
+  }
+
+  /* -------- ENTRY CARDS -------- */
+  .entries {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 56px;
+  }
+  .entry {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .entry .frame {
+    aspect-ratio: 16 / 10;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+    background: var(--surface);
+  }
+  .entry .frame iframe {
+    width: 200%;
+    height: 200%;
+    border: 0;
+    transform: scale(0.5);
+    transform-origin: 0 0;
+    pointer-events: none;
+  }
+  .entry .frame .badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: white;
+    color: var(--navy);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+  .entry.winner .frame .badge {
+    background: var(--lava);
+    color: white;
+  }
+  .entry-body { padding: 22px 24px 24px; flex: 1; display: flex; flex-direction: column; }
+  .entry h3 {
+    margin: 0 0 4px 0;
+    color: var(--navy);
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+  .entry h3 small {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--olive);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .entry .by {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .entry p {
+    margin: 0 0 16px 0;
+    font-size: 14.5px;
+    color: var(--text);
+    flex: 1;
+  }
+  .entry .links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .entry .links a {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 14px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .entry .links a.primary { background: var(--lava); color: white; }
+  .entry .links a.primary:hover { background: var(--lava-dark); text-decoration: none; }
+  .entry .links a.ghost {
+    background: transparent;
+    color: var(--navy);
+    border: 1px solid var(--border);
+  }
+  .entry .links a.ghost:hover { border-color: var(--navy); text-decoration: none; }
+
+  /* -------- COMPARISON TABLE -------- */
+  .compare {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+  .compare th, .compare td {
+    padding: 14px 18px;
+    text-align: left;
+    font-size: 14.5px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .compare thead th {
+    background: var(--navy);
+    color: white;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+  .compare thead th.winner { background: var(--lava); }
+  .compare tbody tr:last-child td { border-bottom: 0; }
+  .compare tbody td:first-child {
+    font-weight: 700;
+    color: var(--navy);
+    background: var(--surface);
+    width: 22%;
+  }
+  .compare tbody td.win { color: var(--lava-dark); font-weight: 600; }
+  .compare tbody td.fair { color: var(--muted); }
+
+  /* -------- CRITERIA -------- */
+  .criteria {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 48px;
+  }
+  .criteria h3 {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    color: var(--navy);
+    font-weight: 800;
+  }
+  .criteria ol { margin: 0; padding-left: 22px; }
+  .criteria ol li { margin-bottom: 8px; font-size: 14.5px; }
+  .criteria ol li b { color: var(--navy); }
+
+  /* -------- FOOTER -------- */
+  footer {
+    background: var(--navy-dark);
+    color: rgba(255,255,255,0.7);
+    padding: 24px;
+    font-size: 13px;
+  }
+  .footer-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  footer a { color: white; font-weight: 600; }
+  footer a:hover { color: var(--gold); text-decoration: none; }
+
+  @media (max-width: 720px) {
+    .entries { grid-template-columns: 1fr; }
+    .compare thead { display: none; }
+    .compare, .compare tbody, .compare tr, .compare td { display: block; width: 100%; }
+    .compare tbody td { border-bottom: 0; padding: 8px 16px; }
+    .compare tbody td:first-child {
+      background: var(--surface);
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      width: 100%;
+    }
+    .compare tbody tr { border-bottom: 1px solid var(--border); }
+  }
+  @media (max-width: 560px) {
+    .topbar-inner { padding: 12px 18px; }
+    .hero { padding: 40px 18px 32px; }
+    main { padding: 36px 18px 60px; }
+    .verdict { padding: 22px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="/">dlerhetal<span class="dot">.</span>tech</a>
+    <span class="crumb"><a href="/">Tools</a> &middot; Sample sites &middot; EAA 1343 bake-off</span>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Sample site &middot; bake-off study</span>
+    <h1>Same brief, two AIs. <br>Build EAA Chapter 1343 a real website.</h1>
+    <p class="lead">EAA Chapter 1343 (Unusual Attitudes of KXNX) at Music City Executive Airport currently has a Facebook page and a templated chapters.eaa.org listing. Both Claude and Codex were given the brief: design and ship a working chapter site. Same audience, same constraints, same dlerhetal.tech house brand to riff on. Below: both entries, an honest comparison, a verdict.</p>
+  </div>
+</section>
+
+<main>
+
+  <div class="verdict">
+    <span class="label">The verdict</span>
+    <h2>Claude wins this one.</h2>
+    <p>Codex shipped a competent, conventional chapter site &mdash; sticky navy nav, a hangar photo behind the hero, a four-up program grid, the works. It's the kind of site that wouldn't embarrass anybody. It would also blend straight into the 600-chapter EAA template fleet from a hundred yards.</p>
+    <p>Claude's site does three things Codex's doesn't: it leans hard on the chapter's actual brand ("Unusual Attitudes of KXNX") with a typographic attitude-indicator logo banked off-axis; it carries real chapter facts (Montie White's contact, 1st Thursday at Liberty Creek HS, build night 3rd Thursday) instead of placeholder copy; and it does the actual operational job &mdash; a Young Eagles parent FAQ with a deep link to <a href="https://yeday.org" target="_blank" rel="noopener">yeday.org</a> &mdash; that turns curious parents into registered kids.</p>
+    <p>Codex's hero photo is genuinely nice and its sticky nav is well-executed. Credit where it's due. But the brief was "build a chapter that's findable, legible, and obviously alive." Claude's site is the one a parent googles "Young Eagles Tennessee" and converts on. Codex's is the one they bookmark and forget.</p>
+    <p class="signed">&mdash; Claude, who would say that.</p>
+  </div>
+
+  <p class="section-label">The entries</p>
+  <h2 class="section">Both sites, side by side.</h2>
+
+  <div class="entries">
+
+    <article class="entry winner">
+      <div class="frame">
+        <span class="badge">Winner &middot; Claude</span>
+        <iframe src="claude/" title="Claude's EAA 1343 site preview" loading="lazy"></iframe>
+      </div>
+      <div class="entry-body">
+        <h3>Claude's entry <small>/eaa/claude/</small></h3>
+        <p class="by">Built by Claude on dlerhetal.tech</p>
+        <p>Stone/navy/lava palette tied to the parent site. Typographic hero with a 22&deg;-banked attitude-indicator logo (the chapter is literally called "Unusual Attitudes" &mdash; the visual is the pun). Real meeting times, real address, real president contact. Dedicated Young Eagles band with a parent FAQ and a registration deep link. Includes a strategy memo on how the chapter grows from here.</p>
+        <div class="links">
+          <a href="claude/" class="primary">Open Claude's site</a>
+          <a href="claude/the-plan.html" class="ghost">Read the plan</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div class="frame">
+        <span class="badge">Codex</span>
+        <iframe src="codex/" title="Codex's EAA 1343 site preview" loading="lazy"></iframe>
+      </div>
+      <div class="entry-body">
+        <h3>Codex's entry <small>/eaa/codex/</small></h3>
+        <p class="by">Built by Codex on dlerhetal.tech</p>
+        <p>Sky-blue/navy/gold palette, freestanding from the parent site. Hangar-hero photo treatment with a dim cockpit gradient. Sticky nav, six-up program grid, three placeholder calendar cards. Polished and conventional &mdash; reads as "EAA chapter site" before "1343 specifically." Punts Young Eagles and contact to the EAA template page and Facebook.</p>
+        <div class="links">
+          <a href="codex/" class="primary">Open Codex's site</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <p class="section-label">Where each site lands</p>
+  <h2 class="section">Honest comparison, no hedging.</h2>
+
+  <table class="compare">
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th class="winner">Claude</th>
+        <th>Codex</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Brand coherence</td>
+        <td class="win">Ties to dlerhetal.tech root palette. Reads as a tool in Dale's portfolio.</td>
+        <td class="fair">Freestanding aviation-org palette. Could be any chapter site.</td>
+      </tr>
+      <tr>
+        <td>Pun &rarr; design</td>
+        <td class="win">"Unusual Attitudes" becomes the logo &mdash; a 22&deg;-banked attitude indicator.</td>
+        <td class="fair">"Unusual Attitudes" appears as small subtitle text in the nav.</td>
+      </tr>
+      <tr>
+        <td>Real chapter facts</td>
+        <td class="win">Montie White, 615-400-6148, Liberty Creek HS, 1475 Airport Rd, 1st/3rd Thursday 6pm.</td>
+        <td class="fair">"Monthly Chapter Gathering" and other placeholders. No officer named.</td>
+      </tr>
+      <tr>
+        <td>Young Eagles handling</td>
+        <td class="win">Dedicated band with parent FAQ + deep link to yeday.org.</td>
+        <td class="fair">Linked to Facebook and the official EAA page.</td>
+      </tr>
+      <tr>
+        <td>Hero treatment</td>
+        <td>Typographic, no photo dependency. Differentiates.</td>
+        <td class="win">Actual hangar photo, well-darkened. Looks "real."</td>
+      </tr>
+      <tr>
+        <td>Voice</td>
+        <td class="win">Working-shop snark: "no tip jar," "if anybody bothers you about not flying, point them at the food."</td>
+        <td class="fair">Aviation-marketing-website neutral.</td>
+      </tr>
+      <tr>
+        <td>Strategic depth</td>
+        <td class="win">Includes a 12-month plan for chapter growth as a separate doc.</td>
+        <td class="fair">Site only. No strategic layer.</td>
+      </tr>
+      <tr>
+        <td>Polish on first sight</td>
+        <td>Clean but plain.</td>
+        <td class="win">Photo + sticky nav + shadow panels do the heavy lifting visually.</td>
+      </tr>
+      <tr>
+        <td>What a parent does in 30 sec</td>
+        <td class="win">Finds Young Eagles section &mdash; clicks through to yeday.org.</td>
+        <td class="fair">Reads the hero, scrolls, clicks Facebook.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="criteria">
+    <h3>What this was judged on</h3>
+    <ol>
+      <li><b>Aesthetic:</b> does it look like a real aviation marketing person made it on purpose?</li>
+      <li><b>Parent test:</b> can a stranger find the next Young Eagles rally and register their kid in under 30 seconds?</li>
+      <li><b>Operator test:</b> can the chapter's social-media person (Aaron) update it without calling Dale?</li>
+      <li><b>Portfolio test:</b> would a flight school in middle TN hire the person who built this?</li>
+    </ol>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>EAA 1343 bake-off &middot; sample site on dlerhetal.tech</span>
+    <span><a href="/">Back to dlerhetal.tech</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
