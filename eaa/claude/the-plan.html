@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How EAA 1343 grows from here &mdash; a plan</title>
+<meta name="description" content="A strategy memo for EAA Chapter 1343 (Unusual Attitudes of KXNX): the aging-out problem, the Gallatin opportunity, and a 12-month playbook to build a chapter the next generation actually finds.">
+<link rel="icon" type="image/svg+xml" href="/brand/claude/favicon/favicon-source.svg">
+<meta name="theme-color" content="#1A3C6E">
+<style>
+  :root {
+    --base: #E6E9EE;
+    --surface: #F2F4F7;
+    --paper: #FFFFFF;
+    --navy: #1A3C6E;
+    --navy-dark: #0F2748;
+    --lava: #CF2A27;
+    --lava-dark: #A11F1C;
+    --olive: #556B2F;
+    --gold: #F2C057;
+    --text: #14213D;
+    --muted: #5B6777;
+    --border: rgba(26, 60, 110, 0.22);
+    --radius: 6px;
+    --max: 760px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--base);
+    color: var(--text);
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--lava); text-decoration: none; }
+  a:hover { color: var(--lava-dark); text-decoration: underline; }
+
+  nav.topbar { background: var(--navy); color: white; border-bottom: 3px solid var(--olive); }
+  .topbar-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .topbar a { color: white; font-weight: 700; font-size: 15px; }
+  .topbar a:hover { color: white; text-decoration: none; }
+  .topbar .crumb { color: rgba(255,255,255,0.6); font-weight: 500; font-size: 13px; }
+  .topbar .crumb a { color: rgba(255,255,255,0.78); font-weight: 600; }
+  .topbar .crumb a:hover { color: white; }
+
+  .hero {
+    background: var(--navy);
+    color: white;
+    padding: 56px 24px 48px;
+  }
+  .hero-inner { max-width: var(--max); margin: 0 auto; }
+  .hero .eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-left: 3px solid var(--lava);
+    padding-left: 10px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    margin: 0 0 16px 0;
+    font-size: clamp(32px, 5vw, 46px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .hero .lead {
+    margin: 0;
+    color: rgba(255,255,255,0.86);
+    font-size: 19px;
+    max-width: 620px;
+  }
+
+  main {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  h2 {
+    margin: 48px 0 6px 0;
+    color: var(--navy);
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.005em;
+  }
+  h2 .num {
+    display: inline-block;
+    font-family: 'Inter', monospace;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--lava);
+    margin-right: 8px;
+    letter-spacing: 0.06em;
+  }
+  h2 + p.tagline {
+    margin: 0 0 18px 0;
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  h3 {
+    margin: 24px 0 6px 0;
+    color: var(--navy);
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  p { margin: 0 0 14px 0; }
+
+  ul, ol { padding-left: 22px; margin: 0 0 16px 0; }
+  ul li, ol li { margin-bottom: 6px; }
+
+  blockquote {
+    margin: 18px 0;
+    padding: 14px 20px;
+    background: var(--surface);
+    border-left: 4px solid var(--olive);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--lava);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    margin: 24px 0;
+  }
+  .callout b { color: var(--navy); }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 18px 0 24px;
+  }
+  .kpi {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+  .kpi b {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 4px;
+  }
+  .kpi span {
+    display: block;
+    color: var(--navy);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .next-strip {
+    margin-top: 56px;
+    padding: 22px 24px;
+    background: var(--navy);
+    color: white;
+    border-radius: var(--radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .next-strip b { display: block; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .next-strip span { display: block; font-size: 18px; font-weight: 700; }
+  .next-strip a {
+    background: var(--lava);
+    color: white;
+    padding: 11px 18px;
+    border-radius: var(--radius);
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .next-strip a:hover { background: var(--lava-dark); text-decoration: none; }
+
+  footer {
+    background: var(--navy-dark);
+    color: rgba(255,255,255,0.7);
+    padding: 24px;
+    font-size: 13px;
+  }
+  .footer-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  footer a { color: white; font-weight: 600; }
+  footer a:hover { color: var(--gold); text-decoration: none; }
+
+  @media (max-width: 560px) {
+    .topbar-inner { padding: 12px 18px; }
+    .hero { padding: 40px 18px 36px; }
+    main { padding: 36px 18px 60px; }
+    .kpi-grid { grid-template-columns: 1fr; }
+    .next-strip { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="/eaa/claude/">EAA 1343</a>
+    <span class="crumb"><a href="/eaa/claude/">Home</a> &middot; The plan</span>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Strategy memo &middot; v1</span>
+    <h1>How EAA 1343 grows from here.</h1>
+    <p class="lead">A 12-month plan for Unusual Attitudes of KXNX. Where the chapter is, where it could go, and the moves that turn a Thursday-night meeting into a regional aviation institution.</p>
+  </div>
+</section>
+
+<main>
+
+  <p>Most EAA chapters die slowly &mdash; not from one bad year, but from a decade of "we'll figure out recruiting next time." Members age, programs shrink, the Facebook page stays warm while the in-person room gets smaller. Chapter 1343 isn't there yet. It's at the moment when small moves still compound.</p>
+
+  <p>This memo is what those moves look like. Not exhaustive &mdash; opinionated. Aaron and Montie pick what's worth doing.</p>
+
+  <div class="callout">
+    <b>The premise.</b> Gallatin is exurban Nashville, growing fast, with families who can afford a Saturday at the airport and kids who'd lose their minds over a free flight. The chapter doesn't need to invent demand &mdash; it needs to be findable, legible, and obviously alive when somebody googles "Young Eagles Tennessee" or "EAA chapter near me."
+  </div>
+
+  <h2><span class="num">01</span> Diagnose what's actually broken</h2>
+  <p class="tagline">Before fixing anything, name the gaps.</p>
+
+  <p>The chapter currently shows up online in three places: the official EAA template page (chapters.eaa.org/eaa1343), the Facebook page (EAA1343KXNX, run by Aaron), and... that's it. The official page is a directory entry: address, president's name, no recent events, no Young Eagles dates, no signs of life past the AirVenture banner.</p>
+
+  <p>The failure mode of every dying chapter site is the same:</p>
+  <ul>
+    <li>"Latest news" with a date older than 18 months.</li>
+    <li>An event calendar that lists only the recurring meeting, never anything that actually happened.</li>
+    <li>One officer's name, no email, no phone, no path to "I'd like to come visit."</li>
+    <li>A newsletter link that goes to a 404 or a 2019 issue.</li>
+  </ul>
+  <p>1343 currently sits about 60% of the way down that list. Reversing it is mostly a content cadence problem, not a technology problem.</p>
+
+  <h2><span class="num">02</span> Pick the metric that matters</h2>
+  <p class="tagline">If we're tracking everything, we're tracking nothing.</p>
+
+  <p>The single number worth watching for the next twelve months is <b>Young Eagles registrations through the chapter site</b> &mdash; not Aaron's Facebook DMs, not phone calls to Montie. The site has to be the front door, and the registration deep-link to yeday.org has to be the obvious next step.</p>
+
+  <p>Why this number and not membership? Because a kid who flies Young Eagles in 2026 is a parent who knows the chapter exists in 2027 is a member who shows up at a meeting in 2028. Membership is a lagging indicator. Registrations lead.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi"><b>Lead</b><span>YE registrations via site</span></div>
+    <div class="kpi"><b>Mid</b><span>First-time meeting visitors</span></div>
+    <div class="kpi"><b>Lag</b><span>New paying members / yr</span></div>
+  </div>
+
+  <h2><span class="num">03</span> The 12-month playbook</h2>
+  <p class="tagline">Six moves in order. Skip none.</p>
+
+  <h3>Months 1&ndash;2 &middot; Stand up the real site</h3>
+  <p>Replace the chapters.eaa.org template as the de facto front door. The site this plan lives on is the candidate. Everything below assumes it's live at a real domain (eaa1343.org or unusualattitudes.aero, both available as of writing &mdash; verify and grab one).</p>
+
+  <h3>Months 2&ndash;3 &middot; Establish the content cadence</h3>
+  <p>Three things, monthly, forever: meeting recap (200 words + 4 photos), Young Eagles or rally update, one project spotlight on a member's airplane. Aaron writes them. Posted on the site, cross-promoted to Facebook &mdash; not the other direction. The site is canonical, Facebook is the megaphone.</p>
+
+  <h3>Months 3&ndash;4 &middot; Wire Young Eagles end-to-end</h3>
+  <p>Every rally posted to yeday.org gets a matching site post 30 days out, 14 days out, 7 days out, and a recap after. Parent FAQ stays on a permanent page. Photos and a short video clip from each rally, posted within 48 hours.</p>
+
+  <h3>Months 4&ndash;6 &middot; Build the visiting-pilot funnel</h3>
+  <p>KXNX gets transient traffic from across the southeast. Add a "fly in to visit a meeting" page: pattern info, parking, fuel, what's nearby (Beechcraft Heritage Museum at KTHA is 90 min south &mdash; package a fly-out destination). Other chapters' members are the closest thing to a warm lead pool we have.</p>
+
+  <h3>Months 6&ndash;9 &middot; Sponsor program for local aviation businesses</h3>
+  <p>Three tiers, simple. The chapter has Murfreesboro Aviation, Wings of Eagles (MQY + Clarksville), Jet Access Music City (KXNX FBO), and a handful of FBOs and flight schools within 90 minutes. Pitch them on a "supporter" placement on the site + recognition in the newsletter. Even one $500/yr sponsor pays for the domain, hosting, and Young Eagles fuel.</p>
+
+  <h3>Months 9&ndash;12 &middot; Newsletter as a real product</h3>
+  <p>Monthly email newsletter, MailChimp or Buttondown, opt-in capture on the site. By month twelve there should be 200+ subscribers in middle TN aviation. That list is more durable than the Facebook page and more valuable than the website itself.</p>
+
+  <h2><span class="num">04</span> Money</h2>
+  <p class="tagline">Dues alone are a treadmill. Find one more rail.</p>
+
+  <p>Most chapters fund themselves on dues + the occasional pancake breakfast. That's enough to keep the lights on, not enough to grow. Two realistic supplements:</p>
+
+  <ul>
+    <li><b>Local aviation business sponsorships.</b> Three tiers ($250 / $500 / $1000 per year), modest logo placement on the site and a thank-you in the newsletter. Aaron's pitch deck for these doubles as his portfolio when he's selling marketing services to the same companies.</li>
+    <li><b>The Ray Aviation Scholarship pipeline.</b> EAA national funds private-pilot scholarships for young pilots, administered through chapters. 1343 is already nominally in this program. Profile each year's recipient on the site &mdash; that's recruiting copy that writes itself, and it's the kind of story local newspapers will pick up.</li>
+  </ul>
+
+  <h2><span class="num">05</span> The "old guys" question</h2>
+  <p class="tagline">A feature, not a bug &mdash; if you frame it right.</p>
+
+  <p>Aaron's read on the chapter is that it's "a bunch of old guys who like planes." Every chapter is. The question is whether those old guys are actively bored of being a closed club, or actively defending it.</p>
+
+  <blockquote>The chapters that grow are the ones where one or two senior members publicly want a kid in the right seat. The chapters that don't are the ones where the same six people have run things for fifteen years and like it that way.</blockquote>
+
+  <p>Test this early: pick one Young Eagles rally and ask three of the older members to volunteer as ground crew (registration table, parent intake, photo wrangling &mdash; not flying). The ones who say yes are the chapter's growth engine. The ones who say no are who they are. Build the program around the yeses.</p>
+
+  <h2><span class="num">06</span> Aaron</h2>
+  <p class="tagline">The chapter's website is also his portfolio &mdash; design accordingly.</p>
+
+  <p>The reason this plan exists in public, on a chapter site, signed by Claude, is that Aaron is building a career as middle-Tennessee's aviation marketing person. The chapter is exhibit A. Every page he writes, every recap he posts, every Young Eagles flyer he designs, is a sample of what he sells next.</p>
+
+  <p>Three rules for Aaron specifically:</p>
+  <ul>
+    <li><b>Sign your work.</b> Not on every post &mdash; on the masthead and the about page. "Communications by Aaron Linn." When someone hires the next aviation chapter's marketing person, they should be able to find him in two clicks.</li>
+    <li><b>Pitch sideways, not up.</b> The flight schools and FBOs around middle TN are his real market. The chapter is the demo that earns the meeting. Murfreesboro Aviation, Wings of Eagles, MTSU Aerospace &mdash; that's the prospect list.</li>
+    <li><b>Build the system once.</b> Whatever cadence works for 1343 (newsletter cadence, photo workflow, rally promotion sequence) becomes the package he sells to the next client. Don't custom-build for each gig &mdash; productize.</li>
+  </ul>
+
+  <div class="callout">
+    <b>The 24-month version of success:</b> 1343 is the chapter every other middle-TN chapter benchmarks against. Aaron has two paying aviation marketing clients beyond 1343. Young Eagles registrations are double what they are now. And there's a kid who soloed in 2027 who first flew at a 1343 rally in 2026.
+  </div>
+
+  <p>That's the plan. Pieces of it survive contact with reality and pieces don't. Worth more than nothing.</p>
+
+  <div class="next-strip">
+    <div>
+      <b>Next</b>
+      <span>Take it to Montie. See which two pieces he wants first.</span>
+    </div>
+    <a href="/eaa/claude/">Back to the chapter site</a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>EAA Chapter 1343 &middot; Unusual Attitudes of KXNX &middot; Gallatin, TN</span>
+    <span>Plan by Claude on <a href="/">dlerhetal.tech</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
