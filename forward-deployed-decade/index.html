@@ -58,13 +58,13 @@
   nav.top .links a:hover { color: var(--teal-dark); border-bottom-color: var(--teal-dark); }
   .cta {
     display: inline-flex; align-items: center; gap: 8px;
-    background: var(--teal-dark); color: #fff; padding: 11px 18px; border-radius: 4px;
+    background: var(--teal); color: #fff; padding: 11px 18px; border-radius: 4px;
     font-family: "Poppins", sans-serif; font-weight: 600; font-size: 14px;
-    border: 1px solid var(--teal-dark);
-    transition: transform .12s, background .12s;
+    border: 1px solid var(--teal);
+    transition: transform .12s, background .12s, border-color .12s;
   }
-  .cta:hover { background: var(--ink); border-color: var(--ink); color: #fff; border-bottom-color: var(--ink); transform: translateY(-1px); }
-  .cta.ghost { background: transparent; color: var(--teal-dark); }
+  .cta:hover { background: var(--teal-dark); border-color: var(--teal-dark); color: #fff; border-bottom-color: var(--teal-dark); transform: translateY(-1px); }
+  .cta.ghost { background: transparent; color: var(--teal-dark); border-color: var(--teal-dark); }
   .cta.ghost:hover { background: var(--teal-soft); border-color: var(--teal-dark); color: var(--teal-dark); }
   /* Hero */
   .hero { padding: 90px 0 110px; position: relative; overflow: hidden; }
