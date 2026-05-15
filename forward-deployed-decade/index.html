@@ -178,6 +178,31 @@
     content: ""; flex-shrink: 0; margin-top: 7px;
     width: 8px; height: 8px; background: var(--teal); border-radius: 50%;
   }
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .swot-cell {
+    background: #fff; border: 1px solid var(--teal-line); border-radius: 8px;
+    padding: 24px 26px;
+  }
+  .swot-cell h3 {
+    font-family: "Poppins", sans-serif; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 14px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--teal-line);
+  }
+  .swot-cell.pos h3 { color: var(--teal-dark); }
+  .swot-cell.neg h3 { color: var(--ink); }
+  .swot-cell ul { list-style: none; padding: 0; margin: 0; }
+  .swot-cell li {
+    padding: 8px 0 8px 18px; position: relative; font-size: 14px; color: var(--ink-2); line-height: 1.5;
+  }
+  .swot-cell.pos li::before {
+    content: ""; position: absolute; left: 0; top: 17px;
+    width: 8px; height: 8px; background: var(--teal-dark); border-radius: 50%;
+  }
+  .swot-cell.neg li::before {
+    content: ""; position: absolute; left: 0; top: 17px;
+    width: 8px; height: 8px; background: var(--ink); border-radius: 50%;
+  }
   /* Timeline */
   .timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; position: relative; }
   .timeline-item {
@@ -221,7 +246,7 @@
   }
   /* Responsive */
   @media (max-width: 900px) {
-    .moment-grid, .offers-grid, .timeline { grid-template-columns: 1fr; }
+    .moment-grid, .offers-grid, .timeline, .swot-grid { grid-template-columns: 1fr; }
     .stat-row { grid-template-columns: 1fr 1fr; }
     .prod-list { grid-template-columns: 1fr; }
     .game-grid { grid-template-columns: 1fr; }
@@ -250,6 +275,7 @@
       <a href="#market">The market</a>
       <a href="#game">The Game</a>
       <a href="#offers">The offers</a>
+      <a href="#swot">SWOT</a>
       <a href="#ninety">Launch plan</a>
       <a href="#why-now">Why now</a>
       <a href="assets/Forward-Deployed-Decade.docx" class="cta" style="padding:8px 14px;font-size:13px;">Read the whitepaper</a>
@@ -416,6 +442,61 @@
         <div class="num" style="color:var(--ink);">RUNNING NOW</div>
         <h3>In production today.</h3>
         <p>ServiceTitan/QB middleware. Tekmetric/QB middleware. Weekly profit-share scoreboard with reconciling drills. Campaign-and-suppression platform. AI-crawler audit engine. Credential rotation runbook. Heritage food invoice pipeline.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="swot" class="alt">
+  <div class="container">
+    <div class="eyebrow">Strategic snapshot</div>
+    <h2>SWOT.</h2>
+    <div class="section-intro">
+      <p>An honest read of where the practice starts. Strengths and opportunities the positioning rests on; weaknesses and threats the launch plan has to answer for.</p>
+    </div>
+
+    <div class="swot-grid">
+      <div class="swot-cell pos">
+        <h3>Strengths</h3>
+        <ul>
+          <li>CPM operating system already in production in trades engagements; the "80%" PwC names is what ISI already sells.</li>
+          <li>Client-owned tooling architecture sidesteps SaaS lock-in nervousness in a market newly skeptical of vendor meters.</li>
+          <li>Vendor-independent agent layer; agents swap models behind a thin abstraction without touching client systems.</li>
+          <li>Three decades of trades-business operating discipline; the field-service capture rate, the gross-margin slip, the credit-card surcharge fight are familiar terrain.</li>
+          <li>Weekly MAM cadence is the missing accountability layer for agentic AI; the dashboard gets opened on MAM day.</li>
+          <li>Existing distribution surface inside ISI; a trained second consultant can carry the pattern to the next engagement.</li>
+        </ul>
+      </div>
+      <div class="swot-cell neg">
+        <h3>Weaknesses</h3>
+        <ul>
+          <li>Currently delivered ad hoc, depending on client request; the build has not yet been documented for transfer.</li>
+          <li>No published case study under the ISI brand; the working production assets live inside engagements, not on a reference page.</li>
+          <li>AI proficiency, not engagement style, is the transferability constraint. The in-person, founder-direct, weekly on-site model is how every ISI consultant already works; not every consultant will be a candidate for training in the AI-augmented version of it.</li>
+          <li>Brand recognition is concentrated in trades operating work, not in AI advisory search; the practice has to be named before it can be found.</li>
+          <li>Credential and integration sprawl across client systems requires ongoing hygiene; a real discipline, not a side concern.</li>
+        </ul>
+      </div>
+      <div class="swot-cell pos">
+        <h3>Opportunities</h3>
+        <ul>
+          <li>The mid-market gen-AI value pool is on the order of $2 trillion globally and currently has no incumbent specialist advisor.</li>
+          <li>The frontier-lab consulting arms are economically pinned to the Fortune 1000; the trades and middle-market are open ground.</li>
+          <li>82 percent of small employers already buy AI tools, with a median of five per firm; the operating discipline to coordinate them is what is missing.</li>
+          <li>Specialist AI consultants command a 30 to 40 percent premium over generalists; ISI is a specialist in trades operating systems.</li>
+          <li>Trust capital with trades-shop founders predates the AI cycle by decades; the relationship is the moat the labs cannot buy.</li>
+        </ul>
+      </div>
+      <div class="swot-cell neg">
+        <h3>Threats</h3>
+        <ul>
+          <li>Model providers may turn toward the SMB segment directly once the Fortune 1000 land is fought over.</li>
+          <li>Reseller giants (Cognizant, Accenture, Capgemini) absorb AI delivery capacity and compress the consulting middle.</li>
+          <li>Rapid model and pricing churn raises the translation burden on every existing client; the Fractional AI Chief retainer is the structural answer, but it has to be built.</li>
+          <li>Inside-client adoption risk: the owner buys the tool, the manager ignores it, and the MAM never opens. No MAM, no AI work; that bar has to be enforced.</li>
+          <li>Commoditization of basic implementation will compress consulting premiums on shallow work; the defense is depth and recurring relationships.</li>
+          <li>Token pricing normalization: current inference costs are subsidized below the unit economics of the AI infrastructure buildout (OpenAI losses ran $5 to $13.5 billion against $3.7 to $4.3 billion of 2025 revenue; Alphabet capex steps from $75 billion in 2025 to $175 to $185 billion in 2026). Engagement pricing has to reserve headroom for the eventual reprice.</li>
+        </ul>
       </div>
     </div>
   </div>
