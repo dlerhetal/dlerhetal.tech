@@ -258,7 +258,114 @@
   @media (max-width: 520px) {
     .stat-row { grid-template-columns: 1fr; }
   }
-</style>
+
+  /* Game mock-up extensions */
+  .game-mockup-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin: 0 0 14px; padding: 8px 14px;
+    background: var(--teal-soft); border-left: 3px solid var(--teal);
+    font-size: 11px; letter-spacing: 0.18em; color: var(--teal-dark);
+    font-family: "Poppins", sans-serif; font-weight: 700; text-transform: uppercase;
+  }
+  .game-play-btn {
+    background: var(--teal-dark); color: #fff; border: 0;
+    padding: 6px 14px; border-radius: 3px;
+    font-family: "Poppins", sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.06em; cursor: pointer; text-transform: none;
+    transition: background .12s, transform .12s;
+  }
+  .game-play-btn:hover { background: var(--teal); transform: translateY(-1px); }
+  .game-cell-clickable { cursor: pointer; transition: transform .12s, box-shadow .12s; }
+  .game-cell-clickable:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(30,29,28,0.08); }
+  .game-cell-current { border: 2px solid var(--teal); }
+  .game-val {
+    font-family: "Poppins", sans-serif; font-size: 36px; font-weight: 800;
+    color: var(--ink); line-height: 1; margin: 8px 0 8px; letter-spacing: -0.01em;
+  }
+  .game-caption { font-size: 13px; color: var(--ink-2); margin: 0; }
+  .step-list { list-style: none; padding: 0; margin: 8px 0 0; }
+  .step-list li {
+    font-size: 13.5px; color: var(--ink); padding: 5px 0 5px 18px;
+    position: relative; line-height: 1.4;
+  }
+  .step-list li::before {
+    content: ""; position: absolute; left: 0; top: 11px;
+    width: 7px; height: 7px; background: var(--teal); border-radius: 50%;
+  }
+  .thermometer-bar {
+    position: relative; margin-top: 14px; height: 10px;
+    background: var(--teal-line); border-radius: 5px; overflow: visible;
+  }
+  .thermometer-fill {
+    height: 100%; background: var(--teal); border-radius: 5px;
+    transition: width .6s ease-out;
+  }
+  .thermometer-tick {
+    position: absolute; top: -3px; bottom: -3px; width: 0;
+    border-left: 2px dashed var(--teal-dark); transform: translateX(-1px);
+    transition: left .6s ease-out;
+  }
+  .gauges-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    margin: 18px 0 0; padding: 18px;
+    background: #fff; border: 1px solid var(--teal-line); border-radius: 8px;
+  }
+  .gauge-item { text-align: center; position: relative; }
+  .gauge-svg { width: 100%; max-width: 220px; height: auto; display: block; margin: 0 auto; }
+  .gauge-svg path { transition: d .6s ease-out; }
+  .gauge-val {
+    font-family: "Poppins", sans-serif; font-size: 26px; font-weight: 800;
+    color: var(--ink); margin-top: -42px; pointer-events: none;
+  }
+  .gauge-label { font-size: 12px; color: var(--ink-2); margin-top: 6px; font-weight: 600; }
+  .gauge-target { font-size: 10px; color: var(--gray); margin-top: 2px; }
+  .drilldown-panel {
+    margin: 16px 0 0; padding: 18px 22px;
+    background: var(--bg-2); border: 1px solid var(--teal-line); border-radius: 8px;
+  }
+  .drilldown-head {
+    font-family: "Poppins", sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.18em; color: var(--teal-dark);
+  }
+  .drilldown-sub { font-size: 12px; color: var(--ink-2); margin: 4px 0 12px; }
+  .drilldown-table { width: 100%; border-collapse: collapse; }
+  .drilldown-row {
+    cursor: pointer; font-size: 14px; color: var(--ink);
+    transition: background .1s;
+  }
+  .drilldown-row:hover { background: var(--teal-soft); }
+  .drilldown-row td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--teal-line); }
+  .dd-amt { font-family: "Poppins", sans-serif; font-weight: 700; }
+  .dd-status {
+    font-size: 10px; color: var(--teal-dark); text-transform: uppercase;
+    letter-spacing: 0.1em; font-weight: 700; text-align: right;
+  }
+  .drilldown-more { font-size: 11px; color: var(--gray); font-style: italic; margin-top: 10px; }
+  .mock-modal {
+    position: fixed; inset: 0; background: rgba(30,29,28,0.55);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100; opacity: 1; transition: opacity .15s;
+  }
+  .mock-modal.hidden { opacity: 0; pointer-events: none; }
+  .mock-modal-card {
+    background: #fff; border-radius: 12px; padding: 32px 36px;
+    max-width: 460px; box-shadow: 0 12px 40px rgba(0,0,0,0.25); text-align: center;
+  }
+  .mock-modal-card h3 {
+    font-family: "Poppins", sans-serif; font-size: 22px; margin: 0 0 12px; color: var(--ink);
+  }
+  .mock-modal-card p { font-size: 14px; color: var(--ink-2); line-height: 1.5; margin: 0 0 22px; }
+  @media (max-width: 700px) {
+    .gauges-row { grid-template-columns: 1fr; }
+  }
+
+  .chip-clickable {
+    cursor: pointer; transition: background .12s, border-color .12s, transform .12s;
+  }
+  .chip-clickable:hover {
+    background: var(--teal-soft); border-color: var(--teal); color: var(--teal-dark);
+    transform: translateY(-1px);
+  }</style>
 </head>
 <body>
 
@@ -275,6 +382,7 @@
       <a href="#market">The market</a>
       <a href="#demand">The demand</a>
       <a href="#game">The Game</a>
+      <a href="#apprentice" style="font-weight:700;color:var(--teal-dark);">The Apprentice</a>
       <a href="#offers">The offers</a>
       <a href="#swot">SWOT</a>
       <a href="#felt-needs">Felt needs</a>
@@ -401,52 +509,177 @@
     <div class="eyebrow">The foundational tool</div>
     <h2>The Game.</h2>
     <div class="section-intro">
-      <p>The live scoreboard each client builds with ISI, using a shared pattern and the operating numbers of their own shop. Every Game answers four questions in plain language.</p>
+      <p>The live scoreboard each client builds with ISI, using a shared pattern and the operating numbers of their own shop. Below is the shape with mock numbers, mid-month. Click any cell or row to see how the drill-down works.</p>
     </div>
 
-    <div class="game-grid">
-      <div class="game-cell">
+    <div class="game-mockup-bar">
+      <span>MOCK DATA · NO ACTUAL CLIENT</span>
+      <button class="game-play-btn" id="game-play-btn" type="button">&#9654; Replay the month</button>
+    </div>
+
+    <div class="game-grid" id="game-mock-grid">
+      <div class="game-cell game-cell-clickable" data-source="wall">
         <div class="q">Q1. The Wall</div>
         <h4>Wall</h4>
-        <p>What does this business have to clear before any of the good outcomes are possible this month? The visible form of the CFM's overhead line.</p>
+        <div class="game-val" id="val-wall">$42,300</div>
+        <p class="game-caption">Overhead to clear this month: rent, payroll, fixed costs.</p>
       </div>
-      <div class="game-cell">
+      <div class="game-cell game-cell-clickable" data-source="goal">
         <div class="q">Q2. The Goal</div>
         <h4>Goal</h4>
-        <p>What does winning this month look like? Stated explicitly, visible to the owner, the manager, and the crew.</p>
+        <div class="game-val" id="val-goal">$87,500</div>
+        <p class="game-caption">Booked revenue target by month-end.</p>
       </div>
-      <div class="game-cell">
-        <div class="q">Q3. The Game</div>
+      <div class="game-cell game-cell-current game-cell-clickable" data-source="game">
+        <div class="q">Q3. The Game &middot; <span id="game-week">Week 3 of 4</span></div>
         <h4>Game</h4>
-        <p>Where is the business right now, relative to the Wall and the Goal? Read off the thermometer, the gauges, the drill-down on every number.</p>
+        <div class="game-val" id="val-game">$63,400</div>
+        <p class="game-caption"><span id="game-pct">72%</span> of Goal &middot; pace target 75%</p>
+        <div class="thermometer-bar">
+          <div class="thermometer-fill" id="thermometer-fill" style="width: 72%"></div>
+          <div class="thermometer-tick" id="thermometer-tick" style="left: 75%"></div>
+        </div>
       </div>
-      <div class="game-cell">
+      <div class="game-cell game-cell-clickable" data-source="steps">
         <div class="q">Q4. The Steps</div>
-        <h4>Steps</h4>
-        <p>What specific, ordered actions is the team executing this week to move the Game toward the Goal? Owned, tracked, reviewed at the weekly MAM.</p>
+        <h4>Steps this week</h4>
+        <ul class="step-list">
+          <li>Close out pending quotes</li>
+          <li>Schedule open work in the queue</li>
+          <li>Follow up on aged receivables 30+</li>
+          <li>Push proposals out for next month&rsquo;s pipeline</li>
+        </ul>
       </div>
+    </div>
+
+    <div class="gauges-row">
+      <div class="gauge-item">
+        <svg viewBox="0 0 200 130" class="gauge-svg" preserveAspectRatio="xMidYMid meet">
+          <path d="M 30 100 A 70 70 0 0 1 170 100" stroke="#CFE2F2" stroke-width="14" fill="none"/>
+          <path id="gauge-arc-1" d="M 30 100 A 70 70 0 0 1 137 41" stroke="#0E76BC" stroke-width="14" fill="none" stroke-linecap="round"/>
+          <circle id="gauge-tgt-1" cx="161" cy="66" r="4" fill="#0056A5"/>
+        </svg>
+        <div class="gauge-val" id="gauge-val-1">68%</div>
+        <div class="gauge-label">Capture rate</div>
+        <div class="gauge-target">target 75%</div>
+      </div>
+      <div class="gauge-item">
+        <svg viewBox="0 0 200 130" class="gauge-svg" preserveAspectRatio="xMidYMid meet">
+          <path d="M 30 100 A 70 70 0 0 1 170 100" stroke="#CFE2F2" stroke-width="14" fill="none"/>
+          <path id="gauge-arc-2" d="M 30 100 A 70 70 0 0 1 74 35" stroke="#0E76BC" stroke-width="14" fill="none" stroke-linecap="round"/>
+          <circle id="gauge-tgt-2" cx="91" cy="34" r="4" fill="#0056A5"/>
+        </svg>
+        <div class="gauge-val" id="gauge-val-2">38%</div>
+        <div class="gauge-label">Gross margin</div>
+        <div class="gauge-target">target 42%</div>
+      </div>
+      <div class="gauge-item">
+        <svg viewBox="0 0 200 130" class="gauge-svg" preserveAspectRatio="xMidYMid meet">
+          <path d="M 30 100 A 70 70 0 0 1 170 100" stroke="#CFE2F2" stroke-width="14" fill="none"/>
+          <path id="gauge-arc-3" d="M 30 100 A 70 70 0 0 1 161 66" stroke="#0E76BC" stroke-width="14" fill="none" stroke-linecap="round"/>
+          <circle id="gauge-tgt-3" cx="167" cy="77" r="4" fill="#0056A5"/>
+        </svg>
+        <div class="gauge-val" id="gauge-val-3">84%</div>
+        <div class="gauge-label">On-time completion</div>
+        <div class="gauge-target">target 90%</div>
+      </div>
+    </div>
+
+    <div class="drilldown-panel">
+      <div class="drilldown-head">DRILL-DOWN PREVIEW</div>
+      <div class="drilldown-sub">Click any row to see how the Game opens to source records.</div>
+      <table class="drilldown-table">
+        <tbody>
+          <tr class="drilldown-row" data-source="row"><td>Job 1042</td><td class="dd-amt">$4,200</td><td>Wed</td><td class="dd-status">booked</td></tr>
+          <tr class="drilldown-row" data-source="row"><td>Job 1043</td><td class="dd-amt">$3,800</td><td>Thu</td><td class="dd-status">booked</td></tr>
+          <tr class="drilldown-row" data-source="row"><td>Job 1044</td><td class="dd-amt">$5,100</td><td>Fri</td><td class="dd-status">booked</td></tr>
+          <tr class="drilldown-row" data-source="row"><td>Job 1045</td><td class="dd-amt">$2,650</td><td>Fri</td><td class="dd-status">scheduled</td></tr>
+        </tbody>
+      </table>
+      <div class="drilldown-more">+ 14 more this week</div>
     </div>
 
     <div class="game-tools">
-      <span class="chip">Cash Flow Model (CFM)</span>
-      <span class="chip">UDE log</span>
-      <span class="chip">Bloodwall</span>
-      <span class="chip">Management Accountability Meeting (MAM)</span>
-      <span class="chip">Weekly cadence · monthly Game</span>
+      <span class="chip chip-clickable" data-term="cfm">Cash Flow Model (CFM)</span>
+      <span class="chip chip-clickable" data-term="ude">UDE log</span>
+      <span class="chip chip-clickable" data-term="bloodwall">Bloodwall</span>
+      <span class="chip chip-clickable" data-term="mam">Management Accountability Meeting (MAM)</span>
+      <span class="chip chip-clickable" data-term="cadence">Weekly cadence &middot; monthly Game</span>
     </div>
+    <p style="font-size:11px;color:var(--gray);margin-top:6px;font-style:italic;">Click any term to read its definition.</p>
 
     <p style="margin-top:32px;color:var(--ink-2);max-width:780px;">
-      The client builds the Game alongside ISI. The typing starts on the consultant's side and finishes on the client's. By the time ISI rolls off, the code, credentials, hosting, data, and middleware are the client's. Every Game ships with a runbook the owner can hand to a successor.
+      The client builds the Game alongside ISI. The typing starts on the consultant&rsquo;s side and finishes on the client&rsquo;s. By the time ISI rolls off, the code, credentials, hosting, data, and middleware are the client&rsquo;s. Every Game ships with a runbook the owner can hand to a successor.
     </p>
+
+    <div id="mock-modal" class="mock-modal hidden">
+      <div class="mock-modal-card">
+        <h3 id="mock-modal-title">That would open the source records.</h3>
+        <p id="mock-modal-body">In a real Game, clicking that cell or row drills through to the underlying records (invoices, timesheets, work orders, scanned bills, whatever feeds the number). This site is a mock-up. The numbers are not real.</p>
+        <button class="cta" id="mock-modal-close" type="button">Got it</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="apprentice">
+  <div class="container">
+    <div class="eyebrow">The strategic asset</div>
+    <h2>The Apprentice. Thirty years of trades operating documents, made deployable.</h2>
+    <div class="section-intro">
+      <p>The argument so far has been about the Game and the practice that runs it. The asset that makes both durable is one ISI already owns. Three decades of operating documents from hundreds of trades engagements: Cash Flow Models, MAM minutes, Bloodwall logs, action lists, UDE catalogs, Game scoreboards, and the working files behind every engagement the practice has run. Sanitized and trained into an open-weight model, that archive becomes the Apprentice.</p>
+    </div>
+
+    <div class="offers-grid">
+      <div class="offer-card">
+        <div class="num">STAGE 1</div>
+        <h3>The archive.</h3>
+        <p>Thirty years of working documents from hundreds of trades engagements. This is the practice in document form, and it does not exist anywhere else. Anthropic's new consulting venture starts from zero on trades operating data. ServiceTitan knows ServiceTitan-shaped data. McKinsey owns boardroom-shaped artifacts, not service-bay close-the-month exhibits.</p>
+      </div>
+      <div class="offer-card">
+        <div class="num">STAGE 2</div>
+        <h3>The sanitization.</h3>
+        <p>Identifying detail is stripped and specifics are generalized into patterns. A current-generation frontier model does the heavy lifting on the structured extraction work; human review covers the high-risk samples. The output is a corpus of operational knowledge with no client-traceable content in it. The discipline is the moat.</p>
+      </div>
+      <div class="offer-card">
+        <div class="num">STAGE 3</div>
+        <h3>The fine-tune.</h3>
+        <p>An open-weight base model (the current Llama, Qwen, or Mistral generation, whichever holds the open frontier) is fine-tuned on the sanitized corpus. A retrieval layer sits in front so the model can pull specific generalized cases when the situation at hand maps to a pattern the practice has already seen.</p>
+      </div>
+      <div class="offer-card" style="background:var(--teal-soft);border-color:var(--teal);">
+        <div class="num" style="color:var(--ink);">STAGE 4</div>
+        <h3>The Apprentice on the shop floor.</h3>
+        <p>Deployed inside the client's own infrastructure. Owned by the client. Prepares the weekly MAM pack with patterns drawn from three decades of practice. Speaks CPM natively. Knows the Wall shapes that work in trades shops. The model running in the shop is a living artifact of the practice, kept current by the Fractional AI Chief retainer.</p>
+      </div>
+    </div>
+
+    <div class="stat-row" style="margin-top:36px;">
+      <div class="stat-cell" style="background:var(--teal-soft);">
+        <div class="num" style="font-size:18px;line-height:1.2;">Recurring revenue.</div>
+        <div class="lbl">The retainer is the value, not the lock-in. The Apprentice runs in the shop; the relationship runs through the practice.</div>
+      </div>
+      <div class="stat-cell" style="background:var(--teal-soft);">
+        <div class="num" style="font-size:18px;line-height:1.2;">Cost hedge.</div>
+        <div class="lbl">Open-weight inference on the client's hardware is not subject to provider repricing. The token meter stops being someone else's lever.</div>
+      </div>
+      <div class="stat-cell" style="background:var(--teal-soft);">
+        <div class="num" style="font-size:18px;line-height:1.2;">Data engine.</div>
+        <div class="lbl">Every client running the Apprentice produces new CFMs, MAM minutes, Bloodwall actions, completed Game cycles. The archive compounds with the practice. The next Apprentice is sharper than the last.</div>
+      </div>
+    </div>
+
+    <div class="moment-footer" style="margin-top:36px;font-style:normal;">
+      Outside of the Small Business Administration, no entity in the United States has comparable depth on how trades-economy businesses operate week to week. The SBA holds loan applications and macro indicators. ISI holds the working documents from inside the shops. The category goes to the firm whose model knows what a trades shop's month actually looks like. The labs cannot manufacture this archive by hiring engineers. The SaaS giants do not have it. ISI already does, and it grows every time the Apprentice ships.
+    </div>
   </div>
 </section>
 
 <section id="offers" class="alt">
   <div class="container">
     <div class="eyebrow">The practice</div>
-    <h2>Five productizable offers, each grounded in something already running.</h2>
+    <h2>Five productizable offers.</h2>
     <div class="section-intro">
-      <p>The work is not theoretical. Each of these has at least one working production engagement behind it today.</p>
+      <p>Each offer is anchored in established trades-consulting capability.</p>
     </div>
 
     <div class="offers-grid">
@@ -463,7 +696,7 @@
       <div class="offer-card">
         <div class="num">OFFER 3</div>
         <h3>Campaign-as-Template Platform.</h3>
-        <p>A productized customer-outreach system the client's marketing lead can run without the consultant in the room. Compose, schedule, send, track, suppress, parse replies. Already running at multi-hundred-recipient scale.</p>
+        <p>A productized customer-outreach system the client's marketing lead can run without the consultant in the room. Compose, schedule, send, track, suppress, parse replies. Designed for multi-hundred-recipient scale.</p>
       </div>
       <div class="offer-card">
         <div class="num">OFFER 4</div>
@@ -473,11 +706,11 @@
       <div class="offer-card">
         <div class="num">OFFER 5</div>
         <h3>Fractional AI Chief.</h3>
-        <p>A monthly retainer where the consultant serves as the outside AI conscience of the business: vendor selection, policy, governance, model-and-agent evaluation as the landscape shifts. Structurally similar to a fractional CFO.</p>
+        <p>A monthly retainer that puts the Apprentice on the client's hardware and keeps it sharp. Re-baking when a better base model ships. Refreshing the corpus as new patterns surface. Swapping inference providers when the math changes. Plus the outside AI conscience on vendor selection, policy, governance, and the automated upselling the SaaS platforms increasingly aim at the owner. The Apprentice is owned by the client; the retainer is the value, not the lock-in.</p>
       </div>
       <div class="offer-card" style="background:var(--teal-soft);border-color:var(--teal);">
-        <div class="num" style="color:var(--ink);">RUNNING NOW</div>
-        <h3>In production today.</h3>
+        <div class="num" style="color:var(--ink);">CAPABILITY</div>
+        <h3>What the practice ships.</h3>
         <p>Trades-specific middleware, dashboards and drill-downs, audit engines, embedded agents, and the credential and integration disciplines that keep production work safe. The catalog grows with every engagement.</p>
       </div>
     </div>
@@ -496,7 +729,8 @@
       <div class="swot-cell pos">
         <h3>Strengths</h3>
         <ul>
-          <li>CPM operating system already in production in trades engagements; the "80%" PwC names is what ISI already sells.</li>
+          <li>Thirty-year operating archive across hundreds of trades engagements (CFMs, MAM minutes, Bloodwall logs, action lists, UDE catalogs, Game scoreboards) becomes the Apprentice when sanitized and trained into an open-weight model. The labs cannot manufacture this asset; the SaaS giants do not have it.</li>
+          <li>CPM operating system is what ISI already sells in trades engagements; the "80%" PwC names is the same work.</li>
           <li>Client-owned tooling architecture sidesteps SaaS lock-in nervousness in a market newly skeptical of vendor meters.</li>
           <li>Vendor-independent agent layer; agents swap models behind a thin abstraction without touching client systems.</li>
           <li>Three decades of trades-business operating discipline; the field-service capture rate, the gross-margin slip, the credit-card surcharge fight are familiar terrain.</li>
@@ -508,7 +742,7 @@
         <h3>Weaknesses</h3>
         <ul>
           <li>Built ad hoc inside engagements rather than as a teachable module; needs to be packaged before it can spread across the AI client work consultants are already running.</li>
-          <li>No published case study under the ISI brand; the working production assets live inside engagements, not on a reference page.</li>
+          <li>No published case study under the ISI brand; the patterns live inside engagements rather than on a reference page.</li>
           <li>AI proficiency, not engagement style, is the transferability constraint. The in-person, founder-direct, weekly on-site model is how every ISI consultant already works; not every consultant will be a candidate for training in the AI-augmented version of it.</li>
           <li>Brand recognition is concentrated in trades operating work, not in AI advisory search; the practice has to be named before it can be found.</li>
           <li>Credential and integration sprawl across client systems requires ongoing hygiene; a real discipline, not a side concern.</li>
@@ -532,7 +766,8 @@
           <li>Rapid model and pricing churn raises the translation burden on every existing client; the Fractional AI Chief retainer is the structural answer, but it has to be built.</li>
           <li>Inside-client adoption risk: the owner buys the tool, the manager ignores it, and the MAM never opens. No MAM, no AI work; that bar has to be enforced.</li>
           <li>Commoditization of basic implementation will compress consulting premiums on shallow work; the defense is depth and recurring relationships.</li>
-          <li>Token pricing normalization: current inference costs are subsidized below the unit economics of the AI infrastructure buildout (OpenAI losses ran $5 to $13.5 billion against $3.7 to $4.3 billion of 2025 revenue; Alphabet capex steps from $75 billion in 2025 to $175 to $185 billion in 2026). Engagement pricing has to reserve headroom for the eventual reprice.</li>
+          <li>Token pricing normalization: current inference costs are subsidized below the unit economics of the AI infrastructure buildout (OpenAI losses ran $5 to $13.5 billion against $3.7 to $4.3 billion of 2025 revenue; Alphabet capex steps from $75 billion in 2025 to $175 to $185 billion in 2026). Engagement pricing has to reserve headroom for the eventual reprice. The Apprentice running on client hardware is the structural cap.</li>
+          <li>Cross-client confidentiality risk in corpus-trained models: a fine-tuned model can leak training examples under pressure. The sanitization pipeline strips identifying detail and generalizes specifics into patterns before any weight is touched; no client's raw documents enter the training set. The Fractional AI Chief retainer carries the discipline forward as the archive grows.</li>
         </ul>
       </div>
     </div>
@@ -544,7 +779,7 @@
     <div class="eyebrow">What the Game answers</div>
     <h2>How the Game answers each one.</h2>
     <div class="section-intro">
-      <p>The numbers above name the problem. The Game answers each piece of it. Not in theory. In the same engagements ISI is already running.</p>
+      <p>The numbers above name the problem. The Game answers each piece of it.</p>
     </div>
 
     <div class="offers-grid">
@@ -585,16 +820,16 @@
 <section id="ninety">
   <div class="container">
     <div class="eyebrow">Launch plan</div>
-    <h2>Three steps, not a sales plan.</h2>
+    <h2>Four steps.</h2>
     <div class="section-intro">
-      <p>ISI consultants are already training clients on AI. The Game is one option inside that work. Three steps make it transferable across the practice.</p>
+      <p>ISI consultants are already training clients on AI. The Game is one option inside that work. Four steps make the pattern transferable across the practice and turn the archive into an asset.</p>
     </div>
 
     <div class="timeline">
       <div class="timeline-item">
         <div class="day">STEP 1</div>
         <h3>Reference implementation.</h3>
-        <p>Stand up the full weekly CFM-to-UDE-to-Bloodwall-to-Game-to-MAM operating loop end-to-end on a single engagement. The Game is already live. The rest of the loop gets wired around it. The deliverable is a working reference engagement, not a slide.</p>
+        <p>Stand up the full weekly CFM-to-UDE-to-Bloodwall-to-Game-to-MAM operating loop end-to-end on a single engagement. The Game is ready to stand up. The rest of the loop gets wired around it. The deliverable is a working reference engagement, not a slide.</p>
       </div>
       <div class="timeline-item">
         <div class="day">STEP 2</div>
@@ -605,6 +840,11 @@
         <div class="day">STEP 3</div>
         <h3>Prove the pattern transfers.</h3>
         <p>A consultant outside the reference engagement builds a Game on their own client, working from the playbook. If that build lands, the Game graduates from a one-engagement pattern into a documented option ISI consultants can carry into the AI work they're already doing. Whether five take it up, fifty, or it becomes a default is a decision the firm makes from a position of evidence.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="day">STEP 4</div>
+        <h3>Build the Apprentice.</h3>
+        <p>While Steps 1 through 3 prove the Game's pattern transfers, the practice begins the technical project that turns ISI's thirty-year archive into a deployable model. Sanitization first, then fine-tune onto an open-weight base, then deployment alongside the reference engagement. The Apprentice runs on the client's hardware and is owned by the client. The Fractional AI Chief retainer is what keeps both threads sewn together at every client going forward.</p>
       </div>
     </div>
   </div>
@@ -624,8 +864,8 @@
   <div class="container">
     <div class="closer">
       <div class="eyebrow" style="color:var(--teal);">The ask</div>
-      <h2>Name the practice. Prove the pattern transfers.</h2>
-      <p class="big">ISI consultants are already training clients on AI in trade shops across the country. The Game is one option inside that work. Document the pattern, prove it transfers, and scale it on whatever terms the firm chooses.</p>
+      <h2>Name the practice. Prove the pattern transfers. Build the Apprentice.</h2>
+      <p class="big">ISI consultants are already training clients on AI in trade shops across the country. The Game is one option inside that work. Document the pattern, prove it transfers, and turn ISI's thirty-year archive into the Apprentice the labs cannot manufacture and the SaaS giants do not have. The category is not won by the firm with the cleverest model. It is won by the firm whose model knows what a trades shop's month actually looks like.</p>
       <a href="assets/ISI.FDD.docx" class="cta">Download the full whitepaper</a>
     </div>
   </div>
@@ -640,6 +880,129 @@
     <div><a href="assets/ISI.FDD.docx">Whitepaper (.docx)</a></div>
   </div>
 </footer>
+
+
+<script>
+(function() {
+  // Mock data per week of the month (week index 0..3)
+  var WEEKS = [
+    { game: 18900, pct: 22, capture: 64, margin: 36, ontime: 72 },
+    { game: 38200, pct: 44, capture: 66, margin: 37, ontime: 78 },
+    { game: 63400, pct: 72, capture: 68, margin: 38, ontime: 84 },
+    { game: 87500, pct: 100, capture: 72, margin: 39, ontime: 88 }
+  ];
+  var paceTargets = [25, 50, 75, 100];
+
+  function arcEndpoint(pct) {
+    var cx = 100, cy = 100, r = 70;
+    var angle = (180 - (pct / 100) * 180) * Math.PI / 180;
+    return {
+      x: (cx + r * Math.cos(angle)).toFixed(1),
+      y: (cy - r * Math.sin(angle)).toFixed(1)
+    };
+  }
+  function setArc(id, pct) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var p = arcEndpoint(pct);
+    el.setAttribute('d', 'M 30 100 A 70 70 0 0 1 ' + p.x + ' ' + p.y);
+  }
+  function fmt(n) {
+    return '$' + n.toLocaleString('en-US');
+  }
+  function render(i) {
+    var w = WEEKS[i];
+    var byId = function(id) { return document.getElementById(id); };
+    byId('val-game').textContent = fmt(w.game);
+    byId('game-pct').textContent = w.pct + '%';
+    byId('game-week').textContent = 'Week ' + (i + 1) + ' of 4';
+    byId('thermometer-fill').style.width = w.pct + '%';
+    byId('thermometer-tick').style.left = paceTargets[i] + '%';
+    byId('gauge-val-1').textContent = w.capture + '%';
+    byId('gauge-val-2').textContent = w.margin + '%';
+    byId('gauge-val-3').textContent = w.ontime + '%';
+    setArc('gauge-arc-1', w.capture);
+    setArc('gauge-arc-2', w.margin);
+    setArc('gauge-arc-3', w.ontime);
+  }
+  // Initial render: week 3 (index 2)
+  render(2);
+
+  // Replay the month
+  var playBtn = document.getElementById('game-play-btn');
+  if (playBtn) {
+    playBtn.addEventListener('click', function() {
+      var i = 0;
+      render(0);
+      var iv = setInterval(function() {
+        i++;
+        if (i >= WEEKS.length) { clearInterval(iv); return; }
+        render(i);
+      }, 900);
+    });
+  }
+
+  // Modal: handles two modes. (1) Clicking a cell/row says "this is a mockup."
+  // (2) Clicking a chip opens that term's definition.
+  var modal = document.getElementById('mock-modal');
+  var modalTitle = document.getElementById('mock-modal-title');
+  var modalBody = document.getElementById('mock-modal-body');
+  var closeBtn = document.getElementById('mock-modal-close');
+
+  var MOCKUP_TITLE = 'That would open the source records.';
+  var MOCKUP_BODY = "In a real Game, clicking that cell or row drills through to the underlying records (invoices, timesheets, work orders, scanned bills, whatever feeds the number). This site is a mock-up. The numbers are not real.";
+
+  var DEFINITIONS = {
+    cfm: {
+      title: 'Cash Flow Model (CFM)',
+      body: "The weekly financial model that projects and tracks the month line by line: revenue at the top, cost of goods sold separated from overhead, distributions accounted for, and what is left at the bottom shown explicitly. The Wall on the Game is the CFM's overhead line made visible for the month."
+    },
+    ude: {
+      title: 'UDE log',
+      body: 'UnDesirable Effect log. The running list of obstacles the business keeps surfacing: a slipping gross margin, an estimate that did not convert, a scheduling collision, a complaint that keeps coming back. The term comes from Eliyahu Goldratt\'s Theory of Constraints; the log is the running record of what the business needs to retire.'
+    },
+    bloodwall: {
+      title: 'Bloodwall',
+      body: 'The workspace where each UDE on the log gets worked. The team tells the story of the UDE, does the math on what it is costing, decides the action that will retire it, names the person who owns the action, and identifies how the outcome will be tracked.'
+    },
+    mam: {
+      title: 'Management Accountability Meeting (MAM)',
+      body: "The weekly room where Bloodwall actions are tracked, action owners are held to last week's commitments, and the team makes the decisions only a team can make, including the call to pivot mid-month."
+    },
+    cadence: {
+      title: 'Weekly cadence \u00b7 monthly Game',
+      body: "The operating rhythm. The CFM, the UDE log, the Bloodwall, and the MAM all run weekly. The Game is the one-month window the weekly work adds up to: four weeks, sometimes five, of tracked progress against a stated Goal."
+    }
+  };
+
+  function openModalWith(title, body) {
+    if (!modal) return;
+    if (modalTitle) modalTitle.textContent = title;
+    if (modalBody) modalBody.textContent = body;
+    modal.classList.remove('hidden');
+  }
+  function openMockup() { openModalWith(MOCKUP_TITLE, MOCKUP_BODY); }
+  function closeModal() { if (modal) modal.classList.add('hidden'); }
+
+  document.querySelectorAll('.game-cell-clickable, .drilldown-row').forEach(function(el) {
+    el.addEventListener('click', openMockup);
+  });
+  document.querySelectorAll('.chip-clickable').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var term = el.getAttribute('data-term');
+      var def = DEFINITIONS[term];
+      if (def) openModalWith(def.title, def.body);
+    });
+  });
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (modal) modal.addEventListener('click', function(e) {
+    if (e.target === modal) closeModal();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+})();
+</script>
 
 </body>
 </html>
