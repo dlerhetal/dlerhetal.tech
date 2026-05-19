@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Game — dlerhetal.tech</title>
+<meta name="description" content="A monthly scoreboard for trade shops. Set your Wall, Game, Goal, and working days, then watch the daily tick. Fake data demo — no shop connection required.">
+<link rel="icon" type="image/svg+xml" href="/brand/claude/favicon/favicon-source.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/brand/claude/favicon/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/brand/claude/favicon/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/claude/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/brand/claude/favicon/site.webmanifest">
+<meta name="theme-color" content="#1A3C6E">
+<style>
+  :root {
+    --base: #E6E9EE;
+    --surface: #F2F4F7;
+    --paper: #FFFFFF;
+    --navy: #1A3C6E;
+    --navy-dark: #0F2748;
+    --lava: #CF2A27;
+    --lava-dark: #A11F1C;
+    --lava-soft: rgba(207, 42, 39, 0.08);
+    --lava-soft2: rgba(207, 42, 39, 0.16);
+    --olive: #556B2F;
+    --olive-dark: #3F5022;
+    --olive-soft: rgba(85, 107, 47, 0.10);
+    --text: #14213D;
+    --muted: #5B6777;
+    --border: rgba(26, 60, 110, 0.22);
+    --border-soft: rgba(26, 60, 110, 0.12);
+    --radius: 6px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--base);
+    color: var(--text);
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--lava); text-decoration: none; }
+  a:hover { color: var(--lava-dark); text-decoration: underline; }
+
+  /* -------- NAV (matches site) -------- */
+  nav.topbar { background: var(--navy); color: white; border-bottom: 3px solid var(--olive); }
+  .topbar-inner {
+    max-width: 1180px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .topbar .brand { font-weight: 700; font-size: 17px; color: white; }
+  .topbar .brand:hover { color: white; text-decoration: none; }
+  .topbar .brand .dot { color: var(--lava); }
+  .topbar ul { list-style: none; display: flex; gap: 22px; margin: 0; padding: 0; }
+  .topbar ul a { color: rgba(255,255,255,0.82); font-weight: 600; font-size: 14px; }
+  .topbar ul a:hover { color: white; text-decoration: none; }
+  .topbar ul a.active { color: white; border-bottom: 2px solid var(--lava); padding-bottom: 2px; }
+
+  main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 36px 24px 80px;
+  }
+
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--olive);
+    margin: 0 0 12px 0; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  h1 { margin: 0 0 6px 0; font-size: 26px; font-weight: 700; color: var(--navy); }
+  .lede { margin: 0 0 28px 0; color: var(--muted); font-size: 15px; max-width: 760px; }
+
+  /* -------- SETUP VIEW -------- */
+  .setup-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 28px;
+    align-items: start;
+  }
+  @media (max-width: 760px) { .setup-grid { grid-template-columns: 1fr; } }
+
+  .setup-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--lava);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+  }
+  .setup-card h2 { margin: 0 0 4px 0; font-size: 18px; color: var(--navy); }
+  .setup-card .sub { color: var(--muted); font-size: 13px; margin: 0 0 18px 0; }
+
+  .field-row { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 12px; }
+  .field { flex: 1 1 calc(50% - 7px); display: flex; flex-direction: column; min-width: 160px; }
+  .field.full { flex-basis: 100%; }
+  .field label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--navy); margin-bottom: 6px;
+  }
+  .field label .hint { font-weight: 500; text-transform: none; letter-spacing: 0; color: var(--muted); font-size: 11px; margin-left: 6px; }
+  .field .ipwrap { position: relative; }
+  .field .ipwrap .pfx {
+    position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    color: var(--muted); font-weight: 700; font-size: 14px; pointer-events: none;
+  }
+  .field input[type="number"], .field input[type="text"] {
+    width: 100%; padding: 9px 12px;
+    border: 1px solid var(--border); border-radius: 4px;
+    font-family: inherit; font-size: 15px; color: var(--text);
+    background: var(--surface);
+    font-variant-numeric: tabular-nums;
+  }
+  .field input.with-prefix { padding-left: 24px; }
+  .field input:focus { outline: 2px solid var(--lava); outline-offset: -1px; border-color: var(--lava); background: var(--paper); }
+
+  .preview-line {
+    background: var(--olive-soft);
+    border-left: 3px solid var(--olive);
+    padding: 10px 14px;
+    border-radius: 0 3px 3px 0;
+    margin: 16px 0 18px 0;
+    font-size: 13.5px;
+    color: var(--text);
+  }
+  .preview-line .num { color: var(--olive-dark); font-weight: 800; font-variant-numeric: tabular-nums; }
+  .preview-line.invalid { background: rgba(207,42,39,0.06); border-left-color: var(--lava); color: var(--lava-dark); }
+
+  .start-btn {
+    display: inline-block;
+    background: var(--lava); color: white;
+    border: none; padding: 11px 22px;
+    font-family: inherit; font-size: 15px; font-weight: 700;
+    letter-spacing: 0.02em; border-radius: 4px;
+    cursor: pointer; transition: background .15s;
+  }
+  .start-btn:hover { background: var(--lava-dark); }
+  .start-btn:disabled { background: var(--muted); cursor: not-allowed; }
+
+  .explain {
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    font-size: 13.5px;
+  }
+  .explain h3 { margin: 0 0 10px 0; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--olive); }
+  .explain dl { margin: 0; }
+  .explain dt { font-weight: 700; color: var(--navy); margin-top: 10px; }
+  .explain dt:first-child { margin-top: 0; }
+  .explain dd { margin: 2px 0 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+
+  /* -------- PLAY VIEW -------- */
+  .play-header {
+    background: var(--navy);
+    color: white;
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+    margin-bottom: 18px;
+    border-top: 4px solid var(--lava);
+  }
+  .play-header h2 { margin: 0; font-size: 18px; font-weight: 700; }
+  .play-header .shop-chip {
+    display: inline-block; margin-left: 10px;
+    background: rgba(255,255,255,0.14);
+    color: white; padding: 3px 10px; border-radius: 12px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.02em;
+  }
+  .play-header .day-pill {
+    background: var(--olive); color: white;
+    padding: 4px 12px; border-radius: 14px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+  }
+  .play-header .reset-link {
+    color: white; opacity: 0.85; font-size: 13px; font-weight: 600;
+    border-bottom: 1px dotted rgba(255,255,255,0.5);
+  }
+  .play-header .reset-link:hover { opacity: 1; text-decoration: none; }
+
+  .viz {
+    display: grid;
+    grid-template-columns: 240px 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 920px) { .viz { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: 0 1px 2px rgba(20, 33, 61, 0.04);
+    display: flex; flex-direction: column;
+  }
+  .panel h3 {
+    margin: 0 0 8px 0;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--navy);
+  }
+  .panel .panel-foot {
+    font-size: 11px; color: var(--muted);
+    text-align: center; margin-top: 6px;
+  }
+  .panel .panel-foot .val { color: var(--text); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .panel .panel-foot .ok { color: var(--olive-dark); font-weight: 700; }
+  .panel .panel-foot .over { color: var(--lava-dark); font-weight: 700; }
+
+  .thermo svg, .gauge svg { display: block; margin: 0 auto; }
+
+  .goals {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 760px) { .goals { grid-template-columns: repeat(2, 1fr); } }
+  .goal-card {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-top: 4px solid var(--navy);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    text-align: center;
+  }
+  .goal-card.wall { border-top-color: var(--lava); }
+  .goal-card.game { border-top-color: var(--olive); }
+  .goal-card.goal { border-top-color: var(--olive); }
+  .goal-card.steps { border-top-color: var(--navy); }
+  .goal-card .lbl {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 4px;
+  }
+  .goal-card .val {
+    font-size: 24px; font-weight: 800; color: var(--navy);
+    font-variant-numeric: tabular-nums; line-height: 1.1;
+  }
+  .goal-card .sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  /* -------- SCOREBOARD -------- */
+  .scoreboard {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(20, 33, 61, 0.04);
+  }
+  .scoreboard-head {
+    background: var(--navy);
+    color: white;
+    padding: 10px 16px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .scoreboard-head h3 { margin: 0; font-size: 14px; font-weight: 700; }
+  .scoreboard-head .hint { font-size: 11px; opacity: 0.8; }
+
+  table.score {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  table.score thead th {
+    background: var(--surface);
+    text-align: right; padding: 9px 12px;
+    font-size: 10.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  table.score thead th:first-child { text-align: left; }
+  table.score tbody td {
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--border-soft);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  table.score tbody td:first-child { text-align: left; font-weight: 700; color: var(--navy); }
+  table.score tbody tr.window-mtd td { background: var(--surface); font-weight: 600; }
+  table.score tbody tr.window-mtd td:first-child { color: var(--navy-dark); }
+
+  table.score tbody td .drill-cell {
+    cursor: pointer;
+    color: var(--navy);
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border-bottom: 1px dotted var(--navy);
+  }
+  table.score tbody td .drill-cell:hover { background: var(--lava-soft); color: var(--lava-dark); border-bottom-color: var(--lava); }
+  table.score tbody td .drill-cell.open { background: var(--lava-soft2); color: var(--lava-dark); border-bottom-color: transparent; }
+  table.score tbody td .drill-cell.gp { color: var(--olive-dark); border-bottom-color: var(--olive); }
+  table.score tbody td .drill-cell.gp:hover { background: var(--lava-soft); color: var(--lava-dark); border-bottom-color: var(--lava); }
+  .snap { color: var(--muted); font-weight: 500; font-style: italic; }
+
+  tr.drawer-wrap { display: none; }
+  tr.drawer-wrap.open { display: table-row; }
+  tr.drawer-wrap td {
+    padding: 0;
+    background: var(--lava-soft);
+    border-bottom: 2px solid var(--lava);
+  }
+  .drawer {
+    padding: 16px 18px;
+  }
+  .drawer .drawer-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 10px;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .drawer .drawer-head h4 {
+    margin: 0; font-size: 14px; color: var(--navy);
+    font-weight: 700;
+  }
+  .drawer .drawer-head .summary {
+    font-size: 12px; color: var(--muted);
+  }
+  .drawer .drawer-head .summary b { color: var(--text); }
+
+  table.drill {
+    width: 100%; border-collapse: collapse;
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    font-size: 12.5px;
+    overflow: hidden;
+  }
+  table.drill thead th {
+    background: var(--surface);
+    padding: 7px 10px;
+    text-align: left;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  table.drill thead th.r { text-align: right; }
+  table.drill tbody td {
+    padding: 6px 10px;
+    border-top: 1px solid var(--border-soft);
+    vertical-align: middle;
+  }
+  table.drill tbody td.r { text-align: right; font-variant-numeric: tabular-nums; }
+  table.drill tbody tr:nth-child(even) td { background: rgba(26,60,110,0.025); }
+  table.drill tfoot td {
+    padding: 7px 10px;
+    border-top: 2px solid var(--navy);
+    background: var(--surface);
+    font-weight: 800; color: var(--navy);
+    font-variant-numeric: tabular-nums;
+  }
+  table.drill tfoot td.r { text-align: right; }
+
+  .pill {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 10px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .pill.sold { background: var(--olive-soft); color: var(--olive-dark); }
+  .pill.unsold { background: rgba(20,33,61,0.08); color: var(--muted); }
+  .pill.noshow { background: var(--lava-soft); color: var(--lava-dark); }
+  .pill.booked { background: rgba(26,60,110,0.10); color: var(--navy); }
+  .pill.ran { background: rgba(26,60,110,0.18); color: var(--navy-dark); }
+  .pill.scheduled { background: rgba(26,60,110,0.12); color: var(--navy); }
+  .pill.completed { background: var(--olive-soft); color: var(--olive-dark); }
+  .pill.aging-1 { background: rgba(255,205,0,0.18); color: #7A5D00; }
+  .pill.aging-2 { background: var(--lava-soft); color: var(--lava-dark); }
+
+  .gp-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .gp-summary .gp-card {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-left: 3px solid var(--olive);
+    padding: 10px 12px;
+    border-radius: 3px;
+  }
+  .gp-summary .gp-card .k { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .gp-summary .gp-card .v { font-size: 18px; font-weight: 800; color: var(--olive-dark); font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .gp-summary .gp-card .s { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* -------- FOOTER -------- */
+  footer {
+    max-width: 1180px; margin: 0 auto; padding: 24px 24px 0;
+    border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--muted);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  footer a { color: var(--navy); font-weight: 600; }
+  footer a:hover { color: var(--lava); text-decoration: none; }
+
+  @media (max-width: 560px) {
+    .topbar-inner { padding: 12px 18px; }
+    .topbar ul { gap: 14px; }
+    main { padding: 24px 16px 60px; }
+    h1 { font-size: 22px; }
+    table.score { font-size: 12.5px; }
+    table.score tbody td { padding: 8px 6px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="brand">dlerhetal<span class="dot">.</span>tech</a>
+    <ul>
+      <li><a href="/">Tools</a></li>
+      <li><a href="/tutorials/">Tutorials</a></li>
+      <li><a href="/setup/">Setup</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+  <p class="section-label">Tools</p>
+  <h1>The Game</h1>
+  <p class="lede">A monthly scoreboard for trade shops. Set your <b>Wall</b>, <b>Game</b>, and <b>Goal</b>, tell me your working days, and watch the daily tick. The data here is fake &mdash; this is a demo of what a shop dashboard looks like when it's set up to play the game.</p>
+
+  <!-- ===================== SETUP VIEW ===================== -->
+  <section id="setup-view">
+    <div class="setup-grid">
+
+      <div class="setup-card">
+        <h2>Set up your game</h2>
+        <p class="sub">Four numbers and a name. Nothing leaves your browser.</p>
+
+        <div class="field-row">
+          <div class="field full">
+            <label for="f-name">Shop name <span class="hint">shown in the header</span></label>
+            <input id="f-name" type="text" placeholder="Acme HVAC" maxlength="48">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="f-wall">Wall <span class="hint">overhead / month</span></label>
+            <div class="ipwrap">
+              <span class="pfx">$</span>
+              <input id="f-wall" type="number" class="with-prefix" placeholder="80000" min="0" step="1000">
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-game">Game <span class="hint">profit to win</span></label>
+            <div class="ipwrap">
+              <span class="pfx">$</span>
+              <input id="f-game" type="number" class="with-prefix" placeholder="20000" min="0" step="1000">
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="f-goal">Goal <span class="hint">stretch on top</span></label>
+            <div class="ipwrap">
+              <span class="pfx">$</span>
+              <input id="f-goal" type="number" class="with-prefix" placeholder="20000" min="0" step="1000">
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-days">Working days <span class="hint">this month</span></label>
+            <input id="f-days" type="number" placeholder="22" min="1" max="31" step="1">
+          </div>
+        </div>
+
+        <div id="preview-line" class="preview-line">
+          Fill in the numbers to see your daily tick.
+        </div>
+
+        <button id="start-btn" class="start-btn" type="button" disabled>Start the Game</button>
+      </div>
+
+      <aside class="explain">
+        <h3>What these mean</h3>
+        <dl>
+          <dt>Wall</dt>
+          <dd>The bills you have to pay every month no matter what. Rent, payroll, trucks, insurance. The wall you have to clear before you've made a dollar.</dd>
+          <dt>Game</dt>
+          <dd>The profit you've decided is the floor. Win that and you've won the month.</dd>
+          <dt>Goal</dt>
+          <dd>What you actually want on top of winning. The stretch.</dd>
+          <dt>Steps</dt>
+          <dd>Wall + Game + Goal, divided by your working days. The daily tick. Hit it every day and you cross the finish line.</dd>
+        </dl>
+      </aside>
+
+    </div>
+  </section>
+
+  <!-- ===================== PLAY VIEW ===================== -->
+  <section id="play-view" hidden>
+
+    <div class="play-header">
+      <div>
+        <h2>The Game<span id="shop-chip" class="shop-chip" hidden></span></h2>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px;">
+        <span id="day-pill" class="day-pill">Day &mdash;</span>
+        <a id="reset-link" class="reset-link" href="#">Reset &amp; set up again</a>
+      </div>
+    </div>
+
+    <div class="viz">
+      <div class="panel thermo">
+        <h3>Profit Thermometer</h3>
+        <div id="thermo"></div>
+        <div class="panel-foot" id="thermoFoot">&mdash;</div>
+      </div>
+      <div class="panel gauge">
+        <h3>Labor % of Revenue</h3>
+        <div id="gaugeLabor"></div>
+        <div class="panel-foot" id="gaugeLaborFoot">&mdash;</div>
+      </div>
+      <div class="panel gauge">
+        <h3>Material % of Revenue</h3>
+        <div id="gaugeMaterial"></div>
+        <div class="panel-foot" id="gaugeMaterialFoot">&mdash;</div>
+      </div>
+    </div>
+
+    <div class="goals">
+      <div class="goal-card wall">
+        <div class="lbl">Wall</div>
+        <div class="val" id="g-wall">&mdash;</div>
+        <div class="sub" id="g-wall-sub">&mdash;</div>
+      </div>
+      <div class="goal-card game">
+        <div class="lbl">Game</div>
+        <div class="val" id="g-game">&mdash;</div>
+        <div class="sub" id="g-game-sub">&mdash;</div>
+      </div>
+      <div class="goal-card goal">
+        <div class="lbl">Goal</div>
+        <div class="val" id="g-goal">&mdash;</div>
+        <div class="sub" id="g-goal-sub">&mdash;</div>
+      </div>
+      <div class="goal-card steps">
+        <div class="lbl">Steps &middot; Daily Tick</div>
+        <div class="val" id="g-tick">&mdash;</div>
+        <div class="sub" id="g-tick-sub">&mdash;</div>
+      </div>
+    </div>
+
+    <div class="scoreboard">
+      <div class="scoreboard-head">
+        <h3>Where are we</h3>
+        <span class="hint">click any number to drill</span>
+      </div>
+      <table class="score" id="scoreboard-table">
+        <thead>
+          <tr>
+            <th>Window</th>
+            <th class="r">Leads</th>
+            <th class="r">Sold</th>
+            <th class="r">Scheduled</th>
+            <th class="r">Completed</th>
+            <th class="r">Collected</th>
+            <th class="r">AR</th>
+            <th class="r">GP $</th>
+          </tr>
+        </thead>
+        <tbody id="scoreboard-body"></tbody>
+      </table>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <span>Dale Linn</span>
+  <span><a href="https://github.com/dlerhetal">github</a> &nbsp;&middot;&nbsp; <a href="mailto:dale@linn.net">email</a></span>
+</footer>
+
+<script>
+'use strict';
+
+/* ============================================================
+   THE GAME — generic demo
+   - Setup view captures Wall / Game / Goal / Working days / Shop name
+   - Start the Game seeds a deterministic fake-data world
+   - Play view renders thermometer, gauges, goal cards, scoreboard
+   - Scoreboard cells are drillable to fake line-item detail
+   - State persists in localStorage; Reset wipes it
+   ============================================================ */
+
+const STORAGE_KEY = 'dlerhetal.thegame.v1';
+
+/* ---------- helpers ---------- */
+const fmtMoney = (n) => {
+  if (n == null || isNaN(n)) return '$0';
+  const sign = n < 0 ? '-' : '';
+  const v = Math.abs(Math.round(n));
+  return sign + '$' + v.toLocaleString('en-US');
+};
+const fmtMoneyK = (n) => {
+  if (n == null || isNaN(n)) return '$0';
+  const v = Math.round(n);
+  if (Math.abs(v) >= 10000) return '$' + Math.round(v/1000) + 'k';
+  return '$' + v.toLocaleString('en-US');
+};
+const fmtPct = (n, dp=1) => (n == null || isNaN(n)) ? '—' : (n.toFixed(dp) + '%');
+const fmtInt = (n) => (n == null || isNaN(n)) ? '0' : Math.round(n).toLocaleString('en-US');
+const escapeHTML = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* deterministic seeded RNG (mulberry32) */
+function makeRng(seedStr) {
+  let h = 1779033703 ^ seedStr.length;
+  for (let i = 0; i < seedStr.length; i++) {
+    h = Math.imul(h ^ seedStr.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  let s = h >>> 0;
+  return function() {
+    s |= 0; s = s + 0x6D2B79F5 | 0;
+    let t = Math.imul(s ^ s >>> 15, 1 | s);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function pick(rng, arr) { return arr[Math.floor(rng() * arr.length)]; }
+function rand(rng, lo, hi) { return lo + rng() * (hi - lo); }
+function randInt(rng, lo, hi) { return Math.floor(rand(rng, lo, hi + 1)); }
+
+/* ---------- fake data pools ---------- */
+const FIRST_NAMES = ['Mike','Sarah','Carlos','Jen','Tom','Lisa','Pat','Ramon','Diane','Kevin','Maria','Doug','Erin','Hank','Vanessa','Bryan','Chloe','Marcus','Tasha','Owen','Iris','Devon','Megan','Cole','Anita','Hector','Sloane','Jamal','Riley','Nina','Tara','Quincy'];
+const LAST_NAMES = ['Mendez','Albright','Carter','Patel','O\'Connell','Brooks','Vega','Sutherland','Lin','Cisneros','Henson','Boucher','Riggs','Mancuso','Whitaker','Tran','Donovan','Reyes','Faulkner','Hwang','Petrov','Mosley','Garrett','Beaumont','Park','Quintero','McNair','Saunders','Cole','Frasier'];
+const SERVICES = [
+  { name:'Service call diagnostic',  lo:  150, hi:  320, gm: 0.78, kind: 'service' },
+  { name:'Capacitor replacement',    lo:  280, hi:  480, gm: 0.68, kind: 'service' },
+  { name:'Refrigerant recharge',     lo:  420, hi:  860, gm: 0.55, kind: 'service' },
+  { name:'Blower motor replacement', lo:  680, hi: 1280, gm: 0.52, kind: 'service' },
+  { name:'Compressor replacement',   lo: 1800, hi: 3200, gm: 0.42, kind: 'repair'  },
+  { name:'Heat exchanger',           lo: 1400, hi: 2400, gm: 0.45, kind: 'repair'  },
+  { name:'Coil replacement',         lo: 1200, hi: 2400, gm: 0.46, kind: 'repair'  },
+  { name:'Furnace install',          lo: 4600, hi: 7800, gm: 0.40, kind: 'install' },
+  { name:'AC condenser install',     lo: 5200, hi: 8800, gm: 0.40, kind: 'install' },
+  { name:'Full system replacement',  lo: 9800, hi:16500, gm: 0.38, kind: 'install' },
+  { name:'Mini-split install',       lo: 4400, hi: 7200, gm: 0.42, kind: 'install' },
+  { name:'Maintenance tune-up',      lo:  140, hi:  220, gm: 0.65, kind: 'service' },
+  { name:'Thermostat install',       lo:  320, hi:  580, gm: 0.62, kind: 'service' },
+  { name:'Duct sealing',             lo:  840, hi: 1850, gm: 0.55, kind: 'repair'  },
+];
+const LEAD_SOURCES = ['Google','Repeat','Referral','Yelp','Facebook','Truck signage','Door hanger','BNI'];
+const LEAD_STATUS  = [
+  { label:'Booked',     cls:'booked',   rate: 0.18 },
+  { label:'Ran · sold', cls:'sold',     rate: 0.42 },
+  { label:'Ran · unsold', cls:'unsold', rate: 0.22 },
+  { label:'No show',    cls:'noshow',   rate: 0.08 },
+  { label:'Pending',    cls:'booked',   rate: 0.10 },
+];
+
+/* ---------- world generation ----------
+   Given config + a sense of "day N of D working days", generate:
+   - Per-window (today, week, mtd) sets of leads, sold jobs, scheduled jobs, completed invoices, collected payments
+   - AR added per window (sum of unpaid balances on completed jobs in that window)
+   - Labor% and Material% (rolled across the month)
+*/
+function buildWorld(cfg) {
+  const rng = makeRng(`${cfg.shopName}|${cfg.wall}|${cfg.game}|${cfg.goal}|${cfg.days}`);
+  const totalGPTarget = cfg.wall + cfg.game + cfg.goal;
+  // Assumed blended gross margin so we can derive revenue from GP.
+  const blendedGM = rand(rng, 0.46, 0.54);
+  const monthlyRevTarget = totalGPTarget / blendedGM;
+
+  // How far through the month are we? Use today's calendar to pick a working-day index.
+  const today = new Date();
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate();
+  const monthProgress = Math.min(1, today.getDate() / daysInMonth);
+  // Working-day index, but at least 1, at most cfg.days
+  let dayN = Math.max(1, Math.min(cfg.days, Math.round(monthProgress * cfg.days)));
+  // For a fresh "start the game" we want progress to look real but not done — clamp 0.25..0.85
+  const progress = Math.max(0.25, Math.min(0.85, dayN / cfg.days));
+  dayN = Math.max(1, Math.round(progress * cfg.days));
+
+  // Headline MTD targets (jitter slightly so things don't look canned).
+  // These are the generator's targets — actual rolled-up totals come from the master lists.
+  const paceJ = rand(rng, 0.88, 1.08);
+  const mtdRev       = monthlyRevTarget * progress * paceJ;
+  const mtdSold      = mtdRev * rand(rng, 1.06, 1.22); // sold a bit ahead of completed (backlog)
+  const mtdScheduled = mtdRev * rand(rng, 0.55, 0.78); // some sold work is on the calendar
+  const mtdCompleted = mtdRev;
+  const collectRate  = rand(rng, 0.82, 0.92);
+  const mtdCollected = mtdCompleted * collectRate;
+
+  // Avg ticket lands around the service / install blend
+  const avgTicket = rand(rng, 1600, 2400);
+  const closeRate = rand(rng, 0.36, 0.50);
+  const mtdLeads = Math.round((mtdSold / avgTicket) / closeRate);
+
+  // Build MTD master lists. Every line item gets a dayIndex in 1..dayN.
+  // Today / Week / MTD are filtered subsets of those master lists, so the
+  // totals roll up cleanly: Today ⊆ Week ⊆ MTD, every category, every column.
+  function genMTDLeads(targetCount) {
+    const out = [];
+    for (let i = 0; i < targetCount; i++) {
+      const r = rng();
+      let cum = 0, status = LEAD_STATUS[LEAD_STATUS.length-1];
+      for (const s of LEAD_STATUS) { cum += s.rate; if (r < cum) { status = s; break; } }
+      const service = pick(rng, SERVICES);
+      const ticket = status.label.startsWith('Ran · sold')
+        ? Math.round(rand(rng, service.lo, service.hi))
+        : 0;
+      out.push({
+        name: pick(rng, FIRST_NAMES) + ' ' + pick(rng, LAST_NAMES),
+        source: pick(rng, LEAD_SOURCES),
+        service: service.name,
+        status, ticket,
+        dayIndex: randInt(rng, 1, dayN),
+      });
+    }
+    return out;
+  }
+
+  function genMTDJobs(targetTotal, attachCollection) {
+    const out = [];
+    let total = 0, guard = 0;
+    while (total < targetTotal && guard < 1500) {
+      guard++;
+      const s = pick(rng, SERVICES);
+      const amt = Math.round(rand(rng, s.lo, s.hi));
+      if (total + amt > targetTotal * 1.05) continue;
+      const job = {
+        name: pick(rng, FIRST_NAMES) + ' ' + pick(rng, LAST_NAMES),
+        service: s.name,
+        amount: amt,
+        gp: Math.round(amt * s.gm),
+        invoice: '#' + (10000 + randInt(rng, 0, 8999)),
+        dayIndex: randInt(rng, 1, dayN),
+      };
+      // ~80% paid in full at job · ~15% partial · ~5% unpaid → the rest becomes AR.
+      if (attachCollection) {
+        const r = rng();
+        if (r < 0.80) {
+          job.collectedAtJob = amt; job.arBalance = 0; job.payStatus = 'paid';
+        } else if (r < 0.95) {
+          const partial = Math.round(amt * rand(rng, 0.30, 0.70));
+          job.collectedAtJob = partial; job.arBalance = amt - partial; job.payStatus = 'partial';
+        } else {
+          job.collectedAtJob = 0; job.arBalance = amt; job.payStatus = 'unpaid';
+        }
+      }
+      out.push(job);
+      total += amt;
+    }
+    return out;
+  }
+
+  function genMTDPayments(targetTotal) {
+    const out = [];
+    let total = 0, guard = 0;
+    const types = ['ACH', 'Card', 'Check', 'Card', 'ACH'];
+    while (total < targetTotal && guard < 1500) {
+      guard++;
+      const amt = Math.round(rand(rng, 280, 6200));
+      if (total + amt > targetTotal * 1.05) continue;
+      out.push({
+        name: pick(rng, FIRST_NAMES) + ' ' + pick(rng, LAST_NAMES),
+        method: pick(rng, types),
+        amount: amt,
+        dayIndex: randInt(rng, 1, dayN),
+      });
+      total += amt;
+    }
+    return out;
+  }
+
+  const masterLeads     = genMTDLeads(mtdLeads);
+  const masterSold      = genMTDJobs(mtdSold, false);
+  const masterScheduled = genMTDJobs(mtdScheduled, false);
+  const masterCompleted = genMTDJobs(mtdCompleted, true);
+  const masterPayments  = genMTDPayments(mtdCollected);
+
+  // Mid-month labor/material as ratios. Labor target 23%, Material target 39%.
+  const laborPct    = rand(rng, 19, 27);
+  const materialPct = rand(rng, 35, 43);
+
+  // Window predicates. Today = last working day. Week = last 5 (clamped). MTD = everything.
+  const weekStart = Math.max(1, dayN - 4);
+  const isToday = j => j.dayIndex === dayN;
+  const isWeek  = j => j.dayIndex >= weekStart;
+  const isMTD   = () => true;
+
+  const sumAmount = list => list.reduce((s, j) => s + j.amount, 0);
+  const arFor = (completedItems) => {
+    const list = completedItems.filter(j => j.arBalance > 0);
+    return { list, total: list.reduce((s, j) => s + j.arBalance, 0) };
+  };
+
+  function buildWindow(pred) {
+    const leadList    = masterLeads.filter(pred);
+    const soldList    = masterSold.filter(pred);
+    const schedList   = masterScheduled.filter(pred);
+    const compList    = masterCompleted.filter(pred);
+    const collList    = masterPayments.filter(pred);
+    const ar          = arFor(compList);
+    const completedTotal = sumAmount(compList);
+    return {
+      leads: leadList.length, leadList,
+      sold: sumAmount(soldList), soldList,
+      scheduled: sumAmount(schedList), scheduledList: schedList,
+      completed: completedTotal, completedList: compList,
+      collected: sumAmount(collList), collectedList: collList,
+      ar: ar.total, arList: ar.list,
+      gp: completedTotal * blendedGM,
+    };
+  }
+
+  return {
+    config: cfg,
+    blendedGM,
+    dayN,
+    daysInMonth,
+    monthProgress: progress,
+    totalGPTarget,
+    monthlyRevTarget,
+    dailyTick: totalGPTarget / cfg.days,
+    proRataGP: (totalGPTarget / cfg.days) * dayN,
+    laborPct,
+    materialPct,
+    today: buildWindow(isToday),
+    week:  buildWindow(isWeek),
+    mtd:   buildWindow(isMTD),
+  };
+}
+
+/* ---------- SVG renders ---------- */
+function renderThermometer(targetEl, footEl, current, target, proRata) {
+  const W = 90, H = 240, bulbR = 28, barW = 26;
+  const barX = (W - barW) / 2;
+  const barTop = 18, barBottom = H - bulbR - 20;
+  const barH = barBottom - barTop;
+  const pct = Math.max(0, Math.min(1, current / target));
+  const proPct = Math.max(0, Math.min(1, proRata / target));
+  const fillH = barH * pct;
+  const fillY = barBottom - fillH;
+  const proY = barBottom - barH * proPct;
+
+  // tick marks at 25 / 50 / 75 / 100
+  const ticks = [0.25, 0.5, 0.75, 1].map(p => {
+    const y = barBottom - barH * p;
+    return `<line x1="${barX+barW+2}" y1="${y}" x2="${barX+barW+9}" y2="${y}" stroke="#5B6777" stroke-width="1.2"/>
+            <text x="${barX+barW+12}" y="${y+3}" font-size="9" fill="#5B6777" font-family="Inter, sans-serif">${(p*100)|0}%</text>`;
+  }).join('');
+
+  const svg = `
+    <svg viewBox="0 0 ${W+30} ${H+10}" width="120" height="240" role="img" aria-label="Profit thermometer">
+      <!-- outer outline -->
+      <rect x="${barX-2}" y="${barTop-2}" width="${barW+4}" height="${barH+4}" rx="${(barW+4)/2}" fill="#F2F4F7" stroke="#1A3C6E" stroke-width="1.5"/>
+      <circle cx="${W/2}" cy="${barBottom + bulbR - 4}" r="${bulbR}" fill="#F2F4F7" stroke="#1A3C6E" stroke-width="1.5"/>
+      <!-- mercury -->
+      <rect x="${barX}" y="${fillY}" width="${barW}" height="${fillH+10}" rx="${barW/2}" fill="#CF2A27"/>
+      <circle cx="${W/2}" cy="${barBottom + bulbR - 4}" r="${bulbR-3}" fill="#CF2A27"/>
+      <!-- pro-rata line -->
+      <line x1="${barX-6}" y1="${proY}" x2="${barX+barW+6}" y2="${proY}"
+            stroke="#556B2F" stroke-width="2" stroke-dasharray="4 3"/>
+      <text x="${barX-8}" y="${proY-4}" text-anchor="end" font-size="9" fill="#556B2F" font-weight="700" font-family="Inter, sans-serif">PACE</text>
+      ${ticks}
+    </svg>
+  `;
+  targetEl.innerHTML = svg;
+
+  const delta = current - proRata;
+  const deltaCls = delta >= 0 ? 'ok' : 'over';
+  const deltaTxt = (delta >= 0 ? '+' : '') + fmtMoneyK(delta);
+  footEl.innerHTML = `<span class="val">${fmtMoneyK(current)}</span> of ${fmtMoneyK(target)} &middot;
+                      <span class="${deltaCls}">${deltaTxt}</span> vs pace`;
+}
+
+function renderGauge(targetEl, footEl, label, value, targetPct) {
+  const W = 180, H = 110, cx = W/2, cy = H - 8, r = 78;
+  const lo = 0, hi = Math.max(targetPct * 1.8, 50);
+  const clamp = Math.max(lo, Math.min(hi, value));
+  const angle = Math.PI - (clamp - lo)/(hi - lo) * Math.PI;
+  const nx = cx + Math.cos(angle) * (r - 12);
+  const ny = cy - Math.sin(angle) * (r - 12);
+  // target tick
+  const tangle = Math.PI - (targetPct - lo)/(hi - lo) * Math.PI;
+  const tx1 = cx + Math.cos(tangle) * (r - 22);
+  const ty1 = cy - Math.sin(tangle) * (r - 22);
+  const tx2 = cx + Math.cos(tangle) * (r + 2);
+  const ty2 = cy - Math.sin(tangle) * (r + 2);
+
+  // arc path background (zone-coloured)
+  const arcPath = (a0, a1) => {
+    const x0 = cx + Math.cos(a0) * r;
+    const y0 = cy - Math.sin(a0) * r;
+    const x1 = cx + Math.cos(a1) * r;
+    const y1 = cy - Math.sin(a1) * r;
+    const large = (a0 - a1) > Math.PI ? 1 : 0;
+    return `M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}`;
+  };
+  // green zone: from start (left, angle=PI) up to target. red zone: target → right (angle=0).
+  const greenArc = arcPath(Math.PI, tangle);
+  const redArc   = arcPath(tangle, 0);
+
+  const isOver = value > targetPct;
+  const needleColor = isOver ? '#CF2A27' : '#556B2F';
+
+  const svg = `
+    <svg viewBox="0 0 ${W} ${H}" width="180" height="110" role="img" aria-label="${escapeHTML(label)} gauge">
+      <path d="${greenArc}" stroke="#556B2F" stroke-width="10" fill="none" stroke-linecap="butt" opacity="0.85"/>
+      <path d="${redArc}"   stroke="#CF2A27" stroke-width="10" fill="none" stroke-linecap="butt" opacity="0.85"/>
+      <line x1="${tx1}" y1="${ty1}" x2="${tx2}" y2="${ty2}" stroke="#14213D" stroke-width="2.2"/>
+      <text x="${tx2 + (tangle < Math.PI/2 ? 4 : -4)}" y="${ty2 - 4}"
+            text-anchor="${tangle < Math.PI/2 ? 'start' : 'end'}"
+            font-size="10" fill="#14213D" font-weight="700" font-family="Inter, sans-serif">
+        ${targetPct.toFixed(0)}%
+      </text>
+      <line x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}" stroke="${needleColor}" stroke-width="3.2" stroke-linecap="round"/>
+      <circle cx="${cx}" cy="${cy}" r="5" fill="${needleColor}"/>
+      <text x="${cx}" y="${cy - 22}" text-anchor="middle" font-size="20" font-weight="800" fill="#1A3C6E" font-family="Inter, sans-serif">
+        ${value.toFixed(1)}%
+      </text>
+    </svg>
+  `;
+  targetEl.innerHTML = svg;
+
+  const delta = value - targetPct;
+  const cls = delta <= 0 ? 'ok' : 'over';
+  const txt = (delta >= 0 ? '+' : '') + delta.toFixed(1) + ' pts';
+  footEl.innerHTML = `Target <span class="val">${targetPct.toFixed(0)}%</span> &middot;
+                      <span class="${cls}">${txt}</span>`;
+}
+
+/* ---------- scoreboard ---------- */
+const WINDOWS = [
+  { id: 'today', label: 'Today',              cls: 'window-today' },
+  { id: 'week',  label: 'This Week (last 5)', cls: 'window-week'  },
+  { id: 'mtd',   label: 'Month-to-date',      cls: 'window-mtd'   },
+];
+const COLUMNS = [
+  { id: 'leads',     label: 'Leads',     kind: 'count' },
+  { id: 'sold',      label: 'Sold',      kind: 'money' },
+  { id: 'scheduled', label: 'Scheduled', kind: 'money' },
+  { id: 'completed', label: 'Completed', kind: 'money' },
+  { id: 'collected', label: 'Collected', kind: 'money' },
+  { id: 'ar',        label: 'AR',        kind: 'money' },
+  { id: 'gp',        label: 'GP $',      kind: 'money', cls: 'gp' },
+];
+
+function cellValue(world, winId, col) {
+  return world[winId][col.id];
+}
+
+function renderScoreboard(world) {
+  const tbody = document.getElementById('scoreboard-body');
+  let html = '';
+  for (const w of WINDOWS) {
+    html += `<tr class="${w.cls}"><td>${escapeHTML(w.label)}</td>`;
+    for (const c of COLUMNS) {
+      const v = cellValue(world, w.id, c);
+      if (c.kind === 'count') {
+        html += `<td><span class="drill-cell" data-window="${w.id}" data-col="${c.id}">${fmtInt(v)}</span></td>`;
+      } else {
+        const extraCls = c.cls ? ' ' + c.cls : '';
+        html += `<td><span class="drill-cell${extraCls}" data-window="${w.id}" data-col="${c.id}">${fmtMoneyK(v)}</span></td>`;
+      }
+    }
+    html += '</tr>';
+    html += `<tr class="drawer-wrap" data-drawer="${w.id}"><td colspan="${1+COLUMNS.length}"><div class="drawer" id="drawer-${w.id}"></div></td></tr>`;
+  }
+  tbody.innerHTML = html;
+
+  tbody.querySelectorAll('.drill-cell').forEach(el => {
+    el.addEventListener('click', () => openDrill(world, el));
+  });
+}
+
+function openDrill(world, cellEl) {
+  const winId = cellEl.dataset.window;
+  const colId = cellEl.dataset.col;
+  const wrap = document.querySelector(`tr.drawer-wrap[data-drawer="${winId}"]`);
+  const drawer = document.getElementById(`drawer-${winId}`);
+
+  // close any other open drawers and clear their open cells
+  document.querySelectorAll('tr.drawer-wrap.open').forEach(r => {
+    if (r !== wrap) r.classList.remove('open');
+  });
+  document.querySelectorAll('.drill-cell.open').forEach(c => {
+    if (!(c.dataset.window === winId && c.dataset.col === colId)) c.classList.remove('open');
+  });
+
+  // toggle: if same cell clicked again, close
+  if (cellEl.classList.contains('open')) {
+    cellEl.classList.remove('open');
+    wrap.classList.remove('open');
+    drawer.innerHTML = '';
+    return;
+  }
+
+  cellEl.classList.add('open');
+  wrap.classList.add('open');
+  drawer.innerHTML = buildDrillHTML(world, winId, colId);
+}
+
+function buildDrillHTML(world, winId, colId) {
+  const winLabel = WINDOWS.find(w => w.id === winId).label;
+  const colLabel = COLUMNS.find(c => c.id === colId).label;
+  const data = world[winId];
+
+  if (colId === 'leads') {
+    const rows = data.leadList.map(L => `
+      <tr>
+        <td>${escapeHTML(L.name)}</td>
+        <td>${escapeHTML(L.source)}</td>
+        <td>${escapeHTML(L.service)}</td>
+        <td><span class="pill ${L.status.cls}">${escapeHTML(L.status.label)}</span></td>
+        <td class="r">${L.ticket ? fmtMoney(L.ticket) : '<span class="snap">—</span>'}</td>
+      </tr>`).join('');
+    const soldCount = data.leadList.filter(L => L.status.label.startsWith('Ran · sold')).length;
+    const closeRate = data.leadList.length ? (soldCount/data.leadList.length*100) : 0;
+    return `
+      <div class="drawer-head">
+        <h4>${escapeHTML(winLabel)} &middot; ${escapeHTML(colLabel)}</h4>
+        <div class="summary">${data.leadList.length} leads &middot; <b>${soldCount}</b> sold &middot; close rate <b>${closeRate.toFixed(0)}%</b></div>
+      </div>
+      <table class="drill">
+        <thead><tr><th>Customer</th><th>Source</th><th>Service</th><th>Status</th><th class="r">Ticket</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+  }
+
+  if (colId === 'sold' || colId === 'scheduled' || colId === 'completed') {
+    const listKey = colId + 'List';
+    const items = data[listKey];
+    const pillCls = colId === 'sold' ? 'sold' : (colId === 'scheduled' ? 'scheduled' : 'completed');
+    const rows = items.map(j => `
+      <tr>
+        <td>${escapeHTML(j.name)}</td>
+        <td>${escapeHTML(j.service)}</td>
+        <td><span class="pill ${pillCls}">${colId}</span></td>
+        <td class="r">${fmtMoney(j.amount)}</td>
+        <td class="r">${fmtMoney(j.gp)}</td>
+      </tr>`).join('');
+    const total = items.reduce((s,j) => s + j.amount, 0);
+    const totalGP = items.reduce((s,j) => s + j.gp, 0);
+    return `
+      <div class="drawer-head">
+        <h4>${escapeHTML(winLabel)} &middot; ${escapeHTML(colLabel)}</h4>
+        <div class="summary">${items.length} jobs &middot; avg ticket <b>${fmtMoney(total/Math.max(1,items.length))}</b></div>
+      </div>
+      <table class="drill">
+        <thead><tr><th>Customer</th><th>Service</th><th>Status</th><th class="r">Amount</th><th class="r">GP $</th></tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr><td colspan="3">Total</td><td class="r">${fmtMoney(total)}</td><td class="r">${fmtMoney(totalGP)}</td></tr></tfoot>
+      </table>`;
+  }
+
+  if (colId === 'collected') {
+    const items = data.collectedList;
+    const rows = items.map(p => `
+      <tr>
+        <td>${escapeHTML(p.name)}</td>
+        <td>${escapeHTML(p.method)}</td>
+        <td class="r">${fmtMoney(p.amount)}</td>
+      </tr>`).join('');
+    const total = items.reduce((s,p) => s + p.amount, 0);
+    return `
+      <div class="drawer-head">
+        <h4>${escapeHTML(winLabel)} &middot; ${escapeHTML(colLabel)}</h4>
+        <div class="summary">${items.length} payments &middot; total <b>${fmtMoney(total)}</b></div>
+      </div>
+      <table class="drill">
+        <thead><tr><th>Customer</th><th>Method</th><th class="r">Amount</th></tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr><td colspan="2">Total</td><td class="r">${fmtMoney(total)}</td></tr></tfoot>
+      </table>`;
+  }
+
+  if (colId === 'ar') {
+    const items = data.arList;
+    const partialPill = (st) => st === 'unpaid'
+      ? '<span class="pill aging-2">unpaid</span>'
+      : '<span class="pill aging-1">partial</span>';
+    const rows = items.map(j => `
+      <tr>
+        <td>${escapeHTML(j.invoice)}</td>
+        <td>${escapeHTML(j.name)}</td>
+        <td>${escapeHTML(j.service)}</td>
+        <td>${partialPill(j.payStatus)}</td>
+        <td class="r">${fmtMoney(j.amount)}</td>
+        <td class="r">${fmtMoney(j.collectedAtJob)}</td>
+        <td class="r" style="color:#A11F1C; font-weight:700;">${fmtMoney(j.arBalance)}</td>
+      </tr>`).join('');
+    const total = items.reduce((s, j) => s + j.arBalance, 0);
+    const summary = items.length
+      ? `${items.length} jobs left money on the table &middot; AR added <b>${fmtMoney(total)}</b>`
+      : `Every job in this window collected in full. Nothing hit AR.`;
+    if (!items.length) {
+      return `
+        <div class="drawer-head">
+          <h4>${escapeHTML(winLabel)} &middot; ${escapeHTML(colLabel)}</h4>
+        </div>
+        <div style="padding:12px 14px; background:var(--paper); border:1px solid var(--border-soft); border-radius:4px; color:var(--olive-dark); font-weight:600;">
+          Every job in this window collected in full. Nothing hit AR.
+        </div>`;
+    }
+    return `
+      <div class="drawer-head">
+        <h4>${escapeHTML(winLabel)} &middot; ${escapeHTML(colLabel)} &middot; who owes us</h4>
+        <div class="summary">${summary}</div>
+      </div>
+      <table class="drill">
+        <thead><tr>
+          <th>Invoice</th><th>Customer</th><th>Service</th><th>Status</th>
+          <th class="r">Billed</th><th class="r">Collected</th><th class="r">AR balance</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr><td colspan="6">Total AR from this window</td><td class="r">${fmtMoney(total)}</td></tr></tfoot>
+      </table>`;
+  }
+
+  if (colId === 'gp') {
+    const cfg = world.config;
+    const gp = data.gp;
+    const target = world.dailyTick * (winId === 'today' ? 1 : (winId === 'week' ? Math.min(world.dayN, 5) : world.dayN));
+    const delta = gp - target;
+    return `
+      <div class="drawer-head">
+        <h4>${escapeHTML(winLabel)} &middot; ${escapeHTML(colLabel)}</h4>
+        <div class="summary">GP = Completed &times; blended margin (<b>${(world.blendedGM*100).toFixed(0)}%</b>)</div>
+      </div>
+      <div class="gp-summary">
+        <div class="gp-card"><div class="k">GP this window</div><div class="v">${fmtMoney(gp)}</div></div>
+        <div class="gp-card"><div class="k">Tick target</div><div class="v">${fmtMoney(target)}</div><div class="s">${winId==='today'?'1 day':(winId==='week'?'5 days':world.dayN+' days')} &times; ${fmtMoney(world.dailyTick)}</div></div>
+        <div class="gp-card"><div class="k">Delta</div><div class="v" style="color:${delta>=0?'#3F5022':'#A11F1C'}">${(delta>=0?'+':'')}${fmtMoney(delta)}</div></div>
+        <div class="gp-card"><div class="k">Toward monthly</div><div class="v">${(gp/world.totalGPTarget*100).toFixed(1)}%</div><div class="s">of ${fmtMoneyK(world.totalGPTarget)}</div></div>
+      </div>`;
+  }
+
+  return '<div class="empty">No detail for this cell.</div>';
+}
+
+/* ---------- view switching ---------- */
+function showSetup() {
+  document.getElementById('setup-view').hidden = false;
+  document.getElementById('play-view').hidden = true;
+  // hydrate form from any prior config
+  const cfg = loadConfig();
+  if (cfg) {
+    document.getElementById('f-name').value = cfg.shopName || '';
+    document.getElementById('f-wall').value = cfg.wall || '';
+    document.getElementById('f-game').value = cfg.game || '';
+    document.getElementById('f-goal').value = cfg.goal || '';
+    document.getElementById('f-days').value = cfg.days || '';
+    updatePreview();
+  }
+}
+
+function showPlay(cfg) {
+  const world = buildWorld(cfg);
+
+  document.getElementById('setup-view').hidden = true;
+  document.getElementById('play-view').hidden = false;
+
+  const chip = document.getElementById('shop-chip');
+  if (cfg.shopName && cfg.shopName.trim()) {
+    chip.textContent = cfg.shopName.trim();
+    chip.hidden = false;
+  } else {
+    chip.hidden = true;
+  }
+  document.getElementById('day-pill').textContent = `Day ${world.dayN} of ${cfg.days}`;
+
+  // goal cards
+  document.getElementById('g-wall').textContent = fmtMoneyK(cfg.wall);
+  document.getElementById('g-wall-sub').textContent = `${fmtMoney(cfg.wall / cfg.days)}/day to clear`;
+  document.getElementById('g-game').textContent = fmtMoneyK(cfg.game);
+  document.getElementById('g-game-sub').textContent = `${fmtMoney(cfg.game / cfg.days)}/day to win`;
+  document.getElementById('g-goal').textContent = fmtMoneyK(cfg.goal);
+  document.getElementById('g-goal-sub').textContent = `${fmtMoney(cfg.goal / cfg.days)}/day stretch`;
+  document.getElementById('g-tick').textContent = fmtMoney(world.dailyTick);
+  document.getElementById('g-tick-sub').textContent = `${cfg.days} working days`;
+
+  // viz
+  renderThermometer(
+    document.getElementById('thermo'),
+    document.getElementById('thermoFoot'),
+    world.mtd.gp, world.totalGPTarget, world.proRataGP
+  );
+  renderGauge(
+    document.getElementById('gaugeLabor'),
+    document.getElementById('gaugeLaborFoot'),
+    'Labor', world.laborPct, 23
+  );
+  renderGauge(
+    document.getElementById('gaugeMaterial'),
+    document.getElementById('gaugeMaterialFoot'),
+    'Material', world.materialPct, 39
+  );
+
+  // scoreboard
+  renderScoreboard(world);
+}
+
+/* ---------- form handling ---------- */
+function readForm() {
+  return {
+    shopName: document.getElementById('f-name').value.trim(),
+    wall: parseFloat(document.getElementById('f-wall').value) || 0,
+    game: parseFloat(document.getElementById('f-game').value) || 0,
+    goal: parseFloat(document.getElementById('f-goal').value) || 0,
+    days: parseInt(document.getElementById('f-days').value, 10) || 0,
+  };
+}
+function updatePreview() {
+  const cfg = readForm();
+  const target = cfg.wall + cfg.game + cfg.goal;
+  const ok = cfg.wall > 0 && cfg.game >= 0 && cfg.goal >= 0 && cfg.days > 0;
+  const startBtn = document.getElementById('start-btn');
+  const line = document.getElementById('preview-line');
+  if (!ok) {
+    line.classList.add('invalid');
+    line.innerHTML = 'Fill in Wall, Game, Goal, and working days to see your daily tick.';
+    startBtn.disabled = true;
+    return;
+  }
+  line.classList.remove('invalid');
+  const tick = target / cfg.days;
+  line.innerHTML = `Monthly GP target <span class="num">${fmtMoney(target)}</span> &divide; <span class="num">${cfg.days}</span> working days
+                    = daily tick <span class="num">${fmtMoney(tick)}</span>`;
+  startBtn.disabled = false;
+}
+
+/* ---------- persistence ---------- */
+function saveConfig(cfg) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg)); } catch (e) { /* ignore */ }
+}
+function loadConfig() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const cfg = JSON.parse(raw);
+    if (cfg && cfg.wall > 0 && cfg.days > 0) return cfg;
+  } catch (e) {}
+  return null;
+}
+function clearConfig() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+}
+
+/* ---------- wire up ---------- */
+['f-name','f-wall','f-game','f-goal','f-days'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updatePreview);
+});
+
+document.getElementById('start-btn').addEventListener('click', () => {
+  const cfg = readForm();
+  if (!(cfg.wall > 0 && cfg.days > 0)) return;
+  saveConfig(cfg);
+  showPlay(cfg);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+document.getElementById('reset-link').addEventListener('click', (e) => {
+  e.preventDefault();
+  clearConfig();
+  showSetup();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* boot */
+const existing = loadConfig();
+if (existing) {
+  showPlay(existing);
+} else {
+  showSetup();
+}
+</script>
+
+</body>
+</html>
