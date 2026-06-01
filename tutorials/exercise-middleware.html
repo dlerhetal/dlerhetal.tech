@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude Code Tutorial — The Big One: QBO Bill Import Middleware</title>
+<title>Claude Code Tutorial — Exercise 3 of 3 (The Big One): QBO Bill Import Middleware</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -160,9 +160,9 @@
 
 <div class="content">
 
-<a class="prev-link" href="exercise-homework.html">&larr; Back to Exercise 2</a>
+<a class="prev-link" href="exercise-homework.html">&larr; Back to Exercise 2 of 3</a>
 
-<h1>The Big One: QBO Bill Import Middleware</h1>
+<h1>Exercise 3 of 3 &mdash; The Big One: QBO Bill Import Middleware</h1>
 <p class="subtitle">This is the graduation exercise. You're going to build a middleware application that connects to QuickBooks Online, authenticates via OAuth, and imports vendor bills through the API. If you finish this, you can build anything. Estimated time: 1.5&ndash;2 hours.</p>
 
 <div class="progress-bar-container">
@@ -218,7 +218,7 @@
       <input type="checkbox" id="s2-1">
       <label for="s2-1">Click the button below to download Python (get version 3.11 or newer)</label>
     </div>
-    <a class="download-btn" href="https://www.python.org/downloads/" target="_blank" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Download Python</a>
+    <a href="https://www.python.org/downloads/" target="_blank" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Download Python</a>
 
     <div class="warning-note">
       <strong>CRITICAL:</strong> On the very first screen of the installer, check the box that says <strong>"Add python.exe to PATH"</strong> at the bottom. This is the one checkbox you must not skip. If you miss it, nothing that follows will work.
@@ -258,11 +258,20 @@
   <div class="step-body">
     <p>To talk to QuickBooks through the API, you need a developer account with Intuit (the company that makes QBO). This is free and gives you a sandbox environment to play with.</p>
 
+    <div class="note">
+      <strong>Heads up on the portal layout:</strong> Intuit redesigns this developer site
+      often, so the exact button names and menu positions below may not match what you see.
+      The <em>concepts</em> don't change &mdash; you're creating an app, copying its Client ID
+      and Client Secret, adding a redirect URI, and finding your sandbox company. Hunt for
+      those ideas, and if a label looks different, tell Claude Code what's on your screen and
+      it'll orient you.
+    </div>
+
     <div class="substep" data-step="3-1">
       <input type="checkbox" id="s3-1">
       <label for="s3-1">Open the Intuit Developer portal (click the button below)</label>
     </div>
-    <a class="download-btn" href="https://developer.intuit.com/" target="_blank" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Open Intuit Developer Portal</a>
+    <a href="https://developer.intuit.com/" target="_blank" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Open Intuit Developer Portal</a>
 
     <div class="substep" data-step="3-2">
       <input type="checkbox" id="s3-2">
@@ -283,7 +292,7 @@
 
     <div class="substep" data-step="3-5">
       <input type="checkbox" id="s3-5">
-      <label for="s3-5">Select <strong>"QuickBooks Online and Payments"</strong> as the platform</label>
+      <label for="s3-5">When asked what you're building, pick the option that names <strong>QuickBooks Online Accounting</strong> (exact wording shifts &mdash; choose whatever covers QuickBooks Online, not a Payments-only option)</label>
     </div>
 
     <div class="substep" data-step="3-6">
@@ -293,7 +302,7 @@
 
     <div class="substep" data-step="3-7">
       <input type="checkbox" id="s3-7">
-      <label for="s3-7">Select the scopes/permissions: at minimum, check <strong>"Accounting"</strong> (this lets your app create bills)</label>
+      <label for="s3-7">Set the app's scope to <strong>Accounting</strong> (this lets it create bills). Depending on the portal version this is either in the create dialog or on the app's <strong>Keys &amp; OAuth</strong> screen afterward &mdash; if you don't see it now, you'll set it there in a moment</label>
     </div>
 
     <div class="substep" data-step="3-8">
@@ -302,7 +311,7 @@
     </div>
 
     <p><strong>Get your credentials:</strong></p>
-    <p>After creating the app, you'll be on the app's settings page. You need three things from here:</p>
+    <p>After creating the app, find the section called <strong>Keys &amp; OAuth</strong> (sometimes labeled "Keys &amp; credentials," or tucked under "Development Settings"). Look for those words rather than an exact button. You need three things from here:</p>
 
     <div class="substep" data-step="3-9">
       <input type="checkbox" id="s3-9">
@@ -323,7 +332,7 @@
 
     <div class="substep" data-step="3-11">
       <input type="checkbox" id="s3-11">
-      <label for="s3-11">Go to <strong>"Redirect URIs"</strong> in your app settings</label>
+      <label for="s3-11">On that same <strong>Keys &amp; OAuth</strong> screen, find the <strong>Redirect URIs</strong> box</label>
     </div>
 
     <div class="substep" data-step="3-12">
@@ -346,7 +355,7 @@
 
     <div class="substep" data-step="3-14">
       <input type="checkbox" id="s3-14">
-      <label for="s3-14">Click on <strong>"Sandbox"</strong> in the left sidebar of the developer portal</label>
+      <label for="s3-14">Find the <strong>Sandbox</strong> area of the portal (look under your account/profile menu, or a "Sandboxes" link near the top &mdash; Intuit has moved this around)</label>
     </div>
 
     <div class="substep" data-step="3-15">
@@ -472,8 +481,8 @@ QuickBooks Online. Here's what I need:
 ARCHITECTURE:
 - app.py as the main Flask app (port 5000)
 - Load credentials from .env using python-dotenv
-- Use the intuitlib and quickbooks-python libraries
-  for QBO integration
+- Use the intuit-oauth library (it imports as intuitlib)
+  and python-quickbooks for QBO integration
 - Store OAuth tokens in a local JSON file (tokens.json)
   so I don't have to re-authorize every time
 
@@ -505,7 +514,7 @@ OAUTH FLOW:
 
 REQUIREMENTS:
 - Install all Python packages needed (flask,
-  python-dotenv, intuitlib, python-quickbooks, etc.)
+  python-dotenv, intuit-oauth, python-quickbooks)
 - Create a requirements.txt
 - Clean, professional UI (use Bootstrap 5 for styling)
 - Error handling with user-friendly messages

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude Code Tutorial — Exercise 2: Client Homework Form</title>
+<title>Claude Code Tutorial — Exercise 2 of 3: Client Homework Form</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -165,9 +165,9 @@
 
 <div class="content">
 
-<a class="prev-link" href="exercise-eisenhower.html">&larr; Back to Exercise 1</a>
+<a class="prev-link" href="exercise-eisenhower.html">&larr; Back to Exercise 1 of 3</a>
 
-<h1>Exercise 2: Client Homework Form</h1>
+<h1>Exercise 2 of 3: Client Homework Form</h1>
 <p class="subtitle">Now you're connecting two systems: a form your clients fill out, and a Google backend that emails the answers to you. This is the bridge between "static page" and "real software." Estimated time: 45 minutes.</p>
 
 <div class="progress-bar-container">
@@ -218,6 +218,16 @@
   <div class="step-body">
     <p>Google Apps Script is Google's free automation tool. It runs JavaScript on Google's servers and can send emails, read spreadsheets, and respond to web requests. You're going to create a tiny script that does one thing: receive data from your form and email it to you.</p>
 
+    <div class="explain-box">
+      <strong>This is free &mdash; you don't need a "developer account."</strong> No credit card, no
+      Google Cloud, no billing setup. If you have a Gmail account, you already have everything
+      you need &mdash; Apps Script is part of every Google account, same as Docs and Sheets. (Don't
+      confuse it with <em>Google Cloud Platform</em>, the paid service people picture when they hear
+      "Google developer" &mdash; you never touch that here.) The only ceiling is a daily send limit:
+      about 100 emails a day on a free Gmail account, 1,500 on Google Workspace &mdash; far more than a
+      client intake form will ever use.
+    </div>
+
     <div class="note">
       <strong>You need a Gmail account for this.</strong> If you don't have one, go to <a href="https://accounts.google.com/signup" target="_blank" style="color: #b8860b;">accounts.google.com</a> and create one. It takes 2 minutes.
     </div>
@@ -226,7 +236,7 @@
       <input type="checkbox" id="s2-1">
       <label for="s2-1">Open Google Apps Script (click the button below)</label>
     </div>
-    <a class="download-btn" href="https://script.google.com/" target="_blank" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Open Google Apps Script</a>
+    <a href="https://script.google.com/" target="_blank" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Open Google Apps Script</a>
 
     <div class="substep" data-step="2-2">
       <input type="checkbox" id="s2-2">
@@ -296,7 +306,7 @@ function doGet(e) {
 
     <div class="substep" data-step="2-8">
       <input type="checkbox" id="s2-8">
-      <label for="s2-8">Click the gear icon next to "Select type" and choose <strong>"Web app"</strong></label>
+      <label for="s2-8">Click the gear/settings icon labeled "Select type" and choose <strong>"Web app"</strong> (if you don't see "Select type," look for a small gear or cog near the top of the deployment dialog)</label>
     </div>
 
     <div class="substep" data-step="2-9">
@@ -457,15 +467,35 @@ FEATURES:
 - A "Submit" button that sends the data to this Google
   Apps Script URL:
   PASTE_YOUR_WEB_APP_URL_HERE
-- The submit should POST a JSON body with:
+- The submit should POST the answers to that URL.
+  IMPORTANT: send the JSON as a plain-text body &mdash; call
+  fetch with just { method: "POST", body: JSON.stringify(...) }
+  and do NOT set a Content-Type header. A
+  Content-Type: application/json header triggers a CORS
+  preflight that Google Apps Script rejects, and the email
+  silently never sends. A plain-text body still parses fine
+  server-side (the script does JSON.parse(e.postData.contents)).
+- The JSON body should be shaped like:
   { clientName: "...", body: "formatted text of all
     answers" }
-- Show a success confirmation after sending
+- Treat a completed request as success and show an optimistic
+  confirmation; if fetch throws, show an error and point me at
+  the Download backup. Don't block the success message on
+  reading the response (it can't always be read cross-origin).
 - Also include a "Download as .txt" backup button
 - A status bar at the bottom showing save state
 
 Make it look professional enough that I'd be comfortable
 sending it to a real client.</div>
+
+    <div class="warning-note">
+      <strong>The #1 reason the email never arrives:</strong> if the form sends a
+      <code>Content-Type: application/json</code> header, the browser fires a CORS
+      preflight that Google Apps Script can't answer &mdash; and the submit fails with
+      no visible error. The prompt above tells Claude to avoid this by posting a
+      plain-text body. If your first test email doesn't show up, this is the first
+      thing to check.
+    </div>
 
     <div class="substep" data-step="4-4">
       <input type="checkbox" id="s4-4">
@@ -612,7 +642,7 @@ the success message with my name."</div>
     </div>
 
     <div class="success-note">
-      <strong>Exercise 2 complete.</strong> New skills unlocked:<br><br>
+      <strong>Exercise 2 of 3 complete.</strong> New skills unlocked:<br><br>
       <strong>Google Apps Script</strong> &mdash; free serverless backend for email, spreadsheets, and automation<br>
       <strong>Front-to-back communication</strong> &mdash; HTML form sends data to a backend via <code>fetch()</code><br>
       <strong>Deployment</strong> &mdash; you deployed a live web endpoint that anyone can send data to<br>
@@ -624,14 +654,14 @@ the success message with my name."</div>
 
 <!-- ==================== NEXT ==================== -->
 <div id="allDone" style="display:none; text-align:center; padding: 30px; background: #e8f5e9; border-radius: 12px; margin-top: 20px;">
-  <h2 style="color: #27ae60; margin-bottom: 8px;">Exercise 2 Complete!</h2>
+  <h2 style="color: #27ae60; margin-bottom: 8px;">Exercise 2 of 3 Complete!</h2>
   <p style="color: #555;">You connected a front end to a back end. That's the fundamental pattern of all middleware. Now you're ready for the real thing.</p>
 </div>
 
 <div class="next-page">
-  <h3>Next Up: The Big One</h3>
+  <h3>Next Up: Exercise 3 of 3 &mdash; The Big One</h3>
   <p>You're going to build a middleware that connects to QuickBooks Online's API and imports bills. This is real production-grade work &mdash; OAuth authentication, API calls, file uploads. If you can do this, you can build anything your clients need.</p>
-  <a href="exercise-middleware.html">Start The Big Task &rarr;</a>
+  <a href="exercise-middleware.html">Start Exercise 3 of 3 &rarr;</a>
 </div>
 
 <div style="text-align:center;">
