@@ -550,18 +550,68 @@
   </div>
 </div>
 
-<!-- ==================== SECTION 6: WAKE UP CLAUDE ==================== -->
+<!-- ==================== SECTION 6: VERSION CONTROL ==================== -->
 <div class="section" id="section6">
   <div class="section-header">
     <div class="step-number">6</div>
+    <div class="section-title">Put It Under Version Control</div>
+  </div>
+  <div class="step-body">
+    <p>Git is your undo button and a free offsite backup. Set it up once &mdash; from here on, you just tell Claude to handle the Git work.</p>
+
+    <div class="note"><strong>Install Git and the GitHub CLI</strong> in Command Prompt, then close and reopen it:</div>
+    <div class="cmd-block">
+      <span class="cmd-text">winget install --id Git.Git -e &amp;&amp; winget install --id GitHub.cli -e</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+    <div class="substep" data-step="6-1">
+      <input type="checkbox" id="s6-1">
+      <label for="s6-1">Installed Git and the GitHub CLI, then reopened Command Prompt</label>
+    </div>
+
+    <div class="substep" data-step="6-2">
+      <input type="checkbox" id="s6-2">
+      <label for="s6-2">Made a free account at <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a></label>
+    </div>
+
+    <div class="note"><strong>Connect to GitHub</strong> (once). Pick <strong>GitHub.com</strong> &rarr; <strong>HTTPS</strong> &rarr; <strong>Login with a web browser</strong>, then paste the one-time code it shows you:</div>
+    <div class="cmd-block">
+      <span class="cmd-text">gh auth login</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+    <div class="substep" data-step="6-3">
+      <input type="checkbox" id="s6-3">
+      <label for="s6-3">Ran <code>gh auth login</code> and authorized in the browser</label>
+    </div>
+
+    <p>Now let Claude do the rest. From inside a project, just say:</p>
+    <div class="cmd-block">
+      <span class="cmd-text">Put this project on GitHub as a private repository.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+    <div class="substep" data-step="6-4">
+      <input type="checkbox" id="s6-4">
+      <label for="s6-4">Claude created the repo &mdash; I refreshed GitHub and saw it there</label>
+    </div>
+
+    <div class="note"><strong>Private, not public</strong> for anything with client data or API keys &mdash; and never commit secrets. After any good chunk of work, tell Claude <em>"save my progress to GitHub."</em></div>
+
+    <div class="success-note">You've got a safety net now. Break something? "Claude, undo my last change." Lose your laptop? Your work is on GitHub.</div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 7: WAKE UP CLAUDE ==================== -->
+<div class="section" id="section7">
+  <div class="section-header">
+    <div class="step-number">7</div>
     <div class="section-title">Wake Up Claude for the First Time</div>
   </div>
   <div class="step-body">
     <p>This is the moment. You're about to open a terminal, navigate to your project folder, and start talking to an AI that writes code. Don't worry &mdash; the terminal is just a text box where you type commands. Nothing scary.</p>
 
-    <div class="substep" data-step="6-1">
-      <input type="checkbox" id="s6-1">
-      <label for="s6-1">Open Command Prompt (Start menu &rarr; search "cmd" &rarr; click <strong>Command Prompt</strong>)</label>
+    <div class="substep" data-step="7-1">
+      <input type="checkbox" id="s7-1">
+      <label for="s7-1">Open Command Prompt (Start menu &rarr; search "cmd" &rarr; click <strong>Command Prompt</strong>)</label>
     </div>
 
     <div class="note"><strong>Navigate to your sandbox folder:</strong></div>
@@ -570,9 +620,9 @@
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
     </div>
 
-    <div class="substep" data-step="6-2">
-      <input type="checkbox" id="s6-2">
-      <label for="s6-2">Typed the <code>cd</code> command above and hit Enter</label>
+    <div class="substep" data-step="7-2">
+      <input type="checkbox" id="s7-2">
+      <label for="s7-2">Typed the <code>cd</code> command above and hit Enter</label>
     </div>
 
     <div class="note"><strong>Now start Claude Code:</strong></div>
@@ -581,16 +631,16 @@
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
     </div>
 
-    <div class="substep" data-step="6-3">
-      <input type="checkbox" id="s6-3">
-      <label for="s6-3">Typed <code>claude</code> and hit Enter</label>
+    <div class="substep" data-step="7-3">
+      <input type="checkbox" id="s7-3">
+      <label for="s7-3">Typed <code>claude</code> and hit Enter</label>
     </div>
 
     <p>The first time you run Claude Code, it will open a browser window and ask you to log in to your Claude account &mdash; the same one you just created. Log in, authorize Claude Code, and the browser will confirm you're connected. Switch back to the terminal.</p>
 
-    <div class="substep" data-step="6-4">
-      <input type="checkbox" id="s6-4">
-      <label for="s6-4">Followed the prompts &mdash; logged in through the browser and authorized Claude Code</label>
+    <div class="substep" data-step="7-4">
+      <input type="checkbox" id="s7-4">
+      <label for="s7-4">Followed the prompts &mdash; logged in through the browser and authorized Claude Code</label>
     </div>
 
     <p>You should now see Claude's prompt &mdash; a cursor waiting for you to type. Try saying hello:</p>
@@ -600,9 +650,9 @@
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
     </div>
 
-    <div class="substep" data-step="6-5">
-      <input type="checkbox" id="s6-5">
-      <label for="s6-5">Claude responded! It told me what it can do. We're in business.</label>
+    <div class="substep" data-step="7-5">
+      <input type="checkbox" id="s7-5">
+      <label for="s7-5">Claude responded! It told me what it can do. We're in business.</label>
     </div>
 
     <div class="explain-box">
@@ -617,19 +667,19 @@
 
     <p>Take a minute to play around. Ask Claude some questions. When you're done exploring, type <code>exit</code> to leave. We'll come back to Claude in a moment with a plan.</p>
 
-    <div class="substep" data-step="6-6">
-      <input type="checkbox" id="s6-6">
-      <label for="s6-6">Played around, typed <code>exit</code> to leave. I get the basics.</label>
+    <div class="substep" data-step="7-6">
+      <input type="checkbox" id="s7-6">
+      <label for="s7-6">Played around, typed <code>exit</code> to leave. I get the basics.</label>
     </div>
 
     <div class="success-note">You just had your first conversation with Claude Code. Everything from here is learning how to have BETTER conversations.</div>
   </div>
 </div>
 
-<!-- ==================== SECTION 7: CLAUDE.MD ==================== -->
-<div class="section" id="section7">
+<!-- ==================== SECTION 8: CLAUDE.MD ==================== -->
+<div class="section" id="section8">
   <div class="section-header">
-    <div class="step-number">7</div>
+    <div class="step-number">8</div>
     <div class="section-title">Your CLAUDE.md &mdash; Teaching Claude How to Work With You</div>
   </div>
   <div class="step-body">
@@ -742,38 +792,38 @@ Ask first, don't run ahead.
 - Use /clear after heavy work
 - Remind me to /clear if things get slow</div>
 
-    <div class="substep" data-step="7-1">
-      <input type="checkbox" id="s7-1">
-      <label for="s7-1">Started Claude Code in my Sandbox folder (<code>cd C:\dev\Sandbox</code> then <code>claude</code>)</label>
+    <div class="substep" data-step="8-1">
+      <input type="checkbox" id="s8-1">
+      <label for="s8-1">Started Claude Code in my Sandbox folder (<code>cd C:\dev\Sandbox</code> then <code>claude</code>)</label>
     </div>
 
-    <div class="substep" data-step="7-2">
-      <input type="checkbox" id="s7-2">
-      <label for="s7-2">Personalized the prompt above with my actual info</label>
+    <div class="substep" data-step="8-2">
+      <input type="checkbox" id="s8-2">
+      <label for="s8-2">Personalized the prompt above with my actual info</label>
     </div>
 
-    <div class="substep" data-step="7-3">
-      <input type="checkbox" id="s7-3">
-      <label for="s7-3">Gave Claude the prompt and it created my CLAUDE.md file</label>
+    <div class="substep" data-step="8-3">
+      <input type="checkbox" id="s8-3">
+      <label for="s8-3">Gave Claude the prompt and it created my CLAUDE.md file</label>
     </div>
 
     <div class="note">
       <strong>Test that it works:</strong> Type <code>/clear</code> (this restarts the conversation so Claude re-reads the CLAUDE.md). Then ask Claude: "What do you know about me?" Claude should repeat back the details from your CLAUDE.md. If it does, the file is working.
     </div>
 
-    <div class="substep" data-step="7-4">
-      <input type="checkbox" id="s7-4">
-      <label for="s7-4">Typed <code>/clear</code>, asked Claude what it knows about me, and it repeated my info back. The CLAUDE.md is working.</label>
+    <div class="substep" data-step="8-4">
+      <input type="checkbox" id="s8-4">
+      <label for="s8-4">Typed <code>/clear</code>, asked Claude what it knows about me, and it repeated my info back. The CLAUDE.md is working.</label>
     </div>
 
     <div class="success-note">You now have a CLAUDE.md. Claude will read it at the start of every conversation in this folder. You'll never have to re-introduce yourself.</div>
   </div>
 </div>
 
-<!-- ==================== SECTION 8: CONTEXT FOLDER ==================== -->
-<div class="section" id="section8">
+<!-- ==================== SECTION 9: CONTEXT FOLDER ==================== -->
+<div class="section" id="section9">
   <div class="section-header">
-    <div class="step-number">8</div>
+    <div class="step-number">9</div>
     <div class="section-title">Your context/ folder &mdash; Scope and Journal</div>
   </div>
   <div class="step-body">
@@ -847,9 +897,9 @@ Newest first.
       <strong>About the older "three-file methodology."</strong> Earlier versions of this tutorial taught PROJECT.md and MEMORY.md at the project root. The new model puts both in a <code>context/</code> folder and renames MEMORY.md to JOURNAL.md &mdash; that's because Claude has its own built-in memory system in your user profile (covered on the harness page) with a file also called <code>MEMORY.md</code>, and the collision was confusing. Same idea, sharper boundary: project state lives in the project (<code>context/</code>); facts about <em>you</em> live in the harness.
     </div>
 
-    <div class="substep" data-step="8-1">
-      <input type="checkbox" id="s8-1">
-      <label for="s8-1">I understand: <strong>CLAUDE.md</strong> at the project root tells Claude who I am. <strong>context/PROJECT.md</strong> says what I'm building. <strong>context/JOURNAL.md</strong> tracks what's happened.</label>
+    <div class="substep" data-step="9-1">
+      <input type="checkbox" id="s9-1">
+      <label for="s9-1">I understand: <strong>CLAUDE.md</strong> at the project root tells Claude who I am. <strong>context/PROJECT.md</strong> says what I'm building. <strong>context/JOURNAL.md</strong> tracks what's happened.</label>
     </div>
 
     <div class="success-note"><strong>The Foundation</strong><br>Every project you build will have CLAUDE.md at the root and a context/ folder with PROJECT.md and JOURNAL.md. That's the foundation. You'll add other folders (source/, output/, reference/, archive/) as projects grow. Everything else is just typing.</div>
