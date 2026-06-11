@@ -419,10 +419,10 @@
       <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 Set up this project. Create:
 
-1. CLAUDE.md (at the project root) - I'm [your name],
-   a [your role]. Learning to build middleware with
-   Claude Code. Propose plans before building. Deliver
-   complete files. Explain what you're doing.
+1. CLAUDE.md (at the project root) with project rules:
+   Flask app on localhost:5000. QBO sandbox only,
+   never production. Never commit .env or secrets
+   to git.
 
 2. context/PROJECT.md - We're building a simple QBO bill
    import middleware. Flask app on localhost:5000.
@@ -574,7 +574,7 @@ After building, start the Flask server so I can test.</div>
 
     <div class="substep" data-step="6-1">
       <input type="checkbox" id="s6-1">
-      <label for="s6-1">Open your browser and go to <a href="http://localhost:5000" target="_blank" style="color: #4472C4;">http://localhost:5000</a></label>
+      <label for="s6-1">Asked Claude to open <a href="http://localhost:5000" target="_blank" style="color: #4472C4;">http://localhost:5000</a> in my browser (or just click the link)</label>
     </div>
 
     <p>You should see a dashboard page with a "Connect to QuickBooks" button (or something similar). The status should show "Not Connected."</p>
