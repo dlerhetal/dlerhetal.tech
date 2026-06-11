@@ -454,6 +454,10 @@
       <label for="s3-2">Run the installer &mdash; click <strong>Next</strong> on every screen (all defaults are fine)</label>
     </div>
 
+    <div class="note">
+      <strong>On a company-managed computer?</strong> If an installer fails with a "cancelled" message you didn't cause, your IT security policy declined it for you &mdash; nothing is broken. Ask IT to install Node.js LTS; it's a routine request. (The same can happen with any install in these tutorials &mdash; watch for notes like this one.)
+    </div>
+
     <div class="substep" data-step="3-3">
       <input type="checkbox" id="s3-3">
       <label for="s3-3">When it finishes, click <strong>Finish</strong></label>
@@ -493,6 +497,8 @@
       <input type="checkbox" id="s4-1">
       <label for="s4-1">Ran the install command &mdash; it printed a bunch of text and finished without red error messages</label>
     </div>
+
+    <div class="note"><strong>On a company-managed computer:</strong> this command installs into your own user folder and doesn't need administrator rights, so it usually works even on locked-down machines. If it's blocked anyway, ask IT to allow it.</div>
 
     <div class="note"><strong>Verify it installed:</strong></div>
     <div class="cmd-block">
@@ -559,10 +565,17 @@
   <div class="step-body">
     <p>Git is your undo button and a free offsite backup. Set it up once &mdash; from here on, you just tell Claude to handle the Git work.</p>
 
-    <div class="note"><strong>Install Git and the GitHub CLI</strong> in Command Prompt, then close and reopen it:</div>
+    <div class="note"><strong>Install Git and the GitHub CLI</strong> in Command Prompt &mdash; run these one at a time, then close and reopen the window:</div>
     <div class="cmd-block">
-      <span class="cmd-text">winget install --id Git.Git -e &amp;&amp; winget install --id GitHub.cli -e</span>
+      <span class="cmd-text">winget install --id Git.Git -e</span>
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+    <div class="cmd-block">
+      <span class="cmd-text">winget install --id GitHub.cli -e</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+    <div class="note">
+      <strong>On a company-managed computer:</strong> if an install fails with <em>"You cancelled the installation"</em> (exit code 1602) and you didn't cancel anything, your IT security policy declined it for you. Add <code>--scope user</code> to the end of each command to install without administrator rights. If that's blocked too, ask IT to install Git and the GitHub CLI.
     </div>
     <div class="substep" data-step="6-1">
       <input type="checkbox" id="s6-1">
@@ -574,11 +587,12 @@
       <label for="s6-2">Made a free account at <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a></label>
     </div>
 
-    <div class="note"><strong>Connect to GitHub</strong> (once). Pick <strong>GitHub.com</strong> &rarr; <strong>HTTPS</strong> &rarr; <strong>Login with a web browser</strong>, then paste the one-time code it shows you:</div>
+    <div class="note"><strong>Connect to GitHub</strong> (once). Run the command below in Command Prompt &mdash; it asks a few questions one at a time, right there in the terminal:</div>
     <div class="cmd-block">
       <span class="cmd-text">gh auth login</span>
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
     </div>
+    <div class="note">Answer: <strong>GitHub.com</strong> &rarr; <strong>HTTPS</strong> &rarr; <strong>Yes</strong> (authenticate Git) &rarr; <strong>Login with a web browser</strong>. It then shows a one-time code &mdash; press Enter, your browser opens, and you paste the code there.</div>
     <div class="substep" data-step="6-3">
       <input type="checkbox" id="s6-3">
       <label for="s6-3">Ran <code>gh auth login</code> and authorized in the browser</label>
