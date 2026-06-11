@@ -310,7 +310,7 @@
       <li>Claude reading 30 files to answer one question, and now the conversation is sluggish</li>
     </ul>
 
-    <p>Page 1 taught you the foundation &mdash; CLAUDE.md at the project root, plus a context/ folder with PROJECT.md and JOURNAL.md. Those are project files you maintain by hand (with Claude's help). This page is the next level: a separate, harness-level memory system that Claude maintains for you, configuring the harness so it stops asking permission for safe things, and using subagents to keep your main conversation lean.</p>
+    <p>Page 1 taught you the foundation &mdash; a global CLAUDE.md for who you are, plus a project CLAUDE.md and a context/ folder (PROJECT.md, JOURNAL.md) in each project. Those are files you maintain by hand (with Claude's help). This page is the next level: a separate, harness-level memory system that Claude maintains for you, configuring the harness so it stops asking permission for safe things, and using subagents to keep your main conversation lean.</p>
 
     <div class="explain-box">
       <strong>Model vs. harness.</strong> Claude is the model &mdash; the thing that generates text. The harness is everything around it: your terminal window, the permission system, the tools it can call, hooks that fire on events, settings files, memory. When people say "Claude won't do X," nine times out of ten they mean "my harness isn't set up to let Claude do X." Once you understand the difference, you stop fighting the model and start configuring the harness.
@@ -469,6 +469,25 @@
       <strong>When to write a custom skill.</strong> If you find yourself giving Claude the same multi-paragraph instructions at the start of every session ("review this code for X, Y, Z using these conventions"), turn it into a skill. Next time, you just type <code>/my-review</code> and Claude already knows what to do. Custom skills are folders of instructions under <code>~/.claude/skills/</code> &mdash; ask Claude to build one for you when you need it.
     </div>
 
+    <p><strong>Build your first one right now.</strong> You already have a habit that's begging to become a skill: the end-of-session journal update from the exercises. Instead of typing that full prompt every time, make it a one-word command. Say this to Claude:</p>
+
+    <div class="cmd-block">
+      <span class="cmd-text">Create a personal skill called "journal" so that /journal works in any project. When I run it, add a dated entry to context/JOURNAL.md covering this session: what we built, decisions made, what works, what doesn't, and what's next. If the project has no context/ folder, ask me before creating one.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="4-1">
+      <input type="checkbox" id="s4-1">
+      <label for="s4-1">Asked Claude to create my <code>/journal</code> skill</label>
+    </div>
+
+    <p>Test it: type <code>/journal</code>. Claude reads the skill's instructions and updates the journal &mdash; same result as the long prompt, one word instead of forty. And notice the pattern: the <em>skill</em> is personal, living in your user profile and available in every project, while the <em>journal it writes</em> belongs to whichever project you're standing in. Global habit, project record &mdash; the same split as your CLAUDE.md.</p>
+
+    <div class="substep" data-step="4-2">
+      <input type="checkbox" id="s4-2">
+      <label for="s4-2">Ran <code>/journal</code> and watched it update <code>context/JOURNAL.md</code></label>
+    </div>
+
     <p><strong>The /clear habit.</strong> This is the single most important habit in this tutorial. Claude's context window is finite. Every file read, every tool call, every long response eats space. When the window fills, things slow down and eventually crash. <code>/clear</code> resets it in one second.</p>
 
     <p>Use it:</p>
@@ -481,9 +500,9 @@
 
     <p>The cost of <code>/clear</code> is ten seconds of re-reading your CLAUDE.md and auto-memory. The cost of a crash is the whole session.</p>
 
-    <div class="substep" data-step="4-1">
-      <input type="checkbox" id="s4-1">
-      <label for="s4-1">I typed <code>/help</code> and saw the list. I know <code>/clear</code> is the important one.</label>
+    <div class="substep" data-step="4-3">
+      <input type="checkbox" id="s4-3">
+      <label for="s4-3">I typed <code>/help</code> and saw the list. I know <code>/clear</code> is the important one.</label>
     </div>
   </div>
 </div>
@@ -585,7 +604,7 @@
         <li>Delegate reads of more than a few files to a subagent.</li>
         <li><code>/clear</code> between tasks. Not between messages &mdash; between tasks.</li>
         <li>When you catch yourself repeating a preference, say "remember that..." and move on.</li>
-        <li>At the end of the session, ask Claude to update <code>context/JOURNAL.md</code> with what happened.</li>
+        <li>At the end of the session, type <code>/journal</code> &mdash; the skill you built in Section 4 &mdash; to log what happened.</li>
       </ol>
     </div>
 
