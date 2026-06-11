@@ -317,7 +317,7 @@
     <p><strong>Why this is a great first project:</strong></p>
     <ul>
       <li>It's a single HTML file &mdash; no server, no database, no setup</li>
-      <li>You can see the result instantly by double-clicking the file</li>
+      <li>You can see the result instantly &mdash; one sentence to Claude and it's open in your browser</li>
       <li>It's genuinely useful &mdash; you'll actually want to use this</li>
       <li>It teaches the core workflow: describe &rarr; plan &rarr; approve &rarr; build</li>
     </ul>
@@ -336,14 +336,18 @@
     <div class="section-title">Set Up the Project</div>
   </div>
   <div class="step-body">
-    <p>Every project gets its own folder. Let's create one for this exercise.</p>
+    <p>Every project gets its own folder. Open Command Prompt and create one for this exercise:</p>
+    <div class="cmd-block">
+      <span class="cmd-text">mkdir C:\dev\EisenhowerMatrix</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
 
     <div class="substep" data-step="2-1">
       <input type="checkbox" id="s2-1">
-      <label for="s2-1">Open File Explorer and create a new folder: <code>C:\dev\EisenhowerMatrix</code></label>
+      <label for="s2-1">Opened Command Prompt and created the project folder with <code>mkdir</code></label>
     </div>
 
-    <p>Now open Command Prompt and navigate there:</p>
+    <p>Now navigate there:</p>
     <div class="cmd-block">
       <span class="cmd-text">cd C:\dev\EisenhowerMatrix</span>
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
@@ -351,7 +355,7 @@
 
     <div class="substep" data-step="2-2">
       <input type="checkbox" id="s2-2">
-      <label for="s2-2">Opened Command Prompt and navigated to the project folder</label>
+      <label for="s2-2">Navigated to the project folder</label>
     </div>
 
     <p>Start Claude Code:</p>
@@ -365,17 +369,17 @@
       <label for="s2-3">Claude is running and waiting for input</label>
     </div>
 
-    <p>First things first &mdash; let's have Claude set up the project files. Give it this prompt:</p>
+    <p>First things first &mdash; let's have Claude set up the project files. Notice what's <em>not</em> in this prompt: who you are or how you work. Your global CLAUDE.md already covers that &mdash; the project CLAUDE.md only carries rules specific to <em>this</em> build. Give it this prompt:</p>
 
     <div class="code-block">
       <span class="code-label">Prompt: Set up the project</span>
       <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 Set up this project for me. Create:
 
-1. A CLAUDE.md at the project root with my working
-   preferences (I'm [your name], a [your role]. I'm
-   learning Claude Code. Propose plans before building.
-   Deliver complete files. Explain what you're doing.)
+1. A CLAUDE.md at the project root with the project
+   rules: this is a single HTML file (matrix.html),
+   vanilla JavaScript, no server, no frameworks, no
+   build step.
 
 2. A context/ folder with:
    - context/PROJECT.md: "Building an Eisenhower Matrix
@@ -391,7 +395,7 @@ Set up this project for me. Create:
     </div>
 
     <div class="note">
-      <strong>What just happened:</strong> Claude created your CLAUDE.md at the project root and a context/ folder holding PROJECT.md and JOURNAL.md. You can see them in File Explorer if you navigate to <code>C:\dev\EisenhowerMatrix</code>. Open them in Notepad if you're curious &mdash; they're just text files.
+      <strong>What just happened:</strong> Claude created your CLAUDE.md at the project root and a context/ folder holding PROJECT.md and JOURNAL.md. You can see them in File Explorer if you navigate to <code>C:\dev\EisenhowerMatrix</code>. Open them in Notepad if you're curious &mdash; they're just text files. Or skip the spelunking and ask Claude: <em>"Show me the CLAUDE.md you created."</em>
     </div>
   </div>
 </div>
@@ -443,7 +447,7 @@ Start me off with a few sample tasks in each quadrant
 so it doesn't look empty.</div>
 
     <div class="note">
-      <strong>Watch what happens next.</strong> Claude will read your prompt and probably propose a plan before building &mdash; because your CLAUDE.md told it to. It might say something like "I'll create a single HTML file with CSS Grid for the layout, vanilla JavaScript for drag-and-drop, and..." Let it explain. Then approve it.
+      <strong>Watch what happens next.</strong> Claude will read your prompt and probably propose a plan before building &mdash; because your global CLAUDE.md told it to. It might say something like "I'll create a single HTML file with CSS Grid for the layout, vanilla JavaScript for drag-and-drop, and..." Let it explain. Then approve it.
     </div>
 
     <div class="substep" data-step="3-1">
@@ -484,33 +488,35 @@ so it doesn't look empty.</div>
     <div class="section-title">See What You Built</div>
   </div>
   <div class="step-body">
-    <p>Time for the payoff. Open the file in your browser:</p>
+    <p>Time for the payoff. Don't go digging through folders &mdash; opening files is Claude's job now. Just say:</p>
+
+    <div class="cmd-block">
+      <span class="cmd-text">Open matrix.html in my browser.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
 
     <div class="substep" data-step="4-1">
       <input type="checkbox" id="s4-1">
-      <label for="s4-1">Open File Explorer, navigate to <code>C:\dev\EisenhowerMatrix</code></label>
+      <label for="s4-1">Asked Claude to open it &mdash; <code>matrix.html</code> appeared in my browser</label>
     </div>
 
-    <div class="substep" data-step="4-2">
-      <input type="checkbox" id="s4-2">
-      <label for="s4-2">Double-click <code>matrix.html</code> &mdash; it opens in your browser</label>
-    </div>
+    <div class="note">Curious where it lives? <code>C:\dev\EisenhowerMatrix\matrix.html</code> &mdash; you can go look at it in File Explorer any time. But from here on, when you want a file opened, run, or shown, you ask Claude.</div>
 
     <p>You should see a color-coded 2x2 grid with task cards in each quadrant. Try these things:</p>
 
+    <div class="substep" data-step="4-2">
+      <input type="checkbox" id="s4-2">
+      <label for="s4-2">Drag a card from one quadrant to another &mdash; it moves!</label>
+    </div>
+
     <div class="substep" data-step="4-3">
       <input type="checkbox" id="s4-3">
-      <label for="s4-3">Drag a card from one quadrant to another &mdash; it moves!</label>
+      <label for="s4-3">Click "Add Item" and create a new task &mdash; it appears in the quadrant you chose</label>
     </div>
 
     <div class="substep" data-step="4-4">
       <input type="checkbox" id="s4-4">
-      <label for="s4-4">Click "Add Item" and create a new task &mdash; it appears in the quadrant you chose</label>
-    </div>
-
-    <div class="substep" data-step="4-5">
-      <input type="checkbox" id="s4-5">
-      <label for="s4-5">Delete a task by hovering over it and clicking the X</label>
+      <label for="s4-4">Delete a task by hovering over it and clicking the X</label>
     </div>
 
     <div class="success-note">
