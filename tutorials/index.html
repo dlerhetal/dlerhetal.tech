@@ -556,10 +556,86 @@
   </div>
 </div>
 
-<!-- ==================== SECTION 6: VERSION CONTROL ==================== -->
+<!-- ==================== SECTION 6: WAKE UP CLAUDE ==================== -->
 <div class="section" id="section6">
   <div class="section-header">
     <div class="step-number">6</div>
+    <div class="section-title">Wake Up Claude for the First Time</div>
+  </div>
+  <div class="step-body">
+    <p>This is the moment. You're about to open a terminal, navigate to your project folder, and start talking to an AI that writes code. Don't worry &mdash; the terminal is just a text box where you type commands. Nothing scary.</p>
+
+    <div class="substep" data-step="6-1">
+      <input type="checkbox" id="s6-1">
+      <label for="s6-1">Open Command Prompt (Start menu &rarr; search "cmd" &rarr; click <strong>Command Prompt</strong>)</label>
+    </div>
+
+    <div class="note"><strong>Navigate to your sandbox folder:</strong></div>
+    <div class="cmd-block">
+      <span class="cmd-text">cd C:\dev\Sandbox</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="6-2">
+      <input type="checkbox" id="s6-2">
+      <label for="s6-2">Typed the <code>cd</code> command above and hit Enter</label>
+    </div>
+
+    <div class="note"><strong>Now start Claude Code:</strong></div>
+    <div class="cmd-block">
+      <span class="cmd-text">claude</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="6-3">
+      <input type="checkbox" id="s6-3">
+      <label for="s6-3">Typed <code>claude</code> and hit Enter</label>
+    </div>
+
+    <p>The first time you run Claude Code, it will open a browser window and ask you to log in to your Claude account &mdash; the same one you just created. Log in, authorize Claude Code, and the browser will confirm you're connected. Switch back to the terminal.</p>
+
+    <div class="substep" data-step="6-4">
+      <input type="checkbox" id="s6-4">
+      <label for="s6-4">Followed the prompts &mdash; logged in through the browser and authorized Claude Code</label>
+    </div>
+
+    <p>You should now see Claude's prompt &mdash; a cursor waiting for you to type. Try saying hello:</p>
+
+    <div class="cmd-block">
+      <span class="cmd-text">Hello! What can you do?</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="6-5">
+      <input type="checkbox" id="s6-5">
+      <label for="s6-5">Claude responded! It told me what it can do. We're in business.</label>
+    </div>
+
+    <div class="explain-box">
+      <strong>Quick reference &mdash; commands you'll use constantly:</strong><br><br>
+      <code>claude</code> &mdash; Start a conversation (from your project folder)<br>
+      <code>/help</code> &mdash; See all available commands<br>
+      <code>/clear</code> &mdash; Clear the conversation context (do this often &mdash; it prevents crashes)<br>
+      <code>Escape or Ctrl+C</code> &mdash; Cancel what Claude is doing<br>
+      <code>exit</code> &mdash; End the conversation and go back to the terminal<br>
+      <code>Up arrow</code> &mdash; Recall your previous message
+    </div>
+
+    <p>Take a minute to play around. Ask Claude some questions. When you're done exploring, type <code>exit</code> to leave. We'll come back to Claude in a moment with a plan.</p>
+
+    <div class="substep" data-step="6-6">
+      <input type="checkbox" id="s6-6">
+      <label for="s6-6">Played around, typed <code>exit</code> to leave. I get the basics.</label>
+    </div>
+
+    <div class="success-note">You just had your first conversation with Claude Code. Everything from here is learning how to have BETTER conversations.</div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 7: VERSION CONTROL ==================== -->
+<div class="section" id="section7">
+  <div class="section-header">
+    <div class="step-number">7</div>
     <div class="section-title">Put It Under Version Control</div>
   </div>
   <div class="step-body">
@@ -577,14 +653,14 @@
     <div class="note">
       <strong>On a company-managed computer:</strong> if an install fails with <em>"You cancelled the installation"</em> (exit code 1602) and you didn't cancel anything, your IT security policy declined it for you. Add <code>--scope user</code> to the end of each command to install without administrator rights. If that's blocked too, ask IT to install Git and the GitHub CLI.
     </div>
-    <div class="substep" data-step="6-1">
-      <input type="checkbox" id="s6-1">
-      <label for="s6-1">Installed Git and the GitHub CLI, then reopened Command Prompt</label>
+    <div class="substep" data-step="7-1">
+      <input type="checkbox" id="s7-1">
+      <label for="s7-1">Installed Git and the GitHub CLI, then reopened Command Prompt</label>
     </div>
 
-    <div class="substep" data-step="6-2">
-      <input type="checkbox" id="s6-2">
-      <label for="s6-2">Made a free account at <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a></label>
+    <div class="substep" data-step="7-2">
+      <input type="checkbox" id="s7-2">
+      <label for="s7-2">Made a free account at <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a></label>
     </div>
 
     <div class="note"><strong>Connect to GitHub</strong> (once). Run the command below in Command Prompt &mdash; it asks a few questions one at a time, right there in the terminal:</div>
@@ -593,100 +669,24 @@
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
     </div>
     <div class="note">Answer: <strong>GitHub.com</strong> &rarr; <strong>HTTPS</strong> &rarr; <strong>Yes</strong> (authenticate Git) &rarr; <strong>Login with a web browser</strong>. It then shows a one-time code &mdash; press Enter, your browser opens, and you paste the code there.</div>
-    <div class="substep" data-step="6-3">
-      <input type="checkbox" id="s6-3">
-      <label for="s6-3">Ran <code>gh auth login</code> and authorized in the browser</label>
+    <div class="substep" data-step="7-3">
+      <input type="checkbox" id="s7-3">
+      <label for="s7-3">Ran <code>gh auth login</code> and authorized in the browser</label>
     </div>
 
-    <p>Now let Claude do the rest. From inside a project, just say:</p>
+    <p>Now let Claude do the rest. From your project folder, start <code>claude</code> again &mdash; just like the last section &mdash; and say:</p>
     <div class="cmd-block">
       <span class="cmd-text">Put this project on GitHub as a private repository.</span>
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
     </div>
-    <div class="substep" data-step="6-4">
-      <input type="checkbox" id="s6-4">
-      <label for="s6-4">Claude created the repo &mdash; I refreshed GitHub and saw it there</label>
+    <div class="substep" data-step="7-4">
+      <input type="checkbox" id="s7-4">
+      <label for="s7-4">Claude created the repo &mdash; I refreshed GitHub and saw it there</label>
     </div>
 
     <div class="note"><strong>Private, not public</strong> for anything with client data or API keys &mdash; and never commit secrets. After any good chunk of work, tell Claude <em>"save my progress to GitHub."</em></div>
 
     <div class="success-note">You've got a safety net now. Break something? "Claude, undo my last change." Lose your laptop? Your work is on GitHub.</div>
-  </div>
-</div>
-
-<!-- ==================== SECTION 7: WAKE UP CLAUDE ==================== -->
-<div class="section" id="section7">
-  <div class="section-header">
-    <div class="step-number">7</div>
-    <div class="section-title">Wake Up Claude for the First Time</div>
-  </div>
-  <div class="step-body">
-    <p>This is the moment. You're about to open a terminal, navigate to your project folder, and start talking to an AI that writes code. Don't worry &mdash; the terminal is just a text box where you type commands. Nothing scary.</p>
-
-    <div class="substep" data-step="7-1">
-      <input type="checkbox" id="s7-1">
-      <label for="s7-1">Open Command Prompt (Start menu &rarr; search "cmd" &rarr; click <strong>Command Prompt</strong>)</label>
-    </div>
-
-    <div class="note"><strong>Navigate to your sandbox folder:</strong></div>
-    <div class="cmd-block">
-      <span class="cmd-text">cd C:\dev\Sandbox</span>
-      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-    </div>
-
-    <div class="substep" data-step="7-2">
-      <input type="checkbox" id="s7-2">
-      <label for="s7-2">Typed the <code>cd</code> command above and hit Enter</label>
-    </div>
-
-    <div class="note"><strong>Now start Claude Code:</strong></div>
-    <div class="cmd-block">
-      <span class="cmd-text">claude</span>
-      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-    </div>
-
-    <div class="substep" data-step="7-3">
-      <input type="checkbox" id="s7-3">
-      <label for="s7-3">Typed <code>claude</code> and hit Enter</label>
-    </div>
-
-    <p>The first time you run Claude Code, it will open a browser window and ask you to log in to your Claude account &mdash; the same one you just created. Log in, authorize Claude Code, and the browser will confirm you're connected. Switch back to the terminal.</p>
-
-    <div class="substep" data-step="7-4">
-      <input type="checkbox" id="s7-4">
-      <label for="s7-4">Followed the prompts &mdash; logged in through the browser and authorized Claude Code</label>
-    </div>
-
-    <p>You should now see Claude's prompt &mdash; a cursor waiting for you to type. Try saying hello:</p>
-
-    <div class="cmd-block">
-      <span class="cmd-text">Hello! What can you do?</span>
-      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-    </div>
-
-    <div class="substep" data-step="7-5">
-      <input type="checkbox" id="s7-5">
-      <label for="s7-5">Claude responded! It told me what it can do. We're in business.</label>
-    </div>
-
-    <div class="explain-box">
-      <strong>Quick reference &mdash; commands you'll use constantly:</strong><br><br>
-      <code>claude</code> &mdash; Start a conversation (from your project folder)<br>
-      <code>/help</code> &mdash; See all available commands<br>
-      <code>/clear</code> &mdash; Clear the conversation context (do this often &mdash; it prevents crashes)<br>
-      <code>Escape or Ctrl+C</code> &mdash; Cancel what Claude is doing<br>
-      <code>exit</code> &mdash; End the conversation and go back to the terminal<br>
-      <code>Up arrow</code> &mdash; Recall your previous message
-    </div>
-
-    <p>Take a minute to play around. Ask Claude some questions. When you're done exploring, type <code>exit</code> to leave. We'll come back to Claude in a moment with a plan.</p>
-
-    <div class="substep" data-step="7-6">
-      <input type="checkbox" id="s7-6">
-      <label for="s7-6">Played around, typed <code>exit</code> to leave. I get the basics.</label>
-    </div>
-
-    <div class="success-note">You just had your first conversation with Claude Code. Everything from here is learning how to have BETTER conversations.</div>
   </div>
 </div>
 
