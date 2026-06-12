@@ -324,7 +324,100 @@
     margin-top: 20px;
   }
   .reset-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+
+  /* ---- EDITABLE CODE BLOCKS ---- */
+  .code-edit {
+    display: block;
+    width: 100%;
+    background: rgba(0,0,0,0.25);
+    color: #cdd6f4;
+    border: 1px dashed #585b70;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    resize: vertical;
+    overflow: hidden;
+  }
+  .code-edit:focus { outline: none; border: 1px solid #89b4fa; }
+  .code-block .copy-btn.ghost {
+    right: 84px;
+    background: transparent;
+    border: 1px solid #585b70;
+    color: #a6adc8;
+  }
+  .code-block .copy-btn.ghost:hover { border-color: #cdd6f4; color: #fff; background: transparent; }
+
+  /* ---- SIGN-IN GATE ---- */
+  #gate { display: none; }
+  html.locked #tutorialBody { display: none; }
+  html.locked #gate {
+    display: block;
+    background: #fff;
+    border-radius: 10px;
+    padding: 26px 28px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    border-left: 4px solid #FFCD00;
+  }
+  #gate h2 { color: #1A3C6E; font-size: 20px; margin-bottom: 10px; }
+  #gate p { line-height: 1.6; margin-bottom: 10px; }
+  #gate ul { margin: 0 0 14px 20px; line-height: 1.6; }
+  .gsi-wrap { margin: 18px 0 14px; min-height: 44px; }
+  .consent-line { font-size: 12px; color: #777; line-height: 1.5; }
+  .user-strip { font-size: 12px; color: #777; text-align: right; margin-bottom: 10px; }
+  .user-strip a { color: #4472C4; cursor: pointer; text-decoration: underline; }
+
+  /* ---- TIMER WIDGET ---- */
+  #timerWidget {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    background: #1A3C6E;
+    color: #fff;
+    border-radius: 24px;
+    padding: 8px 10px 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    z-index: 200;
+    font-size: 13px;
+  }
+  #timerWidget[hidden] { display: none; }
+  #timerWidget.paused { background: #777; }
+  #timerDisplay { font-family: Consolas, monospace; font-weight: 700; letter-spacing: 0.05em; }
+  #pauseBtn {
+    background: #FFCD00;
+    color: #1A3C6E;
+    border: none;
+    border-radius: 16px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  #pauseBtn:disabled { background: #27ae60; color: #fff; cursor: default; }
 </style>
+<script>
+  // ---- Tutorial tracking config ----
+  // Fill in both values to turn on the sign-in gate + timer:
+  //   googleClientId: OAuth 2.0 Web Client ID (Google Cloud Console)
+  //   gasEndpoint:    /exec URL of the deployed Apps Script web app
+  // Leave them empty and the page runs ungated, exactly as before.
+  window.TUTORIAL_CONFIG = {
+    googleClientId: '',
+    gasEndpoint: ''
+  };
+  (function () {
+    var c = window.TUTORIAL_CONFIG;
+    if (!c.googleClientId || !c.gasEndpoint) return;
+    var u = null;
+    try { u = JSON.parse(localStorage.getItem('tutorial_user')); } catch (e) {}
+    if (!u || !u.email) document.documentElement.classList.add('locked');
+  })();
+</script>
 </head>
 <body>
 
@@ -344,6 +437,23 @@
 
 <h1>Setup &amp; Foundation</h1>
 <p class="subtitle">Everything you need to go from zero to building real tools with Claude Code. This page gets you installed, authenticated, and thinking the right way about how to work with an AI coding partner.</p>
+
+<!-- ======== SIGN-IN GATE (shown only when html.locked) ======== -->
+<div id="gate">
+  <h2>Sign in to start the tutorial</h2>
+  <p>This tutorial keeps score while you work. Sign in with Google and:</p>
+  <ul>
+    <li>A timer starts the moment you sign in &mdash; pause it anytime from the widget in the corner.</li>
+    <li>Every step you check off gets a timestamp.</li>
+    <li>When you finish, you'll receive a congratulations email with your total time and section-by-section splits.</li>
+  </ul>
+  <div class="gsi-wrap" id="gsiButton"></div>
+  <p class="consent-line">By signing in, you agree that dlerhetal.tech may occasionally email you about new tools and tutorials. You can opt out at any time by replying to any message.</p>
+</div>
+
+<div id="tutorialBody">
+
+<div class="user-strip" id="userStrip" hidden>Signed in as <span id="userEmail"></span> &middot; <a onclick="signOut()">sign out</a></div>
 
 <div class="explain-box">
   <strong>Already comfortable with a terminal?</strong> The <a href="/setup/">fast-track Setup page</a> detects your OS and gives you the package-manager one-liners. Come back here for the full walk-through on authentication and the mental model.
@@ -709,12 +819,13 @@
 
     <p><strong>What goes in a CLAUDE.md?</strong></p>
 
-    <p>Here's a template. Don't just copy it blindly &mdash; read through the annotations (the explanations in parentheses) and think about what matters to YOU. You'll create your own version in a moment.</p>
+    <p>Here's a template &mdash; and the box below is editable, right here on the page. Don't just copy it blindly: read through the annotations (the explanations in parentheses), think about what matters to YOU, and rewrite the bracketed parts in place. No notepad detour. The Reset button brings back the original if you mangle it.</p>
 
     <div class="code-block">
-      <span class="code-label">CLAUDE.md template</span>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-# [Your Name] &mdash; Rules of Engagement
+      <span class="code-label">CLAUDE.md template &mdash; editable</span>
+      <button class="copy-btn" onclick="copyEdit(this)">Copy</button>
+      <button class="copy-btn ghost" onclick="resetEdit(this)">Reset</button>
+      <textarea class="code-edit" spellcheck="false" rows="38"># [Your Name] &mdash; Rules of Engagement
 
 ## Who I Am
 (Tell Claude about yourself so it adjusts its communication
@@ -751,7 +862,8 @@ These rules prevent that.)
 - Update context/JOURNAL.md before ending sessions.
 - Use /clear after heavy tool use or big file reads.
 - When in doubt, /clear. It costs 10 seconds. A crash
-  costs the whole session.</div>
+  costs the whole session.</textarea>
+    </div>
 
     <p><strong>What a mature CLAUDE.md looks like:</strong></p>
     <p>A mature CLAUDE.md has all of the above plus some extras that evolve out of daily use:</p>
@@ -772,12 +884,13 @@ These rules prevent that.)
 
     <p>The CLAUDE.md grows over time. Every time Claude does something you don't like, add a rule. Every time it does something great, add a rule to keep doing it. It's a living document.</p>
 
-    <p><strong>Let's create your global one now.</strong> Start Claude Code in your Sandbox folder and ask it to create the file for you &mdash; you'll be standing in Sandbox, but the file lands in your user profile, so every future project inherits it. Personalize the prompt below before sending it &mdash; replace the bracketed parts with your actual info:</p>
+    <p><strong>Let's create your global one now.</strong> Start Claude Code in your Sandbox folder and ask it to create the file for you &mdash; you'll be standing in Sandbox, but the file lands in your user profile, so every future project inherits it. The prompt below is editable &mdash; replace the bracketed parts with your actual info right in the box, then hit Copy and paste it into Claude:</p>
 
     <div class="code-block">
-      <span class="code-label">Prompt to give Claude</span>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-Create my global CLAUDE.md - the one in my user
+      <span class="code-label">Prompt to give Claude &mdash; editable</span>
+      <button class="copy-btn" onclick="copyEdit(this)">Copy</button>
+      <button class="copy-btn ghost" onclick="resetEdit(this)">Reset</button>
+      <textarea class="code-edit" spellcheck="false" rows="28">Create my global CLAUDE.md - the one in my user
 profile, not in this folder. Here's what I want in it:
 
 # Who I Am
@@ -804,7 +917,8 @@ Ask first, don't run ahead.
 # Session Management
 - Update context/JOURNAL.md before I end a session
 - Use /clear after heavy work
-- Remind me to /clear if things get slow</div>
+- Remind me to /clear if things get slow</textarea>
+    </div>
 
     <div class="note"><strong>Noticed <code>context/JOURNAL.md</code> in there?</strong> That folder is covered in the next section. You don't need to create it now &mdash; the rule just tells Claude where the journal lives once you start keeping one.</div>
 
@@ -926,6 +1040,7 @@ Newest first.
 <div id="allDone" style="display:none; text-align:center; padding: 30px; background: #e8f5e9; border-radius: 12px; margin-top: 20px;">
   <h2 style="color: #27ae60; margin-bottom: 8px;">Setup Complete!</h2>
   <p style="color: #555;">You have Claude Code installed, authenticated, and a workspace ready to go. You understand the foundation: a global CLAUDE.md for who you are, a project CLAUDE.md for project rules, and a context/ folder for scope and journal. Time to build something.</p>
+  <p id="emailNote" style="display:none; color: #1A3C6E; font-weight: 600; margin-top: 10px;">Check your inbox &mdash; a note with your completion time and section splits is on its way.</p>
 </div>
 
 <div class="next-page">
@@ -938,7 +1053,15 @@ Newest first.
   <button class="reset-btn" onclick="resetAll()">Reset all checkboxes</button>
 </div>
 
+</div><!-- end #tutorialBody -->
+
 </div><!-- end .content -->
+
+<!-- ======== TIMER WIDGET ======== -->
+<div id="timerWidget" hidden>
+  <span id="timerDisplay">0:00</span>
+  <button id="pauseBtn" onclick="togglePause()">Pause</button>
+</div>
 
 <script>
   const STORAGE_KEY = 'tutorial_setup_state';
@@ -984,12 +1107,14 @@ Newest first.
     });
 
     document.getElementById('allDone').style.display = (done === totalSteps) ? 'block' : 'none';
+    if (done === totalSteps && totalSteps > 0) maybeComplete();
   }
 
   checkboxes.forEach(cb => {
     cb.addEventListener('change', function() {
       this.closest('.substep').classList.toggle('checked', this.checked);
       saveState();
+      postEvent(this.checked ? 'check' : 'uncheck', this.id);
       updateProgress();
     });
   });
@@ -1003,32 +1128,219 @@ Newest first.
     });
   }
 
-  function copyCode(btn) {
-    const block = btn.closest('.code-block');
-    const label = block.querySelector('.code-label');
-    let text = block.textContent;
-    // Remove the label text and button text from the copy
-    if (label) text = text.replace(label.textContent, '');
-    text = text.replace('Copy', '').replace('Copied!', '').trim();
-    navigator.clipboard.writeText(text).then(() => {
+  /* ---- Editable code blocks ---- */
+  function autoResize(ta) {
+    ta.style.height = 'auto';
+    ta.style.height = (ta.scrollHeight + 4) + 'px';
+  }
+
+  function copyEdit(btn) {
+    const ta = btn.closest('.code-block').querySelector('.code-edit');
+    navigator.clipboard.writeText(ta.value).then(() => {
       btn.textContent = 'Copied!';
       btn.classList.add('copied');
       setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
   }
 
+  function resetEdit(btn) {
+    const ta = btn.closest('.code-block').querySelector('.code-edit');
+    ta.value = ta.defaultValue;
+    autoResize(ta);
+  }
+
   function resetAll() {
-    if (confirm('Reset all checkboxes? This cannot be undone.')) {
+    if (confirm('Reset all checkboxes? This restarts the timer too, and cannot be undone.')) {
       checkboxes.forEach(cb => {
         cb.checked = false;
         cb.closest('.substep').classList.remove('checked');
       });
       localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(DONE_KEY);
+      localStorage.removeItem(TIMER_KEY);
+      postEvent('reset');
+      const note = document.getElementById('emailNote');
+      if (note) note.style.display = 'none';
+      if (GATED && user) startTimer();
       updateProgress();
     }
   }
 
+  /* ===== Sign-in gate, timer, and event tracking =====
+     Everything below is a no-op until TUTORIAL_CONFIG (in <head>) is filled in. */
+  const CFG = window.TUTORIAL_CONFIG || {};
+  const GATED = !!(CFG.googleClientId && CFG.gasEndpoint);
+  const USER_KEY = 'tutorial_user';
+  const TIMER_KEY = 'tutorial_timer';
+  const DONE_KEY = 'tutorial_completed';
+
+  let user = null;
+  try { user = JSON.parse(localStorage.getItem(USER_KEY)); } catch (e) {}
+  if (user && !user.email) user = null;
+
+  function postEvent(event, detail, token) {
+    if (!GATED || !user) return;
+    try {
+      fetch(CFG.gasEndpoint, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          email: user.email,
+          name: user.name || '',
+          event: event,
+          detail: detail || '',
+          token: token || '',
+          clientTime: new Date().toISOString()
+        })
+      });
+    } catch (e) { /* tracking must never break the tutorial */ }
+  }
+
+  /* ---- Timer ---- */
+  let tickHandle = null;
+
+  function timerState() {
+    try { return JSON.parse(localStorage.getItem(TIMER_KEY)); } catch (e) { return null; }
+  }
+  function saveTimer(t) { localStorage.setItem(TIMER_KEY, JSON.stringify(t)); }
+
+  function elapsedMs(t) {
+    const now = Date.now();
+    return now - t.startedAt - t.pausedMs - (t.pausedAt ? (now - t.pausedAt) : 0);
+  }
+
+  function fmt(ms) {
+    const s = Math.max(0, Math.floor(ms / 1000));
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = s % 60;
+    return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(sec).padStart(2, '0');
+  }
+
+  function renderTimer() {
+    const t = timerState();
+    if (t) document.getElementById('timerDisplay').textContent = fmt(elapsedMs(t));
+  }
+
+  function startTimer() {
+    if (!timerState()) saveTimer({ startedAt: Date.now(), pausedMs: 0, pausedAt: null });
+    const widget = document.getElementById('timerWidget');
+    const btn = document.getElementById('pauseBtn');
+    widget.hidden = false;
+    const doneMs = localStorage.getItem(DONE_KEY);
+    if (doneMs) { finishTimer(); return; }
+    const t = timerState();
+    btn.disabled = false;
+    btn.textContent = t.pausedAt ? 'Resume' : 'Pause';
+    widget.classList.toggle('paused', !!t.pausedAt);
+    renderTimer();
+    if (!tickHandle) {
+      tickHandle = setInterval(() => {
+        const cur = timerState();
+        if (cur && !cur.pausedAt) renderTimer();
+      }, 1000);
+    }
+  }
+
+  function togglePause() {
+    const t = timerState();
+    if (!t) return;
+    if (t.pausedAt) {
+      t.pausedMs += Date.now() - t.pausedAt;
+      t.pausedAt = null;
+      postEvent('resume');
+    } else {
+      t.pausedAt = Date.now();
+      postEvent('pause');
+    }
+    saveTimer(t);
+    document.getElementById('pauseBtn').textContent = t.pausedAt ? 'Resume' : 'Pause';
+    document.getElementById('timerWidget').classList.toggle('paused', !!t.pausedAt);
+  }
+
+  function finishTimer() {
+    if (tickHandle) { clearInterval(tickHandle); tickHandle = null; }
+    const doneMs = Number(localStorage.getItem(DONE_KEY) || 0);
+    document.getElementById('timerDisplay').textContent = fmt(doneMs);
+    const btn = document.getElementById('pauseBtn');
+    btn.textContent = 'Done!';
+    btn.disabled = true;
+    document.getElementById('timerWidget').classList.remove('paused');
+  }
+
+  function maybeComplete() {
+    if (!GATED || !user || localStorage.getItem(DONE_KEY)) return;
+    const t = timerState();
+    if (t && t.pausedAt) { t.pausedMs += Date.now() - t.pausedAt; t.pausedAt = null; saveTimer(t); }
+    localStorage.setItem(DONE_KEY, String(t ? elapsedMs(t) : 0));
+    // Delay so the final 'check' event lands at the server before 'complete'
+    setTimeout(() => postEvent('complete', String(totalSteps)), 1500);
+    finishTimer();
+    const note = document.getElementById('emailNote');
+    if (note) note.style.display = 'block';
+  }
+
+  /* ---- Auth ---- */
+  function decodeJwtPayload(jwt) {
+    let p = jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    while (p.length % 4) p += '=';
+    return JSON.parse(decodeURIComponent(escape(atob(p))));
+  }
+
+  function onCredential(resp) {
+    try {
+      const payload = decodeJwtPayload(resp.credential);
+      user = { email: String(payload.email || '').toLowerCase(), name: payload.name || '' };
+      localStorage.setItem(USER_KEY, JSON.stringify(user));
+      postEvent('signin', '', resp.credential);
+      unlockPage();
+    } catch (e) {
+      alert('Sign-in failed — please try again.');
+    }
+  }
+
+  function signOut() {
+    localStorage.removeItem(USER_KEY);
+    location.reload();
+  }
+
+  function unlockPage() {
+    document.documentElement.classList.remove('locked');
+    if (GATED && user) {
+      const strip = document.getElementById('userStrip');
+      strip.hidden = false;
+      document.getElementById('userEmail').textContent = user.email;
+      startTimer();
+      if (localStorage.getItem(DONE_KEY)) {
+        const note = document.getElementById('emailNote');
+        if (note) note.style.display = 'block';
+      }
+    }
+    document.querySelectorAll('.code-edit').forEach(autoResize);
+  }
+
+  function initGate() {
+    if (!GATED) return;
+    if (user) { unlockPage(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://accounts.google.com/gsi/client';
+    s.async = true;
+    s.defer = true;
+    s.onload = function () {
+      google.accounts.id.initialize({ client_id: CFG.googleClientId, callback: onCredential });
+      google.accounts.id.renderButton(document.getElementById('gsiButton'), { theme: 'filled_blue', size: 'large', text: 'signin_with' });
+    };
+    document.head.appendChild(s);
+  }
+
+  /* ---- Init ---- */
   loadState();
+  document.querySelectorAll('.code-edit').forEach(ta => {
+    autoResize(ta);
+    ta.addEventListener('input', () => autoResize(ta));
+  });
+  initGate();
 </script>
 
 </body>
