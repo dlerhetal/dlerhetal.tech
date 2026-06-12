@@ -481,7 +481,9 @@
       <label for="s4-1">Asked Claude to create my <code>/journal</code> skill</label>
     </div>
 
-    <p>Test it: type <code>/journal</code>. Claude reads the skill's instructions and updates the journal &mdash; same result as the long prompt, one word instead of forty. And notice the pattern: the <em>skill</em> is personal, living in your user profile and available in every project, while the <em>journal it writes</em> belongs to whichever project you're standing in. Global habit, project record &mdash; the same split as your CLAUDE.md.</p>
+    <p><strong>One catch before you test it: a new skill doesn't work in the session where it was built.</strong> A session takes stock of your skills when it starts, and <code>/journal</code> didn't exist when this one launched &mdash; type it now and Claude Code will draw a blank. Type <code>exit</code>, then start Claude again. From the next session on, the skill is just there, in this project and every other one.</p>
+
+    <p>Now, in the fresh session, test it: type <code>/journal</code>. Claude reads the skill's instructions and updates the journal &mdash; same result as the long prompt, one word instead of forty. And notice the pattern: the <em>skill</em> is personal, living in your user profile and available in every project, while the <em>journal it writes</em> belongs to whichever project you're standing in. Global habit, project record &mdash; the same split as your CLAUDE.md.</p>
 
     <div class="substep" data-step="4-2">
       <input type="checkbox" id="s4-2">
