@@ -1,0 +1,1607 @@
+{
+  "version": "1.0",
+  "exam": "AIF-C01",
+  "questions": [
+    {
+      "id": "d1.1-001",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.1",
+      "type": "single",
+      "stem": "A data science team is describing the relationship between several technical terms to a new business stakeholder. Which statement correctly describes how the concepts relate to one another?",
+      "options": [
+        "Machine learning is a subset of artificial intelligence, deep learning is a subset of machine learning, and generative AI is built on deep learning models.",
+        "Deep learning is a broader field that contains both artificial intelligence and machine learning.",
+        "Generative AI and machine learning are entirely separate fields with no overlap.",
+        "Artificial intelligence is a subset of machine learning, which is a subset of deep learning."
+      ],
+      "correct": [0],
+      "explanation": "AI is the broadest field; ML is a subset of AI; deep learning is a subset of ML that uses multi-layer neural networks; generative AI is built on deep learning foundation models. The other options reverse or break this nesting relationship.",
+      "anchor": "Knowing the hierarchy helps you pick the right AWS service tier for a workload."
+    },
+    {
+      "id": "d1.1-002",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.1",
+      "type": "single",
+      "stem": "A retailer has historical sales records labeled with the actual revenue for each day and wants a model to predict future daily revenue. Which type of machine learning best fits this task?",
+      "options": [
+        "Supervised learning",
+        "Unsupervised learning",
+        "Reinforcement learning",
+        "Self-supervised pre-training only"
+      ],
+      "correct": [0],
+      "explanation": "Labeled historical data with a known target (revenue) used to predict a value is supervised learning. Unsupervised learning works on unlabeled data to find structure, and reinforcement learning learns from reward signals through interaction rather than labeled examples.",
+      "anchor": "Forecasting demand is a classic supervised regression use case."
+    },
+    {
+      "id": "d1.1-003",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.1",
+      "type": "single",
+      "stem": "An application must classify uploaded support tickets the moment they arrive and return a category within a few hundred milliseconds so an agent can respond. Which inferencing type is most appropriate?",
+      "options": [
+        "Real-time inference",
+        "Batch inference",
+        "Asynchronous inference",
+        "Offline retraining"
+      ],
+      "correct": [0],
+      "explanation": "Low-latency, immediate, per-request predictions describe real-time inference. Batch inference processes large datasets on a schedule, and asynchronous inference queues longer-running requests where immediate response is not required.",
+      "anchor": "Amazon SageMaker AI offers real-time endpoints for exactly this pattern."
+    },
+    {
+      "id": "d1.1-004",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.1",
+      "type": "single",
+      "stem": "A company needs to score 50 million records overnight to generate a churn-risk report. There is no need for an immediate response, and minimizing cost is the priority. Which inferencing approach fits best?",
+      "options": [
+        "Batch inference",
+        "Real-time inference",
+        "Synchronous single-record inference",
+        "Edge inference on each device"
+      ],
+      "correct": [0],
+      "explanation": "Large volumes processed on a schedule with no latency requirement is the textbook case for batch inference, which is cost-efficient because resources spin up only for the job. Real-time and synchronous single-record inference keep endpoints running and cost more for this volume.",
+      "anchor": "SageMaker AI batch transform is built for offline scoring of large datasets."
+    },
+    {
+      "id": "d1.1-005",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.1",
+      "type": "single",
+      "stem": "A model consistently gives lower approval rates to one demographic group even when financial qualifications are equal. Which responsible AI concept does this most directly illustrate?",
+      "options": [
+        "Bias",
+        "Overfitting",
+        "Latency",
+        "Tokenization"
+      ],
+      "correct": [0],
+      "explanation": "Systematically unequal outcomes across groups for equivalent inputs is bias, which threatens fairness. Overfitting describes a model memorizing training data, while latency and tokenization are unrelated to demographic disparity.",
+      "anchor": "Amazon SageMaker Clarify can measure this kind of disparity."
+    },
+    {
+      "id": "d1.1-006",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.1",
+      "type": "multi",
+      "stem": "A team is cataloging its data assets before starting an ML project. Which of the following are examples of unstructured data? (Select TWO)",
+      "options": [
+        "Customer support call recordings",
+        "Scanned product photographs",
+        "A relational table of order IDs and totals",
+        "A time-series of hourly temperature readings in a database column",
+        "A spreadsheet of employee names and salaries"
+      ],
+      "correct": [0, 1],
+      "explanation": "Audio recordings and images are unstructured data because they do not fit a predefined row-and-column schema. Relational tables, database time-series columns, and spreadsheets are structured (or semi-structured tabular) data.",
+      "anchor": "Most generative AI value comes from unlocking unstructured data."
+    },
+    {
+      "id": "d1.1-007",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.1",
+      "type": "single",
+      "stem": "Which description best defines an algorithm in a machine learning context?",
+      "options": [
+        "The procedure or set of rules used to learn patterns from data and produce a model",
+        "The trained artifact that produces predictions on new inputs",
+        "The labeled examples used during training",
+        "The hardware accelerator used to speed up training"
+      ],
+      "correct": [0],
+      "explanation": "An algorithm is the learning procedure applied to data; the model is the resulting trained artifact that makes predictions. The other options describe the model, the training data, and compute hardware respectively.",
+      "anchor": "Distinguishing algorithm from model clarifies what you are choosing versus producing."
+    },
+    {
+      "id": "d1.1-008",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.1",
+      "type": "single",
+      "stem": "A company deploys software that can perceive its environment, plan multi-step actions, call external tools, and pursue a goal with limited human intervention. Which term best describes this system?",
+      "options": [
+        "Agentic AI",
+        "A single supervised classifier",
+        "A static rules engine",
+        "A clustering model"
+      ],
+      "correct": [0],
+      "explanation": "Goal-directed systems that plan, use tools, and act autonomously across multiple steps are agentic AI. A single classifier or clustering model performs one narrow task, and a static rules engine cannot plan or adapt.",
+      "anchor": "Amazon Bedrock AgentCore supports building agentic workflows."
+    },
+    {
+      "id": "d1.2-001",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.2",
+      "type": "single",
+      "stem": "A finance team needs to compute monthly interest using a fixed formula where every input always produces one exact, legally required output. Should they use machine learning?",
+      "options": [
+        "No, a deterministic rules-based calculation is more appropriate than ML",
+        "Yes, train a regression model to approximate the interest",
+        "Yes, use a neural network for higher accuracy",
+        "Yes, use clustering to group the accounts first"
+      ],
+      "correct": [0],
+      "explanation": "When the outcome is fully deterministic and a known formula gives the exact required answer, ML adds cost, risk, and approximation error for no benefit. ML suits problems with patterns too complex to hand-code, not exact arithmetic.",
+      "anchor": "Recognizing when NOT to use ML is an explicit exam objective."
+    },
+    {
+      "id": "d1.2-002",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.2",
+      "type": "single",
+      "stem": "A company wants to automatically convert recorded customer service calls into written text for analysis. Which AWS managed AI service is the best fit?",
+      "options": [
+        "Amazon Transcribe",
+        "Amazon Polly",
+        "Amazon Translate",
+        "Amazon Lex"
+      ],
+      "correct": [0],
+      "explanation": "Amazon Transcribe converts speech audio to text. Amazon Polly does the reverse (text to speech), Amazon Translate handles language translation, and Amazon Lex builds conversational chatbots.",
+      "anchor": "Speech-to-text is the first step in many call-center analytics pipelines."
+    },
+    {
+      "id": "d1.2-003",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.2",
+      "type": "single",
+      "stem": "A developer wants to add natural-language text capabilities such as sentiment analysis, entity recognition, and key-phrase extraction without training a model. Which AWS service should they choose?",
+      "options": [
+        "Amazon Comprehend",
+        "Amazon Polly",
+        "Amazon Transcribe",
+        "Amazon Rekognition"
+      ],
+      "correct": [0],
+      "explanation": "Amazon Comprehend is the managed NLP service for sentiment, entities, and key phrases. Polly is text-to-speech, Transcribe is speech-to-text, and Rekognition analyzes images and video.",
+      "anchor": "Comprehend lets teams extract insight from text without ML expertise."
+    },
+    {
+      "id": "d1.2-004",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.2",
+      "type": "single",
+      "stem": "A bank wants to flag potentially fraudulent transactions as legitimate or fraudulent based on labeled historical examples. Which ML technique is most appropriate?",
+      "options": [
+        "Classification",
+        "Clustering",
+        "Linear regression for a continuous value",
+        "Dimensionality reduction"
+      ],
+      "correct": [0],
+      "explanation": "Assigning each transaction to one of two known categories (fraud or legitimate) is a classification task. Clustering finds groups in unlabeled data, and regression predicts continuous numeric values rather than categories.",
+      "anchor": "Fraud detection is a canonical binary classification problem."
+    },
+    {
+      "id": "d1.2-005",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.2",
+      "type": "single",
+      "stem": "A marketing analyst has a large set of customers with no labels and wants to discover natural segments for targeted campaigns. Which technique fits?",
+      "options": [
+        "Clustering",
+        "Classification",
+        "Regression",
+        "Reinforcement learning"
+      ],
+      "correct": [0],
+      "explanation": "Discovering natural groupings in unlabeled data is clustering, an unsupervised technique. Classification and regression require labeled targets, and reinforcement learning optimizes actions against a reward signal.",
+      "anchor": "Customer segmentation is the textbook clustering use case."
+    },
+    {
+      "id": "d1.2-006",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.2",
+      "type": "multi",
+      "stem": "A company is evaluating where AI and ML can add real business value. In which of the following situations is using ML clearly appropriate? (Select TWO)",
+      "options": [
+        "Detecting anomalies in millions of streaming sensor readings where patterns are too complex to hand-code",
+        "Recommending products based on patterns in past purchase behavior",
+        "Calculating sales tax from a fixed published rate table",
+        "Returning a stored record by exact primary key lookup",
+        "Generating a sequential invoice number"
+      ],
+      "correct": [0, 1],
+      "explanation": "Complex anomaly detection and pattern-based recommendations involve patterns too intricate to hand-code, where ML excels. Tax calculation from a fixed table, exact key lookups, and sequential numbering are deterministic operations better handled by conventional code.",
+      "anchor": "Match the tool to the problem: ML for patterns, code for determinism."
+    },
+    {
+      "id": "d1.2-007",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.2",
+      "type": "single",
+      "stem": "How does a foundation model differ from a traditional task-specific ML model?",
+      "options": [
+        "A foundation model is pre-trained on broad data and can be adapted to many downstream tasks, while a traditional ML model is typically trained for one specific task",
+        "A foundation model can only perform a single classification task",
+        "A traditional ML model is always larger than a foundation model",
+        "Foundation models cannot be customized after pre-training"
+      ],
+      "correct": [0],
+      "explanation": "Foundation models are pre-trained on large, broad datasets and adapted to many tasks via prompting, fine-tuning, or RAG, unlike traditional models built for one narrow task. Foundation models are generally larger and can be customized further.",
+      "anchor": "Amazon Bedrock provides access to multiple foundation models through one API."
+    },
+    {
+      "id": "d1.3-001",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.3",
+      "type": "single",
+      "stem": "A team wants to use leading foundation models through a fully managed, serverless API without provisioning infrastructure. Which AWS service is designed for this?",
+      "options": [
+        "Amazon Bedrock",
+        "Amazon EC2 with self-hosted models",
+        "Amazon Comprehend",
+        "AWS Lambda alone"
+      ],
+      "correct": [0],
+      "explanation": "Amazon Bedrock provides serverless, managed access to multiple foundation models through a single API. Self-hosting on EC2 requires managing infrastructure, Comprehend is task-specific NLP, and Lambda alone does not host foundation models.",
+      "anchor": "Bedrock is the default starting point for managed GenAI on AWS."
+    },
+    {
+      "id": "d1.3-002",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.3",
+      "type": "single",
+      "stem": "A binary classifier for a rare disease labels almost everyone as healthy and still reports 98% accuracy because the disease is rare. Which metric would best reveal that it misses most actual sick patients?",
+      "options": [
+        "Recall",
+        "Accuracy",
+        "Latency",
+        "Throughput"
+      ],
+      "correct": [0],
+      "explanation": "Recall measures the proportion of actual positives the model correctly identifies, exposing missed sick patients that high accuracy hides on imbalanced data. Accuracy is misleading here, and latency and throughput are performance metrics, not quality metrics.",
+      "anchor": "On rare-event problems, recall and precision matter more than raw accuracy."
+    },
+    {
+      "id": "d1.3-003",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.3",
+      "type": "single",
+      "stem": "Which metric combines precision and recall into a single balanced score?",
+      "options": [
+        "F1 score",
+        "Accuracy",
+        "Mean absolute error",
+        "R-squared"
+      ],
+      "correct": [0],
+      "explanation": "The F1 score is the harmonic mean of precision and recall, giving one balanced number useful for imbalanced classes. Accuracy ignores class balance, while mean absolute error and R-squared are regression metrics.",
+      "anchor": "F1 is the go-to single metric when both false positives and false negatives matter."
+    },
+    {
+      "id": "d1.3-004",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.3",
+      "type": "single",
+      "stem": "A company wants an AI-powered assistant that answers employee questions using internal documents, with minimal custom development. Which AWS service is purpose-built for this?",
+      "options": [
+        "Amazon Q",
+        "Amazon SageMaker AI training jobs",
+        "Amazon Polly",
+        "Amazon Macie"
+      ],
+      "correct": [0],
+      "explanation": "Amazon Q is a managed generative AI assistant that can answer questions grounded in enterprise data with minimal development. SageMaker AI training jobs build custom models, Polly is text-to-speech, and Macie discovers sensitive data.",
+      "anchor": "Amazon Q targets out-of-the-box enterprise assistant use cases."
+    },
+    {
+      "id": "d1.3-005",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.3",
+      "type": "multi",
+      "stem": "A team is mapping the stages of a typical ML pipeline. Which of the following are legitimate stages in the ML lifecycle? (Select THREE)",
+      "options": [
+        "Data collection and preparation",
+        "Model training",
+        "Model deployment and monitoring",
+        "Choosing the office network provider",
+        "Selecting the marketing logo color"
+      ],
+      "correct": [0, 1, 2],
+      "explanation": "Data preparation, model training, and deployment with monitoring are core ML pipeline stages. Network provider selection and logo color are unrelated business or IT decisions, not ML lifecycle steps.",
+      "anchor": "MLOps automates and monitors these stages end to end."
+    },
+    {
+      "id": "d1.3-006",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.3",
+      "type": "single",
+      "stem": "What does MLOps primarily aim to achieve?",
+      "options": [
+        "Reliable, repeatable processes for building, deploying, monitoring, and maintaining ML models in production",
+        "Replacing all data scientists with automated tools",
+        "Eliminating the need for any model evaluation",
+        "Storing models on local laptops for portability"
+      ],
+      "correct": [0],
+      "explanation": "MLOps applies DevOps-style automation and governance to the full ML lifecycle for reliable, repeatable production operations. It complements rather than replaces practitioners and increases, not eliminates, evaluation and monitoring.",
+      "anchor": "MLOps is what keeps models healthy after the demo ends."
+    },
+    {
+      "id": "d2.1-001",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.1",
+      "type": "single",
+      "stem": "In generative AI, what is a token?",
+      "options": [
+        "A unit of text such as a word or sub-word that the model processes",
+        "An access credential used to call the model API",
+        "A vector database index entry",
+        "A unit of GPU memory"
+      ],
+      "correct": [0],
+      "explanation": "Tokens are the chunks of text (words or sub-words) that language models read and generate, and they are the basis of usage pricing. The other options confuse tokens with API keys, database indexes, or hardware memory.",
+      "anchor": "Token counts drive both context limits and cost on services like Amazon Bedrock."
+    },
+    {
+      "id": "d2.1-002",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.1",
+      "type": "single",
+      "stem": "A developer converts product descriptions into numeric vectors so similar items sit close together in vector space for semantic search. What are these numeric representations called?",
+      "options": [
+        "Embeddings",
+        "Tokens",
+        "Hyperparameters",
+        "Checkpoints"
+      ],
+      "correct": [0],
+      "explanation": "Embeddings are dense numeric vectors that capture semantic meaning so similar items are near each other in vector space. Tokens are text units, hyperparameters configure training, and checkpoints are saved model states.",
+      "anchor": "Embeddings power semantic search and RAG retrieval."
+    },
+    {
+      "id": "d2.1-003",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.1",
+      "type": "single",
+      "stem": "Why is large documentation often split into smaller chunks before being embedded for a retrieval system?",
+      "options": [
+        "To create focused, appropriately sized passages that retrieve and fit within model context more effectively",
+        "To permanently delete the original document",
+        "To convert the text into a different spoken language",
+        "To increase the model's training data size"
+      ],
+      "correct": [0],
+      "explanation": "Chunking breaks long documents into focused passages that embed well and fit within context limits, improving retrieval relevance. It does not delete originals, translate text, or expand training data.",
+      "anchor": "Good chunking strategy is central to high-quality RAG."
+    },
+    {
+      "id": "d2.1-004",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.1",
+      "type": "single",
+      "stem": "Which neural network architecture underlies modern large language models?",
+      "options": [
+        "The transformer architecture",
+        "A decision tree ensemble",
+        "A k-means clustering routine",
+        "A linear regression line"
+      ],
+      "correct": [0],
+      "explanation": "Modern LLMs are built on the transformer architecture, which uses attention mechanisms to model relationships across a sequence. Decision trees, k-means, and linear regression are classical methods, not the basis of LLMs.",
+      "anchor": "The transformer is why long-range context understanding became practical."
+    },
+    {
+      "id": "d2.1-005",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.1",
+      "type": "single",
+      "stem": "An order of the foundation model lifecycle is being reviewed. Which sequence is correct?",
+      "options": [
+        "Data selection, model selection, pre-training, fine-tuning, evaluation, deployment, feedback",
+        "Deployment, feedback, pre-training, data selection, evaluation",
+        "Evaluation, deployment, data selection, model selection, pre-training",
+        "Fine-tuning, data selection, deployment, pre-training, evaluation"
+      ],
+      "correct": [0],
+      "explanation": "The lifecycle flows from selecting data and a model, through pre-training and fine-tuning, to evaluation, deployment, and ongoing feedback. The other orderings place deployment or evaluation before the model even exists.",
+      "anchor": "Feedback loops back into data selection for the next iteration."
+    },
+    {
+      "id": "d2.1-006",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.1",
+      "type": "single",
+      "stem": "What is the primary purpose of the Model Context Protocol (MCP) in agentic AI systems?",
+      "options": [
+        "To provide a standardized way for AI agents and models to connect to external tools and data sources",
+        "To compress model weights for faster inference",
+        "To encrypt model checkpoints at rest",
+        "To convert speech to text"
+      ],
+      "correct": [0],
+      "explanation": "MCP is an open standard that lets agents and models connect to external systems, tools, and data in a consistent way. It is not a compression, encryption, or speech transcription mechanism.",
+      "anchor": "MCP reduces custom glue code when wiring agents to enterprise systems."
+    },
+    {
+      "id": "d2.1-007",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.1",
+      "type": "multi",
+      "stem": "A team is designing an AI agent that can complete multi-step business tasks. Which capabilities are characteristic of agentic AI systems? (Select THREE)",
+      "options": [
+        "Calling external tools or APIs to take actions",
+        "Maintaining memory across steps of a task",
+        "Orchestrating a sequence of sub-tasks toward a goal",
+        "Guaranteeing a single deterministic output for every input",
+        "Eliminating the need for any foundation model"
+      ],
+      "correct": [0, 1, 2],
+      "explanation": "Agentic systems use tools, retain memory, and orchestrate multi-step plans toward goals. They are nondeterministic by nature and still rely on an underlying foundation model to reason.",
+      "anchor": "Amazon Bedrock AgentCore provides building blocks for these capabilities."
+    },
+    {
+      "id": "d2.1-008",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.1",
+      "type": "single",
+      "stem": "A company is generating product photos from text descriptions. Which type of generative model is typically used to produce high-quality images?",
+      "options": [
+        "Diffusion models",
+        "Decision trees",
+        "Support vector machines",
+        "Linear regression models"
+      ],
+      "correct": [0],
+      "explanation": "Diffusion models generate images by iteratively denoising random noise into a coherent picture and are the basis of leading text-to-image systems. The other options are classical ML methods not used for image generation.",
+      "anchor": "Image generation FMs on Amazon Bedrock use diffusion-style approaches."
+    },
+    {
+      "id": "d2.2-001",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.2",
+      "type": "single",
+      "stem": "A generative AI chatbot confidently states a refund policy that does not actually exist in any company document. What is this failure mode called?",
+      "options": [
+        "Hallucination",
+        "Overfitting",
+        "Data drift",
+        "Latency spike"
+      ],
+      "correct": [0],
+      "explanation": "A model producing fluent but fabricated or unsupported information is a hallucination, a key disadvantage of generative AI. Overfitting and data drift are training and monitoring concerns, and latency is a performance issue.",
+      "anchor": "Grounding with RAG is a common way to reduce hallucinations."
+    },
+    {
+      "id": "d2.2-002",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.2",
+      "type": "multi",
+      "stem": "A risk committee asks for the main disadvantages of generative AI they should plan for. Which of the following are genuine disadvantages? (Select THREE)",
+      "options": [
+        "Potential for hallucinations and inaccurate outputs",
+        "Limited interpretability of how outputs are produced",
+        "Nondeterministic responses that can vary between runs",
+        "Inability to generate any natural language text",
+        "Complete immunity to biased outputs"
+      ],
+      "correct": [0, 1, 2],
+      "explanation": "Hallucinations, low interpretability, and nondeterminism are well-known disadvantages of generative AI. Generating natural language is a strength, not a limitation, and these models are not immune to bias.",
+      "anchor": "Governance plans must account for these inherent limitations."
+    },
+    {
+      "id": "d2.2-003",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.2",
+      "type": "single",
+      "stem": "A startup needs a chatbot that can hold flexible, conversational interactions and generate varied content on demand. Which advantage of generative AI most directly supports this need?",
+      "options": [
+        "Adaptable, conversational content generation",
+        "Guaranteed deterministic outputs",
+        "Zero compute cost",
+        "Built-in legal indemnification"
+      ],
+      "correct": [0],
+      "explanation": "Generative AI excels at adaptable, conversational, on-demand content generation, which is exactly the strength the chatbot needs. Determinism, zero cost, and legal indemnification are not characteristics of generative models.",
+      "anchor": "Conversational flexibility is the headline benefit of GenAI assistants."
+    },
+    {
+      "id": "d2.2-004",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.2",
+      "type": "multi",
+      "stem": "An architect is choosing a foundation model for a latency-sensitive, cost-conscious customer-facing feature. Which factors should weigh into the model selection? (Select THREE)",
+      "options": [
+        "Inference latency",
+        "Cost per token",
+        "Model capabilities for the required task",
+        "The color scheme of the company website",
+        "The CEO's favorite vendor brand"
+      ],
+      "correct": [0, 1, 2],
+      "explanation": "Latency, cost, and task capability are core model-selection criteria, especially for a latency-sensitive, cost-conscious feature. Website color and personal brand preference are not legitimate technical selection factors.",
+      "anchor": "Model selection is always a balance of performance, cost, and constraints."
+    },
+    {
+      "id": "d2.2-005",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.2",
+      "type": "single",
+      "stem": "A product team wants to measure whether a new generative AI feature improves business outcomes. Which of the following is a business value metric rather than a model-quality metric?",
+      "options": [
+        "Conversion rate of users who interact with the feature",
+        "BLEU score of generated text",
+        "F1 score of a classifier",
+        "Perplexity of the language model"
+      ],
+      "correct": [0],
+      "explanation": "Conversion rate ties the feature to business value and revenue, unlike BLEU, F1, and perplexity, which are technical model-quality measures. Aligning to business metrics shows real return on the investment.",
+      "anchor": "Tie GenAI projects to ROI, conversion, ARPU, or CLV to justify them."
+    },
+    {
+      "id": "d2.2-006",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.2",
+      "type": "single",
+      "stem": "Why is interpretability often listed as a disadvantage of large generative models?",
+      "options": [
+        "It can be difficult to explain exactly why the model produced a specific output",
+        "The models cannot produce any output at all",
+        "The models always reveal their full reasoning by default",
+        "Interpretability makes models slower to deploy on AWS"
+      ],
+      "correct": [0],
+      "explanation": "Large models are often opaque, making it hard to explain why a particular output was generated, which complicates trust and auditing. They do produce output, do not automatically reveal reasoning, and interpretability is a transparency concern, not a deployment-speed issue.",
+      "anchor": "Low interpretability is why explainability tooling matters in regulated settings."
+    },
+    {
+      "id": "d2.3-001",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.3",
+      "type": "single",
+      "stem": "A team wants to browse, evaluate, and deploy pre-built foundation models and ML solutions to get started quickly within SageMaker. Which capability is designed for this?",
+      "options": [
+        "Amazon SageMaker JumpStart",
+        "Amazon Macie",
+        "AWS CloudTrail",
+        "Amazon Polly"
+      ],
+      "correct": [0],
+      "explanation": "SageMaker JumpStart offers pre-built models and solution templates for quick deployment and experimentation. Macie discovers sensitive data, CloudTrail logs API activity, and Polly is text-to-speech.",
+      "anchor": "JumpStart shortens the path from idea to a running model."
+    },
+    {
+      "id": "d2.3-002",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.3",
+      "type": "single",
+      "stem": "An application has steady, high-volume traffic and needs guaranteed model throughput with predictable performance on Amazon Bedrock. Which pricing or capacity option fits best?",
+      "options": [
+        "Provisioned throughput",
+        "On-demand per-token pricing only",
+        "Spot instances for the model",
+        "A free tier with no limits"
+      ],
+      "correct": [0],
+      "explanation": "Provisioned throughput reserves dedicated model capacity for consistent, high-volume workloads with predictable performance. On-demand suits variable or low traffic, spot instances are not how Bedrock model capacity is purchased, and there is no unlimited free tier.",
+      "anchor": "Provisioned throughput trades commitment for guaranteed capacity."
+    },
+    {
+      "id": "d2.3-003",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.3",
+      "type": "multi",
+      "stem": "A CISO asks why using a managed AWS generative AI service like Amazon Bedrock can be advantageous over building everything in-house. Which are valid advantages? (Select TWO)",
+      "options": [
+        "Built-in security and compliance capabilities managed by AWS",
+        "Access to multiple foundation models through a unified API without managing infrastructure",
+        "A guarantee that the model will never produce an incorrect answer",
+        "Elimination of all usage-based costs",
+        "Automatic removal of the need to evaluate outputs"
+      ],
+      "correct": [0, 1],
+      "explanation": "Managed services provide integrated security and compliance plus unified, infrastructure-free access to multiple models. They do not guarantee perfect answers, remove usage costs, or eliminate the need for evaluation.",
+      "anchor": "The managed model lets teams focus on the application, not the plumbing."
+    },
+    {
+      "id": "d2.3-004",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.3",
+      "type": "single",
+      "stem": "A developer needs to build, train, and host custom ML models with full control over the pipeline, including notebooks, training jobs, and endpoints. Which AWS service is the best fit?",
+      "options": [
+        "Amazon SageMaker AI",
+        "Amazon Q",
+        "Amazon Comprehend",
+        "Amazon Lex"
+      ],
+      "correct": [0],
+      "explanation": "Amazon SageMaker AI is the end-to-end platform for building, training, and deploying custom ML models with full pipeline control. Amazon Q is a ready-made assistant, while Comprehend and Lex are narrow, pre-built AI services.",
+      "anchor": "SageMaker AI is the choice when you need to build, not just consume."
+    },
+    {
+      "id": "d2.3-005",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.3",
+      "type": "single",
+      "stem": "A company wants to deploy and operate AI agents securely at scale with managed infrastructure for memory, tools, and orchestration. Which AWS offering targets this need?",
+      "options": [
+        "Amazon Bedrock AgentCore",
+        "Amazon Polly",
+        "AWS Artifact",
+        "Amazon Macie"
+      ],
+      "correct": [0],
+      "explanation": "Amazon Bedrock AgentCore provides managed infrastructure for building and running AI agents at scale, including memory, tools, and orchestration. Polly is text-to-speech, Artifact provides compliance reports, and Macie discovers sensitive data.",
+      "anchor": "AgentCore handles the operational heavy lifting for agentic apps."
+    },
+    {
+      "id": "d2.3-006",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.3",
+      "type": "single",
+      "stem": "A global team needs a foundation model available in a specific AWS Region for data residency reasons. Which cost or deployment consideration does this primarily affect?",
+      "options": [
+        "Regional model availability and coverage",
+        "The temperature inference parameter",
+        "The number of tokens in the prompt",
+        "The choice of programming language for the SDK"
+      ],
+      "correct": [0],
+      "explanation": "Data residency requirements depend on whether a given model is available in the required Region, a real coverage consideration. Temperature, token count, and SDK language do not address where data and inference are located.",
+      "anchor": "Always confirm model and Region availability before committing to a design."
+    },
+    {
+      "id": "d3.1-001",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.1",
+      "type": "single",
+      "stem": "A support team wants a chatbot to answer questions using the company's constantly changing internal knowledge base, with accurate citations and without retraining the model. Which approach best fits?",
+      "options": [
+        "Retrieval Augmented Generation (RAG)",
+        "Full pre-training of a new foundation model",
+        "Lowering the temperature parameter only",
+        "Increasing the maximum output length only"
+      ],
+      "correct": [0],
+      "explanation": "RAG retrieves current, relevant documents at query time and grounds the model's answer in them, ideal for changing knowledge without retraining. Pre-training is far too costly, and adjusting temperature or output length does not add knowledge.",
+      "anchor": "Amazon Bedrock Knowledge Bases provide managed RAG."
+    },
+    {
+      "id": "d3.1-002",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.1",
+      "type": "single",
+      "stem": "A developer increases the temperature parameter on a foundation model. What is the most likely effect on the output?",
+      "options": [
+        "Responses become more random and creative",
+        "Responses become strictly deterministic",
+        "The model runs on faster hardware",
+        "The context window doubles in size"
+      ],
+      "correct": [0],
+      "explanation": "Higher temperature increases randomness and creativity in token selection, while lower temperature makes output more focused and deterministic. Temperature does not change hardware or context window size.",
+      "anchor": "Lower temperature for factual tasks; raise it for brainstorming."
+    },
+    {
+      "id": "d3.1-003",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.1",
+      "type": "multi",
+      "stem": "A team building a RAG application on AWS needs to store and query vector embeddings. Which of the following can serve as a vector store? (Select THREE)",
+      "options": [
+        "Amazon OpenSearch Service",
+        "Amazon Aurora",
+        "Amazon RDS for PostgreSQL",
+        "Amazon Polly",
+        "Amazon Transcribe"
+      ],
+      "correct": [0, 1, 2],
+      "explanation": "Amazon OpenSearch Service, Amazon Aurora, and Amazon RDS for PostgreSQL (with pgvector) can store and query vector embeddings for RAG. Polly and Transcribe are speech services and cannot serve as vector stores.",
+      "anchor": "Amazon Neptune also supports vector search for graph-based use cases."
+    },
+    {
+      "id": "d3.1-004",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.1",
+      "type": "single",
+      "stem": "A company wants to improve answers by including a few examples directly in the prompt at query time, without changing the model's weights. Which customization approach is this?",
+      "options": [
+        "In-context learning",
+        "Full fine-tuning",
+        "Continuous pre-training",
+        "Model distillation"
+      ],
+      "correct": [0],
+      "explanation": "Providing examples or context directly in the prompt without updating weights is in-context learning, the lowest-cost customization option. Fine-tuning, continuous pre-training, and distillation all modify or create model weights and cost more.",
+      "anchor": "Start with prompting and RAG before paying to fine-tune."
+    },
+    {
+      "id": "d3.1-005",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.1",
+      "type": "single",
+      "stem": "Among these FM customization options, which is generally the MOST expensive and resource-intensive to perform?",
+      "options": [
+        "Pre-training a foundation model from scratch",
+        "Using RAG with an existing model",
+        "In-context learning with few-shot prompts",
+        "Adjusting the temperature parameter"
+      ],
+      "correct": [0],
+      "explanation": "Pre-training a foundation model from scratch requires massive data and compute, making it the most expensive option. RAG, in-context learning, and parameter tuning are far cheaper ways to adapt model behavior.",
+      "anchor": "Cost ladder: prompting and RAG, then fine-tuning, then pre-training."
+    },
+    {
+      "id": "d3.1-006",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.1",
+      "type": "single",
+      "stem": "A team has an application that repeatedly sends the same long system instructions before each user query and wants to reduce cost and latency. Which feature directly helps?",
+      "options": [
+        "Prompt caching",
+        "Increasing temperature",
+        "Switching to batch clustering",
+        "Disabling the context window"
+      ],
+      "correct": [0],
+      "explanation": "Prompt caching reuses previously processed, repeated prompt content to lower cost and latency on subsequent calls. Temperature changes randomness, clustering is unrelated, and the context window cannot be disabled.",
+      "anchor": "Caching repeated context is a practical cost lever for production prompts."
+    },
+    {
+      "id": "d3.2-001",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.2",
+      "type": "single",
+      "stem": "A prompt instructs the model to 'think through the steps one at a time before giving the final answer' to improve reasoning on a math word problem. Which prompt engineering technique is this?",
+      "options": [
+        "Chain-of-thought prompting",
+        "Zero-shot prompting with no guidance",
+        "Negative prompting",
+        "Prompt injection"
+      ],
+      "correct": [0],
+      "explanation": "Asking the model to reason step by step before answering is chain-of-thought prompting, which improves multi-step reasoning. Zero-shot gives no examples or steps, negative prompting specifies what to avoid, and prompt injection is an attack.",
+      "anchor": "Chain-of-thought is a simple, powerful technique for reasoning tasks."
+    },
+    {
+      "id": "d3.2-002",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.2",
+      "type": "single",
+      "stem": "A prompt includes three worked examples of the desired input-output format before posing the real question. Which technique does this describe?",
+      "options": [
+        "Few-shot prompting",
+        "Zero-shot prompting",
+        "Continuous pre-training",
+        "Distillation"
+      ],
+      "correct": [0],
+      "explanation": "Providing several examples in the prompt to guide the response is few-shot prompting. Zero-shot includes no examples, while continuous pre-training and distillation are training techniques, not prompting styles.",
+      "anchor": "Few-shot examples steer format and tone without any training."
+    },
+    {
+      "id": "d3.2-003",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.2",
+      "type": "single",
+      "stem": "An attacker submits input designed to override the system instructions and make a chatbot ignore its safety rules and reveal restricted content. What is this attack called?",
+      "options": [
+        "Prompt injection",
+        "Few-shot prompting",
+        "Chain-of-thought reasoning",
+        "Embedding normalization"
+      ],
+      "correct": [0],
+      "explanation": "Crafting input to override instructions and subvert intended behavior is prompt injection, a key generative AI security risk. Few-shot prompting and chain-of-thought are legitimate techniques, and embedding normalization is unrelated.",
+      "anchor": "Input validation and guardrails help mitigate prompt injection."
+    },
+    {
+      "id": "d3.2-004",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.2",
+      "type": "single",
+      "stem": "A team wants to store, version, and reuse standardized prompts across applications on AWS. Which capability supports this?",
+      "options": [
+        "Amazon Bedrock Prompt Management",
+        "Amazon Macie",
+        "AWS CloudTrail",
+        "Amazon Polly"
+      ],
+      "correct": [0],
+      "explanation": "Amazon Bedrock Prompt Management lets teams create, version, and reuse prompts consistently. Macie discovers sensitive data, CloudTrail logs API activity, and Polly is text-to-speech.",
+      "anchor": "Versioned prompts bring software discipline to prompt engineering."
+    },
+    {
+      "id": "d3.2-005",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.2",
+      "type": "multi",
+      "stem": "A prompt engineer is documenting the constructs that make up an effective prompt. Which of the following are legitimate prompt engineering constructs? (Select THREE)",
+      "options": [
+        "Context that frames the task",
+        "Clear instructions describing the desired output",
+        "Negative prompts specifying what to avoid",
+        "The model's GPU serial number",
+        "The data center's physical address"
+      ],
+      "correct": [0, 1, 2],
+      "explanation": "Context, instructions, and negative prompts are real building blocks of a well-engineered prompt. A GPU serial number and a data center address have nothing to do with prompt construction.",
+      "anchor": "Strong prompts combine context, clear instructions, and constraints."
+    },
+    {
+      "id": "d3.2-006",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.2",
+      "type": "single",
+      "stem": "A team discovers that malicious documents added to a model's training or knowledge source caused it to learn harmful or false associations. Which risk does this describe?",
+      "options": [
+        "Data poisoning",
+        "Prompt caching",
+        "Few-shot prompting",
+        "Provisioned throughput"
+      ],
+      "correct": [0],
+      "explanation": "Injecting malicious or corrupt data into training or knowledge sources to corrupt model behavior is data poisoning. Prompt caching and provisioned throughput are performance features, and few-shot prompting is a benign technique.",
+      "anchor": "Data governance and source validation defend against poisoning."
+    },
+    {
+      "id": "d3.3-001",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.3",
+      "type": "single",
+      "stem": "A company adapts a general foundation model to legal terminology by further training it on a curated corpus of legal documents. Which fine-tuning approach is this?",
+      "options": [
+        "Domain adaptation",
+        "Prompt caching",
+        "Zero-shot prompting",
+        "Provisioned throughput"
+      ],
+      "correct": [0],
+      "explanation": "Further training a model on domain-specific data to specialize it is domain adaptation fine-tuning. Prompt caching and provisioned throughput are runtime features, and zero-shot prompting adds no training.",
+      "anchor": "Domain adaptation boosts performance on specialized vocabularies."
+    },
+    {
+      "id": "d3.3-002",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.3",
+      "type": "single",
+      "stem": "A team trains a large model's behavior to better match human preferences by using human ratings of model outputs as a reward signal. Which technique is this?",
+      "options": [
+        "Reinforcement learning from human feedback (RLHF)",
+        "Unsupervised clustering",
+        "Linear regression",
+        "Batch inference"
+      ],
+      "correct": [0],
+      "explanation": "Using human ratings as a reward signal to align model behavior is RLHF. Clustering and regression are unrelated classical methods, and batch inference is a deployment pattern, not a training alignment technique.",
+      "anchor": "RLHF is a major reason modern assistants follow instructions well."
+    },
+    {
+      "id": "d3.3-003",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.3",
+      "type": "single",
+      "stem": "A team wants a smaller, cheaper model that mimics the behavior of a large, expensive model. Which technique transfers the larger model's knowledge into the smaller one?",
+      "options": [
+        "Model distillation",
+        "Pre-training from scratch",
+        "Increasing temperature",
+        "Prompt versioning"
+      ],
+      "correct": [0],
+      "explanation": "Model distillation trains a smaller student model to reproduce a larger teacher model's behavior, cutting cost and latency. Pre-training from scratch is the opposite of leveraging an existing model, and temperature and prompt versioning do not shrink models.",
+      "anchor": "Distillation is a cost lever once a strong large model exists."
+    },
+    {
+      "id": "d3.3-004",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.3",
+      "type": "multi",
+      "stem": "A team is preparing data to fine-tune a foundation model responsibly. Which data preparation practices are important? (Select THREE)",
+      "options": [
+        "Curating high-quality, relevant examples",
+        "Ensuring the dataset is representative of real use cases",
+        "Applying data governance and proper labeling",
+        "Maximizing dataset size regardless of quality or relevance",
+        "Removing all human review from the labeling process"
+      ],
+      "correct": [0, 1, 2],
+      "explanation": "Curation, representativeness, and governed labeling produce reliable fine-tuning results. Blindly maximizing size without quality introduces noise and bias, and removing human review undermines label quality.",
+      "anchor": "Garbage in, garbage out applies doubly to fine-tuning data."
+    },
+    {
+      "id": "d3.3-005",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.3",
+      "type": "single",
+      "stem": "A company periodically continues training an existing foundation model on large amounts of new unlabeled domain text to keep its general knowledge current. Which technique is this?",
+      "options": [
+        "Continuous pre-training",
+        "In-context learning",
+        "Prompt injection",
+        "Output filtering"
+      ],
+      "correct": [0],
+      "explanation": "Extending the model's pre-training on additional unlabeled domain data is continuous pre-training. In-context learning happens at inference, prompt injection is an attack, and output filtering is a safety control.",
+      "anchor": "Continuous pre-training refreshes broad knowledge over time."
+    },
+    {
+      "id": "d3.3-006",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.3",
+      "type": "single",
+      "stem": "What does instruction tuning primarily improve in a foundation model?",
+      "options": [
+        "The model's ability to follow natural-language instructions across tasks",
+        "The physical size of the GPU cluster required",
+        "The number of Regions the model is available in",
+        "The encryption strength of stored checkpoints"
+      ],
+      "correct": [0],
+      "explanation": "Instruction tuning fine-tunes a model on instruction-response pairs so it better follows directions across many tasks. It does not change hardware needs, regional availability, or encryption.",
+      "anchor": "Instruction tuning is why base models become helpful assistants."
+    },
+    {
+      "id": "d3.4-001",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.4",
+      "type": "single",
+      "stem": "A team needs to evaluate the quality of machine-generated summaries against reference summaries by measuring overlap of words and phrases. Which metric is designed for this?",
+      "options": [
+        "ROUGE",
+        "Precision-recall on a tabular classifier",
+        "Mean squared error",
+        "Latency in milliseconds"
+      ],
+      "correct": [0],
+      "explanation": "ROUGE measures overlap between generated and reference text, making it standard for summarization evaluation. Classifier precision-recall and mean squared error apply to other tasks, and latency is a performance metric.",
+      "anchor": "ROUGE for summarization; BLEU is more common for translation."
+    },
+    {
+      "id": "d3.4-002",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.4",
+      "type": "single",
+      "stem": "A localization team wants to evaluate the quality of machine-translated sentences against human reference translations. Which metric is most commonly used?",
+      "options": [
+        "BLEU",
+        "ROUGE-L only",
+        "R-squared",
+        "Throughput per second"
+      ],
+      "correct": [0],
+      "explanation": "BLEU is the standard metric for machine translation quality, comparing n-gram overlap with reference translations. ROUGE is primarily for summarization, R-squared is a regression metric, and throughput is performance, not quality.",
+      "anchor": "BLEU and translation go together on the exam."
+    },
+    {
+      "id": "d3.4-003",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.4",
+      "type": "single",
+      "stem": "A team uses a strong foundation model to automatically score the quality of another model's responses against a rubric. What is this evaluation approach called?",
+      "options": [
+        "LLM-as-a-judge",
+        "BLEU scoring",
+        "Batch inference",
+        "Data poisoning"
+      ],
+      "correct": [0],
+      "explanation": "Using a capable model to grade another model's outputs against criteria is the LLM-as-a-judge approach, useful for scaling subjective evaluation. BLEU is an overlap metric, batch inference is a deployment pattern, and data poisoning is an attack.",
+      "anchor": "LLM-as-a-judge scales evaluation where human review is too slow."
+    },
+    {
+      "id": "d3.4-004",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.4",
+      "type": "single",
+      "stem": "A regulated company wants people to review and approve high-risk AI outputs before they reach customers. Which evaluation or oversight approach does this describe?",
+      "options": [
+        "Human-in-the-loop review",
+        "Fully automated deployment with no review",
+        "Increasing the temperature parameter",
+        "Prompt caching"
+      ],
+      "correct": [0],
+      "explanation": "Inserting human review and approval into the workflow is human-in-the-loop, appropriate for high-risk outputs. Fully automated deployment removes oversight, and temperature and caching do not provide human review.",
+      "anchor": "Amazon Augmented AI (A2I) helps implement human review at scale."
+    },
+    {
+      "id": "d3.4-005",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.4",
+      "type": "single",
+      "stem": "A team wants a managed way to evaluate and compare foundation models on Amazon Bedrock using automatic metrics and human review. Which capability supports this?",
+      "options": [
+        "Amazon Bedrock Model Evaluation",
+        "Amazon Macie",
+        "AWS Config",
+        "Amazon Polly"
+      ],
+      "correct": [0],
+      "explanation": "Amazon Bedrock Model Evaluation provides managed automatic and human-based evaluation to compare models. Macie discovers sensitive data, Config tracks resource configuration, and Polly is text-to-speech.",
+      "anchor": "Bedrock Model Evaluation streamlines choosing the right model."
+    },
+    {
+      "id": "d3.4-006",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.4",
+      "type": "multi",
+      "stem": "A product owner wants to align generative AI evaluation to business objectives rather than only technical scores. Which of the following are business-aligned evaluation measures? (Select TWO)",
+      "options": [
+        "Task completion rate",
+        "Cost per interaction",
+        "Number of transformer attention heads",
+        "GPU clock speed",
+        "Count of model parameters"
+      ],
+      "correct": [0, 1],
+      "explanation": "Task completion rate and cost per interaction connect model performance to business outcomes. Attention heads, GPU clock speed, and parameter count are architectural or hardware details, not business measures.",
+      "anchor": "User satisfaction and cost per interaction tell the business story."
+    },
+    {
+      "id": "d4.1-001",
+      "domain": 4,
+      "domainName": "Guidelines for Responsible AI",
+      "task": "4.1",
+      "type": "single",
+      "stem": "A company wants to block harmful content, filter sensitive topics, and redact personal information in its generative AI application on AWS. Which service is purpose-built for this?",
+      "options": [
+        "Amazon Bedrock Guardrails",
+        "Amazon Polly",
+        "AWS CloudTrail",
+        "Amazon Translate"
+      ],
+      "correct": [0],
+      "explanation": "Amazon Bedrock Guardrails enforces content filtering, denied topics, and sensitive-information redaction for generative AI apps. Polly is text-to-speech, CloudTrail logs API activity, and Translate handles language translation.",
+      "anchor": "Guardrails apply consistent safety policies across models."
+    },
+    {
+      "id": "d4.1-002",
+      "domain": 4,
+      "domainName": "Guidelines for Responsible AI",
+      "task": "4.1",
+      "type": "single",
+      "stem": "A model performs almost perfectly on training data but poorly on new, unseen data. Which problem does this indicate?",
+      "options": [
+        "Overfitting",
+        "Underfitting",
+        "High recall",
+        "Low latency"
+      ],
+      "correct": [0],
+      "explanation": "Strong training performance with weak generalization to new data is overfitting, often from high variance. Underfitting is the opposite (poor on both), and recall and latency are unrelated quality and performance measures.",
+      "anchor": "Overfitting is a variance problem; underfitting is a bias problem."
+    },
+    {
+      "id": "d4.1-003",
+      "domain": 4,
+      "domainName": "Guidelines for Responsible AI",
+      "task": "4.1",
+      "type": "single",
+      "stem": "A team wants to detect bias in training data and in model predictions across demographic groups. Which AWS tool is designed for bias detection and explainability?",
+      "options": [
+        "Amazon SageMaker Clarify",
+        "Amazon Polly",
+        "AWS Artifact",
+        "Amazon Lex"
+      ],
+      "correct": [0],
+      "explanation": "Amazon SageMaker Clarify detects bias across groups and provides feature-importance explanations. Polly is text-to-speech, Artifact provides compliance documents, and Lex builds chatbots.",
+      "anchor": "Clarify covers both bias detection and explainability."
+    },
+    {
+      "id": "d4.1-004",
+      "domain": 4,
+      "domainName": "Guidelines for Responsible AI",
+      "task": "4.1",
+      "type": "multi",
+      "stem": "A governance lead is listing the core features of responsible AI. Which of the following are recognized responsible AI dimensions? (Select THREE)",
+      "options": [
+        "Fairness",
+        "Safety",
+        "Veracity and robustness",
+        "Maximum token throughput",
+        "Lowest possible storage cost"
+      ],
+      "correct": [0, 1, 2],
+      "explanation": "Fairness, safety, and veracity/robustness are core responsible AI dimensions, alongside inclusivity and transparency. Token throughput and storage cost are performance and cost concerns, not responsible AI principles.",
+      "anchor": "Responsible AI is about trust, not throughput."
+    },
+    {
+      "id": "d4.1-005",
+      "domain": 4,
+      "domainName": "Guidelines for Responsible AI",
+      "task": "4.1",
+      "type": "multi",
+      "stem": "A legal team is assessing risks specific to deploying generative AI. Which of the following are legitimate legal or ethical risks of generative AI? (Select TWO)",
+      "options": [
+        "Intellectual property infringement in generated content",
+        "Biased outputs that disadvantage certain groups",
+        "Guaranteed elimination of all customer support staff",
+        "Automatic compliance with every global regulation",
+        "Permanent prevention of any hallucination"
+      ],
+      "correct": [0, 1],
+      "explanation": "IP infringement and biased outputs are real legal and ethical risks of generative AI. The remaining options are false promises; generative AI does not guarantee staffing outcomes, automatic compliance, or zero hallucinations.",
+      "anchor": "Legal review should cover IP, bias, and accuracy claims."
+    },
+    {
+      "id": "d4.1-006",
+      "domain": 4,
+      "domainName": "Guidelines for Responsible AI",
+      "task": "4.1",
+      "type": "single",
+      "stem": "A team wants ongoing monitoring of a deployed model to catch data drift and quality degradation over time. Which AWS capability fits?",
+      "options": [
+        "Amazon SageMaker Model Monitor",
+        "Amazon Polly",
+        "AWS Artifact",
+        "Amazon Translate"
+      ],
+      "correct": [0],
+      "explanation": "Amazon SageMaker Model Monitor continuously watches deployed models for drift and quality issues. Polly, Artifact, and Translate serve speech, compliance documentation, and translation respectively.",
+      "anchor": "Monitoring catches the slow decay that evaluation at launch cannot."
+    },
+    {
+      "id": "d4.2-001",
+      "domain": 4,
+      "domainName": "Guidelines for Responsible AI",
+      "task": "4.2",
+      "type": "single",
+      "stem": "A team wants a standardized document recording a model's intended use, training data, performance, and limitations to support transparency. Which AWS capability provides this?",
+      "options": [
+        "Amazon SageMaker Model Cards",
+        "Amazon Polly",
+        "AWS CloudTrail",
+        "Amazon Macie"
+      ],
+      "correct": [0],
+      "explanation": "Amazon SageMaker Model Cards document a model's purpose, data, performance, and limitations for transparency and governance. Polly is text-to-speech, CloudTrail logs API activity, and Macie discovers sensitive data.",
+      "anchor": "Model cards are the standard transparency artifact for models."
+    },
+    {
+      "id": "d4.2-002",
+      "domain": 4,
+      "domainName": "Guidelines for Responsible AI",
+      "task": "4.2",
+      "type": "single",
+      "stem": "Which of the following is generally considered the MOST interpretable, explainable model?",
+      "options": [
+        "A small decision tree",
+        "A large deep neural network",
+        "A billion-parameter transformer LLM",
+        "An ensemble of thousands of boosted trees"
+      ],
+      "correct": [0],
+      "explanation": "A small decision tree exposes its decision path clearly, making it highly interpretable. Large neural networks, billion-parameter LLMs, and massive ensembles are far more opaque and harder to explain.",
+      "anchor": "Simpler models trade some accuracy for explainability."
+    },
+    {
+      "id": "d4.2-003",
+      "domain": 4,
+      "domainName": "Guidelines for Responsible AI",
+      "task": "4.2",
+      "type": "single",
+      "stem": "A bank must explain to regulators why an individual loan application was declined by its model. Which responsible AI property is most important here?",
+      "options": [
+        "Explainability",
+        "Low latency",
+        "High token throughput",
+        "Maximum creativity"
+      ],
+      "correct": [0],
+      "explanation": "Regulators requiring a justification for individual decisions need explainability, the ability to articulate why an output occurred. Latency, throughput, and creativity do not satisfy a requirement to explain decisions.",
+      "anchor": "Explainability is non-negotiable in regulated lending."
+    },
+    {
+      "id": "d4.2-004",
+      "domain": 4,
+      "domainName": "Guidelines for Responsible AI",
+      "task": "4.2",
+      "type": "single",
+      "stem": "A design team is building an explainable AI interface for non-technical users. Which human-centered design practice best supports trust and understanding?",
+      "options": [
+        "Presenting clear, understandable explanations and allowing users to question or override decisions",
+        "Hiding all model reasoning to keep the interface simple",
+        "Showing raw model weights to every user",
+        "Removing any human ability to challenge an output"
+      ],
+      "correct": [0],
+      "explanation": "Human-centered explainable AI gives users clear explanations and the ability to question or override decisions. Hiding reasoning, dumping raw weights, or blocking challenges all undermine trust and usability.",
+      "anchor": "Explainability is about the human's understanding, not raw internals."
+    },
+    {
+      "id": "d5.1-001",
+      "domain": 5,
+      "domainName": "Security, Compliance, and Governance for AI Solutions",
+      "task": "5.1",
+      "type": "single",
+      "stem": "A company wants to grant a SageMaker training job least-privilege access to a specific S3 bucket and nothing else. Which AWS mechanism should be used?",
+      "options": [
+        "An IAM role with a scoped policy",
+        "Hardcoding access keys in the training script",
+        "Making the bucket public",
+        "Disabling all logging"
+      ],
+      "correct": [0],
+      "explanation": "An IAM role with a narrowly scoped policy grants least-privilege access without embedding long-lived credentials. Hardcoding keys, making buckets public, and disabling logging all violate security best practices.",
+      "anchor": "Least privilege via IAM roles is foundational AWS security."
+    },
+    {
+      "id": "d5.1-002",
+      "domain": 5,
+      "domainName": "Security, Compliance, and Governance for AI Solutions",
+      "task": "5.1",
+      "type": "single",
+      "stem": "A team needs to discover and protect sensitive data such as personally identifiable information stored in Amazon S3 before using it for AI training. Which service is purpose-built for this?",
+      "options": [
+        "Amazon Macie",
+        "Amazon Polly",
+        "Amazon Lex",
+        "Amazon Translate"
+      ],
+      "correct": [0],
+      "explanation": "Amazon Macie uses machine learning to discover and classify sensitive data like PII in S3. Polly, Lex, and Translate provide speech, chatbot, and translation features, not data discovery.",
+      "anchor": "Find sensitive data with Macie before it reaches a training set."
+    },
+    {
+      "id": "d5.1-003",
+      "domain": 5,
+      "domainName": "Security, Compliance, and Governance for AI Solutions",
+      "task": "5.1",
+      "type": "single",
+      "stem": "A company wants to access Amazon Bedrock privately from its VPC without traffic traversing the public internet. Which AWS feature enables this?",
+      "options": [
+        "AWS PrivateLink",
+        "An internet gateway with a public IP",
+        "A public S3 bucket",
+        "Disabling encryption"
+      ],
+      "correct": [0],
+      "explanation": "AWS PrivateLink provides private connectivity to services from within a VPC, keeping traffic off the public internet. An internet gateway exposes traffic publicly, and a public bucket or disabling encryption reduce security.",
+      "anchor": "PrivateLink keeps AI service traffic on the AWS private network."
+    },
+    {
+      "id": "d5.1-004",
+      "domain": 5,
+      "domainName": "Security, Compliance, and Governance for AI Solutions",
+      "task": "5.1",
+      "type": "multi",
+      "stem": "Under the AWS shared responsibility model for a managed service like Amazon Bedrock, which responsibilities belong to the customer? (Select TWO)",
+      "options": [
+        "Configuring IAM permissions and access controls for their applications",
+        "Managing how their data and prompts are handled and protected in their solution",
+        "Patching the physical servers in AWS data centers",
+        "Securing the underlying hypervisor of the managed service",
+        "Maintaining the global AWS network backbone"
+      ],
+      "correct": [0, 1],
+      "explanation": "Customers are responsible for IAM configuration and how they handle their own data and prompts (security in the cloud). AWS handles physical servers, hypervisors, and the network backbone (security of the cloud).",
+      "anchor": "Customer owns configuration and data; AWS owns the infrastructure."
+    },
+    {
+      "id": "d5.1-005",
+      "domain": 5,
+      "domainName": "Security, Compliance, and Governance for AI Solutions",
+      "task": "5.1",
+      "type": "single",
+      "stem": "A team wants to reduce hallucinations and ensure a generative AI assistant answers strictly from approved company documents with traceable sources. Which approach best achieves grounding?",
+      "options": [
+        "Retrieval Augmented Generation with source citation",
+        "Raising the temperature to encourage creativity",
+        "Disabling all logging and monitoring",
+        "Removing the knowledge base entirely"
+      ],
+      "correct": [0],
+      "explanation": "RAG grounds responses in approved documents and can cite sources, reducing hallucinations and improving traceability. Raising temperature increases randomness, and disabling logging or removing the knowledge base worsens reliability.",
+      "anchor": "Grounding plus citations is the standard anti-hallucination pattern."
+    },
+    {
+      "id": "d5.1-006",
+      "domain": 5,
+      "domainName": "Security, Compliance, and Governance for AI Solutions",
+      "task": "5.1",
+      "type": "single",
+      "stem": "A security review requires that all data used by an AI application be protected both while stored and while moving over the network. Which controls address this?",
+      "options": [
+        "Encryption at rest and encryption in transit",
+        "Encryption at rest only",
+        "Encryption in transit only",
+        "No encryption, relying on obscurity"
+      ],
+      "correct": [0],
+      "explanation": "Protecting stored data requires encryption at rest, and protecting data on the network requires encryption in transit; both are needed. Doing only one leaves a gap, and relying on obscurity is not a security control.",
+      "anchor": "Encrypt data both at rest and in transit by default."
+    },
+    {
+      "id": "d5.2-001",
+      "domain": 5,
+      "domainName": "Security, Compliance, and Governance for AI Solutions",
+      "task": "5.2",
+      "type": "single",
+      "stem": "An auditor needs a complete record of who made which API calls in the AWS account, including calls to AI services, for accountability. Which service provides this?",
+      "options": [
+        "AWS CloudTrail",
+        "Amazon Polly",
+        "Amazon Comprehend",
+        "Amazon Lex"
+      ],
+      "correct": [0],
+      "explanation": "AWS CloudTrail records account API activity for audit and accountability. Polly, Comprehend, and Lex are AI services that perform speech, NLP, and chatbot tasks, not audit logging.",
+      "anchor": "CloudTrail is the audit trail for everything in the account."
+    },
+    {
+      "id": "d5.2-002",
+      "domain": 5,
+      "domainName": "Security, Compliance, and Governance for AI Solutions",
+      "task": "5.2",
+      "type": "single",
+      "stem": "A compliance team needs to download AWS audit reports and certifications such as SOC and ISO documents on demand. Which service provides these?",
+      "options": [
+        "AWS Artifact",
+        "AWS CloudTrail",
+        "Amazon Macie",
+        "Amazon Polly"
+      ],
+      "correct": [0],
+      "explanation": "AWS Artifact is the self-service portal for AWS compliance reports and certifications. CloudTrail logs API activity, Macie discovers sensitive data, and Polly is text-to-speech.",
+      "anchor": "Artifact is where auditors pull AWS compliance evidence."
+    },
+    {
+      "id": "d5.2-003",
+      "domain": 5,
+      "domainName": "Security, Compliance, and Governance for AI Solutions",
+      "task": "5.2",
+      "type": "single",
+      "stem": "A governance team wants to continuously assess whether AWS resource configurations comply with internal policies and flag drift. Which service fits?",
+      "options": [
+        "AWS Config",
+        "Amazon Polly",
+        "Amazon Translate",
+        "Amazon Transcribe"
+      ],
+      "correct": [0],
+      "explanation": "AWS Config continuously records and evaluates resource configurations against rules to detect noncompliance and drift. Polly, Translate, and Transcribe are speech and language services, not configuration governance tools.",
+      "anchor": "Config answers 'are my resources still compliant right now?'"
+    },
+    {
+      "id": "d5.2-004",
+      "domain": 5,
+      "domainName": "Security, Compliance, and Governance for AI Solutions",
+      "task": "5.2",
+      "type": "single",
+      "stem": "A security team wants automated, continuous vulnerability scanning of their Amazon EC2 instances and container images supporting an AI workload. Which service is designed for this?",
+      "options": [
+        "Amazon Inspector",
+        "AWS Artifact",
+        "Amazon Polly",
+        "Amazon Lex"
+      ],
+      "correct": [0],
+      "explanation": "Amazon Inspector performs automated, continuous vulnerability assessments of compute resources such as EC2 and container images. Artifact provides compliance documents, while Polly and Lex are AI services.",
+      "anchor": "Inspector finds known vulnerabilities before attackers do."
+    },
+    {
+      "id": "d5.2-005",
+      "domain": 5,
+      "domainName": "Security, Compliance, and Governance for AI Solutions",
+      "task": "5.2",
+      "type": "multi",
+      "stem": "A data governance plan for an AI program is being drafted. Which of the following are legitimate data governance concerns? (Select THREE)",
+      "options": [
+        "Data retention and lifecycle policies",
+        "Data residency requirements",
+        "Logging and audit of data access",
+        "The brand of laptop used by data scientists",
+        "The font used in internal emails"
+      ],
+      "correct": [0, 1, 2],
+      "explanation": "Retention and lifecycle, residency, and access logging are core data governance concerns. Laptop brand and email fonts are irrelevant to governing data.",
+      "anchor": "Governance covers where data lives, how long, and who touched it."
+    },
+    {
+      "id": "d5.2-006",
+      "domain": 5,
+      "domainName": "Security, Compliance, and Governance for AI Solutions",
+      "task": "5.2",
+      "type": "single",
+      "stem": "An organization wants a structured framework to classify the security scope and responsibilities of different generative AI deployment patterns, from consumer apps to self-trained models. Which resource is intended for this?",
+      "options": [
+        "The Generative AI Security Scoping Matrix",
+        "Amazon Polly voice list",
+        "The Amazon Bedrock pricing page",
+        "The Amazon S3 storage class guide"
+      ],
+      "correct": [0],
+      "explanation": "The Generative AI Security Scoping Matrix is a framework for classifying GenAI deployment scopes and their security responsibilities. The other options are product references unrelated to security scoping.",
+      "anchor": "The scoping matrix helps teams reason about shared responsibility for GenAI."
+    },
+    {
+      "id": "d5.2-007",
+      "domain": 5,
+      "domainName": "Security, Compliance, and Governance for AI Solutions",
+      "task": "5.2",
+      "type": "single",
+      "stem": "A team wants automated recommendations to optimize cost, performance, security, and fault tolerance across their AWS environment. Which service provides these checks?",
+      "options": [
+        "AWS Trusted Advisor",
+        "Amazon Polly",
+        "Amazon Transcribe",
+        "Amazon Comprehend"
+      ],
+      "correct": [0],
+      "explanation": "AWS Trusted Advisor inspects an account and recommends improvements across cost, performance, security, and fault tolerance. Polly, Transcribe, and Comprehend are AI services, not advisory tooling.",
+      "anchor": "Trusted Advisor is the account-wide best-practice checker."
+    },
+    {
+      "id": "d1.1-009",
+      "domain": 1,
+      "domainName": "Fundamentals of AI and ML",
+      "task": "1.1",
+      "type": "multi",
+      "stem": "A team is categorizing the learning paradigms behind several projects. Which of the following pairings of scenario to learning type are correct? (Select TWO)",
+      "options": [
+        "Predicting house prices from labeled historical sales is supervised learning",
+        "Grouping unlabeled customers into segments is unsupervised learning",
+        "Predicting house prices from labeled sales is reinforcement learning",
+        "Grouping unlabeled customers is supervised learning",
+        "Translating text is always unsupervised clustering"
+      ],
+      "correct": [0, 1],
+      "explanation": "Labeled-target prediction is supervised learning, and grouping unlabeled data into segments is unsupervised learning. The remaining options misassign reinforcement learning to a labeled prediction task and mislabel clustering and translation.",
+      "anchor": "Match the data (labeled vs unlabeled) to the paradigm."
+    },
+    {
+      "id": "d2.2-007",
+      "domain": 2,
+      "domainName": "Fundamentals of Generative AI",
+      "task": "2.2",
+      "type": "multi",
+      "stem": "A CFO wants metrics that demonstrate the business value of a generative AI initiative. Which of the following are business value metrics? (Select THREE)",
+      "options": [
+        "Return on investment (ROI)",
+        "Average revenue per user (ARPU)",
+        "Customer lifetime value (CLV)",
+        "Number of transformer layers in the model",
+        "Size of the model checkpoint file in gigabytes"
+      ],
+      "correct": [0, 1, 2],
+      "explanation": "ROI, ARPU, and CLV connect the initiative to financial outcomes. The number of transformer layers and checkpoint file size are technical attributes that do not measure business value.",
+      "anchor": "Speak to the CFO in ROI, ARPU, and CLV, not layer counts."
+    },
+    {
+      "id": "d3.1-007",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.1",
+      "type": "multi",
+      "stem": "An architect is selecting a foundation model for a multilingual, low-latency mobile feature. Which selection criteria are directly relevant? (Select THREE)",
+      "options": [
+        "Multi-lingual capability",
+        "Inference latency",
+        "Model size and its effect on cost and speed",
+        "The favorite color of the project sponsor",
+        "The number of letters in the model's name"
+      ],
+      "correct": [0, 1, 2],
+      "explanation": "Multilingual support, latency, and model size all directly affect fit for a multilingual, low-latency feature. Sponsor color preference and name length are not selection criteria.",
+      "anchor": "FM selection weighs modality, latency, size, cost, and customization."
+    },
+    {
+      "id": "d3.4-007",
+      "domain": 3,
+      "domainName": "Applications of Foundation Models",
+      "task": "3.4",
+      "type": "multi",
+      "stem": "A team is choosing automatic metrics to evaluate generated text. Which of the following are recognized text-generation evaluation metrics? (Select THREE)",
+      "options": [
+        "ROUGE",
+        "BLEU",
+        "BERTScore",
+        "GPU temperature",
+        "Disk IOPS"
+      ],
+      "correct": [0, 1, 2],
+      "explanation": "ROUGE, BLEU, and BERTScore are established metrics for evaluating generated text quality. GPU temperature and disk IOPS are hardware and storage measurements, not quality metrics.",
+      "anchor": "BERTScore adds semantic similarity beyond simple n-gram overlap."
+    },
+    {
+      "id": "d5.1-007",
+      "domain": 5,
+      "domainName": "Security, Compliance, and Governance for AI Solutions",
+      "task": "5.1",
+      "type": "multi",
+      "stem": "A security team is hardening a generative AI application against data leakage and abuse. Which of the following are appropriate controls? (Select THREE)",
+      "options": [
+        "Output filtering to block sensitive or toxic content",
+        "Encryption of data in transit and at rest",
+        "Audit logging of prompts and responses",
+        "Embedding long-lived access keys in client-side code",
+        "Granting every user full administrator permissions"
+      ],
+      "correct": [0, 1, 2],
+      "explanation": "Output filtering, encryption, and audit logging are sound controls against leakage and abuse. Embedding long-lived keys in client code and granting blanket admin rights are serious security anti-patterns.",
+      "anchor": "Defense in depth: filter outputs, encrypt data, and log access."
+    }
+  ]
+}
