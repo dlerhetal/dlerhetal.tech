@@ -1,0 +1,69 @@
+{
+  "version": "1.0",
+  "note": "Episodes populate the player as MP3s are produced (ElevenLabs, MorningDale punchy-clean). 'released:false' shows the schedule; 'src' fills in when the file ships.",
+  "tracks": [
+    {
+      "id": "intro",
+      "kind": "podcast",
+      "title": "Cold Open — Why This Cert, Why Now",
+      "desc": "The 4-week sprint, the blueprint, and the one rule: money down by June 17 or it's fiction.",
+      "duration": null,
+      "src": null,
+      "released": false
+    },
+    {
+      "id": "d1",
+      "kind": "podcast",
+      "title": "Domain 1 — Fundamentals of AI & ML",
+      "desc": "Supervised vs unsupervised vs reinforcement, inference types, traditional ML vs foundation models, the AI/ML lifecycle.",
+      "duration": null,
+      "src": null,
+      "released": false
+    },
+    {
+      "id": "d2",
+      "kind": "podcast",
+      "title": "Domain 2 — Fundamentals of GenAI",
+      "desc": "Tokens, embeddings, the FM lifecycle, token-based pricing, agentic AI and MCP.",
+      "duration": null,
+      "src": null,
+      "released": false
+    },
+    {
+      "id": "d3",
+      "kind": "podcast",
+      "title": "Domain 3 — Applications of Foundation Models",
+      "desc": "RAG, prompt engineering, fine-tuning vs in-context learning, evaluation metrics. The heaviest domain.",
+      "duration": null,
+      "src": null,
+      "released": false
+    },
+    {
+      "id": "d4",
+      "kind": "podcast",
+      "title": "Domain 4 — Responsible AI",
+      "desc": "Bias and fairness, Guardrails, explainability, SageMaker Clarify and Model Cards.",
+      "duration": null,
+      "src": null,
+      "released": false
+    },
+    {
+      "id": "d5",
+      "kind": "podcast",
+      "title": "Domain 5 — Security, Compliance & Governance",
+      "desc": "IAM, encryption, the shared responsibility model, the Generative AI Security Scoping Matrix.",
+      "duration": null,
+      "src": null,
+      "released": false
+    },
+    {
+      "id": "anthem",
+      "kind": "song",
+      "title": "The Proctor Anthem",
+      "desc": "One earworm that crams the high-yield concepts into a chorus. Generated in Suno from the supplied lyrics.",
+      "duration": null,
+      "src": null,
+      "released": false
+    }
+  ]
+}
