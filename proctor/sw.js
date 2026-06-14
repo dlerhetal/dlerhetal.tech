@@ -1,6 +1,6 @@
 /* Proctor service worker — offline-first app shell.
    Bump CACHE_VERSION whenever shell assets change to force an update. */
-const CACHE_VERSION = 'proctor-v1';
+const CACHE_VERSION = 'proctor-v2';
 const SHELL = [
   './',
   './index.html',
