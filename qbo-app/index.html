@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bookkeeping Operations — dlerhetal.tech</title>
+<meta name="description" content="A private bookkeeping and financial-cleanup tool that connects to QuickBooks Online through Intuit's official API on behalf of authorized account owners.">
+<style>
+  :root { --navy:#1A3C6E; --navy-dark:#0F2748; --gold:#FFCD00; --ink:#14213D; --muted:#5B6777; --paper:#F2F4F7; --border:rgba(26,60,110,.2); }
+  * { box-sizing:border-box; }
+  html,body { margin:0; padding:0; }
+  body { background:var(--paper); color:var(--ink); font-family:'Inter','Segoe UI',system-ui,sans-serif; line-height:1.6; }
+  a { color:var(--navy); font-weight:600; }
+  nav { background:var(--navy); color:#fff; border-bottom:3px solid var(--gold); }
+  nav .inner { max-width:840px; margin:0 auto; padding:14px 24px; font-weight:700; }
+  main { max-width:840px; margin:0 auto; padding:32px 24px 64px; }
+  h1 { color:var(--navy); font-size:1.7em; margin-bottom:.2em; }
+  h2 { color:var(--navy); font-size:1.15em; margin-top:2em; border-left:5px solid var(--gold); padding-left:.6rem; }
+  .lead { color:var(--muted); font-size:1.05em; }
+  .card { background:#fff; border:1px solid var(--border); border-radius:8px; padding:1.1rem 1.3rem; margin:1.1rem 0; }
+  ol { padding-left:1.2rem; }
+  footer { max-width:840px; margin:0 auto; padding:0 24px 48px; color:var(--muted); font-size:.9em; }
+  code { background:#e9edf3; padding:.1rem .35rem; border-radius:4px; }
+</style>
+</head>
+<body>
+<nav><div class="inner">dlerhetal.tech — Bookkeeping Operations</div></nav>
+<main>
+  <h1>Bookkeeping Operations</h1>
+  <p class="lead">A private financial-operations tool used to diagnose and correct accounting records inside QuickBooks Online, on behalf of the businesses that engage us.</p>
+
+  <div class="card">
+    <p>This application connects to QuickBooks Online strictly through Intuit's official API using OAuth 2.0. It reads ledger, balance-sheet, and transaction data, and — only with the account owner's authorization — posts corrections back to fix bookkeeping errors such as miscategorized transactions, duplicate entries, and incorrect opening balances. It is not a public sign-up product; access is provisioned per engagement.</p>
+  </div>
+
+  <h2 id="connect">Connecting</h2>
+  <div class="card">
+    <p>To connect or reconnect, the QuickBooks Online account owner (or an authorized admin) completes Intuit's standard "Connect to QuickBooks" authorization. This grants the application access to the specific company file the owner selects. If you were engaged for a cleanup, you'll receive a connect link directly from us.</p>
+    <ol>
+      <li>Open the connect link provided to you.</li>
+      <li>Sign in to QuickBooks Online and choose the company to connect.</li>
+      <li>Review and approve the requested accounting access.</li>
+    </ol>
+  </div>
+
+  <h2 id="disconnect">Disconnecting</h2>
+  <div class="card">
+    <p>You can revoke this application's access at any time — access ends immediately when you do.</p>
+    <ol>
+      <li>Sign in to QuickBooks Online.</li>
+      <li>Go to <strong>Settings → Apps</strong> (or <a href="https://qbo.intuit.com/app/connapps" target="_blank">Connected Apps</a>).</li>
+      <li>Find this application and select <strong>Disconnect</strong>.</li>
+    </ol>
+    <p>You may also email <strong>dale@linn.net</strong> and we will disconnect and delete stored tokens on request.</p>
+  </div>
+
+  <h2>Legal</h2>
+  <div class="card">
+    <p><a href="https://dlerhetal.tech/legal/eula.html">End User License Agreement</a> &nbsp;·&nbsp; <a href="https://dlerhetal.tech/legal/privacy.html">Privacy Policy</a></p>
+    <p>Use of data received from Intuit APIs adheres to the Intuit Developer Terms of Service.</p>
+  </div>
+</main>
+<footer>Operated by dlerhetal.tech · Contact: dale@linn.net</footer>
+</body>
+</html>
