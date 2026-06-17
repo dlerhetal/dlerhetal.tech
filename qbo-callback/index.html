@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Connection Complete</title>
+<style>
+  :root { --blue:#1A3C6E; --gold:#FFCD00; --ink:#1e1d1c; --paper:#f7f6f3; }
+  * { box-sizing:border-box; }
+  body { font-family:'Segoe UI',Calibri,sans-serif; color:var(--ink); background:var(--paper);
+         margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+  .box { max-width:620px; width:92%; background:#fff; border:1px solid #ddd; border-radius:10px;
+         padding:1.6rem 1.8rem; box-shadow:0 2px 10px rgba(0,0,0,.08); }
+  h1 { color:var(--blue); border-bottom:4px solid var(--gold); padding-bottom:.4rem; margin-top:0; }
+  .ok { color:#1a7a3a; font-weight:700; }
+  .err { color:#a32020; font-weight:700; }
+  textarea { width:100%; min-height:90px; font-family:Consolas,monospace; font-size:1rem;
+             padding:.6rem .7rem; border:2px solid var(--blue); border-radius:6px; background:#fffdf2; margin:.6rem 0; }
+  button { font-size:1.05rem; font-weight:700; padding:.55rem 1.8rem; border-radius:6px; border:none;
+           cursor:pointer; background:var(--gold); color:var(--ink); }
+  #copied { margin-left:.6rem; font-weight:700; color:#1a7a3a; }
+  .muted { color:#666; font-size:.92rem; }
+  code { background:#eee; padding:.1rem .35rem; border-radius:4px; }
+</style>
+</head>
+<body>
+<div class="box" id="box">
+  <h1>QuickBooks Connection</h1>
+  <div id="content"><p class="muted">This page finishes a private QuickBooks connection. If you reached it directly, there's nothing here for you.</p></div>
+</div>
+<script>
+  var p = new URLSearchParams(window.location.search);
+  var code = p.get("code");
+  var realmId = p.get("realmId");
+  var state = p.get("state");
+  var error = p.get("error");
+  var c = document.getElementById("content");
+  if (error) {
+    c.innerHTML = '<p class="err">Authorization was declined or failed: ' +
+      error.replace(/[<>&]/g,"") + '</p><p class="muted">Close this tab and try the connect link again.</p>';
+  } else if (code && realmId) {
+    var payload = "code=" + code + "&realmId=" + realmId + (state ? "&state=" + state : "");
+    c.innerHTML =
+      '<p class="ok">Connected. Copy the block below and paste it into the form Claude gave you.</p>' +
+      '<textarea id="payload" readonly></textarea>' +
+      '<button onclick="copyIt()">Copy</button><span id="copied"></span>' +
+      '<p class="muted">This code expires in a few minutes and works only once, so paste it back promptly.</p>';
+    document.getElementById("payload").value = payload;
+  }
+  function copyIt() {
+    var t = document.getElementById("payload");
+    t.select();
+    navigator.clipboard.writeText(t.value).then(
+      function(){ document.getElementById("copied").textContent = "Copied."; },
+      function(){ document.getElementById("copied").textContent = "Select the text and copy it manually."; }
+    );
+  }
+</script>
+</body>
+</html>
