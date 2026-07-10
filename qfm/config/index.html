@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Catalog Manager — Quality Firewood &amp; Materials</title>
+<style>
+:root{
+  --ink:#2b2118; --cream:#faf6ef; --paper:#fffdf9; --terra:#b4552d; --terra-dk:#94431f;
+  --sage:#4a5d43; --sand:#e9dfd0; --gold:#c9992e; --gray:#7a6f63; --red:#a33327;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--cream);line-height:1.5;padding-bottom:90px}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif}
+.wrap{max-width:980px;margin:0 auto;padding:0 18px}
+header{background:var(--paper);border-bottom:1px solid var(--sand);padding:14px 0;position:sticky;top:0;z-index:20;box-shadow:0 1px 8px rgba(43,33,24,.06)}
+header .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:20px}
+header .sub{font-size:12.5px;color:var(--gray)}
+header .grow{flex:1}
+a.view{color:var(--terra-dk);font-size:13.5px;font-weight:600;text-decoration:none;white-space:nowrap}
+a.view:hover{text-decoration:underline}
+
+/* gate */
+#gate{max-width:420px;margin:70px auto;background:var(--paper);border:1px solid var(--sand);border-radius:12px;padding:30px}
+#gate h2{font-size:19px;margin-bottom:6px}
+#gate p{font-size:13.5px;color:var(--gray);margin-bottom:16px}
+#gate input{width:100%;padding:11px 12px;font-size:15px;border:1px solid var(--sand);border-radius:8px;margin-bottom:12px}
+#gate button{width:100%;padding:11px;font-size:15px;font-weight:600;color:#fff;background:var(--terra);border:none;border-radius:8px;cursor:pointer}
+#gate button:hover{background:var(--terra-dk)}
+#gateErr{color:var(--red);font-size:13px;margin-top:10px;display:none}
+
+/* editor */
+#editor{display:none}
+.helpbar{background:#f2ecdf;border:1px solid var(--sand);border-radius:10px;padding:12px 16px;font-size:13.5px;color:#5c5347;margin:18px 0}
+section.dept{margin:26px 0}
+section.dept>h2{font-size:21px;border-bottom:2px solid var(--sand);padding-bottom:6px;margin-bottom:14px;display:flex;align-items:baseline;gap:12px}
+section.dept>h2 .cnt{font-size:12.5px;color:var(--gray);font-family:'Segoe UI',sans-serif;font-weight:400}
+.addrow{margin-top:4px}
+.addrow button{background:none;border:1.5px dashed var(--gray);color:var(--gray);border-radius:8px;padding:8px 16px;font-size:13.5px;cursor:pointer}
+.addrow button:hover{border-color:var(--terra);color:var(--terra-dk)}
+
+.item{background:var(--paper);border:1px solid var(--sand);border-radius:12px;padding:16px;margin-bottom:14px;display:grid;grid-template-columns:150px 1fr;gap:16px}
+.item.hidden-item{opacity:.62;background:#f6f2ea}
+.thumb img{width:150px;height:110px;object-fit:cover;border-radius:8px;border:1px solid var(--sand);background:#eee}
+.thumb .nopic{width:150px;height:110px;border-radius:8px;border:1px dashed var(--gray);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--gray)}
+.thumb button{margin-top:8px;width:150px;padding:6px;font-size:12.5px;border:1px solid var(--sand);background:#fff;border-radius:7px;cursor:pointer}
+.thumb button:hover{border-color:var(--terra)}
+.thumb .hint{font-size:11px;color:var(--gray);margin-top:5px;width:150px}
+
+.fields{display:flex;flex-direction:column;gap:10px;min-width:0}
+.rowline{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.rowline .grow{flex:1;min-width:160px}
+label.small{font-size:11.5px;color:var(--gray);display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px}
+input[type=text],input[type=number],textarea,select{font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--sand);border-radius:7px;background:#fff;width:100%}
+textarea{resize:vertical;min-height:56px}
+input:focus,textarea:focus,select:focus{outline:2px solid rgba(180,85,45,.35)}
+.name-input{font-weight:600;font-size:15px}
+
+.show-toggle{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;white-space:nowrap;cursor:pointer;user-select:none}
+.show-toggle input{width:18px;height:18px;accent-color:var(--sage);cursor:pointer}
+
+.mini{display:flex;gap:6px}
+.mini button{border:1px solid var(--sand);background:#fff;border-radius:6px;padding:5px 9px;font-size:12.5px;cursor:pointer;color:var(--ink)}
+.mini button:hover{border-color:var(--terra)}
+.mini button.del{color:var(--red)}
+.mini button.del.armed{background:var(--red);color:#fff;border-color:var(--red)}
+
+.pricing{border:1px solid var(--sand);border-radius:9px;padding:10px 12px;background:#fdfaf4}
+.pricing .modes{display:flex;gap:16px;font-size:13px;margin-bottom:9px}
+.pricing .modes label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.pmoney{position:relative}
+.pmoney span{position:absolute;left:10px;top:8px;color:var(--gray)}
+.pmoney input{padding-left:22px}
+.vrow{display:flex;gap:8px;margin-bottom:7px;align-items:center}
+.vrow input.vlabel{flex:2}
+.vrow .pmoney{flex:1}
+.vrow button{border:none;background:none;color:var(--red);font-size:16px;cursor:pointer;padding:0 4px}
+.addvar{background:none;border:none;color:var(--terra-dk);font-size:13px;cursor:pointer;padding:2px 0;text-decoration:underline}
+
+/* save bar */
+#savebar{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:1px solid var(--sand);box-shadow:0 -2px 12px rgba(43,33,24,.10);padding:12px 0;z-index:30;display:none}
+#savebar .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#saveStatus{font-size:13px;color:var(--gray);flex:1;min-width:200px}
+#saveStatus.dirty{color:var(--terra-dk);font-weight:600}
+#saveStatus.err{color:var(--red);font-weight:600}
+#saveBtn{background:var(--sage);color:#fff;border:none;border-radius:9px;padding:12px 26px;font-size:15px;font-weight:700;cursor:pointer}
+#saveBtn:hover{filter:brightness(1.08)}
+#saveBtn:disabled{opacity:.55;cursor:default}
+@media(max-width:640px){ .item{grid-template-columns:1fr} .thumb{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap} }
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <div><h1>Catalog Manager</h1>
+  <div class="sub">Quality Firewood &amp; Materials — concept store</div></div>
+  <div class="grow"></div>
+  <a class="view" href="../shop.html" target="_blank">View the store &rarr;</a>
+</div></header>
+
+<div id="gate">
+  <h2>Team sign-in</h2>
+  <p>Enter the shared team password to edit what the store shows.</p>
+  <input type="password" id="pw" placeholder="Password" autocomplete="current-password">
+  <button onclick="signIn()">Open the catalog</button>
+  <div id="gateErr"></div>
+</div>
+
+<div id="editor" class="wrap">
+  <div class="helpbar">
+    Every product on the store page is a card below. Change anything —
+    photo, name, description, price — then press <b>Save &amp; publish</b> at the
+    bottom. Changes appear on the store the next time it loads. Unchecking
+    <b>Show on site</b> hides a product without deleting it.
+  </div>
+  <div id="depts"></div>
+</div>
+
+<div id="savebar"><div class="wrap">
+  <div id="saveStatus">Loaded.</div>
+  <button id="saveBtn" onclick="save()">Save &amp; publish</button>
+</div></div>
+
+<datalist id="unitList"><option value="each"><option value="per lb"><option value="per sq ft"><option value="per cu yd"><option value="per pallet"><option value="per cord"><option value="per bundle"><option value="5 lb bundle"><option value="10 lb bag"><option value="per foot"><option value="from"><option value="from, each"></datalist>
+
+<script>
+const RELAY = 'https://dlerhetal.pythonanywhere.com/qfm-api';
+const DEFAULT_CATALOG = {"version": 1, "sections": [{"key": "firewood", "title": "Firewood", "blurb": "Seasoned, split, and honestly measured \u2014 our cords are guaranteed full and NMDA-regulated. Cash and check discounts on firewood."}, {"key": "stone", "title": "Flagstone & Stone", "blurb": "The largest flagstone selection in southern New Mexico \u2014 around 30 varieties from across the U.S. and Mexico, priced by the pound so you buy exactly what you need."}, {"key": "pottery", "title": "Pottery", "blurb": "Over 30,000 pots on eight acres \u2014 factory-direct Vietnamese ceramic, talavera, stands and saucers. Smaller pieces ship anywhere."}, {"key": "fountains", "title": "Fountains", "blurb": "Ceramic fountains, rock bubblers and cast stone tiers \u2014 hear one running before you buy it."}, {"key": "materials", "title": "Landscape Materials", "blurb": "The hard-to-find yard: railroad ties by the grade, vigas, latillas, cedar stays, and pecan shells by the yard or by the bag."}, {"key": "decor", "title": "Yard Decor", "blurb": "Metal cacti to cement turtles \u2014 the selection changes every week."}], "products": [{"id": "pinon", "sec": "firewood", "name": "Pi\u00f1on Firewood", "desc": "New Mexico pi\u00f1on \u2014 twice the hardness of regular pine, famously fragrant. Guaranteed full cords, NMDA-regulated measure.", "lane": "LOCAL", "show": true, "img": "assets/hero_pinon.jpg", "variants": [["Full Cord", 389], ["Half Cord", 215], ["Quarter Cord", 125]]}, {"id": "pecanw", "sec": "firewood", "name": "Pecan Firewood", "desc": "Cut locally in the Mesilla Valley. Slow-burning heat \u2014 mix with cedar for an easy start and great fragrance.", "lane": "LOCAL", "show": true, "img": "assets/pecan_stacks.jpg", "variants": [["Full Cord", 329], ["Half Cord", 185], ["Quarter Cord", 109]]}, {"id": "cedarw", "sec": "firewood", "name": "Cedar (Shaggy-Bark Juniper)", "desc": "Easy lighting and a great fragrance \u2014 the classic starter and everyday burn. Oak, mesquite and alligator juniper seasonally; call for availability.", "lane": "LOCAL", "show": true, "img": "assets/wood_pile.jpg", "variants": [["Full Cord", 279], ["Half Cord", 159], ["Quarter Cord", 95]]}, {"id": "apple", "sec": "firewood", "name": "Applewood Chunks & Mini Logs", "desc": "5 lb bundles of apple chunks and mini logs \u2014 the cooking wood for pork, fish, poultry and wild game.", "lane": "SHIP", "show": true, "img": "assets/pecan_stacks.jpg", "price": 14.99, "unit": "5 lb bundle"}, {"id": "flagbuff", "sec": "stone", "name": "Arizona Buff Flagstone", "desc": "Warm buff sandstone, sold by the pound. Buy one piece or the whole pallet.", "lane": "LOCAL", "show": true, "img": "assets/flag_buff.jpg", "price": 0.25, "unit": "per lb"}, {"id": "flagred", "sec": "stone", "name": "Colorado Red Flagstone", "desc": "Deep red sandstone for patios and walkways \u2014 a Southwest signature.", "lane": "LOCAL", "show": true, "img": "assets/flag_red.jpg", "price": 0.35, "unit": "per lb"}, {"id": "flagslate", "sec": "stone", "name": "Idaho Quartzite", "desc": "Cool silver-blue quartzite \u2014 exotic coloration, extremely durable.", "lane": "LOCAL", "show": true, "img": "assets/flag_slate.jpg", "price": 0.45, "unit": "per lb"}, {"id": "flagslab", "sec": "stone", "name": "Arizona Select Slabs", "desc": "Oversize select slabs for steps, benches and statement pieces.", "lane": "LOCAL", "show": true, "img": "assets/flag_slab.jpg", "price": 0.35, "unit": "per lb"}, {"id": "riverrock", "sec": "stone", "name": "River Rock", "desc": "Washed river rock by the pallet basket \u2014 borders, dry beds, accents.", "lane": "LOCAL", "show": true, "img": "assets/river_rock.jpg", "price": 189, "unit": "per pallet"}, {"id": "coronado", "sec": "stone", "name": "Coronado Stone Veneer \u2014 Overstock", "desc": "Manufactured stone veneer at roughly half retail while overstock lasts. Boxes of 100\u2013125 sq ft; smaller 12.5 and 15 sq ft boxes available.", "lane": "LOCAL", "show": true, "img": "assets/coronado.jpg", "price": 4.75, "unit": "per sq ft"}, {"id": "talavera", "sec": "pottery", "name": "Talavera Pottery", "desc": "Hand-painted color for porch and patio. Small pieces ship anywhere in the country.", "lane": "SHIP", "show": true, "img": "assets/talavera.jpg", "price": 24.99, "unit": "from"}, {"id": "glazedsm", "sec": "pottery", "name": "Glazed Pots \u2014 Small", "desc": "Vietnamese beehive-kiln pottery, built to survive any climate. Under 40 lbs \u2014 ships nationwide.", "lane": "SHIP", "show": true, "img": "assets/blue_pots.jpg", "price": 34.99, "unit": "from"}, {"id": "glazedmd", "sec": "pottery", "name": "Glazed Planters \u2014 Medium", "desc": "The porch-anchor size. Hundreds of styles and colors on the yard.", "lane": "LOCAL", "show": true, "img": "assets/red_pots.jpg", "price": 89, "unit": "from"}, {"id": "jars", "sec": "pottery", "name": "Statement Jars \u2014 Large", "desc": "Oversized jars and urns \u2014 the entryway centerpiece. We load you or deliver.", "lane": "LOCAL", "show": true, "img": "assets/jars_three.jpg", "price": 249, "unit": "from"}, {"id": "scroll", "sec": "pottery", "name": "Etched & Scroll Pots", "desc": "Carved detail, rich glazes \u2014 from a selection of over 30,000 pots on eight acres.", "lane": "LOCAL", "show": true, "img": "assets/scroll_pots.jpg", "price": 119, "unit": "from"}, {"id": "fball", "sec": "fountains", "name": "Ceramic Ball Fountain", "desc": "Self-contained glazed sphere fountain \u2014 plug in, fill, done.", "lane": "LOCAL", "show": true, "img": "assets/fountain_ball.jpg", "price": 349, "unit": "each"}, {"id": "fteal", "sec": "fountains", "name": "Teal Wave Fountain", "desc": "Sculptural glazed ceramic \u2014 quiet recirculating pump included.", "lane": "LOCAL", "show": true, "img": "assets/fountain_teal.jpg", "price": 399, "unit": "each"}, {"id": "ftier", "sec": "fountains", "name": "Cast Stone 3-Tier Fountain", "desc": "Classic courtyard tiers in weatherproof cast stone.", "lane": "LOCAL", "show": true, "img": "assets/fountain_tier.jpg", "price": 499, "unit": "each"}, {"id": "ties", "sec": "materials", "name": "Used Railroad Ties", "desc": "Approx. 6\u2033\u00d78\u2033 \u00d7 8\u2032. Retaining walls, raised beds, parking stops. Bundle-of-16 discount.", "lane": "LOCAL", "show": true, "img": "assets/ties.jpg", "variants": [["Relay (nearly new)", 42], ["#1 Grade", 34], ["#2 Grade", 26], ["#3 Grade", 18]]}, {"id": "vigas", "sec": "materials", "name": "Vigas & Braided Posts", "desc": "Ponderosa pine vigas in varying diameters and lengths; carved braided posts 8\u2033 \u00d7 8\u2032.", "lane": "LOCAL", "show": true, "img": "assets/posts.jpg", "price": 89, "unit": "from"}, {"id": "latillas", "sec": "materials", "name": "Latillas", "desc": "Ponderosa latillas in 8, 12 and 16 ft lengths \u2014 coyote fences, pergola shade.", "lane": "LOCAL", "show": true, "img": "assets/latilla_bundle.jpg", "price": 6.5, "unit": "from, each"}, {"id": "stays", "sec": "materials", "name": "Cedar Stays", "desc": "South Texas cedar \u2014 #1 stays (5\u20135.5 ft) and long stays (8 ft, 10 ft) for fences that last.", "lane": "LOCAL", "show": true, "img": "assets/latilla_fence.jpg", "price": 4.25, "unit": "from, each"}, {"id": "shells", "sec": "materials", "name": "Pecan Shells \u2014 Bulk", "desc": "Mulch, surfacing, dust control, event parking. By the cubic yard; semi-load pricing available.", "lane": "LOCAL", "show": true, "img": "assets/pecan_shells.jpg", "price": 12, "unit": "per cu yd"}, {"id": "shellbag", "sec": "materials", "name": "Pecan Shells \u2014 Smoker Bag", "desc": "10 lb bag for smoking meats \u2014 the Mesilla Valley flavor, shipped to your door.", "lane": "SHIP", "show": true, "img": "assets/pecan_shells.jpg", "price": 12.99, "unit": "10 lb bag"}, {"id": "statuary", "sec": "decor", "name": "Statuary & Concrete Art", "desc": "Cement turtles, roadrunners, benches, southwestern statuary \u2014 an ever-changing selection.", "lane": "PICKUP", "show": true, "img": "assets/statuary.jpg", "price": 39, "unit": "from"}, {"id": "mflowers", "sec": "decor", "name": "Metal Flower Stakes", "desc": "Hand-made metal blooms that never need water. Ships nationwide.", "lane": "SHIP", "show": true, "img": "assets/metal_flowers.jpg", "price": 29.99, "unit": "each"}, {"id": "gazing", "sec": "decor", "name": "Gazing Balls", "desc": "Hand-blown glass color for beds and planters.", "lane": "SHIP", "show": true, "img": "assets/gazing.jpg", "price": 29.99, "unit": "each"}, {"id": "bench", "sec": "decor", "name": "Rustic Garden Benches", "desc": "Reclaimed-wood and iron benches with real patina \u2014 one-of-a-kind pieces.", "lane": "LOCAL", "show": true, "img": "assets/bench.jpg", "price": 189, "unit": "from"}]};
+const LANES = [['LOCAL','Local delivery / pickup'],['SHIP','Ships nationwide'],['PICKUP','Yard pickup only']];
+const MAX_SAVE_BYTES = 7 * 1024 * 1024;
+
+let cat = null;
+let pw = sessionStorage.getItem('qfmConfigPw') || '';
+let dirty = false;
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ------------------------------------------------------------- sign in */
+function signIn(){
+  const val = document.getElementById('pw').value;
+  fetch(RELAY + '/auth', {method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({password: val})})
+  .then(r => { if (!r.ok) throw 0; return r.json(); })
+  .then(() => { pw = val; sessionStorage.setItem('qfmConfigPw', val); start(); })
+  .catch(() => {
+    const e = document.getElementById('gateErr');
+    e.textContent = 'That is not the password — check with the office.';
+    e.style.display = 'block';
+  });
+}
+document.getElementById('pw').addEventListener('keydown', e => { if (e.key === 'Enter') signIn(); });
+
+function start(){
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('editor').style.display = 'block';
+  document.getElementById('savebar').style.display = 'block';
+  fetch(RELAY + '/catalog', {cache:'no-store'})
+    .then(r => r.ok ? r.json() : null)
+    .then(j => {
+      cat = (j && j.products && j.products.length) ? j : JSON.parse(JSON.stringify(DEFAULT_CATALOG));
+      setStatus(j && j.savedAt ? ('Showing the catalog last saved ' + j.savedAt + '.')
+                               : 'Showing the original catalog — nothing saved yet.');
+      render();
+    })
+    .catch(() => {
+      cat = JSON.parse(JSON.stringify(DEFAULT_CATALOG));
+      setStatus('Could not reach the server — showing the original catalog.');
+      render();
+    });
+}
+if (pw) {
+  fetch(RELAY + '/auth', {method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({password: pw})})
+  .then(r => { if (r.ok) start(); else sessionStorage.removeItem('qfmConfigPw'); })
+  .catch(() => {});
+}
+
+/* ------------------------------------------------------------- state */
+function markDirty(){
+  dirty = true;
+  setStatus('Unsaved changes — press Save & publish when you are done.', 'dirty');
+}
+function setStatus(msg, cls){
+  const el = document.getElementById('saveStatus');
+  el.textContent = msg;
+  el.className = cls || '';
+}
+window.addEventListener('beforeunload', e => {
+  if (dirty){ e.preventDefault(); e.returnValue = ''; }
+});
+
+function newId(name){
+  const slug = String(name || 'item').toLowerCase().replace(/[^a-z0-9]+/g, '').slice(0, 12) || 'item';
+  return slug + '-' + Math.random().toString(36).slice(2, 7);
+}
+
+/* ------------------------------------------------------------- render */
+function render(){
+  const box = document.getElementById('depts');
+  box.innerHTML = '';
+  cat.sections.forEach(sec => {
+    const items = cat.products.filter(p => p.sec === sec.key);
+    const s = document.createElement('section');
+    s.className = 'dept';
+    const h = document.createElement('h2');
+    h.innerHTML = esc(sec.title) + ' <span class="cnt">' + items.length + ' item' + (items.length === 1 ? '' : 's') + '</span>';
+    s.appendChild(h);
+    items.forEach(p => s.appendChild(itemCard(p)));
+    const add = document.createElement('div');
+    add.className = 'addrow';
+    const btn = document.createElement('button');
+    btn.textContent = '+ Add an item to ' + sec.title;
+    btn.onclick = () => {
+      cat.products.push({id: newId('new'), sec: sec.key, name: 'New item',
+        desc: '', lane: 'LOCAL', show: false, img: '', price: 0, unit: 'each'});
+      markDirty(); render();
+    };
+    add.appendChild(btn);
+    s.appendChild(add);
+    box.appendChild(s);
+  });
+}
+
+function itemCard(p){
+  const card = document.createElement('div');
+  card.className = 'item' + (p.show === false ? ' hidden-item' : '');
+
+  /* ---- photo column */
+  const th = document.createElement('div');
+  th.className = 'thumb';
+  const imgBox = document.createElement('div');
+  if (p.img){
+    const im = document.createElement('img');
+    im.src = p.img.indexOf('data:') === 0 ? p.img : '../' + p.img;
+    imgBox.appendChild(im);
+  } else {
+    imgBox.innerHTML = '<div class="nopic">no photo yet</div>';
+  }
+  th.appendChild(imgBox);
+  const file = document.createElement('input');
+  file.type = 'file'; file.accept = 'image/*'; file.style.display = 'none';
+  file.onchange = () => { if (file.files[0]) resizeImage(file.files[0], uri => { p.img = uri; markDirty(); render(); }); };
+  const pbtn = document.createElement('button');
+  pbtn.textContent = p.img ? 'Replace photo' : 'Add photo';
+  pbtn.onclick = () => file.click();
+  th.appendChild(pbtn); th.appendChild(file);
+  const hint = document.createElement('div');
+  hint.className = 'hint';
+  hint.textContent = 'Landscape photos look best. Big files are resized automatically.';
+  th.appendChild(hint);
+  card.appendChild(th);
+
+  /* ---- fields column */
+  const f = document.createElement('div');
+  f.className = 'fields';
+
+  const top = document.createElement('div');
+  top.className = 'rowline';
+  const show = document.createElement('label');
+  show.className = 'show-toggle';
+  const cb = document.createElement('input');
+  cb.type = 'checkbox'; cb.checked = p.show !== false;
+  cb.onchange = () => { p.show = cb.checked; markDirty(); card.className = 'item' + (p.show ? '' : ' hidden-item'); };
+  show.appendChild(cb); show.appendChild(document.createTextNode('Show on site'));
+  top.appendChild(show);
+  const nameWrap = document.createElement('div');
+  nameWrap.className = 'grow';
+  const name = document.createElement('input');
+  name.type = 'text'; name.className = 'name-input'; name.value = p.name; name.placeholder = 'Product name';
+  name.oninput = () => { p.name = name.value; markDirty(); };
+  nameWrap.appendChild(name);
+  top.appendChild(nameWrap);
+  const mini = document.createElement('div');
+  mini.className = 'mini';
+  mini.appendChild(miniBtn('↑', 'Move up', () => move(p, -1)));
+  mini.appendChild(miniBtn('↓', 'Move down', () => move(p, +1)));
+  mini.appendChild(miniBtn('Duplicate', 'Copy this item', () => {
+    const copy = JSON.parse(JSON.stringify(p));
+    copy.id = newId(p.name); copy.name = p.name + ' (copy)'; copy.show = false;
+    cat.products.splice(cat.products.indexOf(p) + 1, 0, copy);
+    markDirty(); render();
+  }));
+  const del = miniBtn('Delete', 'Remove this item', () => {
+    if (!del.classList.contains('armed')){
+      del.classList.add('armed'); del.textContent = 'Really delete?';
+      setTimeout(() => { del.classList.remove('armed'); del.textContent = 'Delete'; }, 3500);
+      return;
+    }
+    cat.products.splice(cat.products.indexOf(p), 1);
+    markDirty(); render();
+  });
+  del.classList.add('del');
+  mini.appendChild(del);
+  top.appendChild(mini);
+  f.appendChild(top);
+
+  const dsc = document.createElement('div');
+  dsc.innerHTML = '<label class="small">Description shown under the name</label>';
+  const ta = document.createElement('textarea');
+  ta.value = p.desc || '';
+  ta.oninput = () => { p.desc = ta.value; markDirty(); };
+  dsc.appendChild(ta);
+  f.appendChild(dsc);
+
+  f.appendChild(pricingBlock(p));
+
+  const meta = document.createElement('div');
+  meta.className = 'rowline';
+  meta.appendChild(selectField('How the customer gets it', LANES, p.lane, v => { p.lane = v; markDirty(); }));
+  meta.appendChild(selectField('Department', cat.sections.map(s => [s.key, s.title]), p.sec,
+    v => { p.sec = v; markDirty(); render(); }));
+  f.appendChild(meta);
+
+  card.appendChild(f);
+  return card;
+}
+
+function miniBtn(txt, title, fn){
+  const b = document.createElement('button');
+  b.textContent = txt; b.title = title; b.onclick = fn;
+  return b;
+}
+
+function selectField(labelTxt, pairs, value, onchange){
+  const w = document.createElement('div');
+  w.className = 'grow';
+  w.innerHTML = '<label class="small">' + esc(labelTxt) + '</label>';
+  const sel = document.createElement('select');
+  pairs.forEach(pr => {
+    const o = document.createElement('option');
+    o.value = pr[0]; o.textContent = pr[1];
+    if (pr[0] === value) o.selected = true;
+    sel.appendChild(o);
+  });
+  sel.onchange = () => onchange(sel.value);
+  w.appendChild(sel);
+  return w;
+}
+
+function move(p, d){
+  const siblings = cat.products.filter(x => x.sec === p.sec);
+  const si = siblings.indexOf(p);
+  const ti = si + d;
+  if (ti < 0 || ti >= siblings.length) return;
+  const a = cat.products.indexOf(p), b = cat.products.indexOf(siblings[ti]);
+  cat.products[a] = siblings[ti]; cat.products[b] = p;
+  markDirty(); render();
+}
+
+/* ------------------------------------------------------------- pricing */
+function pricingBlock(p){
+  const box = document.createElement('div');
+  box.className = 'pricing';
+  const hasVar = !!(p.variants && p.variants.length);
+  const modes = document.createElement('div');
+  modes.className = 'modes';
+  const mkMode = (label, isVar) => {
+    const l = document.createElement('label');
+    const r = document.createElement('input');
+    r.type = 'radio'; r.name = 'mode-' + p.id; r.checked = (isVar === hasVar);
+    r.onchange = () => {
+      if (isVar){ p.variants = p.variants && p.variants.length ? p.variants : [['Standard', p.price || 0]]; delete p.price; delete p.unit; }
+      else { p.price = p.variants && p.variants.length ? p.variants[0][1] : 0; p.unit = p.unit || 'each'; delete p.variants; }
+      markDirty(); render();
+    };
+    l.appendChild(r); l.appendChild(document.createTextNode(label));
+    return l;
+  };
+  modes.appendChild(mkMode('One price', false));
+  modes.appendChild(mkMode('Price options (sizes, grades, cords…)', true));
+  box.appendChild(modes);
+
+  if (!hasVar){
+    const row = document.createElement('div');
+    row.className = 'rowline';
+    const pw2 = document.createElement('div');
+    pw2.innerHTML = '<label class="small">Price</label>';
+    pw2.appendChild(moneyInput(p.price, v => { p.price = v; markDirty(); }));
+    row.appendChild(pw2);
+    const uw = document.createElement('div');
+    uw.className = 'grow';
+    uw.innerHTML = '<label class="small">Sold by (the unit shown next to the price)</label>';
+    const u = document.createElement('input');
+    u.type = 'text'; u.value = p.unit || 'each'; u.setAttribute('list', 'unitList');
+    u.placeholder = 'each, per lb, per pallet…';
+    u.oninput = () => { p.unit = u.value; markDirty(); };
+    uw.appendChild(u);
+    row.appendChild(uw);
+    box.appendChild(row);
+  } else {
+    const lbl = document.createElement('label');
+    lbl.className = 'small';
+    lbl.textContent = 'Options the customer picks from (label + price each)';
+    box.appendChild(lbl);
+    p.variants.forEach((v, i) => {
+      const row = document.createElement('div');
+      row.className = 'vrow';
+      const vl = document.createElement('input');
+      vl.type = 'text'; vl.className = 'vlabel'; vl.value = v[0]; vl.placeholder = 'Full Cord, #1 Grade…';
+      vl.oninput = () => { v[0] = vl.value; markDirty(); };
+      row.appendChild(vl);
+      row.appendChild(moneyInput(v[1], val => { v[1] = val; markDirty(); }));
+      const x = document.createElement('button');
+      x.textContent = '✕'; x.title = 'Remove this option';
+      x.onclick = () => { if (p.variants.length > 1){ p.variants.splice(i, 1); markDirty(); render(); } };
+      row.appendChild(x);
+      box.appendChild(row);
+    });
+    const add = document.createElement('button');
+    add.className = 'addvar';
+    add.textContent = '+ Add another option';
+    add.onclick = () => { p.variants.push(['', 0]); markDirty(); render(); };
+    box.appendChild(add);
+  }
+  return box;
+}
+
+function moneyInput(value, oninput){
+  const w = document.createElement('div');
+  w.className = 'pmoney';
+  const s = document.createElement('span');
+  s.textContent = '$';
+  const i = document.createElement('input');
+  i.type = 'number'; i.min = '0'; i.step = '0.01'; i.value = value != null ? value : 0;
+  i.oninput = () => oninput(parseFloat(i.value) || 0);
+  w.appendChild(s); w.appendChild(i);
+  return w;
+}
+
+/* ------------------------------------------------------------- photos */
+function resizeImage(fileObj, done){
+  const rd = new FileReader();
+  rd.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const MAXW = 900;
+      const w = Math.min(img.width, MAXW);
+      const h = Math.round(img.height * w / img.width);
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      done(c.toDataURL('image/jpeg', 0.8));
+    };
+    img.src = rd.result;
+  };
+  rd.readAsDataURL(fileObj);
+}
+
+/* ------------------------------------------------------------- save */
+function save(){
+  for (const p of cat.products){
+    if (!p.name || !p.name.trim()){
+      setStatus('One item has no name — give it a name or delete it, then save again.', 'err');
+      return;
+    }
+  }
+  const payload = JSON.stringify({password: pw, catalog: cat});
+  if (payload.length > MAX_SAVE_BYTES){
+    setStatus('The catalog is too large to save — the photos add up. Replace one or two of the biggest new photos with smaller ones.', 'err');
+    return;
+  }
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true;
+  setStatus('Saving…');
+  fetch(RELAY + '/catalog', {method:'POST', headers:{'Content-Type':'application/json'}, body: payload})
+    .then(r => r.json().then(j => ({ok: r.ok, j: j})))
+    .then(({ok, j}) => {
+      btn.disabled = false;
+      if (!ok){ setStatus(j.error || 'Save failed — try again.', 'err'); return; }
+      dirty = false;
+      setStatus('Saved and live ' + j.savedAt + ' — the store shows it on its next load (' + j.products + ' products).');
+    })
+    .catch(() => { btn.disabled = false; setStatus('Could not reach the server — check the connection and try again.', 'err'); });
+}
+</script>
+</body>
+</html>
