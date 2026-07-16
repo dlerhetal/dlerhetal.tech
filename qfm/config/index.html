@@ -234,7 +234,7 @@ function render(){
     btn.textContent = '+ Add an item to ' + sec.title;
     btn.onclick = () => {
       cat.products.push({id: newId('new'), sec: sec.key, name: 'New item',
-        desc: '', lane: 'LOCAL', show: false, img: '', price: 0, unit: 'each'});
+        itemCode: '', desc: '', lane: 'LOCAL', show: false, img: '', price: 0, unit: 'each'});
       markDirty(); render();
     };
     add.appendChild(btn);
@@ -315,6 +315,18 @@ function itemCard(p){
   mini.appendChild(del);
   top.appendChild(mini);
   f.appendChild(top);
+
+  const codeRow = document.createElement('div');
+  codeRow.className = 'rowline';
+  const codeWrap = document.createElement('div');
+  codeWrap.style.maxWidth = '220px';
+  codeWrap.innerHTML = '<label class="small">Item code</label>';
+  const code = document.createElement('input');
+  code.type = 'text'; code.value = p.itemCode || ''; code.placeholder = 'Item code';
+  code.oninput = () => { p.itemCode = code.value; markDirty(); };
+  codeWrap.appendChild(code);
+  codeRow.appendChild(codeWrap);
+  f.appendChild(codeRow);
 
   const dsc = document.createElement('div');
   dsc.innerHTML = '<label class="small">Description shown under the name</label>';
