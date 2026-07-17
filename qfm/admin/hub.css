@@ -1,0 +1,45 @@
+
+:root { --ink:#2b2118; --cream:#faf6ef; --paper:#fffdf9; --terra:#b4552d;
+        --terra-dk:#94431f; --sage:#4a5d43; --sand:#e9dfd0; --gold:#c9992e;
+        --gray:#7a6f63; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--cream); color:var(--ink);
+       font-family:"Segoe UI", system-ui, sans-serif; line-height:1.5; }
+h1,h2,h3 { font-family:Georgia, "Times New Roman", serif; color:var(--terra-dk); }
+#gate { min-height:100vh; display:flex; align-items:center; justify-content:center; }
+.gatebox { background:var(--paper); border:1px solid var(--sand); border-radius:12px;
+           padding:32px 28px; max-width:380px; width:92%; text-align:center;
+           box-shadow:0 4px 18px rgba(43,33,24,.08); }
+.gatebox input { width:100%; padding:12px; font-size:16px; margin:10px 0;
+                 border:1px solid var(--sand); border-radius:8px; }
+.gatebox button { width:100%; padding:12px; font-size:16px; border:none;
+                  border-radius:8px; background:var(--terra); color:#fff;
+                  font-weight:600; cursor:pointer; }
+#gatemsg { color:var(--terra-dk); min-height:1.2em; font-size:14px; }
+header { background:var(--paper); border-bottom:2px solid var(--sand);
+         padding:14px; position:sticky; top:0; z-index:5; }
+.brand { font-family:Georgia, serif; font-weight:700; color:var(--terra-dk); }
+main { max-width:860px; margin:0 auto; padding:18px 14px 60px; }
+.lead { color:var(--gray); font-size:14.5px; }
+.cardgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+            gap:14px; margin:14px 0 26px; }
+.hubcard { display:block; background:var(--paper); border:1px solid var(--sand);
+           border-radius:10px; padding:16px 18px; text-decoration:none;
+           color:var(--ink); box-shadow:0 2px 8px rgba(43,33,24,.05); }
+a.hubcard:hover { border-color:var(--terra); box-shadow:0 4px 14px rgba(43,33,24,.12); }
+.hubcard h3 { margin:0 0 6px; font-size:17px; }
+.hubcard p { margin:0 0 10px; font-size:13.5px; color:var(--gray); }
+.hubcard .go { color:var(--terra); font-weight:600; font-size:14px; }
+.hubcard.disabled { opacity:.55; background:var(--cream);
+                    border-style:dashed; cursor:default; }
+.soon { font-size:11px; font-weight:600; color:#fff; background:var(--gray);
+        border-radius:10px; padding:2px 8px; vertical-align:middle;
+        font-family:"Segoe UI", system-ui, sans-serif; }
+ul.doclist { padding-left:20px; }
+ul.doclist li { margin:10px 0; font-size:14.5px; }
+ul.doclist a { color:var(--terra-dk); font-weight:600; }
+.docdesc { color:var(--gray); font-size:13.5px; }
+.fineprint { color:var(--gray); font-size:13px; margin-top:26px; }
+footer { text-align:center; color:var(--gray); font-size:12.5px;
+         padding:20px 10px 30px; }
+@media (max-width:600px){ main{ padding:12px 10px 50px; } }
