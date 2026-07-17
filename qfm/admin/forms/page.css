@@ -1,0 +1,76 @@
+
+:root { --ink:#2b2118; --cream:#faf6ef; --paper:#fffdf9; --terra:#b4552d;
+        --terra-dk:#94431f; --sage:#4a5d43; --sand:#e9dfd0; --gold:#c9992e;
+        --gray:#7a6f63; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--cream); color:var(--ink);
+       font-family:"Segoe UI", system-ui, sans-serif; line-height:1.5; }
+h1,h2,h3 { font-family:Georgia, "Times New Roman", serif; color:var(--terra-dk); }
+a { color:var(--terra-dk); }
+#gate { min-height:100vh; display:flex; align-items:center; justify-content:center; }
+.gatebox { background:var(--paper); border:1px solid var(--sand); border-radius:12px;
+           padding:32px 28px; max-width:380px; width:92%; text-align:center;
+           box-shadow:0 4px 18px rgba(43,33,24,.08); }
+.gatebox input { width:100%; padding:12px; font-size:16px; margin:10px 0;
+                 border:1px solid var(--sand); border-radius:8px; }
+.gatebox button { width:100%; padding:12px; font-size:16px; border:none;
+                  border-radius:8px; background:var(--terra); color:#fff;
+                  font-weight:600; cursor:pointer; }
+#gatemsg { color:var(--terra-dk); min-height:1.2em; font-size:14px; }
+header { background:var(--paper); border-bottom:2px solid var(--sand);
+         padding:12px 14px; position:sticky; top:0; z-index:5;
+         display:flex; align-items:center; justify-content:space-between;
+         gap:10px; flex-wrap:wrap; }
+.brand { font-family:Georgia, serif; font-weight:700; color:var(--terra-dk); }
+.backlink { font-size:14px; font-weight:600; text-decoration:none; }
+main { max-width:860px; margin:0 auto; padding:18px 14px 60px; }
+.lead { color:var(--gray); font-size:14.5px; }
+.card { background:var(--paper); border:1px solid var(--sand); border-radius:10px;
+        padding:16px 18px; margin:14px 0; }
+table.fields { border-collapse:collapse; width:100%; margin:6px 0; }
+table.fields th { text-align:left; color:var(--sage); padding:6px 10px 6px 0;
+                  vertical-align:top; white-space:nowrap; font-size:14px; }
+table.fields td { padding:6px 0; font-size:14.5px; }
+.copybtn { background:var(--gold); border:none; color:var(--ink); font-weight:600;
+           padding:6px 12px; border-radius:6px; cursor:pointer; font-size:13px;
+           margin:4px 2px; }
+.copybtn.copied { background:var(--sage); color:#fff; }
+pre.copytext { background:var(--cream); border:1px dashed var(--sand);
+               border-radius:8px; padding:12px; white-space:pre-wrap;
+               font-family:inherit; font-size:13.5px; overflow-wrap:break-word; }
+ol.steps { padding-left:22px; }
+ol.steps li { margin:10px 0; }
+ul.notes li { margin:8px 0; font-size:14.5px; }
+.fineprint { color:var(--gray); font-size:13px; }
+.deschead { font-weight:600; margin:12px 0 4px; }
+.jumpnav { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 4px; }
+.jumpnav a { background:var(--paper); border:1px solid var(--sand);
+             border-radius:16px; padding:5px 12px; font-size:13px;
+             text-decoration:none; font-weight:600; }
+.tablewrap { overflow-x:auto; }
+table.data { border-collapse:collapse; width:100%; margin:8px 0;
+             background:var(--paper); font-size:13.5px; }
+table.data th { background:var(--sage); color:#fff; text-align:left;
+                padding:7px 9px; font-size:13px; }
+table.data td { border:1px solid var(--sand); padding:7px 9px;
+                vertical-align:top; }
+table.data tr:nth-child(even) td { background:var(--cream); }
+.money { white-space:nowrap; text-align:right; }
+.totalrow td { font-weight:700; background:#f6ecd6 !important; }
+.callcard { background:var(--paper); border:1px solid var(--sand);
+            border-radius:10px; padding:12px 14px; margin:10px 0; }
+.callcard h3 { margin:0 0 2px; font-size:16px; }
+.callmeta { color:var(--gray); font-size:13px; margin:0 0 6px; }
+.callwhy { font-size:13.5px; margin:6px 0 10px; }
+.callrow { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.callbtn { display:inline-block; background:var(--terra); color:#fff;
+           font-weight:700; text-decoration:none; border-radius:8px;
+           padding:10px 16px; font-size:15px; }
+.weblink { font-size:13.5px; overflow-wrap:anywhere; }
+ul.doclist { padding-left:20px; }
+ul.doclist li { margin:12px 0; font-size:14.5px; }
+ul.doclist a { color:var(--terra-dk); font-weight:600; }
+.docdesc { color:var(--gray); font-size:13.5px; }
+footer { text-align:center; color:var(--gray); font-size:12.5px;
+         padding:20px 10px 30px; }
+@media (max-width:600px){ main{ padding:12px 10px 50px; } }
