@@ -134,6 +134,7 @@ const LANES = [['LOCAL','Local delivery / pickup'],['SHIP','Ships nationwide'],[
 const MAX_SAVE_BYTES = 7 * 1024 * 1024;
 
 let cat = null;
+let baseSavedAt = null;  // savedAt of the catalog this page loaded (concurrency base)
 let pw = sessionStorage.getItem('qfmConfigPw') || '';
 let dirty = false;
 
@@ -158,18 +159,41 @@ function start(){
   document.getElementById('gate').style.display = 'none';
   document.getElementById('editor').style.display = 'block';
   document.getElementById('savebar').style.display = 'block';
+  loadCatalog();
+}
+
+/* Load the LIVE catalog or nothing. The old page fell back to the catalog
+   baked at build time when this fetch failed — editing and saving that stale
+   copy silently reverted everyone's later price edits. Never again: if the
+   live catalog cannot load, editing stays locked until Retry succeeds. */
+function loadCatalog(){
+  setStatus('Loading the live catalog…');
   fetch(RELAY + '/catalog', {cache:'no-store'})
-    .then(r => r.ok ? r.json() : null)
+    .then(r => {
+      if (r.status === 404) return null;   // genuinely nothing saved yet
+      if (!r.ok) throw 0;
+      return r.json();
+    })
     .then(j => {
-      cat = (j && j.products && j.products.length) ? j : JSON.parse(JSON.stringify(DEFAULT_CATALOG));
-      setStatus(j && j.savedAt ? ('Showing the catalog last saved ' + j.savedAt + '.')
-                               : 'Showing the original catalog — nothing saved yet.');
+      if (j && j.products && j.products.length){
+        cat = j;
+        baseSavedAt = j.savedAt || null;
+        setStatus('Showing the catalog last saved ' + (j.savedAt || '') + '.');
+      } else {
+        cat = JSON.parse(JSON.stringify(DEFAULT_CATALOG));
+        baseSavedAt = null;
+        setStatus('Showing the original catalog — nothing saved yet.');
+      }
+      document.getElementById('saveBtn').textContent = 'Save & publish';
       render();
     })
     .catch(() => {
-      cat = JSON.parse(JSON.stringify(DEFAULT_CATALOG));
-      setStatus('Could not reach the server — showing the original catalog.');
+      cat = null;
       render();
+      document.getElementById('saveBtn').textContent = 'Retry loading';
+      setStatus('Could not load the live catalog — nothing can be edited ' +
+                'until it loads. Check the connection, then press Retry ' +
+                'loading below.', 'err');
     });
 }
 if (pw) {
@@ -202,6 +226,7 @@ function newId(name){
 function render(){
   const box = document.getElementById('depts');
   box.innerHTML = '';
+  if (!cat) return;   // live catalog not loaded — nothing editable
   cat.sections.forEach(sec => {
     const items = cat.products.filter(p => p.sec === sec.key);
     const s = document.createElement('section');
@@ -456,7 +481,12 @@ function moneyInput(value, oninput){
   s.textContent = '$';
   const i = document.createElement('input');
   i.type = 'number'; i.min = '0'; i.step = '0.01'; i.value = value != null ? value : 0;
-  i.oninput = () => oninput(parseFloat(i.value) || 0);
+  // only accept a real number — an empty/garbled field must never silently
+  // turn a price into 0 (the old `|| 0` did exactly that on phone keyboards)
+  i.oninput = () => {
+    const n = parseFloat(i.value);
+    if (!isNaN(n) && n >= 0) oninput(n);
+  };
   w.appendChild(s); w.appendChild(i);
   return w;
 }
@@ -482,13 +512,14 @@ function resizeImage(fileObj, done){
 
 /* ------------------------------------------------------------- save */
 function save(){
+  if (!cat){ loadCatalog(); return; }   // button doubles as Retry until loaded
   for (const p of cat.products){
     if (!p.name || !p.name.trim()){
       setStatus('One item has no name — give it a name or delete it, then save again.', 'err');
       return;
     }
   }
-  const payload = JSON.stringify({password: pw, catalog: cat});
+  const payload = JSON.stringify({password: pw, catalog: cat, baseSavedAt: baseSavedAt});
   if (payload.length > MAX_SAVE_BYTES){
     setStatus('The catalog is too large to save — the photos add up. Replace one or two of the biggest new photos with smaller ones.', 'err');
     return;
@@ -497,11 +528,19 @@ function save(){
   btn.disabled = true;
   setStatus('Saving…');
   fetch(RELAY + '/catalog', {method:'POST', headers:{'Content-Type':'application/json'}, body: payload})
-    .then(r => r.json().then(j => ({ok: r.ok, j: j})))
-    .then(({ok, j}) => {
+    .then(r => r.json().then(j => ({ok: r.ok, status: r.status, j: j})))
+    .then(({ok, status, j}) => {
       btn.disabled = false;
+      if (status === 409){
+        dirty = false;
+        setStatus('Not saved — someone else saved the catalog while this page was open. ' +
+                  'Loading their newest version now; please make your change again on top of it, then save.', 'err');
+        loadCatalog();
+        return;
+      }
       if (!ok){ setStatus(j.error || 'Save failed — try again.', 'err'); return; }
       dirty = false;
+      baseSavedAt = j.savedAt;
       setStatus('Saved and live ' + j.savedAt + ' — the store shows it on its next load (' + j.products + ' products).');
     })
     .catch(() => { btn.disabled = false; setStatus('Could not reach the server — check the connection and try again.', 'err'); });

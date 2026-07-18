@@ -1,23 +1,25 @@
 // QFM concept store — catalog-driven cards + shared cart + mock checkout.
-// The catalog baked below is the fallback; if the office has saved changes on
-// the config page (/qfm/config), that catalog is fetched from the relay and
-// re-rendered over it. Demo only: no payments, no storage beyond the cart.
+// Prices come ONLY from the live catalog the office saves on /qfm/config —
+// there is deliberately NO baked-in fallback catalog: showing build-time
+// prices when the relay was slow/down is how "phantom price changes"
+// happened. If the live catalog can't load, the shop says so and offers
+// Retry instead of showing stale numbers. Demo only: no payments.
 const CART_KEY = 'qfmCart.v1';
 const RELAY = 'https://dlerhetal.pythonanywhere.com/qfm-api';
-const DEFAULT_CATALOG = {"version": 1, "sections": [{"key": "firewood", "title": "Firewood", "blurb": "Seasoned, split, and honestly measured \u2014 our cords are guaranteed full and NMDA-regulated. Cash and check discounts on firewood."}, {"key": "stone", "title": "Flagstone & Stone", "blurb": "The largest flagstone selection in southern New Mexico \u2014 around 30 varieties from across the U.S. and Mexico, priced by the pound so you buy exactly what you need."}, {"key": "pottery", "title": "Pottery", "blurb": "Over 30,000 pots on eight acres \u2014 factory-direct Vietnamese ceramic, talavera, stands and saucers. Smaller pieces ship anywhere."}, {"key": "fountains", "title": "Fountains", "blurb": "Ceramic fountains, rock bubblers and cast stone tiers \u2014 hear one running before you buy it."}, {"key": "materials", "title": "Landscape Materials", "blurb": "The hard-to-find yard: railroad ties by the grade, vigas, latillas, cedar stays, and pecan shells by the yard or by the bag."}, {"key": "decor", "title": "Yard Decor", "blurb": "Metal cacti to cement turtles \u2014 the selection changes every week."}, {"key": "softgoods", "title": "Soft Goods", "blurb": "Handwoven fiber home goods, new to the yard \u2014 baskets, placemats, napkin rings and area rugs. Smaller pieces ship anywhere in the country."}], "products": [{"id": "pinon", "sec": "firewood", "name": "Pi\u00f1on Firewood", "desc": "New Mexico pi\u00f1on \u2014 twice the hardness of regular pine, famously fragrant. Guaranteed full cords, NMDA-regulated measure.", "lane": "LOCAL", "show": true, "img": "assets/hero_pinon.jpg", "variants": [["Full Cord", 389], ["Half Cord", 215], ["Quarter Cord", 125]]}, {"id": "pecanw", "sec": "firewood", "name": "Pecan Firewood", "desc": "Cut locally in the Mesilla Valley. Slow-burning heat \u2014 mix with cedar for an easy start and great fragrance.", "lane": "LOCAL", "show": true, "img": "assets/pecan_stacks.jpg", "variants": [["Full Cord", 329], ["Half Cord", 185], ["Quarter Cord", 109]]}, {"id": "cedarw", "sec": "firewood", "name": "Cedar (Shaggy-Bark Juniper)", "desc": "Easy lighting and a great fragrance \u2014 the classic starter and everyday burn. Oak, mesquite and alligator juniper seasonally; call for availability.", "lane": "LOCAL", "show": true, "img": "assets/wood_pile.jpg", "variants": [["Full Cord", 279], ["Half Cord", 159], ["Quarter Cord", 95]]}, {"id": "apple", "sec": "firewood", "name": "Applewood Chunks & Mini Logs", "desc": "5 lb bundles of apple chunks and mini logs \u2014 the cooking wood for pork, fish, poultry and wild game.", "lane": "SHIP", "show": true, "img": "assets/pecan_stacks.jpg", "price": 14.99, "unit": "5 lb bundle"}, {"id": "flagbuff", "sec": "stone", "name": "Arizona Buff Flagstone", "desc": "Warm buff sandstone, sold by the pound. Buy one piece or the whole pallet.", "lane": "LOCAL", "show": true, "img": "assets/flag_buff.jpg", "price": 0.25, "unit": "per lb"}, {"id": "flagred", "sec": "stone", "name": "Colorado Red Flagstone", "desc": "Deep red sandstone for patios and walkways \u2014 a Southwest signature.", "lane": "LOCAL", "show": true, "img": "assets/flag_red.jpg", "price": 0.35, "unit": "per lb"}, {"id": "flagslate", "sec": "stone", "name": "Idaho Quartzite", "desc": "Cool silver-blue quartzite \u2014 exotic coloration, extremely durable.", "lane": "LOCAL", "show": true, "img": "assets/flag_slate.jpg", "price": 0.45, "unit": "per lb"}, {"id": "flagslab", "sec": "stone", "name": "Arizona Select Slabs", "desc": "Oversize select slabs for steps, benches and statement pieces.", "lane": "LOCAL", "show": true, "img": "assets/flag_slab.jpg", "price": 0.35, "unit": "per lb"}, {"id": "riverrock", "sec": "stone", "name": "River Rock", "desc": "Washed river rock by the pallet basket \u2014 borders, dry beds, accents.", "lane": "LOCAL", "show": true, "img": "assets/river_rock.jpg", "price": 189, "unit": "per pallet"}, {"id": "coronado", "sec": "stone", "name": "Coronado Stone Veneer \u2014 Overstock", "desc": "Manufactured stone veneer at roughly half retail while overstock lasts. Boxes of 100\u2013125 sq ft; smaller 12.5 and 15 sq ft boxes available.", "lane": "LOCAL", "show": true, "img": "assets/coronado.jpg", "price": 4.75, "unit": "per sq ft"}, {"id": "talavera", "sec": "pottery", "name": "Talavera Pottery", "desc": "Hand-painted color for porch and patio. Small pieces ship anywhere in the country.", "lane": "SHIP", "show": true, "img": "assets/talavera.jpg", "price": 24.99, "unit": "from"}, {"id": "glazedsm", "sec": "pottery", "name": "Glazed Pots \u2014 Small", "desc": "Vietnamese beehive-kiln pottery, built to survive any climate. Under 40 lbs \u2014 ships nationwide.", "lane": "SHIP", "show": true, "img": "assets/blue_pots.jpg", "price": 34.99, "unit": "from"}, {"id": "glazedmd", "sec": "pottery", "name": "Glazed Planters \u2014 Medium", "desc": "The porch-anchor size. Hundreds of styles and colors on the yard.", "lane": "LOCAL", "show": true, "img": "assets/red_pots.jpg", "price": 89, "unit": "from"}, {"id": "jars", "sec": "pottery", "name": "Statement Jars \u2014 Large", "desc": "Oversized jars and urns \u2014 the entryway centerpiece. Local delivery available.", "lane": "LOCAL", "show": true, "img": "assets/jars_three.jpg", "price": 249, "unit": "from"}, {"id": "scroll", "sec": "pottery", "name": "Etched & Scroll Pots", "desc": "Carved detail, rich glazes \u2014 from a selection of over 30,000 pots on eight acres.", "lane": "LOCAL", "show": true, "img": "assets/scroll_pots.jpg", "price": 119, "unit": "from"}, {"id": "fball", "sec": "fountains", "name": "Ceramic Ball Fountain", "desc": "Self-contained glazed sphere fountain \u2014 plug in, fill, done.", "lane": "LOCAL", "show": true, "img": "assets/fountain_ball.jpg", "price": 349, "unit": "each"}, {"id": "fteal", "sec": "fountains", "name": "Teal Wave Fountain", "desc": "Sculptural glazed ceramic \u2014 quiet recirculating pump included.", "lane": "LOCAL", "show": true, "img": "assets/fountain_teal.jpg", "price": 399, "unit": "each"}, {"id": "ftier", "sec": "fountains", "name": "Cast Stone 3-Tier Fountain", "desc": "Classic courtyard tiers in weatherproof cast stone.", "lane": "LOCAL", "show": true, "img": "assets/fountain_tier.jpg", "price": 499, "unit": "each"}, {"id": "ties", "sec": "materials", "name": "Used Railroad Ties", "desc": "Approx. 6\u2033\u00d78\u2033 \u00d7 8\u2032. Retaining walls, raised beds, parking stops. Bundle-of-16 discount.", "lane": "LOCAL", "show": true, "img": "assets/ties.jpg", "variants": [["Relay (nearly new)", 42], ["#1 Grade", 34], ["#2 Grade", 26], ["#3 Grade", 18]]}, {"id": "vigas", "sec": "materials", "name": "Vigas & Braided Posts", "desc": "Ponderosa pine vigas in varying diameters and lengths; carved braided posts 8\u2033 \u00d7 8\u2032.", "lane": "LOCAL", "show": true, "img": "assets/posts.jpg", "price": 89, "unit": "from"}, {"id": "latillas", "sec": "materials", "name": "Latillas", "desc": "Ponderosa latillas in 8, 12 and 16 ft lengths \u2014 coyote fences, pergola shade.", "lane": "LOCAL", "show": true, "img": "assets/latilla_bundle.jpg", "price": 6.5, "unit": "from, each"}, {"id": "stays", "sec": "materials", "name": "Cedar Stays", "desc": "South Texas cedar \u2014 #1 stays (5\u20135.5 ft) and long stays (8 ft, 10 ft) for fences that last.", "lane": "LOCAL", "show": true, "img": "assets/latilla_fence.jpg", "price": 4.25, "unit": "from, each"}, {"id": "shells", "sec": "materials", "name": "Pecan Shells \u2014 Bulk", "desc": "Mulch, surfacing, dust control, event parking. By the cubic yard; semi-load pricing available.", "lane": "LOCAL", "show": true, "img": "assets/pecan_shells.jpg", "price": 12, "unit": "per cu yd"}, {"id": "shellbag", "sec": "materials", "name": "Pecan Shells \u2014 Smoker Bag", "desc": "10 lb bag for smoking meats \u2014 the Mesilla Valley flavor, shipped to your door.", "lane": "SHIP", "show": true, "img": "assets/pecan_shells.jpg", "price": 12.99, "unit": "10 lb bag"}, {"id": "statuary", "sec": "decor", "name": "Statuary & Concrete Art", "desc": "Cement turtles, roadrunners, benches, southwestern statuary \u2014 an ever-changing selection.", "lane": "PICKUP", "show": true, "img": "assets/statuary.jpg", "price": 39, "unit": "from"}, {"id": "mflowers", "sec": "decor", "name": "Metal Flower Stakes", "desc": "Hand-made metal blooms that never need water. Ships nationwide.", "lane": "SHIP", "show": true, "img": "assets/metal_flowers.jpg", "price": 29.99, "unit": "each"}, {"id": "gazing", "sec": "decor", "name": "Gazing Balls", "desc": "Hand-blown glass color for beds and planters.", "lane": "SHIP", "show": true, "img": "assets/gazing.jpg", "price": 29.99, "unit": "each"}, {"id": "bench", "sec": "decor", "name": "Rustic Garden Benches", "desc": "Reclaimed-wood and iron benches with real patina \u2014 one-of-a-kind pieces.", "lane": "LOCAL", "show": true, "img": "assets/bench.jpg", "price": 189, "unit": "from"}, {"id": "wovenrugs", "sec": "softgoods", "name": "Handwoven Area Rugs", "desc": "Natural-fiber area rugs, woven by hand \u2014 earthy texture for any room.", "lane": "LOCAL", "show": true, "img": "assets/soft_goods.jpg", "variants": [["3x5", 89], ["5x8", 169], ["8x10", 259]]}, {"id": "wovenbaskets", "sec": "softgoods", "name": "Handwoven Baskets", "desc": "Fiber baskets for storage, plants, or the table \u2014 every one unique.", "lane": "SHIP", "show": true, "img": "assets/soft_goods.jpg", "variants": [["Small", 24], ["Medium", 39], ["Large", 59]]}, {"id": "placemats", "sec": "softgoods", "name": "Woven Placemats", "desc": "Handwoven placemats that dress the table and shrug off spills.", "lane": "SHIP", "show": true, "img": "assets/soft_goods.jpg", "price": 34, "unit": "set of 4"}, {"id": "napkinrings", "sec": "softgoods", "name": "Woven Napkin Rings", "desc": "Handwoven napkin rings \u2014 the finishing touch for the set table.", "lane": "SHIP", "show": true, "img": "assets/soft_goods.jpg", "price": 19.99, "unit": "set of 6"}]};
 const ZONES = [["Las Cruces / Mesilla", 35], ["Do\u00f1a Ana", 45], ["El Paso", 75], ["Deming", 85], ["Truth or Consequences", 95], ["Elephant Butte", 95]];
 const SAMPLE_SHIP = 14.95;
 const LANE_BADGE = {SHIP: ['badge-ship', 'Ships Nationwide'],
                     LOCAL: ['badge-local', 'Local Delivery / Pickup'],
                     PICKUP: ['badge-pickup', 'Yard Pickup']};
 
-let CATALOG = DEFAULT_CATALOG;
+let CATALOG = null;              // live catalog only — never a baked copy
+let catalogState = 'loading';    // 'loading' | 'ready' | 'failed'
 let PRODUCTS = {};
 function rebuildProducts(){
   PRODUCTS = {};
+  if (!CATALOG) return;
   CATALOG.products.forEach(function(p){ PRODUCTS[p.id] = p; });
 }
-rebuildProducts();
 
 let cart = {};
 try { cart = JSON.parse(localStorage.getItem(CART_KEY) || '{}') || {}; } catch (e) { cart = {}; }
@@ -55,6 +57,17 @@ function renderShop(){
   const root = document.getElementById('catalogRoot');
   if (!root) return;                       // not on the shop page
   const nav = document.getElementById('subnavLinks');
+  if (!CATALOG){
+    if (nav) nav.innerHTML = '';
+    root.innerHTML = catalogState === 'failed'
+      ? '<div class="wrap" style="text-align:center;padding:60px 20px">' +
+        '<p style="font-size:17px;margin-bottom:14px">Current prices are unavailable right now.</p>' +
+        '<p style="color:#7a6f63;margin-bottom:18px">Check the connection, then try again — we never guess at prices.</p>' +
+        '<button class="btn" onclick="fetchLiveCatalog()">Retry</button></div>'
+      : '<div class="wrap" style="text-align:center;padding:60px 20px;color:#7a6f63">' +
+        '<p style="font-size:17px">Loading current prices…</p></div>';
+    return;
+  }
   let navHtml = '', html = '';
   (CATALOG.sections || []).forEach(function(s){
     const items = CATALOG.products.filter(function(p){ return p.sec === s.key && p.show !== false; });
@@ -73,14 +86,19 @@ function renderShop(){
 }
 
 function fetchLiveCatalog(){
+  catalogState = 'loading';
+  renderShop();
   fetch(RELAY + '/catalog', {cache: 'no-store'})
-    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(r){ if (!r.ok) throw 0; return r.json(); })
     .then(function(j){
-      if (j && j.products && j.products.length){
-        CATALOG = j; rebuildProducts(); renderShop(); renderCart();
-      }
+      if (!(j && j.products && j.products.length)) throw 0;
+      CATALOG = j; catalogState = 'ready';
+      rebuildProducts(); renderShop(); renderCart();
     })
-    .catch(function(){ /* offline or nothing saved yet — baked catalog stands */ });
+    .catch(function(){
+      CATALOG = null; catalogState = 'failed';
+      renderShop();   // shows the unavailable + Retry state, never stale prices
+    });
 }
 
 function addToCart(id){
