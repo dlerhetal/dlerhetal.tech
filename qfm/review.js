@@ -23,8 +23,16 @@
     if (sessionStorage.getItem(ON_KEY) !== '1') return; // normal visitor: stop here
   } catch (e) { return; } // sessionStorage unavailable: stay inert
 
-  var page = (location.pathname.split('/').pop() || 'index.html').replace(/\.html?$/, '') || 'index';
+  // Full path slug, so directory URLs stay distinct (/qfm/admin/udes/ -> "admin/udes").
+  // Drops a leading /qfm/ base if present, any leading/trailing slashes, and a .html/.htm tail.
+  var page = location.pathname
+    .replace(/^\/qfm(?=\/|$)/i, '')
+    .replace(/^\/+/, '')
+    .replace(/\/+$/, '')
+    .replace(/\.html?$/i, '') || 'home';
   var pageTitle = (document.title.split('—')[0] || page).trim();
+  var topicTitle = (document.title || '').split('—')[0].trim().slice(0, 60).trim();
+  var topic = 'owner-site-review — ' + page + (topicTitle ? ' — ' + topicTitle : '');
   var lastSel = '';
   document.addEventListener('selectionchange', function () {
     var box = document.getElementById('qfmRev');
@@ -119,7 +127,7 @@
       body: JSON.stringify({
         password: sessionStorage.getItem(PW_KEY) || '',
         action: 'add',
-        topic: 'owner-site-review — ' + page,
+        topic: topic,
         message: body
       })
     }).then(function (r) { if (!r.ok) throw 0; return r.json(); })
