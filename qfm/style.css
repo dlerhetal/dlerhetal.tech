@@ -134,6 +134,24 @@ button.add:hover{background:var(--terra-dk)}
 .rev .who{margin-top:10px;font-size:12px;color:var(--gray);font-style:normal}
 .rev-note{font-size:11px;color:var(--gray);margin-top:14px}
 
+/* content pages (about, delivery, liheap, wholesale, faq, contact) */
+.page{padding:46px 0 34px}
+.page-body{max-width:860px}
+.page-body h2{font-size:32px;color:var(--terra-dk);line-height:1.15;margin-bottom:6px}
+.page-body h3{font-size:19px;color:var(--terra-dk);margin:26px 0 6px}
+.page-body p{margin:12px 0;font-size:15px}
+.page-body ul{margin:12px 0 12px 24px;font-size:15px}
+.page-body li{margin:7px 0}
+.page-body a{color:var(--terra-dk)}
+.page-body table{margin:12px 0;border-collapse:collapse;width:100%;max-width:430px;font-size:14.5px}
+.page-body td{padding:6px 4px;border-bottom:1px dashed var(--sand)}
+.page-body td:last-child{text-align:right;font-weight:600}
+
+/* inline owner-review note */
+.askm{background:#fbf0d0;border:1px solid #e6cd8c;color:#6d5410;border-radius:6px;
+  padding:1px 8px;font-size:13px;font-weight:600;font-style:normal;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone}
+
 /* visit page */
 .visit-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:22px;margin-top:22px}
 .visit-card{background:var(--paper);border:1px solid var(--sand);border-radius:14px;padding:24px}
@@ -253,8 +271,11 @@ footer a:hover{color:var(--gold)}
   .photo-strip{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:820px){
-  nav{display:none}
+  header{position:static}
+  .head-in{flex-wrap:wrap;row-gap:2px;padding:10px 16px}
+  nav{width:100%;order:5;margin-left:0;gap:6px 14px;padding-top:4px}
+  nav a{font-size:13px}
   .hero img{height:420px}
   .trust .wrap{justify-content:flex-start}
-  .subnav{top:69px}
+  .subnav{top:0}
 }
