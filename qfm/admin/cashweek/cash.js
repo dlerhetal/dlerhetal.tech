@@ -86,6 +86,14 @@
   function shiftWeek(week, n) {
     var d = fromIso(week); d.setDate(d.getDate() + 7 * n); return iso(d);
   }
+  // Payroll is BI-WEEKLY (Intuit debits every 14 days per bank records,
+  // checked 2026-07-24). Anchor payroll week: WE Saturday 2026-07-18.
+  var PAYROLL_ANCHOR = "2026-07-18";
+  function isPayrollWeek(week) {
+    var days = (fromIso(week) - fromIso(PAYROLL_ANCHOR)) / 86400000;
+    var weeks = Math.round(days / 7);       // round dodges DST hour drift
+    return ((weeks % 2) + 2) % 2 === 0;     // handles weeks before the anchor
+  }
   function weekLabel(week) {
     var d = fromIso(week);
     return "Week ending Saturday, " + d.toLocaleDateString("en-US",
@@ -126,7 +134,7 @@
       STORE.weeks[week] = {
         weekEnding: week, startCash: null,
         moneyIn: { forecast: forecastFor(week), entered: null },
-        payrollWeek: true, rows: rowsFromDefaults(),
+        payrollWeek: isPayrollWeek(week), rows: rowsFromDefaults(),
         cashOut: [], bankIn: null, bankPulledAt: null, projectedEnd: null
       };
     }
@@ -152,14 +160,14 @@
   }
   function dueThisWeek(row, week) {
     var wk = STORE.weeks[week];
-    return dueOn(row, week, wk && wk.payrollWeek);
+    return dueOn(row, week, wk ? wk.payrollWeek : isPayrollWeek(week));
   }
   function rowActive(row, week) {
     return row.included === null ? dueThisWeek(row, week) : row.included;
   }
   function freqNote(row) {
     if (row.freq === "w") return "every week";
-    if (row.freq === "p") return "payroll weeks";
+    if (row.freq === "p") return "payroll weeks (every other week)";
     return "monthly, around the " + row.day + ordinal(row.day);
   }
   function ordinal(n) {
@@ -670,7 +678,7 @@
       var f = forecastFor(week);
       inAmt = (f !== null) ? f : 0;
       getDefaults().forEach(function (d) {
-        if (dueOn(d, week, true)) groups[groupOf(d)] += d.amount;
+        if (dueOn(d, week, isPayrollWeek(week))) groups[groupOf(d)] += d.amount;
       });
     }
     var totalOut = cashExp;
