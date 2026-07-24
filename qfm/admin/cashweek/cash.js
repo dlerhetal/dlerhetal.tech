@@ -169,7 +169,8 @@
 
   function totals(week) {
     var wk = STORE.weeks[week];
-    var start = (wk.startCash !== null) ? wk.startCash : prevProjection(week);
+    var start = (wk.startCash !== null) ? wk.startCash
+              : (wk.bankBalance ? wk.bankBalance.amount : prevProjection(week));
     var moneyIn = (wk.moneyIn.entered !== null) ? wk.moneyIn.entered
                 : (wk.moneyIn.forecast !== null ? wk.moneyIn.forecast : 0);
     var reg = 0;
@@ -297,6 +298,14 @@
       }
     });
     wk.bankIn = Math.round(bankIn * 100) / 100;
+    // live balance = WF Business Checking 4626 alone (engagement rule).
+    // It seeds Starting Cash as a suggestion for the CURRENT week only —
+    // a typed value always wins and is never overwritten.
+    if (viewWeek === currentWeekEnding() && typeof r.body.balance === "number") {
+      wk.bankBalance = { amount: r.body.balance,
+        asOf: r.body.balanceAsOf || null,
+        label: r.body.accountLabel || "Business Checking" };
+    }
     wk.bankPulledAt = new Date().toLocaleString("en-US",
       { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
     scheduleSave();
@@ -339,12 +348,18 @@
       fmt(t.projected) + '</b></p>' +
       '<label class="fieldlabel" for="startcash">Starting cash (Monday morning)</label>' +
       '<input class="moneyinput" id="startcash" type="text" inputmode="decimal" value="' +
-      (wk.startCash !== null ? esc(fmt(wk.startCash).replace("$", "")) : "") + '" placeholder="' +
-      (t.start !== null && wk.startCash === null ? esc(fmt(t.start).replace("$", "")) : "enter this Monday\u2019s cash position") + '">' +
+      (wk.startCash !== null ? esc(fmt(wk.startCash).replace("$", ""))
+        : (t.start !== null ? esc(fmt(t.start).replace("$", "")) : "")) + '" placeholder="' +
+      (t.start === null ? "enter this Monday\u2019s cash position" : "") + '">' +
       '<p class="small">' +
       (wk.startCash !== null ? "You entered this yourself."
+        : (wk.bankBalance ? "From the bank: <b>" + fmt(wk.bankBalance.amount) + "</b> (" +
+            esc(wk.bankBalance.label) + (wk.bankBalance.asOf ? ", as of " +
+            new Date(wk.bankBalance.asOf * 1000).toLocaleTimeString("en-US",
+              { hour: "numeric", minute: "2-digit" }) : "") +
+            ") \u2014 type over it any time; a typed number stays put."
         : (t.start !== null ? "Suggested from last week\u2019s projected end \u2014 type over it any time."
-        : "From the bank balance or the last cash sheet. The math works without it, but the end-of-week number only means something once it\u2019s in.")) + '</p>' +
+        : "From the bank balance or the last cash sheet. The math works without it, but the end-of-week number only means something once it\u2019s in."))) + '</p>' +
       '<p style="text-align:center;margin:14px 0 0;"><button class="bankbtn" id="bankbtn">Update from bank</button></p>' +
       '<p style="text-align:center;margin:10px 0 0;"><a href="#" id="showgrid" class="gridlink">See the 13-week grid</a></p>' +
       '<p class="banknote" id="banknote">' +
@@ -661,6 +676,7 @@
     var totalOut = cashExp;
     GROUP_ORDER.forEach(function (g) { totalOut += groups[g]; });
     return { week: week, saved: !!wk, startCash: wk ? wk.startCash : null,
+             bankBal: (wk && wk.bankBalance) ? wk.bankBalance.amount : null,
              inAmt: inAmt, groups: groups, cashExp: cashExp,
              totalOut: totalOut };
   }
@@ -674,7 +690,8 @@
         carry = prevWk.projectedEnd;
     }
     cols.forEach(function (c) {
-      c.begin = (c.startCash !== null) ? c.startCash : carry;
+      c.begin = (c.startCash !== null) ? c.startCash
+              : (c.bankBal !== null ? c.bankBal : carry);
       c.ending = Math.round((((c.begin || 0) + c.inAmt - c.totalOut)) * 100) / 100;
       carry = c.ending;
     });
@@ -691,7 +708,7 @@
       'columns are the forecast \u2014 last year\u2019s money in and the regular ' +
       'list, nothing typed yet. Negative Ending Cash prints in red parentheses. ' +
       'Scroll sideways for more weeks.</p>' +
-      (anchored ? "" : '<p class="small"><b>No starting cash entered yet</b> \u2014 the chain below starts from $0; enter Monday\u2019s cash on the week page and the whole grid re-anchors.</p>') +
+      (anchored ? "" : '<p class="small"><b>No starting cash yet</b> \u2014 the bank connection has not filled one in and nothing has been typed, so the chain below starts from $0. Enter Monday\u2019s cash on the week page and the whole grid re-anchors.</p>') +
       '<div class="gridwrap"><table class="cfgrid"><thead><tr><th>Week Ending</th>';
     cols.forEach(function (c) {
       var d = fromIso(c.week);
