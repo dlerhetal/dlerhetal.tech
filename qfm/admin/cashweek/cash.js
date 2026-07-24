@@ -1,6 +1,12 @@
 
 (function () {
-  var API = "https://dlerhetal.pythonanywhere.com/qfm-api";
+  // Primary home is the client's own host (admin.qfmnm.com), where the
+  // relay is mounted same-origin at /qfm-api. The consultant's legacy
+  // host (dlerhetal.tech, static Pages) reaches the legacy PA relay by
+  // absolute URL. No repoint needed at migration.
+  var API = /(^|\.)qfmnm\.com$/.test(location.hostname)
+    ? "/qfm-api"
+    : "https://dlerhetal.pythonanywhere.com/qfm-api";
   var LS_KEY = "qfmCashweek";
   var CFG = null, PW = null;
   var STORE = { weeks: {}, defaults: null, defaultsSavedAt: null };
@@ -107,6 +113,7 @@
     return getDefaults().map(function (d) {
       return { id: uid(), name: d.name, freq: d.freq, day: d.day || null,
                amount: d.amount, orig: d.amount, match: d.match || [],
+               group: d.group || null,
                included: null, actual: null, matchedIds: [] };
     });
   }
@@ -125,10 +132,9 @@
     }
     return STORE.weeks[week];
   }
-  function dueThisWeek(row, week) {
-    var wk = STORE.weeks[week];
+  function dueOn(row, week, payrollFlag) {
     if (row.freq === "w") return true;
-    if (row.freq === "p") return !!wk.payrollWeek;
+    if (row.freq === "p") return !!payrollFlag;
     if (row.freq === "m") {
       var end = fromIso(week);
       for (var i = 0; i < 7; i++) {
@@ -143,6 +149,10 @@
       return false;
     }
     return false;
+  }
+  function dueThisWeek(row, week) {
+    var wk = STORE.weeks[week];
+    return dueOn(row, week, wk && wk.payrollWeek);
   }
   function rowActive(row, week) {
     return row.included === null ? dueThisWeek(row, week) : row.included;
@@ -237,19 +247,21 @@
   }
 
   // ---------- bank ----------
-  async function updateFromBank() {
+  async function updateFromBank(opts) {
+    opts = opts || {};
     var note = document.getElementById("banknote");
-    note.textContent = "Checking the bank\u2026";
+    if (!opts.auto) note.textContent = "Checking the bank\u2026";
     var wk = STORE.weeks[viewWeek];
     var r;
     try {
-      r = await api("/cashweek-bank", { start: weekStart(viewWeek), end: viewWeek });
+      r = await api("/cashweek-bank", { start: weekStart(viewWeek), end: viewWeek,
+        force: !opts.auto });
     } catch (e) {
-      note.textContent = "Could not reach the office server \u2014 try again in a minute. Everything still works by hand.";
+      if (!opts.auto) note.textContent = "Could not reach the office server \u2014 try again in a minute. Everything still works by hand.";
       return;
     }
     if (r.status !== 200) {
-      note.textContent = (r.body && r.body.error) || "The bank check did not go through \u2014 try again in a minute.";
+      if (!opts.auto) note.textContent = (r.body && r.body.error) || "The bank check did not go through \u2014 try again in a minute.";
       return;
     }
     if (r.body.configured === false) {
@@ -290,13 +302,16 @@
     scheduleSave();
     render();
     document.getElementById("banknote").textContent =
-      "Updated from the bank: " + matched + " regular" + (matched === 1 ? "" : "s") +
+      (opts.auto ? "Updated from the bank automatically: " : "Updated from the bank: ") +
+      matched + " regular" + (matched === 1 ? "" : "s") +
       " marked paid, " + added + " new item" + (added === 1 ? "" : "s") +
       " added below. Amounts you typed keep their dot \u2014 the bank squares up later.";
   }
 
   // ---------- render ----------
+  var viewMode = "week";   // "week" | "grid"
   function render() {
+    if (viewMode === "grid") { renderGrid(); return; }
     var wk = ensureWeek(viewWeek);
     var t = totals(viewWeek);
     var main = document.getElementById("pagemain");
@@ -331,6 +346,7 @@
         : (t.start !== null ? "Suggested from last week\u2019s projected end \u2014 type over it any time."
         : "From the bank balance or the last cash sheet. The math works without it, but the end-of-week number only means something once it\u2019s in.")) + '</p>' +
       '<p style="text-align:center;margin:14px 0 0;"><button class="bankbtn" id="bankbtn">Update from bank</button></p>' +
+      '<p style="text-align:center;margin:10px 0 0;"><a href="#" id="showgrid" class="gridlink">See the 13-week grid</a></p>' +
       '<p class="banknote" id="banknote">' +
       (wk.bankPulledAt ? "Last updated from the bank: " + esc(wk.bankPulledAt) + "." : "") + '</p>' +
       '<p class="statuschip" id="statuschip"></p></section>';
@@ -433,7 +449,9 @@
     $("payrollwk").addEventListener("change", function () {
       wk.payrollWeek = this.checked; scheduleSave(); render();
     });
-    $("bankbtn").onclick = updateFromBank;
+    $("bankbtn").onclick = function () { updateFromBank({ auto: false }); };
+    var sg = $("showgrid");
+    if (sg) sg.onclick = function (e) { e.preventDefault(); viewMode = "grid"; render(); };
 
     // regular rows: amount edit / skip / add-back
     document.querySelectorAll("[data-row]").forEach(function (btn) {
@@ -596,6 +614,121 @@
     draw();
   }
 
+  // ---------- the 13-week grid (the cash-flow shape the owner knows) ----------
+  var GROUP_ORDER = ["Payroll", "Loan payments", "Card payments",
+                     "Insurance", "Taxes", "Utilities & subscriptions",
+                     "Other regulars"];
+  function groupOf(row) {
+    if (row.group) return row.group;
+    var d = CFG.defaults.find(function (x) { return x.name === row.name; });
+    return (d && d.group) || "Other regulars";
+  }
+  function fmtParen(n) {   // cash-grid print style: negatives in parentheses
+    if (n === null || n === undefined || isNaN(n)) return "\u2014";
+    var s = Math.abs(Math.round(n * 100) / 100).toLocaleString("en-US",
+      { minimumFractionDigits: (Math.abs(n) % 1 ? 2 : 0), maximumFractionDigits: 2 });
+    return n < 0 ? "(" + s + ")" : s;
+  }
+  function gridColumns() {
+    var cur = currentWeekEnding(), back = 0;
+    for (var i = 1; i <= 3; i++) {
+      if (STORE.weeks[shiftWeek(cur, -i)]) back = i; else break;
+    }
+    var cols = [];
+    for (var j = 0; j < 13; j++) cols.push(shiftWeek(cur, j - back));
+    return cols;
+  }
+  function gridColData(week) {
+    var wk = STORE.weeks[week];
+    var groups = {};
+    GROUP_ORDER.forEach(function (g) { groups[g] = 0; });
+    var inAmt = 0, cashExp = 0;
+    if (wk) {
+      inAmt = (wk.moneyIn.entered !== null) ? wk.moneyIn.entered
+            : (wk.moneyIn.forecast !== null ? wk.moneyIn.forecast : 0);
+      wk.rows.forEach(function (r) {
+        if (rowActive(r, week))
+          groups[groupOf(r)] += (r.actual !== null ? r.actual : r.amount);
+      });
+      wk.cashOut.forEach(function (e) { cashExp += e.amount; });
+    } else {
+      var f = forecastFor(week);
+      inAmt = (f !== null) ? f : 0;
+      getDefaults().forEach(function (d) {
+        if (dueOn(d, week, true)) groups[groupOf(d)] += d.amount;
+      });
+    }
+    var totalOut = cashExp;
+    GROUP_ORDER.forEach(function (g) { totalOut += groups[g]; });
+    return { week: week, saved: !!wk, startCash: wk ? wk.startCash : null,
+             inAmt: inAmt, groups: groups, cashExp: cashExp,
+             totalOut: totalOut };
+  }
+  function renderGrid() {
+    var cols = gridColumns().map(gridColData);
+    // chain the cash: an entered starting cash re-anchors its column
+    var carry = null;
+    if (cols[0].startCash === null) {
+      var prevWk = STORE.weeks[shiftWeek(cols[0].week, -1)];
+      if (prevWk && typeof prevWk.projectedEnd === "number")
+        carry = prevWk.projectedEnd;
+    }
+    cols.forEach(function (c) {
+      c.begin = (c.startCash !== null) ? c.startCash : carry;
+      c.ending = Math.round((((c.begin || 0) + c.inAmt - c.totalOut)) * 100) / 100;
+      carry = c.ending;
+    });
+    var anchored = cols.some(function (c) { return c.begin !== null; });
+
+    function td(c, text, cls) {
+      return '<td class="' + (c.saved ? "actual" : "fcast") +
+             (cls ? " " + cls : "") + '">' + text + '</td>';
+    }
+    var h = '<section class="card">' +
+      '<div class="weeknav"><h2>13-Week Cash Grid</h2>' +
+      '<a href="#" id="backweek" class="gridlink">\u2190 Back to this week</a></div>' +
+      '<p class="small">Solid columns are weeks on the books. Lighter italic ' +
+      'columns are the forecast \u2014 last year\u2019s money in and the regular ' +
+      'list, nothing typed yet. Negative Ending Cash prints in red parentheses. ' +
+      'Scroll sideways for more weeks.</p>' +
+      (anchored ? "" : '<p class="small"><b>No starting cash entered yet</b> \u2014 the chain below starts from $0; enter Monday\u2019s cash on the week page and the whole grid re-anchors.</p>') +
+      '<div class="gridwrap"><table class="cfgrid"><thead><tr><th>Week Ending</th>';
+    cols.forEach(function (c) {
+      var d = fromIso(c.week);
+      h += '<th class="' + (c.saved ? "actual" : "fcast") + '">' +
+           (d.getMonth() + 1) + "/" + d.getDate() +
+           (c.saved ? "" : '<span class="fclabel">forecast</span>') + '</th>';
+    });
+    h += '</tr></thead><tbody>';
+    h += '<tr><td>Beginning Cash</td>';
+    cols.forEach(function (c) { h += td(c, fmtParen(c.begin === null ? 0 : c.begin)); });
+    h += '</tr><tr><td>Cash In</td>';
+    cols.forEach(function (c) { h += td(c, fmtParen(c.inAmt)); });
+    h += '</tr>';
+    GROUP_ORDER.forEach(function (g) {
+      var any = cols.some(function (c) { return c.groups[g] > 0; });
+      if (!any) return;
+      h += '<tr><td>' + esc(g) + '</td>';
+      cols.forEach(function (c) { h += td(c, fmtParen(c.groups[g])); });
+      h += '</tr>';
+    });
+    h += '<tr><td>Cash Expenses</td>';
+    cols.forEach(function (c) { h += td(c, fmtParen(c.cashExp)); });
+    h += '</tr><tr class="totalrow"><td>Total Out</td>';
+    cols.forEach(function (c) { h += td(c, fmtParen(c.totalOut)); });
+    h += '</tr><tr class="endrow"><td>Ending Cash</td>';
+    cols.forEach(function (c) {
+      h += td(c, fmtParen(c.ending), c.ending < 0 ? "neg" : "");
+    });
+    h += '</tr></tbody></table></div>' +
+      '<p class="small">Weeks end Saturday. The forecast columns use the same ' +
+      'money-in basis as the week page: ' + esc(CFG.basis) + '.</p></section>';
+    document.getElementById("pagemain").innerHTML = h;
+    document.getElementById("backweek").onclick = function (e) {
+      e.preventDefault(); viewMode = "week"; render();
+    };
+  }
+
   // ---------- boot ----------
   async function boot() {
     await serverLoad();
@@ -603,5 +736,8 @@
     ensureWeek(viewWeek);
     render();
     setStatus(offline ? "Working offline \u2014 saved on this device only." : "");
+    // keep the page never-stale: pull the bank on every open (the server
+    // caches pulls for 15 minutes, so casual reloads cost nothing)
+    if (!offline) updateFromBank({ auto: true });
   }
 })();
