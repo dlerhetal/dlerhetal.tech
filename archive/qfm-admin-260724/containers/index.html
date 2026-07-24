@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>QFM — Container Sale</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div id="gate">
+  <div class="gatebox">
+    <h1>Quality Firewood &amp; Materials</h1>
+    <p>Container sale — team page. Enter the password you were given.</p>
+    <input id="pw" type="password" placeholder="Password" autocomplete="off">
+    <button id="unlock">Open</button>
+    <p id="gatemsg"></p>
+  </div>
+</div>
+<div id="app" hidden>
+  <header>
+    <div class="brand">QFM &middot; Container Sale</div>
+    <nav>
+      <button class="tabbtn active" data-tab="walk">Walkthrough</button>
+      <button class="tabbtn" data-tab="containers">Containers &amp; Photos</button>
+      <button class="tabbtn" data-tab="safety">Money &amp; Safety</button>
+      <button class="tabbtn" data-tab="chat">Chat</button>
+    </nav>
+  </header>
+  <main>
+    <section id="tab-walk" class="tab"></section>
+    <section id="tab-containers" class="tab" hidden></section>
+    <section id="tab-safety" class="tab" hidden></section>
+    <section id="tab-chat" class="tab" hidden></section>
+  </main>
+  <footer>Set up by Dale Linn &middot; questions the Chat can't answer:
+    richard.linn@biz-solve.com</footer>
+</div>
+<script src="content.enc.js"></script>
+<script src="admin.js"></script>
+<script src="/qfm/review.js" defer></script>
+</body>
+</html>
