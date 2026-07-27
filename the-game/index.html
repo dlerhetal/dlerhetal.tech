@@ -967,9 +967,9 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
       if (!rows.length) return `<div class="empty" style="padding:6px 8px;">— none —</div>`;
       const body = rows.map(r => {
         const jobCell = r.jobId
-          ? `<a class="st-link" href="https://go.servicetitan.com/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(r.label || r.jobId || '')}</a>`
+          ? `<a class="st-link" href="https://field-system.internal/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(r.label || r.jobId || '')}</a>`
           : (r.invoiceId
-              ? `<a class="st-link" href="https://go.servicetitan.com/#/Invoice/${r.invoiceId}" target="_blank" rel="noopener">${escapeHTML(r.label || r.invoiceId || '')}</a>`
+              ? `<a class="st-link" href="https://field-system.internal/#/Invoice/${r.invoiceId}" target="_blank" rel="noopener">${escapeHTML(r.label || r.invoiceId || '')}</a>`
               : escapeHTML(r.label || ''));
         const age = (r.ageDays == null)
           ? '<span class="ar-carry-tag">undated</span>'
@@ -1055,9 +1055,9 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
       if (!rows.length) return `<div class="empty" style="padding:6px 8px;">— none —</div>`;
       const body = rows.map(r => {
         const jobCell = r.jobId
-          ? `<a class="st-link" href="https://go.servicetitan.com/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(r.label || r.jobId || '')}</a>`
+          ? `<a class="st-link" href="https://field-system.internal/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(r.label || r.jobId || '')}</a>`
           : (r.invoiceId
-              ? `<a class="st-link" href="https://go.servicetitan.com/#/Invoice/${r.invoiceId}" target="_blank" rel="noopener">${escapeHTML(r.label || r.invoiceId || '')}</a>`
+              ? `<a class="st-link" href="https://field-system.internal/#/Invoice/${r.invoiceId}" target="_blank" rel="noopener">${escapeHTML(r.label || r.invoiceId || '')}</a>`
               : escapeHTML(r.label || ''));
         const age = (r.ageDays == null) ? '—' : `${r.ageDays}d`;
         return `<tr>
@@ -1078,7 +1078,7 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
       if (!rows.length) return `<div class="empty" style="padding:6px 8px;">— none —</div>`;
       const body = rows.map(r => {
         const jobCell = r.jobId
-          ? `<a class="st-link" href="https://go.servicetitan.com/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(r.label || r.jobId || '')}</a>`
+          ? `<a class="st-link" href="https://field-system.internal/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(r.label || r.jobId || '')}</a>`
           : escapeHTML(r.label || '');
         return `<tr>
           <td>${escapeHTML(r.date || '')}</td>
@@ -1176,12 +1176,12 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
       }
       const body = rows.map(r => {
         const jobCell = r.jobId
-          ? `<a class="st-link" href="https://go.servicetitan.com/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(r.label || r.jobId || '')}</a>`
+          ? `<a class="st-link" href="https://field-system.internal/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(r.label || r.jobId || '')}</a>`
           : escapeHTML(r.label || '');
         const estCell = r.estimateId
-          ? `<a class="st-link" href="https://go.servicetitan.com/#/Estimate/${r.estimateId}" target="_blank" rel="noopener">${r.estimateId}</a>`
+          ? `<a class="st-link" href="https://field-system.internal/#/Estimate/${r.estimateId}" target="_blank" rel="noopener">${r.estimateId}</a>`
           : (r.invoiceId
-              ? `<a class="st-link" href="https://go.servicetitan.com/#/Invoice/${r.invoiceId}" target="_blank" rel="noopener">${r.invoiceId}</a>`
+              ? `<a class="st-link" href="https://field-system.internal/#/Invoice/${r.invoiceId}" target="_blank" rel="noopener">${r.invoiceId}</a>`
               : '');
         return `<tr>
           <td>${escapeHTML(r.date || '')}</td>
@@ -1297,7 +1297,7 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
     }).join('');
     const body = rows.length ? rows.map(r => {
       const jobCell = r.jobId
-        ? `<a class="st-link" href="https://go.servicetitan.com/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(r.label || r.jobId || '')}</a>`
+        ? `<a class="st-link" href="https://field-system.internal/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(r.label || r.jobId || '')}</a>`
         : escapeHTML(r.label || '');
       return `<tr>
         <td>${escapeHTML(r.date || '')}</td>
@@ -1427,7 +1427,7 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
       const isOrphan = !i.jobId && inv > 0;
       const rowCls = rowClassForOutcome(i.outcome, isOrphan, false);
       const jobCell = i.jobId
-        ? `<a class="st-link" href="https://go.servicetitan.com/#/Job/Index/${i.jobId}" target="_blank" rel="noopener">${i.jobNumber || ''}</a>`
+        ? `<a class="st-link" href="https://field-system.internal/#/Job/Index/${i.jobId}" target="_blank" rel="noopener">${i.jobNumber || ''}</a>`
         : `<span style="color:#4e2a00;font-weight:700;">(no job#)</span>`;
       const reviewed = i.outcome === 'amber' && (window._amberReviews || {})[String(i.id)] ? ' data-reviewed="1"' : '';
       return `<tr class="${rowCls}" data-invoice-id="${i.id || ''}" data-outcome="${i.outcome || ''}"${reviewed}>
@@ -1722,7 +1722,7 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
         const isZero = inv === 0;
         const isOrphan = !i.jobId && inv > 0;
         const jobCell = i.jobId
-          ? `<a class="st-link" href="https://go.servicetitan.com/#/Job/Index/${i.jobId}" target="_blank" rel="noopener">${i.jobNumber || ''}</a>`
+          ? `<a class="st-link" href="https://field-system.internal/#/Job/Index/${i.jobId}" target="_blank" rel="noopener">${i.jobNumber || ''}</a>`
           : `<span title="No job number — invoice was cut without a job, costs can't attach" style="color:#4e2a00;font-weight:700;">(no job#)</span>`;
         const rowCls = isZero ? 'row-zerodollar' : (isOrphan ? 'row-orphan' : (rfIds.has(i.id) ? 'row-redflag' : ''));
         return `<tr class="${rowCls}">
@@ -1834,10 +1834,10 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
     }
     const body = rows.map(r => {
       const estCell = r.estimateId
-        ? `<a class="st-link" href="https://go.servicetitan.com/#/Estimate/Index/${r.estimateId}" target="_blank" rel="noopener">${escapeHTML(String(r.estimateNumber || r.estimateId))}</a>`
+        ? `<a class="st-link" href="https://field-system.internal/#/Estimate/Index/${r.estimateId}" target="_blank" rel="noopener">${escapeHTML(String(r.estimateNumber || r.estimateId))}</a>`
         : escapeHTML(String(r.estimateNumber || ''));
       const jobCell = r.jobId
-        ? `<a class="st-link" href="https://go.servicetitan.com/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(String(r.jobNumber || r.jobId))}</a>`
+        ? `<a class="st-link" href="https://field-system.internal/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(String(r.jobNumber || r.jobId))}</a>`
         : escapeHTML(String(r.jobNumber || ''));
       return `<tr>
         <td>${escapeHTML(r.date || '')}</td>
@@ -1980,7 +1980,7 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
 
     const body = rows.map(r => {
       const jobCell = r.jobId
-        ? `<a class="st-link" href="https://go.servicetitan.com/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(String(r.jobNumber || r.jobId))}</a>`
+        ? `<a class="st-link" href="https://field-system.internal/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(String(r.jobNumber || r.jobId))}</a>`
         : escapeHTML(String(r.jobNumber || ''));
       const buAttr = (r.buId != null && r.typeId != null) ? `data-bu="${r.buId}" data-type="${r.typeId}"` : '';
       const avgCell = r.avgTicket == null
@@ -2106,7 +2106,7 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
     const rows = samples.map(r => {
       const cust = escapeHTML(r.customer || '');
       const jcell = r.jobId
-        ? `<a class="st-link" href="https://go.servicetitan.com/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(String(r.jobNumber || r.jobId))}</a>`
+        ? `<a class="st-link" href="https://field-system.internal/#/Job/Index/${r.jobId}" target="_blank" rel="noopener">${escapeHTML(String(r.jobNumber || r.jobId))}</a>`
         : escapeHTML(String(r.jobNumber || ''));
       const billed = r.billed > 0 ? fmtMoney(r.billed) : `<span class="bp-unbilled">$0</span>`;
       return `<tr><td>${escapeHTML(r.date)}</td><td>${jcell}</td><td>${cust}</td><td class="r">${billed}</td></tr>`;
@@ -2153,7 +2153,7 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
         if (!invs.length) { div.innerHTML = '<div class="empty">no membership renewals this month</div>'; return; }
         const rows = invs.map(i => {
           const inv = +i.total||0;
-          const stLink = `<a class="st-link" href="https://go.servicetitan.com/#/Invoice/${i.id}" target="_blank" rel="noopener">${i.id}</a>`;
+          const stLink = `<a class="st-link" href="https://field-system.internal/#/Invoice/${i.id}" target="_blank" rel="noopener">${i.id}</a>`;
           return `<tr>
             <td>${(i.invoicePtDate||(i.invoiceDate||'').slice(0,10))}</td>
             <td>${stLink}</td>
@@ -2212,7 +2212,7 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
             : '';
         const isOrphan = !i.jobId && inv > 0;
         const jobCell = i.jobId
-          ? `<a class="st-link" href="https://go.servicetitan.com/#/Job/Index/${i.jobId}" target="_blank" rel="noopener">${i.jobNumber || ''}</a>`
+          ? `<a class="st-link" href="https://field-system.internal/#/Job/Index/${i.jobId}" target="_blank" rel="noopener">${i.jobNumber || ''}</a>`
           : `<span title="No job number - invoice was cut without a job, costs can't attach" style="color:#4e2a00;font-weight:700;">(no job#)</span>`;
         const rowCls = rowClassForOutcome(i.outcome, isOrphan, rfIds.has(i.id));
         return `<tr class="${rowCls}">
@@ -2304,7 +2304,7 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
           const detailId = `memb-day-${id}-${idx}`;
           const detailRows = list.map(m => `<tr>
             <td style="padding-left:32px;">${(m.invoicePtDate||(m.invoiceDate||'').slice(0,10))}</td>
-            <td><a class="st-link" href="https://go.servicetitan.com/#/Invoice/${m.id}" target="_blank" rel="noopener">${m.id}</a></td>
+            <td><a class="st-link" href="https://field-system.internal/#/Invoice/${m.id}" target="_blank" rel="noopener">${m.id}</a></td>
             <td>${escapeHTML(m.customer || '')}</td>
             <td>${escapeHTML(m.businessUnit || '')}</td>
             <td class="r">${fmt(+m.total||0)}</td>
@@ -2363,7 +2363,7 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
     }
     tb.innerHTML = jobs.map(j => {
       const jobCell = j.jobId
-        ? `<a class="st-link" href="https://go.servicetitan.com/#/Job/Index/${j.jobId}" target="_blank" rel="noopener">${j.jobNumber || ''}</a>`
+        ? `<a class="st-link" href="https://field-system.internal/#/Job/Index/${j.jobId}" target="_blank" rel="noopener">${j.jobNumber || ''}</a>`
         : (j.jobNumber || '');
       const matBlank = j.materialSource === 'missing';
       // Blank material = unknown cost = the profit math is a lie -> red, even if
