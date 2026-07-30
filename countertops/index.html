@@ -368,6 +368,33 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
 #demoFootnote b { color: var(--section-blue); }
 @media (max-width: 1000px) { #demoStrip { padding: 8px 16px; } }
 @media print { #demoWatermark { opacity: .10; } }
+
+/* ---------------------------------------------------------------------------
+   AMBER JOBS
+   The section reuses the board's existing furniture (.section, .section-head,
+   .demo-table-wrap, .demo-frozen-pane, table.sortable, .delta-amber) exactly as
+   Red Flags does.  Only four rules are added, and every colour below is already
+   in use elsewhere on this page: #8A5A00 is the .status-amber / .delta-amber
+   ink, #FFF3C4 its wash, #FFF6CC / #D6B648 the parchment total-row pair.
+   --------------------------------------------------------------------------- */
+.section.amber .section-head { background: #8A5A00; }
+/* the shared .section-head .right is gold, which does not read on amber */
+#amberSection .section-head .right { color: #FFF3C4; }
+#amberSection .amber-lede {
+  background: #FFF3C4;
+  border-bottom: 1px solid #E3CE8A;
+  color: #6B4700;
+  padding: 11px 16px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+#amberSection .amber-lede b { font-weight: 800; }
+#amberSection td.short-by { font-weight: 800; font-size: 13px; }
+#amberSection tfoot td {
+  background: #FFF6CC;
+  border-top: 2px solid #D6B648;
+  font-weight: 800;
+}
 </style>
 </head>
 <body>
@@ -450,7 +477,7 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
 </div>
 
 <div class="section red" id="redSection">
-  <div class="section-head"><h3>Red Flags</h3><span class="right"><a href="#redSection" class="section-head-link section-head-link-red">Red Jobs &rarr;</a> <a href="#redSection" class="section-head-link section-head-link-amber">Amber Jobs &rarr;</a> <label id="amberFilterToggle"><input type="checkbox" id="hideReviewedChk"> hide reviewed</label> <span id="redRight"></span></span></div>
+  <div class="section-head"><h3>Red Flags</h3><span class="right"><a href="#redSection" class="section-head-link section-head-link-red">Red Jobs &rarr;</a> <a href="#amberSection" class="section-head-link section-head-link-amber">Amber Jobs &rarr;</a> <label id="amberFilterToggle"><input type="checkbox" id="hideReviewedChk"> hide reviewed</label> <span id="redRight"></span></span></div>
   <div class="demo-table-wrap"><div class="demo-frozen-pane"><table class="sortable">
     <thead>
       <tr>
@@ -465,6 +492,177 @@ table.sortable thead th.sorted-desc .sort-arrow::after { content: "\25BC"; opaci
       </tr>
     </thead>
     <tbody id="redBody"></tbody>
+  </table></div></div>
+</div>
+
+<div class="section amber" id="amberSection">
+  <div class="section-head"><h3>Amber Jobs &mdash; Did Not Clear the Wall</h3><span class="right"><a href="#redSection" class="section-head-link section-head-link-red">Red Flags &rarr;</a> <span id="amberRight">14 jobs</span></span></div>
+  <div class="amber-lede"><b>14 jobs</b> earned <b>$77,179</b> and contributed <b>$23,078</b> less than their share of the building. Every one of them covered its own material and labor and turned a gross profit &mdash; just not a big enough one to carry the overhead charged against it.</div>
+  <div class="demo-table-wrap"><div class="demo-frozen-pane"><table class="sortable">
+    <thead>
+      <tr>
+        <th>Job#</th>
+        <th>Customer</th>
+        <th>BU</th>
+        <th class="r">Revenue</th>
+        <th class="r">Direct Cost</th>
+        <th class="r">Gross Profit</th>
+        <th class="r">Wall Share</th>
+        <th class="r">Short By</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-amber">
+        <td><a class="st-link" href="#" onclick="event.preventDefault();return false;" title="Record links and cross-report shortcuts are disabled on this demonstration board.">J-9622</a></td>
+        <td>Shane Wardlaw</td>
+        <td>Countertops - Residential</td>
+        <td class="r">$18,543</td>
+        <td class="r">$16,429</td>
+        <td class="r">$2,114</td>
+        <td class="r">$8,872</td>
+        <td class="r short-by delta-amber">$6,758</td>
+      </tr>
+      <tr class="row-amber">
+        <td><a class="st-link" href="#" onclick="event.preventDefault();return false;" title="Record links and cross-report shortcuts are disabled on this demonstration board.">J-9671</a></td>
+        <td>Delaney Rhoads</td>
+        <td>Countertops - Residential</td>
+        <td class="r">$8,590</td>
+        <td class="r">$7,936</td>
+        <td class="r">$654</td>
+        <td class="r">$4,285</td>
+        <td class="r short-by delta-amber">$3,631</td>
+      </tr>
+      <tr class="row-amber">
+        <td><a class="st-link" href="#" onclick="event.preventDefault();return false;" title="Record links and cross-report shortcuts are disabled on this demonstration board.">J-9661</a></td>
+        <td>Two Rivers Custom Homes</td>
+        <td>Custom Home Program</td>
+        <td class="r">$8,558</td>
+        <td class="r">$7,248</td>
+        <td class="r">$1,310</td>
+        <td class="r">$3,914</td>
+        <td class="r short-by delta-amber">$2,604</td>
+      </tr>
+      <tr class="row-amber">
+        <td><a class="st-link" href="#" onclick="event.preventDefault();return false;" title="Record links and cross-report shortcuts are disabled on this demonstration board.">J-9642</a></td>
+        <td>Sutton Standridge</td>
+        <td>Countertops - Residential</td>
+        <td class="r">$6,731</td>
+        <td class="r">$5,982</td>
+        <td class="r">$750</td>
+        <td class="r">$3,230</td>
+        <td class="r short-by delta-amber">$2,480</td>
+      </tr>
+      <tr class="row-amber">
+        <td><a class="st-link" href="#" onclick="event.preventDefault();return false;" title="Record links and cross-report shortcuts are disabled on this demonstration board.">J-9687</a></td>
+        <td>Hattie Hollifield</td>
+        <td>Countertops - Residential</td>
+        <td class="r">$7,993</td>
+        <td class="r">$6,586</td>
+        <td class="r">$1,407</td>
+        <td class="r">$3,556</td>
+        <td class="r short-by delta-amber">$2,150</td>
+      </tr>
+      <tr class="row-amber">
+        <td><a class="st-link" href="#" onclick="event.preventDefault();return false;" title="Record links and cross-report shortcuts are disabled on this demonstration board.">J-9680</a></td>
+        <td>Sassafras Builders</td>
+        <td>Custom Home Program</td>
+        <td class="r">$3,782</td>
+        <td class="r">$3,473</td>
+        <td class="r">$309</td>
+        <td class="r">$1,875</td>
+        <td class="r short-by delta-amber">$1,566</td>
+      </tr>
+      <tr class="row-amber">
+        <td><a class="st-link" href="#" onclick="event.preventDefault();return false;" title="Record links and cross-report shortcuts are disabled on this demonstration board.">J-9609</a></td>
+        <td>Garrison Waldrip</td>
+        <td>Countertops - Residential</td>
+        <td class="r">$6,313</td>
+        <td class="r">$4,771</td>
+        <td class="r">$1,541</td>
+        <td class="r">$2,577</td>
+        <td class="r short-by delta-amber">$1,035</td>
+      </tr>
+      <tr class="row-amber">
+        <td>&mdash;</td>
+        <td>Rhett Rickard</td>
+        <td>Service &amp; Repair</td>
+        <td class="r">$2,009</td>
+        <td class="r">$1,847</td>
+        <td class="r">$162</td>
+        <td class="r">$997</td>
+        <td class="r short-by delta-amber">$835</td>
+      </tr>
+      <tr class="row-amber">
+        <td>&mdash;</td>
+        <td>Rhett Vestal</td>
+        <td>Service &amp; Repair</td>
+        <td class="r">$2,066</td>
+        <td class="r">$1,771</td>
+        <td class="r">$294</td>
+        <td class="r">$956</td>
+        <td class="r short-by delta-amber">$662</td>
+      </tr>
+      <tr class="row-amber">
+        <td><a class="st-link" href="#" onclick="event.preventDefault();return false;" title="Record links and cross-report shortcuts are disabled on this demonstration board.">J-9608</a></td>
+        <td>Hackberry Lane Builders</td>
+        <td>Custom Home Program</td>
+        <td class="r">$5,354</td>
+        <td class="r">$3,745</td>
+        <td class="r">$1,609</td>
+        <td class="r">$2,022</td>
+        <td class="r short-by delta-amber">$414</td>
+      </tr>
+      <tr class="row-amber">
+        <td><a class="st-link" href="#" onclick="event.preventDefault();return false;" title="Record links and cross-report shortcuts are disabled on this demonstration board.">J-9689</a></td>
+        <td>Logan Halbrook</td>
+        <td>Countertops - Residential</td>
+        <td class="r">$1,224</td>
+        <td class="r">$1,026</td>
+        <td class="r">$198</td>
+        <td class="r">$554</td>
+        <td class="r short-by delta-amber">$357</td>
+      </tr>
+      <tr class="row-amber">
+        <td><a class="st-link" href="#" onclick="event.preventDefault();return false;" title="Record links and cross-report shortcuts are disabled on this demonstration board.">J-9691</a></td>
+        <td>Merritt Rhoads</td>
+        <td>Countertops - Residential</td>
+        <td class="r">$1,355</td>
+        <td class="r">$1,091</td>
+        <td class="r">$264</td>
+        <td class="r">$589</td>
+        <td class="r short-by delta-amber">$325</td>
+      </tr>
+      <tr class="row-amber">
+        <td><a class="st-link" href="#" onclick="event.preventDefault();return false;" title="Record links and cross-report shortcuts are disabled on this demonstration board.">J-9701</a></td>
+        <td>Kingfisher Homes</td>
+        <td>Custom Home Program</td>
+        <td class="r">$2,233</td>
+        <td class="r">$1,544</td>
+        <td class="r">$690</td>
+        <td class="r">$833</td>
+        <td class="r short-by delta-amber">$144</td>
+      </tr>
+      <tr class="row-amber">
+        <td><a class="st-link" href="#" onclick="event.preventDefault();return false;" title="Record links and cross-report shortcuts are disabled on this demonstration board.">J-9698</a></td>
+        <td>Cody Bufkin</td>
+        <td>Countertops - Residential</td>
+        <td class="r">$2,429</td>
+        <td class="r">$1,654</td>
+        <td class="r">$775</td>
+        <td class="r">$893</td>
+        <td class="r short-by delta-amber">$118</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3">Total &mdash; all 14 amber jobs</td>
+        <td class="r">$77,179</td>
+        <td class="r">$65,102</td>
+        <td class="r">$12,077</td>
+        <td class="r">$35,155</td>
+        <td class="r short-by delta-amber">$23,078</td>
+      </tr>
+    </tfoot>
   </table></div></div>
 </div>
 
