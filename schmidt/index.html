@@ -175,7 +175,7 @@
 </article>
 
 <!-- ============ CARD: CREDENTIALS LOCKER ============ -->
-<article class="card" data-form="SchmidtCountertops-HubCredentials">
+<article class="card" data-form="SchmidtCountertops-HubCredentials" data-local-only="1">
   <div class="head">
     <span class="chip needs">Fill Monday on site</span>
     <h2>Credentials Locker</h2>
@@ -448,7 +448,11 @@ Claude drafts all four. The only inputs that have to come from me: the hours, th
 
 <script>
 (function(){
-  var ENDPOINT = 'http://127.0.0.1:8788/submit';
+  var LOCAL_ENDPOINT = 'http://127.0.0.1:8788/submit';
+  var RELAY_ENDPOINT = 'https://dlerhetal.pythonanywhere.com/board/submit';
+  // Deliberately public: the relay only accepts card JSON (no reads, no
+  // credentials); the worst case for a leaked token is junk files.
+  var RELAY_TOKEN = 'afbcccd355cc127e4564d2710c1ddf05927b05d49b4584149abe12e0a304dcbd';
 
   function collect(card){
     var out = {form: card.getAttribute('data-form'), submittedAt: new Date().toISOString(), answers: {}};
@@ -467,16 +471,42 @@ Claude drafts all four. The only inputs that have to come from me: the hours, th
 
       card.querySelector('button.send').addEventListener('click', function(){
         status.textContent = 'sending…';
-        fetch(ENDPOINT, {
+        var payload = JSON.stringify(collect(card));
+        var localOnly = card.getAttribute('data-local-only') === '1';
+
+        // Try the laptop receiver first (short timeout), then fall back to
+        // the relay — except local-only cards (credentials), which never
+        // leave this machine's network.
+        var ctl = new AbortController();
+        var timer = setTimeout(function(){ ctl.abort(); }, 2500);
+        fetch(LOCAL_ENDPOINT, {
           method:'POST',
           headers:{'Content-Type':'application/json'},
-          body: JSON.stringify(collect(card))
-        }).then(function(r){ return r.json(); })
+          body: payload,
+          signal: ctl.signal
+        }).then(function(r){ clearTimeout(timer); return r.json(); })
           .then(function(j){
-            status.textContent = j.ok ? 'saved — Claude will pick it up' : ('error: ' + (j.error||'unknown'));
+            if (j.ok){ status.textContent = 'saved on the laptop'; }
+            else { throw new Error(j.error || 'receiver error'); }
           })
-          .catch(function(e){
-            status.textContent = 'local receiver is down — use Copy instead';
+          .catch(function(){
+            clearTimeout(timer);
+            if (localOnly){
+              status.textContent = 'this card only submits from the laptop — credentials never travel';
+              return;
+            }
+            fetch(RELAY_ENDPOINT, {
+              method:'POST',
+              headers:{'Content-Type':'application/json','X-Relay-Token':RELAY_TOKEN},
+              body: payload
+            }).then(function(r){ return r.json(); })
+              .then(function(j){
+                status.textContent = j.ok ? 'saved to the relay — reaches Claude within a minute'
+                                          : 'could not send — use Copy instead';
+              })
+              .catch(function(){
+                status.textContent = 'could not send — use Copy instead';
+              });
           });
       });
 
