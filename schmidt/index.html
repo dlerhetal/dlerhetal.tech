@@ -154,7 +154,7 @@
   <div class="wrap">
     <p class="tag">Precision Crafted. Professionally Installed.</p>
     <h1>Schmidt Countertops — Engagement Hub</h1>
-    <div class="stamp">One card per workstream. Answer a card and hit Submit — it lands on my machine. Cards move to the <a href="./archive/" style="color:var(--sc-bronze-light)">archive</a> on my call. Last updated 2026-08-02.</div>
+    <div class="stamp">One card per workstream. Answer a card and hit Submit — it lands on my machine. Cards move to the <a href="./archive/" style="color:var(--sc-bronze-light)">archive</a> on my call. Last updated 2026-08-03.</div>
   </div>
 </header>
 
@@ -256,6 +256,18 @@
   <div class="body">
     <p>Ruling on record (8/02): the real board gets created and secured by morning. The public /countertops demo stays as-is — that ruling stands; this card is only about the board that carries real data.</p>
     <p><strong>The wall is set at $110,350</strong> (Dale, 8/02) — applied when the real board is built.</p>
+    <p>
+      <a class="cta" href="http://127.0.0.1:8788/board">Open the board</a>
+      <a class="cta" href="/countertops/" style="background:transparent;color:var(--sc-charcoal);border:1px solid var(--sc-border)">Open the demo</a>
+    </p>
+    <p class="muted">The board link is served by the local receiver on this machine — it works here and nowhere else, which is the point: real names and real dollars never touch the public site. The demo is the public, illustrative page. The $110,350 wall is not yet applied to the board — pending rebuild.</p>
+    <ul class="muted" style="color:var(--sc-text-light);font-size:12.8px">
+      <li><strong>The Game</strong> — the tool itself, generically.</li>
+      <li><strong>The board</strong> — the real-data Schmidt scoreboard, local-only at 127.0.0.1:8788/board.</li>
+      <li><strong>The demo</strong> — the public illustrative page at /countertops, anonymized, disclaimer-saturated.</li>
+      <li><strong>The template</strong> — the parent master the boards are re-skinned from.</li>
+      <li><strong>The hub</strong> — this page.</li>
+    </ul>
     <div class="q">
       <label for="q_thegame">How the real-data board gets secured by morning — edit and submit:</label>
       <textarea id="q_thegame">By morning: serve the real board LOCALLY. Build it in the engagement workspace and serve it from the local receiver on this machine at a 127.0.0.1 address — real data never leaves the laptop, and the laptop is how the board gets shown in the room anyway. Later, if the board must be reachable away from the laptop, put a password gate in front of a privately hosted page (for example Cloudflare Access in front of a non-public path). The trade-off: local-only is secure by construction and ready by morning, but the board exists on exactly one machine. A gated hosted copy travels anywhere, but adds setup tonight and an access surface that has to be maintained.</textarea>
@@ -420,6 +432,7 @@ Claude drafts all four. The only inputs that have to come from me: the hours, th
       <li><span class="mini card-ref">See Inventory card</span> <strong>Slab count processing</strong> — turns methodology and the pricing pass against the $1.3M Inventory Asset; the capture pass comes first.</li>
       <li><span class="mini card-ref">See MAM + Weekly Pack</span> <strong>Week-2 VER and first MAM</strong> — MAM due Tuesday 8/04; first standalone VER drafts by Wednesday 8/05, client signs Thursday 8/06.</li>
       <li><span class="mini card-ref">See Game card</span> <strong>/countertops demo</strong> — ruled 8/02: the public demo stays as-is; the secured real-data board is The Game card above.</li>
+      <li><span class="mini standby">Queued</span> <strong>Board hand-off to Schmidt's own hosting</strong> — the board eventually moves to the backend of the client's own site under a PythonAnywhere account the client owns. Sequence: (1) Blake opens a Schmidt-owned PythonAnywhere account — their billing, their credentials; (2) the board deploys there as a small web app with password protection switched on before any real data goes up; (3) a data-refresh path is wired — weekly seed rebuild from QuickBooks / ActionFlow exports; (4) their domain points at it, e.g. board.schmidtcountertops.com, via DNS through their IT contractor; (5) credentials hand to Blake and Dale drops off as owner. Each step gates the next — no dates.</li>
     </ul>
   </div>
 </article>
