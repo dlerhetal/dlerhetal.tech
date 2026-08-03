@@ -247,36 +247,32 @@
 </article>
 
 <!-- ============ CARD 6: THE GAME ============ -->
-<article class="card" data-form="SchmidtCountertops-HubTheGame">
+<article class="card">
   <div class="head">
-    <span class="chip needs">Needs Dale</span>
-    <h2>The Game — real board, secured</h2>
+    <span class="chip progress">Live 8/03</span>
+    <h2>The Game — the board is live</h2>
     <div class="rule"></div>
   </div>
   <div class="body">
-    <p>Ruling on record (8/02): the real board gets created and secured by morning. The public /countertops demo stays as-is — that ruling stands; this card is only about the board that carries real data.</p>
-    <p><strong>The wall is set at $110,350</strong> (Dale, 8/02) — applied when the real board is built.</p>
+    <p>The board went live 2026-08-03, gated by Google sign-in with a named allow list. Data on it follows the 8/03 tier ruling: customer names, job numbers, per-job revenue and collections, material cost where it exists, and the wall as a single number — nothing else. <strong>The $110,350 wall is applied</strong> in the 8/03 build; the board says on its face that job costing is not wired yet, so it scores what it can and labels what it cannot.</p>
     <p>
-      <a class="cta" href="http://127.0.0.1:8788/board">Open the board</a>
+      <a class="cta" href="https://dlerhetal.pythonanywhere.com/board">Open the board</a>
+      <a class="cta" href="http://127.0.0.1:8788/board" style="background:transparent;color:var(--sc-charcoal);border:1px solid var(--sc-border)">Board (local fallback)</a>
       <a class="cta" href="/countertops/" style="background:transparent;color:var(--sc-charcoal);border:1px solid var(--sc-border)">Open the demo</a>
     </p>
-    <p class="muted">The board link is served by the local receiver on this machine — it works here and nowhere else, which is the point: real names and real dollars never touch the public site. The demo is the public, illustrative page. The $110,350 wall is not yet applied to the board — pending rebuild.</p>
+    <p class="muted">The live link asks for a Google sign-in and admits only listed addresses — currently Dale and Diane. The local fallback is served by the receiver on this laptop only and shows the same build, no sign-in, no internet needed. The demo is the public, illustrative page.</p>
+    <p><strong>Adding a person — both steps, every time,</strong> until the sign-in app leaves Google's "Testing" mode:</p>
+    <ul>
+      <li><strong>Step 1 — the board's own panel:</strong> open the board signed in as Dale &gt; Settings &gt; add their Gmail address.</li>
+      <li><strong>Step 2 — Google's side:</strong> <a href="https://console.cloud.google.com/auth/audience?project=1084533429539">this console page</a> &gt; Test users &gt; + Add users &gt; same Gmail address &gt; Save. Skipping this step makes Google refuse the sign-in before the board's own list is ever consulted.</li>
+    </ul>
     <ul class="muted" style="color:var(--sc-text-light);font-size:12.8px">
       <li><strong>The Game</strong> — the tool itself, generically.</li>
-      <li><strong>The board</strong> — the real-data Schmidt scoreboard, local-only at 127.0.0.1:8788/board.</li>
+      <li><strong>The board</strong> — the real-data Schmidt scoreboard, gated at dlerhetal.pythonanywhere.com/board (local fallback 127.0.0.1:8788/board).</li>
       <li><strong>The demo</strong> — the public illustrative page at /countertops, anonymized, disclaimer-saturated.</li>
       <li><strong>The template</strong> — the parent master the boards are re-skinned from.</li>
       <li><strong>The hub</strong> — this page.</li>
     </ul>
-    <div class="q">
-      <label for="q_thegame">How the real-data board gets secured by morning — edit and submit:</label>
-      <textarea id="q_thegame">By morning: serve the real board LOCALLY. Build it in the engagement workspace and serve it from the local receiver on this machine at a 127.0.0.1 address — real data never leaves the laptop, and the laptop is how the board gets shown in the room anyway. Later, if the board must be reachable away from the laptop, put a password gate in front of a privately hosted page (for example Cloudflare Access in front of a non-public path). The trade-off: local-only is secure by construction and ready by morning, but the board exists on exactly one machine. A gated hosted copy travels anywhere, but adds setup tonight and an access surface that has to be maintained.</textarea>
-      <div class="actions">
-        <button class="send" type="button">Submit</button>
-        <button class="copy" type="button">Copy instead</button>
-        <span class="status"></span>
-      </div>
-    </div>
   </div>
 </article>
 
