@@ -164,14 +164,85 @@
 <!-- ============ CARD 1: CONNECT ============ -->
 <article class="card">
   <div class="head">
-    <span class="chip progress">In progress</span>
+    <span class="chip needs">Run Monday morning</span>
     <h2>Connect: QuickBooks + ActionFlow + SimpleFin</h2>
     <div class="rule"></div>
   </div>
   <div class="body">
-    <p>The three-system integration walkthrough that makes The Game work: ActionFlow for jobs and quotes, QuickBooks for the books, SimpleFin for the bank feed. Being built now on its own page.</p>
-    <p class="muted">No decision needed on this card yet — the walkthrough page will carry its own questions when it lands.</p>
+    <p>The walkthrough is now a morning-run checklist — pull it up in the building Monday and connect all three systems step by step, ready to execute on site.</p>
     <p><a class="cta" href="./connect/">Open the walkthrough</a></p>
+  </div>
+</article>
+
+<!-- ============ CARD: CREDENTIALS LOCKER ============ -->
+<article class="card" data-form="SchmidtCountertops-HubCredentials">
+  <div class="head">
+    <span class="chip needs">Fill Monday on site</span>
+    <h2>Credentials Locker</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="body">
+    <p>Capture the logins the Monday run produces, once, so nothing has to be asked for twice. Submissions go <strong>only</strong> to the local receiver on this machine (127.0.0.1) and are captured into the project's local .env file — they never enter the public site, the repo, or any cloud service.</p>
+    <p><strong>Bank passwords NEVER go in this form.</strong> They are typed only into the bank's or SimpleFin's own pages during Part 1 of the walkthrough.</p>
+    <div class="q">
+      <label for="q_af_portal_email">ActionFlow support portal — login email</label>
+      <textarea id="q_af_portal_email" style="min-height:52px">paste here Monday — support.actionflow.net login email</textarea>
+    </div>
+    <div class="q">
+      <label for="q_af_portal_password">ActionFlow support portal — password</label>
+      <textarea id="q_af_portal_password" style="min-height:52px">paste here Monday — support.actionflow.net portal password</textarea>
+    </div>
+    <div class="q">
+      <label for="q_af_app_login">ActionFlow application login (only if I'm given one)</label>
+      <textarea id="q_af_app_login" style="min-height:52px">paste here Monday — ActionFlow application username + password, only if one is issued to me</textarea>
+    </div>
+    <div class="q">
+      <label for="q_simplefin_access_url">SimpleFin Access URL (from Part 1 of the walkthrough)</label>
+      <textarea id="q_simplefin_access_url" style="min-height:52px">paste here Monday — the Access URL returned by the one-time token claim; treat as a credential</textarea>
+      <div class="actions">
+        <button class="send" type="button">Submit</button>
+        <button class="copy" type="button">Copy instead</button>
+        <span class="status"></span>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ============ CARD: MONDAY MORNING ASKS ============ -->
+<article class="card" data-form="SchmidtCountertops-HubMondayAsks">
+  <div class="head">
+    <span class="chip needs">Run Monday morning</span>
+    <h2>Monday Morning Asks</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="body">
+    <p>Two asks, written so anyone in the office can do them exactly as printed.</p>
+    <p><strong>Ask 1 — Opening bank balances</strong> (feeds the cash flow model for the week ending Saturday 8/8):</p>
+    <ul>
+      <li>Monday morning, log into the bank's online banking the way you normally do (website or app).</li>
+      <li>On the account list, find each business account: <strong>***650</strong> (main operating), <strong>***922</strong> (construction), and <strong>***708</strong> (card settlements, at First Horizon — a separate login).</li>
+      <li>For each one, read the <strong>Available Balance</strong> shown next to the account.</li>
+      <li>Type each balance into the box below, one per line, and click <strong>Submit</strong>.</li>
+    </ul>
+    <p><strong>Ask 2 — Profit &amp; Loss, past 5 years, broken down by month</strong> (feeds the sales forecast):</p>
+    <ul>
+      <li>On the QuickBooks machine, open QuickBooks Desktop Enterprise.</li>
+      <li>Click the <strong>Reports</strong> menu &gt; <strong>Company &amp; Financial</strong> &gt; <strong>Profit &amp; Loss Standard</strong>.</li>
+      <li>At the top of the report, set the dates: <strong>From</strong> 01/01/2021, <strong>To</strong> today's date.</li>
+      <li>Find the <strong>Show Columns</strong> dropdown on the report toolbar and choose <strong>Month</strong>. Click <strong>Refresh</strong> if the report does not redraw on its own.</li>
+      <li>Click <strong>Excel</strong> on the report toolbar &gt; <strong>Create New Worksheet</strong>, then export.</li>
+      <li>Save the file to <strong>C:\dev\SchmidtCountertops\work\inbox\</strong> (the folder will exist).</li>
+    </ul>
+    <p class="muted">Exact button and dialog wording may differ slightly on screen — the on-screen text wins.</p>
+    <div class="q">
+      <label for="q_opening_balances">Opening balances — paste and submit:</label>
+      <textarea id="q_opening_balances">Monday: paste each account's available balance here, one per line, e.g. ***650: $</textarea>
+      <div class="actions">
+        <button class="send" type="button">Submit</button>
+        <button class="copy" type="button">Copy instead</button>
+        <span class="status"></span>
+      </div>
+    </div>
   </div>
 </article>
 
@@ -184,6 +255,7 @@
   </div>
   <div class="body">
     <p>Ruling on record (8/02): the real board gets created and secured by morning. The public /countertops demo stays as-is — that ruling stands; this card is only about the board that carries real data.</p>
+    <p><strong>The wall is set at $110,350</strong> (Dale, 8/02) — applied when the real board is built.</p>
     <div class="q">
       <label for="q_thegame">How the real-data board gets secured by morning — edit and submit:</label>
       <textarea id="q_thegame">By morning: serve the real board LOCALLY. Build it in the engagement workspace and serve it from the local receiver on this machine at a 127.0.0.1 address — real data never leaves the laptop, and the laptop is how the board gets shown in the room anyway. Later, if the board must be reachable away from the laptop, put a password gate in front of a privately hosted page (for example Cloudflare Access in front of a non-public path). The trade-off: local-only is secure by construction and ready by morning, but the board exists on exactly one machine. A gated hosted copy travels anywhere, but adds setup tonight and an access surface that has to be maintained.</textarea>
@@ -218,6 +290,27 @@ UDE-07 — Three conflicting officer-compensation figures exist across the sourc
 UDE-08 — The books are not GAAP-reliable by the PM's own finding, and the 2026 P&L column is arithmetically impossible as printed. [PM Letter, Finding 5.1]
 UDE-09 — Every finance deliverable from the 2025 engagement left the building with one departed employee; the process knowledge lived in a single head. [2025 VER 9 vs 2026 PM Letter]
 UDE-10 — Roughly 90 checks per month clear the bank with no payee recorded in the ledger. [Bank statements vs check detail]</textarea>
+      <div class="actions">
+        <button class="send" type="button">Submit</button>
+        <button class="copy" type="button">Copy instead</button>
+        <span class="status"></span>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ============ CARD: UDE DROP BOX ============ -->
+<article class="card" data-form="SchmidtCountertops-HubUDEDrop">
+  <div class="head">
+    <span class="chip progress">Always open</span>
+    <h2>UDE Drop Box</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="body">
+    <p>Standing intake. Every time an undesirable effect surfaces in the field, drop it here — one thought at a time or several, submit as many times as needed. Each drop is appended to the running UDE list, and the UDE Development card is refreshed on republish. The Development card holds the curated candidate list; this box is the raw intake.</p>
+    <div class="q">
+      <label for="q_ude_drop">Heard one? Drop it and submit:</label>
+      <textarea id="q_ude_drop">Drop what you heard — raw is fine; Claude cleans, sources, and appends it to the master UDE list</textarea>
       <div class="actions">
         <button class="send" type="button">Submit</button>
         <button class="copy" type="button">Copy instead</button>
@@ -285,12 +378,12 @@ Claude drafts all four. The only inputs that have to come from me: the hours, th
 <article class="card" data-form="SchmidtCountertops-HubInventory">
   <div class="head">
     <span class="chip needs">Needs Dale</span>
-    <span class="chip date">Richard — Sun 8/03</span>
+    <span class="chip date">Richard — Mon 8/03</span>
     <h2>Inventory / Richard</h2>
     <div class="rule"></div>
   </div>
   <div class="body">
-    <p>Connecting with Richard (client ops) tomorrow, Sunday 8/03, on the slab count. The cleaned count stands at 151 slabs from 171 counted lines. Below is the recommended conversation list.</p>
+    <p>Connecting with Richard (client ops) Monday 8/03 on the slab count. The cleaned count stands at 151 slabs from 171 counted lines. Below is the recommended conversation list.</p>
     <div class="q">
       <label for="q_inventory">Richard conversation list — edit and submit:</label>
       <textarea id="q_inventory" style="min-height:260px">1. Capture pass — thickness (2cm vs 3cm) and location/zone per slab. These are the two hard segregation keys the count missed; without them the 151-slab count cannot be priced against the $1.3M Inventory Asset.
