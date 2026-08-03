@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Schmidt Countertops — Engagement Hub</title>
+<style>
+  :root{
+    /* Schmidt brand — from schmidtcountertops.com token system */
+    --sc-bronze:       #B5872D;
+    --sc-bronze-dark:  #8C6F3F;
+    --sc-bronze-light: #C9A96E;
+    --sc-charcoal:     #1C1C1E;
+    --sc-dark:         #0F0F11;
+    --sc-text:         #2D2D2F;
+    --sc-text-light:   #6B6660;
+    --sc-white:        #FFFFFF;
+    --sc-warm-white:   #FAF9F6;
+    --sc-stone:        #F0EEE9;
+    --sc-border:       #E0DDD5;
+    --sc-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --sc-shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+    --sc-shadow:    0 4px 16px rgba(0,0,0,.08);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--sc-warm-white); color:var(--sc-text);
+    font-family:var(--sc-font); line-height:1.7;
+    padding:0 0 60px;
+  }
+  a{color:var(--sc-bronze-dark)}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 18px}
+
+  header.top{
+    background:var(--sc-dark); color:#fff;
+    border-bottom:3px solid var(--sc-bronze);
+    padding:30px 0 24px; margin-bottom:26px;
+  }
+  header.top h1{
+    margin:0 0 4px; font-size:24px; font-weight:700;
+    letter-spacing:-.02em; color:#fff; line-height:1.2;
+  }
+  header.top .tag{
+    margin:0; font-size:13px; color:var(--sc-bronze-light);
+    text-transform:uppercase; letter-spacing:.06em; font-weight:600;
+  }
+  header.top .stamp{margin-top:10px; font-size:12px; color:#8d8a84}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+    gap:20px;
+    align-items:start;
+  }
+  @media (min-width:760px){ .wide{grid-column:1 / -1} }
+
+  .card{
+    background:var(--sc-white); border:1px solid var(--sc-border);
+    border-radius:0; box-shadow:var(--sc-shadow-sm);
+  }
+  .card > .head{
+    padding:16px 20px 0;
+  }
+  .card h2{
+    margin:0 0 8px; font-size:16.5px; font-weight:700;
+    color:var(--sc-charcoal); letter-spacing:-.01em; line-height:1.25;
+  }
+  .rule{width:48px;height:3px;background:var(--sc-bronze);margin:0 0 12px}
+  .chip{
+    display:inline-block; font-size:10.5px; font-weight:700;
+    text-transform:uppercase; letter-spacing:.07em;
+    padding:3px 9px; margin-bottom:10px; color:#fff;
+    background:var(--sc-text-light);
+  }
+  .chip.needs{background:var(--sc-bronze)}
+  .chip.progress{background:var(--sc-charcoal)}
+  .chip.client{background:var(--sc-text-light)}
+  .chip.link{background:transparent;color:var(--sc-bronze-dark);border:1px solid var(--sc-bronze)}
+  .chip.date{background:var(--sc-stone);color:var(--sc-charcoal);border:1px solid var(--sc-border)}
+
+  .card .body{padding:0 20px 18px}
+  .card .body p{margin:0 0 10px;font-size:13.8px}
+  .card .body p.muted{color:var(--sc-text-light);font-size:12.8px}
+  .card .body ul{margin:0 0 10px;padding-left:18px;font-size:13.5px}
+  .card .body li{margin-bottom:7px}
+  .mini{
+    display:inline-block;font-size:10px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.06em;
+    padding:1px 7px;margin-right:6px;color:#fff;background:var(--sc-text-light);
+    vertical-align:middle;
+  }
+  .mini.parked{background:var(--sc-text-light)}
+  .mini.active{background:var(--sc-bronze)}
+  .mini.standby{background:var(--sc-bronze-dark)}
+  .mini.client{background:var(--sc-charcoal)}
+  .mini.open{background:transparent;color:var(--sc-bronze-dark);border:1px solid var(--sc-bronze)}
+  .mini.card-ref{background:var(--sc-stone);color:var(--sc-charcoal);border:1px solid var(--sc-border)}
+
+  .q{
+    border-left:3px solid var(--sc-bronze); background:var(--sc-warm-white);
+    padding:12px 14px; margin:14px 0 0;
+  }
+  .q label{
+    display:block; font-weight:700; font-size:13.5px;
+    margin-bottom:8px; color:var(--sc-charcoal);
+  }
+  .q textarea{
+    width:100%; min-height:120px; padding:9px 11px;
+    font-family:var(--sc-font); font-size:13px; line-height:1.55;
+    border:1px solid var(--sc-border); border-radius:0;
+    background:#fff; color:var(--sc-text); resize:vertical;
+  }
+  .q textarea:focus{outline:2px solid var(--sc-bronze); outline-offset:-1px}
+  .actions{
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    margin-top:10px;
+  }
+  button{
+    font-family:var(--sc-font); font-size:12px; font-weight:600;
+    text-transform:uppercase; letter-spacing:.04em;
+    padding:9px 20px; border:0; border-radius:0; cursor:pointer;
+  }
+  button.send{background:var(--sc-bronze); color:#fff}
+  button.send:hover{background:var(--sc-bronze-dark)}
+  button.copy{background:transparent; color:var(--sc-charcoal); border:1px solid var(--sc-border)}
+  button.copy:hover{border-color:var(--sc-bronze)}
+  .status{font-size:12.5px; color:var(--sc-text-light)}
+
+  .cta{
+    display:inline-block; background:var(--sc-charcoal); color:#fff;
+    text-decoration:none; font-size:12px; font-weight:600;
+    text-transform:uppercase; letter-spacing:.04em; padding:10px 22px;
+  }
+  .cta:hover{background:var(--sc-dark)}
+
+  footer{
+    margin-top:40px; padding-top:16px; border-top:1px solid var(--sc-border);
+    font-size:11.5px; color:var(--sc-text-light);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  footer .ids{font-weight:700; letter-spacing:.12em; color:var(--sc-bronze-dark)}
+  @media (max-width:640px){
+    header.top{padding:22px 0 18px}
+    .card .body{padding:0 16px 16px}
+    .card > .head{padding:14px 16px 0}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="tag">Precision Crafted. Professionally Installed.</p>
+    <h1>Schmidt Countertops — Engagement Hub</h1>
+    <div class="stamp">One card per workstream. Answer a card and hit Submit — it lands on my machine. Cards move to the <a href="./archive/" style="color:var(--sc-bronze-light)">archive</a> on my call. Last updated 2026-08-02.</div>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="grid">
+
+<!-- ============ CARD 1: CONNECT ============ -->
+<article class="card">
+  <div class="head">
+    <span class="chip progress">In progress</span>
+    <h2>Connect: QuickBooks + ActionFlow + SimpleFin</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="body">
+    <p>The three-system integration walkthrough that makes The Game work: ActionFlow for jobs and quotes, QuickBooks for the books, SimpleFin for the bank feed. Being built now on its own page.</p>
+    <p class="muted">No decision needed on this card yet — the walkthrough page will carry its own questions when it lands.</p>
+    <p><a class="cta" href="./connect/">Open the walkthrough</a></p>
+  </div>
+</article>
+
+<!-- ============ CARD 6: THE GAME ============ -->
+<article class="card" data-form="SchmidtCountertops-HubTheGame">
+  <div class="head">
+    <span class="chip needs">Needs Dale</span>
+    <h2>The Game — real board, secured</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="body">
+    <p>Ruling on record (8/02): the real board gets created and secured by morning. The public /countertops demo stays as-is — that ruling stands; this card is only about the board that carries real data.</p>
+    <div class="q">
+      <label for="q_thegame">How the real-data board gets secured by morning — edit and submit:</label>
+      <textarea id="q_thegame">By morning: serve the real board LOCALLY. Build it in the engagement workspace and serve it from the local receiver on this machine at a 127.0.0.1 address — real data never leaves the laptop, and the laptop is how the board gets shown in the room anyway. Later, if the board must be reachable away from the laptop, put a password gate in front of a privately hosted page (for example Cloudflare Access in front of a non-public path). The trade-off: local-only is secure by construction and ready by morning, but the board exists on exactly one machine. A gated hosted copy travels anywhere, but adds setup tonight and an access surface that has to be maintained.</textarea>
+      <div class="actions">
+        <button class="send" type="button">Submit</button>
+        <button class="copy" type="button">Copy instead</button>
+        <span class="status"></span>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ============ CARD 2: UDE ============ -->
+<article class="card wide" data-form="SchmidtCountertops-HubUDE">
+  <div class="head">
+    <span class="chip needs">Needs Dale</span>
+    <h2>UDE Development</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="body">
+    <p>Ruling on record (8/02): we develop the UDEs first — there is a lot going on here. UDE = Undesirable Effect (Theory of Constraints): an observable symptom, stated as a fact someone in the building would recognize — not a cause, not a solution. The UDE list and tracker is a contracted deliverable class on this engagement.</p>
+    <p class="muted">Below is the candidate list drawn from the findings so far, each with its source. Edit, cut, reorder, add — this becomes the working UDE list.</p>
+    <div class="q">
+      <label for="q_ude">Candidate UDE list — edit and submit:</label>
+      <textarea id="q_ude" style="min-height:300px">UDE-01 — Over-90 A/R stands at $391,231 (60.6% of $645,157) while the Current bucket reads $0.00 against roughly $273K of June installs. [QuickBooks aging export, 7/29]
+UDE-02 — A single unnamed catch-all account holds 86% of COGS ($3.54M of $4.14M), so no job ever shows a margin. [QB account-level P&L]
+UDE-03 — The CEO sees none of the quotes going out; in his words, all he gets is bills. [CEO, in the room]
+UDE-04 — No job costing exists anywhere; per-job material, labor, and commission cost cannot be produced from any system in the building. [GL findings; Game board build]
+UDE-05 — The entity structure designed to carry $30,000/yr management fees moves only $149/yr per entity in registered-agent fees; the structure is dormant. [QB P&L entity expense lines]
+UDE-06 — The slab count captured no thickness and no location, so the physical inventory cannot be priced against the $1.3M Inventory Asset on the books. [Slab count cleanup, 7/31]
+UDE-07 — Three conflicting officer-compensation figures exist across the source documents, and none can be confirmed. [Open Item 7]
+UDE-08 — The books are not GAAP-reliable by the PM's own finding, and the 2026 P&L column is arithmetically impossible as printed. [PM Letter, Finding 5.1]
+UDE-09 — Every finance deliverable from the 2025 engagement left the building with one departed employee; the process knowledge lived in a single head. [2025 VER 9 vs 2026 PM Letter]
+UDE-10 — Roughly 90 checks per month clear the bank with no payee recorded in the ledger. [Bank statements vs check detail]</textarea>
+      <div class="actions">
+        <button class="send" type="button">Submit</button>
+        <button class="copy" type="button">Copy instead</button>
+        <span class="status"></span>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ============ CARD 3: MAM ============ -->
+<article class="card" data-form="SchmidtCountertops-HubMAM">
+  <div class="head">
+    <span class="chip needs">Needs Dale</span>
+    <span class="chip date">Due Tue 8/04</span>
+    <h2>MAM — Tuesday</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="body">
+    <p>The Management Accountability Meeting deliverable does not exist yet. The first one runs Tuesday 2026-08-04. Below is the recommended structure for meeting 1, grounded in what is actually open.</p>
+    <div class="q">
+      <label for="q_mam">Recommended MAM 1 agenda and accountability list — edit and submit:</label>
+      <textarea id="q_mam" style="min-height:260px">1. The scoreboard — one page: who owes what, by when. This list IS the meeting; everything below feeds it.
+2. A/R — pull the A/R Aging Detail in the room (we hold Summary only). Over-90 is $391,231 of $645,157. Assign the first ten collection calls, each with an owner and a date.
+3. Books catch-up — invoices and bills are entered behind. Agree the plan: who enters, in what order, and the cut-off date the books will be current through.
+4. ODBC read-only access — the ask goes to Blake (owner-level permission). Cheapest reporting win available; unblocks live pulls without touching the file.
+5. ActionFlow invoice — get the actual invoice in hand. It settles the tier and user count and gates the whole integration decision.
+6. Slab capture pass — schedule the thickness + location pass so the count can be priced against the $1.3M Inventory Asset.
+7. Close by reading back the accountability list. Every item carries a name and a date, and the list carries forward to next Tuesday's MAM.</textarea>
+      <div class="actions">
+        <button class="send" type="button">Submit</button>
+        <button class="copy" type="button">Copy instead</button>
+        <span class="status"></span>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ============ CARD 4: WEEKLY PACK ============ -->
+<article class="card" data-form="SchmidtCountertops-HubWeeklyPack">
+  <div class="head">
+    <span class="chip progress">In progress</span>
+    <span class="chip date">VER draft Wed 8/05 · signs Thu 8/06</span>
+    <h2>Weekly Pack — invoice, CFM, VER 2</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="body">
+    <p>The cadence: VER drafted no later than Wednesday 8/05, blessed by Chicago, client signs Thursday 8/06. Week-1 VER was satisfied inside the signed VEP itself. Goal is all four pieces built Sunday night; finals ship to the OneDrive ISI weekly folder.</p>
+    <div class="q">
+      <label for="q_weeklypack">Recommended Sunday-night build order — edit and submit:</label>
+      <textarea id="q_weeklypack" style="min-height:240px">1. Invoice — needs my numbers: hours worked this week (SPM and SBC) and travel days / per-diem count. The handwritten +10% contingency figure is still unverified against the physical signed original and stays out of any invoice until checked.
+2. CFM update — Claude drafts from the bank data and last week's workbook. July statements are still outstanding for every account, so the update runs on what we hold.
+3. MAM pack — Claude drafts the Tuesday agenda and accountability list from the MAM card on this page.
+4. VER 2 draft — Claude drafts from what actually shipped this week; I edit; Chicago-ready no later than Wednesday 8/05; client signs Thursday 8/06.
+Claude drafts all four. The only inputs that have to come from me: the hours, the travel/per-diem days, and any client-appraisal language for the VER.</textarea>
+      <div class="actions">
+        <button class="send" type="button">Submit</button>
+        <button class="copy" type="button">Copy instead</button>
+        <span class="status"></span>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ============ CARD 5: INVENTORY / RICHARD ============ -->
+<article class="card" data-form="SchmidtCountertops-HubInventory">
+  <div class="head">
+    <span class="chip needs">Needs Dale</span>
+    <span class="chip date">Richard — Sun 8/03</span>
+    <h2>Inventory / Richard</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="body">
+    <p>Connecting with Richard (client ops) tomorrow, Sunday 8/03, on the slab count. The cleaned count stands at 151 slabs from 171 counted lines. Below is the recommended conversation list.</p>
+    <div class="q">
+      <label for="q_inventory">Richard conversation list — edit and submit:</label>
+      <textarea id="q_inventory" style="min-height:260px">1. Capture pass — thickness (2cm vs 3cm) and location/zone per slab. These are the two hard segregation keys the count missed; without them the 151-slab count cannot be priced against the $1.3M Inventory Asset.
+2. Recounts — three Dallas White lines are flagged as probable double-counts; recount those racks.
+3. Name verification — eight color names could not be verified against any supplier list; one supplier invoice each settles them.
+4. Remnant rule — apply the 40x30 rule as a largest-inscribed-rectangle test to the Vezzano remnants and the two half slabs recorded at full-slab dimensions. No adding strips together; no bounding boxes on L-shapes.
+5. The five-month outage — which supplier said no product until the first of the year? That answer decides where deep stock is rational and where it is dead weight.
+6. Before proposing any tagging or sign-off, ask how Richard's crew already controls the work (each counter owning an area was their double-count control) — fit their process, not mine.</textarea>
+      <div class="actions">
+        <button class="send" type="button">Submit</button>
+        <button class="copy" type="button">Copy instead</button>
+        <span class="status"></span>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ============ CARD 7: TODOS ============ -->
+<article class="card wide">
+  <div class="head">
+    <span class="chip progress">Tracking</span>
+    <h2>TODOs / Open Threads</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="body">
+    <p class="muted">The open threads from the engagement backlog, one line each. Cards and threads move to the archive on my call.</p>
+    <ul>
+      <li><span class="mini parked">Parked 8/02</span> <strong>Day-1 briefing patches</strong> — three findings never folded in (repeat-engagement history, COGS teardown, the entity fee find); patch-vs-leave-behind never chosen, and the briefing is now well behind the analysis.</li>
+      <li><span class="mini active">Active discussion</span> <strong>ActionFlow &#8596; QuickBooks middleware scope</strong> — three options on the table (configure what exists / read-only intelligence layer via ODBC / bidirectional); job costing is the gap worth filling.</li>
+      <li><span class="mini parked">Parked 8/02</span> <strong>Check payees and transfer traces</strong> — three construction-account check payees unread, three online-transfer traces unaccounted for, and July statements outstanding for every account.</li>
+      <li><span class="mini standby">Standby</span> <strong>ActionFlow support portal</strong> — the QuickBooks setup articles sit behind the client's own support login; needs Schmidt's portal credentials to unlock the knowledge base.</li>
+      <li><span class="mini client">Awaiting client</span> <strong>QuickBooks pull list + four asks for Blake</strong> — ten reports queued, plus ODBC read-only access, the ActionFlow invoice, the legal-first-name question, and the basis of the $1.2M sales target.</li>
+      <li><span class="mini open">Open</span> <strong>Week-1 decisions, four thin answers</strong> — books catch-up plan, the current rent baseline (four candidate figures in play), how the construction operation is booked, and the remnant process.</li>
+      <li><span class="mini card-ref">See Inventory card</span> <strong>Slab count processing</strong> — turns methodology and the pricing pass against the $1.3M Inventory Asset; the capture pass comes first.</li>
+      <li><span class="mini card-ref">See MAM + Weekly Pack</span> <strong>Week-2 VER and first MAM</strong> — MAM due Tuesday 8/04; first standalone VER drafts by Wednesday 8/05, client signs Thursday 8/06.</li>
+      <li><span class="mini card-ref">See Game card</span> <strong>/countertops demo</strong> — ruled 8/02: the public demo stays as-is; the secured real-data board is The Game card above.</li>
+    </ul>
+  </div>
+</article>
+
+</div><!-- /grid -->
+
+<footer>
+  <span>Engagement Hub · working surface, not a client deliverable</span>
+  <span class="ids">IDS</span>
+</footer>
+</div><!-- /wrap -->
+
+<script>
+(function(){
+  var ENDPOINT = 'http://127.0.0.1:8788/submit';
+
+  function collect(card){
+    var out = {form: card.getAttribute('data-form'), submittedAt: new Date().toISOString(), answers: {}};
+    var areas = card.querySelectorAll('textarea');
+    for (var i=0;i<areas.length;i++){
+      var id = areas[i].id.replace(/^q_/,'');
+      out.answers[id] = areas[i].value;
+    }
+    return out;
+  }
+
+  var cards = document.querySelectorAll('[data-form]');
+  for (var c=0;c<cards.length;c++){
+    (function(card){
+      var status = card.querySelector('.status');
+
+      card.querySelector('button.send').addEventListener('click', function(){
+        status.textContent = 'sending…';
+        fetch(ENDPOINT, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(collect(card))
+        }).then(function(r){ return r.json(); })
+          .then(function(j){
+            status.textContent = j.ok ? 'saved — Claude will pick it up' : ('error: ' + (j.error||'unknown'));
+          })
+          .catch(function(e){
+            status.textContent = 'local receiver is down — use Copy instead';
+          });
+      });
+
+      card.querySelector('button.copy').addEventListener('click', function(){
+        var txt = JSON.stringify(collect(card), null, 2);
+        if (navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(txt).then(function(){ status.textContent = 'copied to clipboard'; });
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = txt; document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); document.body.removeChild(ta);
+          status.textContent = 'copied to clipboard';
+        }
+      });
+    })(cards[c]);
+  }
+})();
+</script>
+</body>
+</html>

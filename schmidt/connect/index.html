@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Connect: QuickBooks + ActionFlow + SimpleFin &mdash; Schmidt Countertops</title>
+<style>
+:root{
+  --sc-bronze:#B5872D; --sc-bronze-dark:#8C6F3F; --sc-bronze-light:#C9A96E;
+  --sc-charcoal:#1C1C1E; --sc-dark:#0F0F11; --sc-text:#2D2D2F; --sc-text-light:#6B6660;
+  --sc-white:#FFFFFF; --sc-warm-white:#FAF9F6; --sc-stone:#F0EEE9; --sc-border:#E0DDD5;
+  --ok:#2E7D32; --warn:#8A5A00; --bad:#8E1818;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);font-size:15px;line-height:1.7;color:var(--sc-text);background:var(--sc-white)}
+h1,h2,h3,h4{color:var(--sc-charcoal);line-height:1.2;font-weight:700}
+a{color:var(--sc-bronze-dark)}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px 80px}
+.tophat{background:var(--sc-dark);color:#E9E9E8;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase}
+.tophat .wrap{padding:10px 20px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.tophat a{color:var(--sc-bronze-light);text-decoration:none;font-weight:600}
+.hero{background:var(--sc-warm-white);border-bottom:1px solid var(--sc-border)}
+.hero .wrap{padding:44px 20px 36px}
+.hero h1{font-size:1.9rem;letter-spacing:-0.02em;margin-bottom:10px}
+.rule{width:48px;height:3px;background:var(--sc-bronze);margin:14px 0 18px}
+.eyebrow{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--sc-bronze-dark);margin-bottom:8px}
+.lede{max-width:760px;color:var(--sc-text)}
+.small{font-size:.85rem;color:var(--sc-text-light)}
+section{margin-top:52px}
+section>h2{font-size:1.35rem;margin-bottom:4px}
+section>h3{font-size:1.05rem;margin:26px 0 8px}
+p{margin:10px 0}
+.ev{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.05em;padding:1px 6px;border:1px solid;border-radius:0;vertical-align:1px;white-space:nowrap}
+.ev-doc{color:#1A3C6E;border-color:#1A3C6E;background:#EEF2F8}
+.ev-ver{color:var(--ok);border-color:var(--ok);background:#EDF7E8}
+.ev-inf{color:#555;border-color:#999;background:#F2F2F2}
+.ev-gated{color:var(--bad);border-color:var(--bad);background:#FBEAEA}
+.ev-unc{color:var(--warn);border-color:var(--warn);background:#FFF6E0}
+.pill{display:inline-block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px}
+.pill-setup{background:#FFF3C4;color:var(--warn)}
+.pill-gated{background:#FBDDDD;color:var(--bad)}
+.pill-work{background:#DDEFD7;color:#1B5E20}
+.pill-unk{background:#E6E6E6;color:#555}
+.card{background:var(--sc-warm-white);border:1px solid var(--sc-border);padding:18px 20px;margin:16px 0}
+.card.alert{border-left:4px solid var(--bad)}
+.card.note{border-left:4px solid var(--sc-bronze)}
+.tblwrap{overflow-x:auto;margin:14px 0;border:1px solid var(--sc-border)}
+table{border-collapse:collapse;width:100%;font-size:.88rem;background:#fff}
+th{background:var(--sc-stone);color:var(--sc-charcoal);text-transform:uppercase;font-size:.7rem;letter-spacing:.05em;text-align:left}
+th,td{padding:8px 12px;border-bottom:1px solid var(--sc-border);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.num{white-space:nowrap}
+ol.steps{counter-reset:step;list-style:none;margin:14px 0}
+ol.steps>li{position:relative;padding:12px 14px 12px 58px;border:1px solid var(--sc-border);border-bottom:none;background:#fff}
+ol.steps>li:last-child{border-bottom:1px solid var(--sc-border)}
+ol.steps>li::before{counter-increment:step;content:counter(step);position:absolute;left:14px;top:12px;width:30px;height:30px;background:var(--sc-charcoal);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+ol.steps>li.gated::before{background:var(--bad)}
+ol.steps>li b,ol.steps>li strong{color:var(--sc-charcoal)}
+.cite{display:block;margin-top:5px;font-size:.78rem;color:var(--sc-text-light)}
+.phase{margin:24px 0 6px;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sc-bronze-dark)}
+.diagram-wrap{overflow-x:auto;margin:18px 0;border:1px solid var(--sc-border);background:#fff;padding:10px}
+.diagram-wrap svg{display:block;min-width:720px;width:100%;height:auto}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.78rem;color:var(--sc-text-light);margin-top:6px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:10px;height:10px;display:inline-block}
+ul.plain{margin:8px 0 8px 20px}
+ul.plain li{margin:6px 0}
+.script{background:var(--sc-stone);border:1px solid var(--sc-border);padding:14px 18px;font-size:.92rem;font-style:italic;margin:12px 0}
+code{font-family:Consolas,Menlo,monospace;font-size:.85em;background:var(--sc-stone);padding:1px 5px;word-break:break-all}
+footer{margin-top:70px;border-top:1px solid var(--sc-border);background:var(--sc-warm-white)}
+footer .wrap{padding:24px 20px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:.8rem;color:var(--sc-text-light)}
+.idsmark{font-weight:700;letter-spacing:.14em;color:var(--sc-bronze-dark);opacity:.55}
+.srcs{font-size:.84rem}
+.srcs h4{margin:18px 0 6px;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--sc-bronze-dark)}
+.srcs ul{margin:0 0 0 20px}
+.srcs li{margin:3px 0}
+@media (max-width:640px){
+  .hero h1{font-size:1.45rem}
+  ol.steps>li{padding-left:50px}
+  ol.steps>li::before{width:26px;height:26px;left:12px}
+}
+</style>
+</head>
+<body>
+
+<div class="tophat">
+  <div class="wrap">
+    <a href="../">Schmidt Countertops &mdash; Engagement Hub</a>
+    <span>Connect: QuickBooks + ActionFlow + SimpleFin</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Integration Walkthrough &middot; Documentation-Sourced</div>
+    <h1>Connecting the Three Systems Behind the Scoreboard</h1>
+    <div class="rule"></div>
+    <p class="lede">The scoreboard (&ldquo;The Game&rdquo;) needs three things: <strong>what each job earned</strong>, <strong>what each job cost</strong>, and <strong>what the bank actually says</strong>. Today those live in three disconnected places &mdash; ActionFlow (the shop system), QuickBooks Desktop Enterprise 24.0 (the ledger), and four bank accounts. This page is the click-by-click plan for wiring them together.</p>
+    <p class="lede" style="margin-top:10px">Every mechanism claim below carries an evidence label:
+      <span class="ev ev-doc">DOC</span> from a document already in this engagement &middot;
+      <span class="ev ev-ver">VERIFIED</span> checked live on the web while writing this page &middot;
+      <span class="ev ev-inf">INFERENCE</span> labelled deduction &middot;
+      <span class="ev ev-unc">UNCONFIRMED</span> single or weak source &middot;
+      <span class="ev ev-gated">GATED</span> the answer exists behind a login or a phone call, and the unlock path is stated.
+      Where documentation is absent, this page says so. Nothing here is bridged with a guess.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ============================= 1. THE PICTURE ============================= -->
+<section id="picture">
+  <h2>1. The Picture</h2>
+  <div class="rule"></div>
+  <p>Three pipes feed the scoreboard. None of the three is fully connected today.</p>
+
+  <div class="diagram-wrap">
+  <svg viewBox="0 0 900 440" role="img" aria-label="Diagram of ActionFlow, QuickBooks, four bank accounts, SimpleFin Bridge, and The Game scoreboard, with the status of each connection">
+    <title>System connection map</title>
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#6B6660"/>
+      </marker>
+    </defs>
+    <!-- ActionFlow -->
+    <rect x="30" y="40" width="200" height="86" fill="#FAF9F6" stroke="#1C1C1E" stroke-width="1.5"/>
+    <text x="130" y="70" text-anchor="middle" font-size="16" font-weight="700" fill="#1C1C1E">ActionFlow</text>
+    <text x="130" y="90" text-anchor="middle" font-size="11" fill="#6B6660">quotes &middot; jobs &middot; scheduling</text>
+    <text x="130" y="106" text-anchor="middle" font-size="11" fill="#6B6660">invoicing (cloud)</text>
+    <!-- QuickBooks -->
+    <rect x="340" y="40" width="220" height="86" fill="#FAF9F6" stroke="#1C1C1E" stroke-width="1.5"/>
+    <text x="450" y="70" text-anchor="middle" font-size="16" font-weight="700" fill="#1C1C1E">QuickBooks Desktop</text>
+    <text x="450" y="90" text-anchor="middle" font-size="11" fill="#6B6660">Enterprise 24.0 &middot; the ledger</text>
+    <text x="450" y="106" text-anchor="middle" font-size="11" fill="#8E1818">one catch-all account holds 86% of COGS</text>
+    <!-- Banks -->
+    <rect x="30" y="230" width="200" height="100" fill="#FAF9F6" stroke="#1C1C1E" stroke-width="1.5"/>
+    <text x="130" y="256" text-anchor="middle" font-size="15" font-weight="700" fill="#1C1C1E">Four Bank Accounts</text>
+    <text x="130" y="276" text-anchor="middle" font-size="11" fill="#6B6660">***650 operating &middot; ***922 constr.</text>
+    <text x="130" y="292" text-anchor="middle" font-size="11" fill="#6B6660">***317 personal &middot; ***708 card settl.</text>
+    <text x="130" y="310" text-anchor="middle" font-size="11" fill="#2E7D32">the only trusted numbers</text>
+    <!-- SimpleFin -->
+    <rect x="340" y="242" width="220" height="76" fill="#FAF9F6" stroke="#B5872D" stroke-width="1.5"/>
+    <text x="450" y="270" text-anchor="middle" font-size="15" font-weight="700" fill="#1C1C1E">SimpleFin Bridge</text>
+    <text x="450" y="290" text-anchor="middle" font-size="11" fill="#6B6660">read-only bank feed &middot; $15/yr</text>
+    <text x="450" y="306" text-anchor="middle" font-size="11" fill="#6B6660">MX aggregator upstream</text>
+    <!-- The Game -->
+    <rect x="670" y="120" width="200" height="140" fill="#1C1C1E" stroke="#B5872D" stroke-width="2"/>
+    <text x="770" y="158" text-anchor="middle" font-size="17" font-weight="700" fill="#FFFFFF">THE GAME</text>
+    <text x="770" y="180" text-anchor="middle" font-size="11" fill="#C9A96E">job scoreboard</text>
+    <text x="770" y="200" text-anchor="middle" font-size="11" fill="#E9E9E8">per-job revenue</text>
+    <text x="770" y="216" text-anchor="middle" font-size="11" fill="#E9E9E8">per-job cost</text>
+    <text x="770" y="232" text-anchor="middle" font-size="11" fill="#E9E9E8">cash reality</text>
+    <!-- A: ActionFlow -> QB -->
+    <line x1="230" y1="83" x2="336" y2="83" stroke="#6B6660" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="234" y="52" width="100" height="18" fill="#FBDDDD"/>
+    <text x="284" y="65" text-anchor="middle" font-size="10.5" font-weight="700" fill="#8E1818">A &middot; GATED</text>
+    <text x="284" y="102" text-anchor="middle" font-size="10" fill="#6B6660">customers, invoices,</text>
+    <text x="284" y="115" text-anchor="middle" font-size="10" fill="#6B6660">payments (one-way)</text>
+    <!-- B: QB -> Game -->
+    <line x1="560" y1="83" x2="700" y2="130" stroke="#6B6660" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="562" y="70" width="128" height="18" fill="#FFF3C4"/>
+    <text x="626" y="83" text-anchor="middle" font-size="10.5" font-weight="700" fill="#8A5A00">B &middot; SETUP REQUIRED</text>
+    <text x="628" y="106" text-anchor="middle" font-size="10" fill="#6B6660">exports now; ODBC later</text>
+    <!-- C1: Banks -> SimpleFin -->
+    <line x1="230" y1="280" x2="336" y2="280" stroke="#6B6660" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="234" y="250" width="100" height="18" fill="#FFF3C4"/>
+    <text x="284" y="263" text-anchor="middle" font-size="10.5" font-weight="700" fill="#8A5A00">C &middot; SETUP REQ.</text>
+    <text x="284" y="298" text-anchor="middle" font-size="10" fill="#6B6660">bank login via MX</text>
+    <!-- C2: SimpleFin -> Game -->
+    <line x1="560" y1="280" x2="700" y2="240" stroke="#6B6660" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="566" y="284" width="120" height="18" fill="#DDEFD7"/>
+    <text x="626" y="297" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1B5E20">PROTOCOL PUBLIC</text>
+    <text x="628" y="264" text-anchor="middle" font-size="10" fill="#6B6660">token &rarr; access URL</text>
+    <!-- Missing labor note -->
+    <rect x="30" y="376" width="840" height="44" fill="#FFF6E0" stroke="#E0DDD5"/>
+    <text x="450" y="394" text-anchor="middle" font-size="11.5" font-weight="700" fill="#8A5A00">THE PIPE THAT DOES NOT EXIST YET: per-job labor and material cost.</text>
+    <text x="450" y="410" text-anchor="middle" font-size="11" fill="#6B6660">No source documents ActionFlow capturing labor hours to a job; QuickBooks can carry job-tagged cost, but the process must be built (Section 3 and 5).</text>
+  </svg>
+  </div>
+  <div class="legend">
+    <span><span class="dot" style="background:#DDEFD7"></span> Working / publicly documented</span>
+    <span><span class="dot" style="background:#FFF3C4"></span> Setup required</span>
+    <span><span class="dot" style="background:#FBDDDD"></span> Gated &mdash; answer behind a login or phone call</span>
+  </div>
+
+  <div class="tblwrap"><table>
+    <tr><th>Connection</th><th>Mechanism</th><th>Status</th></tr>
+    <tr><td><strong>A</strong> &mdash; ActionFlow &rarr; QuickBooks</td><td>Vendor integration: &ldquo;customer, payment and invoice information flow directly into QuickBooks&rdquo; &mdash; QuickBooks Desktop explicitly supported <span class="ev ev-ver">VERIFIED</span>. Desktop connection mechanism unpublished; setup guide sits behind the client&rsquo;s support-portal login <span class="ev ev-gated">GATED</span></td><td><span class="pill pill-gated">Gated</span> <span class="pill pill-setup">Setup required</span></td></tr>
+    <tr><td><strong>B</strong> &mdash; QuickBooks &rarr; The Game</td><td>Near term: standard report exports. Better: the read-only ODBC driver included free with Enterprise <span class="ev ev-ver">VERIFIED</span> &mdash; owner permission required before touching it <span class="ev ev-doc">DOC</span></td><td><span class="pill pill-setup">Setup required</span></td></tr>
+    <tr><td><strong>C</strong> &mdash; Banks &rarr; SimpleFin &rarr; The Game</td><td>SimpleFin Bridge, $1.50/mo or $15/yr, up to 25 institutions <span class="ev ev-ver">VERIFIED</span>. Protocol fully public. Whether our specific banks are reachable is unverified <span class="ev ev-unc">UNCONFIRMED</span></td><td><span class="pill pill-setup">Setup required</span></td></tr>
+  </table></div>
+</section>
+
+<!-- ============================= 2. CONNECTION A ============================= -->
+<section id="conn-a">
+  <h2>2. Connection A &mdash; ActionFlow &rarr; QuickBooks</h2>
+  <div class="rule"></div>
+  <p><strong>What the vendor publishes, in full:</strong> <em>&ldquo;Once entered in ActionFlow, customer, payment and invoice information flow directly into QuickBooks. We currently integrate with QuickBooks Online and QuickBooks Desktop.&rdquo;</em> <span class="ev ev-ver">VERIFIED</span> &mdash; re-fetched live from actionflow.net/about/partner-integrations/ on 8/2/2026, wording unchanged from the 7/31 research. That one sentence is the entire published scope: three record types, one direction. No published source describes anything flowing back from QuickBooks, and no published source describes the integration posting cost of goods sold, inventory values, or vendor bills. <span class="ev ev-doc">DOC</span></p>
+
+  <div class="card alert">
+    <strong>Two gates sit in front of everything below.</strong>
+    (1) The QuickBooks integration is a paid-tier feature &mdash; PROCESS tier and up, $299/mo first user plus a $3,000 implementation including two days onsite, per the vendor&rsquo;s own 2026 price card <span class="ev ev-ver">VERIFIED</span>. Whether Schmidt&rsquo;s current (likely legacy) plan includes it is unknown until someone opens the billing screen. <span class="ev ev-gated">GATED &mdash; client</span>
+    (2) The vendor&rsquo;s actual setup instructions exist in a dedicated <em>Integrations &rarr; QuickBooks</em> section of their knowledge base at support.actionflow.net &mdash; confirmed to exist, unreadable without the client&rsquo;s own support login. <span class="ev ev-gated">GATED &mdash; support portal</span>
+  </div>
+
+  <div class="phase">Phase A &mdash; Confirm the license (this decides everything downstream)</div>
+  <ol class="steps">
+    <li>In ActionFlow, or in the company&rsquo;s billing email, pull up the current <strong>ActionFlow subscription invoice</strong>. Identify the plan name and monthly amount.
+      <span class="cite">Tier gating per actionflow.net/pricing/ <span class="ev ev-ver">VERIFIED</span>. No vendor doc describes where the tier is displayed in-product.</span></li>
+    <li>Compare the plan against the published price card. <strong>If the plan does not include the QuickBooks integration, stop here</strong> &mdash; the rest of this section is not licensed yet. Published upgrade path: PROCESS tier, $299/month first user, $74/month per additional user, $3,000 implementation with two days onsite.
+      <span class="cite">actionflow.net/pricing/ and /pricing-jan-2026/ <span class="ev ev-ver">VERIFIED</span> &mdash; 2026 price card; a legacy plan may differ. Confirm with the vendor.</span></li>
+  </ol>
+
+  <div class="phase">Phase B &mdash; Get the vendor&rsquo;s own setup guide (it exists, behind the login)</div>
+  <ol class="steps" start="3" style="counter-reset:step 2">
+    <li>In a browser, go to <strong>support.actionflow.net</strong> &mdash; ActionFlow&rsquo;s official client portal and knowledge base.
+      <span class="cite">Portal URL published at actionflow.net/what-should-your-software-integrate-with/ <span class="ev ev-ver">VERIFIED</span></span></li>
+    <li class="gated">Sign in with the company&rsquo;s ActionFlow support credentials. The portal&rsquo;s own words: <em>&ldquo;to access our full library of help articles and guides, you&rsquo;ll need to log in.&rdquo;</em> <strong>Nobody on our side holds these credentials yet.</strong> Unlock path: Blake or Diane retrieves or resets the login; failing that, the phone script below.
+      <span class="cite">support.actionflow.net/portal/en/kb, &ldquo;Logging In to the Knowledge Base&rdquo; <span class="ev ev-ver">VERIFIED</span> that it is login-gated</span></li>
+    <li class="gated">Once logged in, open the Knowledge Base and go to <strong>Integrations &rarr; QuickBooks</strong> (public URL of the section: support.actionflow.net/portal/en/kb/actionflow/integrations/quickbooks). Read and save the vendor&rsquo;s setup articles &mdash; they supersede the conditional steps in Phase D below.
+      <span class="cite">Category structure read from the public shell of the KB <span class="ev ev-ver">VERIFIED</span>; article contents <span class="ev ev-gated">GATED</span></span></li>
+  </ol>
+
+  <div class="phase">Phase C &mdash; ActionFlow-side configuration</div>
+  <div class="card">
+    <strong>Entirely undocumented in public.</strong> No public ActionFlow source shows the ActionFlow-side screens, settings, or account mapping for the QuickBooks connection. <span class="ev ev-doc">DOC &mdash; verified absence across every page reviewed</span> This phase is executed from the gated KB articles obtained in Phase B, or with the vendor on the phone. Writing invented steps here would be worse than the gap.
+  </div>
+
+  <div class="phase">Phase D &mdash; QuickBooks Desktop side (CONDITIONAL &mdash; read this box first)</div>
+  <div class="card note">
+    No ActionFlow source names the technical mechanism of its QuickBooks <em>Desktop</em> connection &mdash; Web Connector, SDK, or middleware. <span class="ev ev-doc">DOC &mdash; verified absence</span> There is also no ActionFlow listing on Intuit&rsquo;s app marketplaces (re-checked 7/31/2026). <span class="ev ev-doc">DOC</span> The steps below apply <strong>only if</strong> ActionFlow support confirms the Desktop path uses the QuickBooks Web Connector &mdash; the standard pipe for Desktop integrations, still current in 2026: Desktop integrations &ldquo;still revolve around the SDK, qbXML, and Web Connector stack,&rdquo; and Enterprise uses the same model. <span class="ev ev-ver">VERIFIED &mdash; conductor.is, 2026</span>
+  </div>
+  <ol class="steps" start="6" style="counter-reset:step 5">
+    <li class="gated">Obtain from ActionFlow (per their gated instructions) the integration&rsquo;s <strong>.qwc configuration file</strong> and its <strong>connection password</strong>. A .qwc file is the standard registration file a Web Connector integration provides.
+      <span class="cite">conductor.is/blog/quickbooks-web-connector-guide <span class="ev ev-ver">VERIFIED</span> (secondary)</span></li>
+    <li>On the computer where QuickBooks Desktop Enterprise is installed, confirm the Web Connector is present: open QuickBooks and go to <strong>File &gt; App Management &gt; Update Web Services</strong>. If that opens the Web Connector window, it is installed.
+      <span class="cite">support.myworks.software; corroborated by docs.railz.ai <span class="ev ev-ver">VERIFIED</span> (secondary &mdash; Intuit&rsquo;s own article timed out; see Section 7)</span></li>
+    <li>If it is not installed, download the Web Connector from Intuit&rsquo;s developer site and run <strong>QBWebConnectorInstaller.exe</strong> on that same machine.
+      <span class="cite">Installer name and same-machine requirement per docs.railz.ai and conductor.is <span class="ev ev-ver">VERIFIED</span> (secondary)</span></li>
+    <li>Open the company file <strong>as the QuickBooks Admin user</strong>. Open the Web Connector (<strong>File &gt; App Management &gt; Update Web Services</strong>), click <strong>Add an Application</strong>, browse to the .qwc file, open it.
+      <span class="cite">docs.railz.ai; admin sign-in per blog.accountinghelpline.com <span class="ev ev-ver">VERIFIED</span> (secondary)</span></li>
+    <li>QuickBooks shows an authorization window for the new web service (the <strong>Authorize New Web Service</strong> / application-certificate dialog). Choose the access option the vendor&rsquo;s instructions specify. The commonly referenced options include allowing access whenever the company file is open, or always. <strong>The exact dialog wording could not be verified against Intuit&rsquo;s own page</strong> (it timed out in three consecutive research sessions) &mdash; treat the on-screen text as authoritative.
+      <span class="cite">Window name per blog.accountinghelpline.com; always-on option per docs.railz.ai <span class="ev ev-unc">UNCONFIRMED wording</span></span></li>
+    <li>Back in the Web Connector window, <strong>tick the checkbox</strong> next to the newly added application and type the <strong>connection password</strong> from step 6 into the Password field; let it save.
+      <span class="cite">docs.railz.ai and blog.accountinghelpline.com <span class="ev ev-ver">VERIFIED</span> (secondary)</span></li>
+    <li>Run the first sync manually: with the application ticked, click <strong>Update Selected</strong>. Leave <strong>AutoRun</strong> OFF for the first run; once verified, AutoRun plus a minutes interval (reference recommends 10&ndash;60) makes it automatic.
+      <span class="cite">support.myworks.software <span class="ev ev-ver">VERIFIED</span> (secondary)</span></li>
+  </ol>
+
+  <div class="phase">Phase E &mdash; Verify, and manage it later</div>
+  <ol class="steps" start="13" style="counter-reset:step 12">
+    <li>Create (or pick) one test record in ActionFlow of each published type &mdash; a <strong>customer</strong>, an <strong>invoice</strong>, a <strong>payment</strong> &mdash; then open QuickBooks and confirm each arrived: the customer in the Customer Center, the invoice and payment on that customer. This checks the vendor&rsquo;s one published claim record by record.
+      <span class="cite">Record types per actionflow.net/about/partner-integrations/ <span class="ev ev-ver">VERIFIED</span>; the QuickBooks screens are ordinary navigation, not integration documentation. No public ActionFlow source describes a sync log or status screen <span class="ev ev-doc">DOC &mdash; absence</span></span></li>
+    <li>Watch where the pushed payments land. If they land in <strong>Undeposited Funds</strong>, the deposit-grouping step (matching QuickBooks deposits to real bank deposits) is still a human job &mdash; the exact process whose breakdown produced the current seven-figure Undeposited Funds balance. Ask the vendor where the account mapping is configured (support list, Section 7).
+      <span class="cite">Mapping location unpublished <span class="ev ev-gated">GATED</span>; Undeposited Funds history <span class="ev ev-doc">DOC</span></span></li>
+    <li>To remove the integration cleanly later: remove it from the <strong>Web Connector first</strong> (select the application, click <strong>Remove</strong>), and only then remove its permission in QuickBooks: <strong>Edit &gt; Preferences &gt; Integrated Applications &gt; Company Preferences</strong>, select the application, click <strong>Remove</strong>, confirm. Skipping the Web Connector step first can leave the application stuck.
+      <span class="cite">blog.accountinghelpline.com <span class="ev ev-ver">VERIFIED</span> (secondary)</span></li>
+  </ol>
+
+  <h3>Two operational cautions already visible in the vendor&rsquo;s own ecosystem</h3>
+  <ul class="plain">
+    <li><strong>Invoice-number overlap.</strong> A customer on ActionFlow&rsquo;s own community board asks what happens when QuickBooks and ActionFlow invoice numbers collide; the vendor&rsquo;s answer is not publicly readable. <span class="ev ev-gated">GATED</span></li>
+    <li><strong>Phased jobs.</strong> Per the search-index summary of a gated KB article: invoices for phases group under the same QuickBooks job only when they carry <em>exactly the same job name</em>, which ActionFlow handles automatically when jobs are added to phase groups. Confirm the full article after login. <span class="ev ev-unc">UNCONFIRMED &mdash; snippet of a gated article</span></li>
+  </ul>
+
+  <h3>The thirty-second phone call (ActionFlow support: 314-328-6627)</h3>
+  <div class="script">&ldquo;Hi &mdash; I&rsquo;m calling for Schmidt Countertops &amp; Construction in Bay, Arkansas; we&rsquo;re an ActionFlow customer. Three things. First, can you confirm which plan we&rsquo;re on and whether the QuickBooks integration is included? Second, we run QuickBooks Desktop Enterprise 24.0 &mdash; can you email me your Desktop setup guide and tell me whether it uses the QuickBooks Web Connector? Third, we need our login for your support portal so we can read the QuickBooks knowledge base articles ourselves. What&rsquo;s the best email to send our questions list to?&rdquo;</div>
+  <p class="small">Full ten-item support question list lives in the setup guide document already delivered (ActionFlow.QuickBooks.Integration.StepByStep, 7/31/2026); the consolidated gated items are in Section 7 below.</p>
+</section>
+
+<!-- ============================= 3. CONNECTION B ============================= -->
+<section id="conn-b">
+  <h2>3. Connection B &mdash; QuickBooks &rarr; The Game</h2>
+  <div class="rule"></div>
+  <p>The scoreboard reads the ledger two ways: the <strong>near-term path</strong> (report exports &mdash; workable today, human-powered) and the <strong>better path</strong> (the read-only ODBC driver that ships free inside Enterprise &mdash; machine-readable, no re-keying). Both are below.</p>
+
+  <div class="card note">
+    <strong>Standing condition on everything from QuickBooks:</strong> the engagement&rsquo;s own finding is that these records are not currently GAAP-reliable &mdash; one catch-all account holds 86% of cost of goods sold, and QuickBooks&rsquo; cash balance disagrees with thirteen months of verified bank statements. <span class="ev ev-doc">DOC</span> The ledger feeds the scoreboard&rsquo;s <em>structure</em> (invoices, A/R, overhead); the <em>cash truth</em> comes from Connection C.
+  </div>
+
+  <h3>3a. Near-term path &mdash; report exports, click by click</h3>
+  <p class="small">These are ordinary QuickBooks Desktop report navigation, the same convention the 7/31 setup guide used. Intuit&rsquo;s first-party help pages were unreachable during research (three sessions running), so menu wording is carried from standard Desktop navigation <span class="ev ev-inf">INFERENCE &mdash; ordinary QB navigation</span>; the on-screen menus are authoritative.</p>
+  <ol class="steps">
+    <li>Open QuickBooks Desktop Enterprise and sign in.</li>
+    <li>Overhead (the scoreboard&rsquo;s &ldquo;Wall&rdquo;): <strong>Reports &gt; Company &amp; Financial &gt; Profit &amp; Loss Standard</strong>. Set the date range to the month in play.</li>
+    <li>Open balances (what the current board&rsquo;s red/amber scoring runs on): <strong>Reports &gt; Customers &amp; Receivables &gt; A/R Aging Detail</strong>. The current Schmidt board was built from exactly this export plus the installed-jobs listing. <span class="ev ev-doc">DOC</span></li>
+    <li>The cost-side truth test: <strong>Reports &gt; Accountant &amp; Taxes &gt; Transaction Detail by Account</strong>, filtered to the catch-all Cost of Goods Sold account. If its transactions are bills and checks with vendor names, the plug is manual coding; if they are journal entries with system memos, something is auto-posting and we chase it. Thirty seconds, settles a standing question. <span class="ev ev-doc">DOC &mdash; the register test from the ActionFlow briefing</span></li>
+    <li>On any open report, click <strong>Excel</strong> (report toolbar) and choose <strong>Create New Worksheet</strong> &mdash; or <strong>Create Comma Separated Values (.csv)</strong> where offered &mdash; and save the file to the agreed folder.</li>
+    <li>To avoid rebuilding filters every week: with the report configured, click <strong>Memorize</strong> on the report toolbar, name it, and reopen it later from <strong>Reports &gt; Memorized Reports</strong>.</li>
+  </ol>
+  <p class="small">Once real job costing exists (Section 5), the same path adds <strong>Reports &gt; Company &amp; Financial &gt; Profit &amp; Loss by Job</strong> and <strong>Reports &gt; Jobs, Time &amp; Mileage &gt; Job Profitability Summary</strong> &mdash; the native job-costing spine Enterprise already contains. <span class="ev ev-doc">DOC</span> Today those reports would be empty, because nothing is job-tagged yet.</p>
+
+  <h3>3b. Better path &mdash; the read-only ODBC driver (included with Enterprise)</h3>
+  <p><strong>The fact that makes this the strongest card we hold:</strong> the read-only desktop edition of the QODBC driver is <em>&ldquo;included as a feature in the QuickBooks Enterprise Edition 2024 product, on the main file menu under Utilities&rdquo;</em> &mdash; the driver maker&rsquo;s own words. <span class="ev ev-ver">VERIFIED &mdash; qodbc.com (FLEXquarters)</span> It wraps the official Intuit SDK, is read-only in the included edition, and gives SQL access to the company file from Excel, Access, or a script &mdash; without ActionFlow&rsquo;s cooperation and without a paid upgrade. <span class="ev ev-ver">VERIFIED</span></p>
+  <div class="card alert">
+    <strong>Permission first.</strong> This touches the client&rsquo;s accounting system directly. It is on the ask list to Blake and does not get configured until he says yes, in line with the engagement&rsquo;s rule that client IT systems are not accessed without explicit go-ahead. <span class="ev ev-doc">DOC</span>
+  </div>
+  <ol class="steps">
+    <li>Get Blake&rsquo;s explicit go-ahead (read-only access, and a named workstation).</li>
+    <li>On the workstation with the company file, open QuickBooks as <strong>Admin</strong>. Go to the <strong>File</strong> menu, then <strong>Utilities</strong>, and choose the ODBC setup item. <strong>The exact menu wording varies by source</strong> &mdash; Intuit&rsquo;s article snippet says <em>Configure ODBC</em>, its article title says <em>Set up the ODBC driver</em>, one secondary guide shows an <em>Install ODBC Driver</em> item; Intuit&rsquo;s own page timed out during research, so both readings are carried and the on-screen menu is authoritative.
+      <span class="cite">quickbooks.intuit.com article L1Am8lpxa (title + search snippet only &mdash; page unreachable) <span class="ev ev-unc">UNCONFIRMED wording</span>; qodbc.com &ldquo;main file menu under Utilities&rdquo; <span class="ev ev-ver">VERIFIED</span></span></li>
+    <li>On the <strong>General</strong> tab: under Locate Company File choose <strong>&ldquo;Use the company file that&rsquo;s now open in QuickBooks&rdquo;</strong>, and set the Data Source Name (e.g., <code>QuickBooks Data</code>).
+      <span class="cite">Intuit article snippet + dancingnumbers.com <span class="ev ev-ver">VERIFIED</span> (secondary)</span></li>
+    <li>Click <strong>Test Connection to QuickBooks</strong>; on &ldquo;Test Connection to QuickBooks Successful,&rdquo; click <strong>OK</strong>, then <strong>Apply</strong>.
+      <span class="cite">Intuit article snippet <span class="ev ev-ver">VERIFIED</span> (secondary reproduction)</span></li>
+    <li>On the <strong>Messages</strong> tab: clear <strong>Detail Tracing (Slow)</strong>, check <strong>Display Optimizer Status Panel</strong>.
+      <span class="cite">Same sources</span></li>
+    <li>Create the dedicated credential: the driver requires <strong>its own separate login</strong>, distinct from any QuickBooks user &mdash; create a named read-only user for it rather than riding on Admin.
+      <span class="cite">ActionFlow briefing (sourced to ODBC references) <span class="ev ev-doc">DOC</span>; dancingnumbers.com <span class="ev ev-ver">VERIFIED</span> (secondary)</span></li>
+    <li>The driver is <strong>32-bit</strong>: configure the DSN with the 32-bit ODBC Administrator at <code>C:\Windows\SysWOW64\odbcad32.exe</code> (System DSN tab &gt; QuickBooks Data &gt; Configure). For 64-bit consumers (Excel 365, Power BI) the maker&rsquo;s bridge is <strong>QRemote</strong>.
+      <span class="cite">dancingnumbers.com <span class="ev ev-ver">VERIFIED</span> (secondary)</span></li>
+    <li>First external connection triggers the QuickBooks <strong>Application Certificate</strong> prompt &mdash; approve read access per Blake&rsquo;s decision (wording caveat as in step A-10 above).
+      <span class="cite">dancingnumbers.com <span class="ev ev-unc">UNCONFIRMED wording</span></span></li>
+    <li>Verify read-only: query a handful of tables (customers, invoices, accounts) from Excel and reconcile a few records against the QuickBooks screens. Write access is not included and not wanted &mdash; the included edition is read-only by design. <span class="ev ev-ver">VERIFIED</span></li>
+  </ol>
+</section>
+
+<!-- ============================= 4. CONNECTION C ============================= -->
+<section id="conn-c">
+  <h2>4. Connection C &mdash; Banks &rarr; SimpleFin &rarr; The Game</h2>
+  <div class="rule"></div>
+  <p>The banks hold the only numbers this engagement has been able to verify to the penny across thirteen months. <span class="ev ev-doc">DOC</span> SimpleFin is a read-only bank-feed protocol (&ldquo;a window on a safe &mdash; it lets people look at, but not touch, your financial information&rdquo; <span class="ev ev-ver">VERIFIED &mdash; simplefin.org</span>); the SimpleFin Bridge is the hosted service that connects real banks to it.</p>
+
+  <h3>4a. The four accounts this pipe must cover</h3>
+  <div class="tblwrap"><table>
+    <tr><th>Account</th><th>Role</th><th>Bank</th><th>Feed decision</th></tr>
+    <tr><td class="num"><strong>***650</strong></td><td>Main operating &mdash; all trade activity <span class="ev ev-doc">DOC</span></td><td><strong>UNKNOWN</strong> &mdash; the bank&rsquo;s name is not present in the text layer of any extracted statement; only a Jonesboro, AR remittance address survives. Unlock: read the logo on page 1 of any statement PDF, or ask Diane. <span class="ev ev-doc">DOC</span></td><td>Connect. This is the primary cash-truth feed.</td></tr>
+    <tr><td class="num"><strong>***922</strong></td><td>&ldquo;Construction account&rdquo; &mdash; a conduit, not an operating account <span class="ev ev-doc">DOC</span></td><td>Same bank as ***650 <span class="ev ev-doc">DOC</span></td><td>Connect. Its unlabelled deposits are a standing question.</td></tr>
+    <tr><td class="num"><strong>***317</strong></td><td>Stephen&rsquo;s <em>personal</em> account &mdash; confirmed 7/29 <span class="ev ev-doc">DOC</span></td><td>Same bank family <span class="ev ev-doc">DOC</span></td><td><strong>Steve&rsquo;s decision.</strong> A personal account connects only under his own Bridge login, by him, if at all. The board can carry the transfers from the business side without it.</td></tr>
+    <tr><td class="num"><strong>***708</strong></td><td>Card/Square settlements. QuickBooks calls it &ldquo;Iberia/First Horizon&rdquo; <span class="ev ev-doc">DOC</span></td><td>First Horizon &mdash; <strong>attribution unconfirmed</strong>: the only export in hand identifies itself as just &ldquo;Business Checking.&rdquo; <span class="ev ev-doc">DOC</span></td><td>Connect, after confirming the institution.</td></tr>
+  </table></div>
+
+  <h3>4b. Signing up for SimpleFin Bridge, click by click</h3>
+  <ol class="steps">
+    <li>Identify the primary bank <strong>by name</strong> (the UNKNOWN in the table above). One glance at a statement PDF header closes it.</li>
+    <li>Check coverage: go to <strong>beta-bridge.simplefin.org/search-institutions</strong> and type the bank&rsquo;s name, then &ldquo;First Horizon.&rdquo; The search needs a human in a browser &mdash; it would not answer an automated fetch, so <strong>coverage of our specific banks is unverified as of this writing</strong>. The Bridge&rsquo;s upstream aggregator is MX <span class="ev ev-ver">VERIFIED &mdash; Actual Budget docs: &ldquo;the bank and upstream provider, MX&rdquo;</span>, a major aggregator, but breadth is not proof of our banks.
+      <span class="cite">Institution search page <span class="ev ev-ver">VERIFIED to exist</span>; our banks&rsquo; presence <span class="ev ev-unc">UNCONFIRMED</span></span></li>
+    <li>Go to <strong>bridge.simplefin.org</strong> &mdash; it currently redirects to <strong>beta-bridge.simplefin.org</strong> (302 observed live 8/2/2026). Click <strong>Get started</strong> and create an account. Decide up front <em>whose</em> account this is &mdash; the credentials belong with the client (Blake or Diane), because the bank logins do.
+      <span class="cite">beta-bridge.simplefin.org <span class="ev ev-ver">VERIFIED</span></span></li>
+    <li>Subscribe: <strong>$1.50 + tax per month, or $15.00 + tax per year</strong>, covering up to <strong>25 institutions and 25 apps</strong>. Payment is required before accounts can be added.
+      <span class="cite">Price and limits: beta-bridge.simplefin.org <span class="ev ev-ver">VERIFIED</span>; pay-before-connect: Actual Budget docs <span class="ev ev-ver">VERIFIED</span></span></li>
+    <li>Connect each bank: <strong>Financial Institutions &gt; New Connection</strong>, then sign in with that bank&rsquo;s online-banking credentials in the connection flow. Repeat per institution. Whoever holds the bank logins does this step &mdash; the logins are never shared with me or with The Game.
+      <span class="cite">Menu names per Actual Budget setup docs <span class="ev ev-ver">VERIFIED</span> (third-party but current)</span></li>
+    <li>Issue a token for the scoreboard: <strong>My Accounts &gt; Apps &gt; New Connection</strong> generates a <strong>Setup Token</strong> (the Bridge&rsquo;s own developer guide points the same flow at <code>/simplefin/create</code>). Copy it once &mdash; it is single-use.
+      <span class="cite">Actual Budget docs + beta-bridge.simplefin.org/info/developers <span class="ev ev-ver">VERIFIED</span></span></li>
+    <li>The Game&rsquo;s collector claims the token &mdash; this is the whole protocol handshake: <strong>(a)</strong> Base64-decode the Setup Token; it decodes to a claim URL. <strong>(b)</strong> Send one <strong>POST</strong> to that URL with <code>Content-Length: 0</code>. <strong>(c)</strong> The response body is the <strong>Access URL</strong> &mdash; a URL with Basic-Auth credentials baked in. <strong>This works exactly once</strong>; the claimed token is dead afterward (reuse returns 403), so the Access URL is saved securely on the collector side and never displayed again.
+      <span class="cite">simplefin.org/protocol.html + Bridge developer guide <span class="ev ev-ver">VERIFIED</span></span></li>
+    <li>The collector then reads accounts on a schedule: <strong>GET <code>{ACCESS_URL}/accounts</code></strong> with <code>version=2</code>, optionally <code>account=&hellip;</code> and <code>start-date</code>/<code>end-date</code> (windows limited to <strong>90 days</strong>). The JSON carries the account set: organization info, each account&rsquo;s <code>id</code>, <code>name</code>, <code>balance</code>, <code>available-balance</code>, <code>balance-date</code>, and a <code>transactions</code> array (<code>id</code>, <code>posted</code>, <code>amount</code>, <code>description</code>), plus an <code>errors</code> list.
+      <span class="cite">simplefin.org/protocol.html + developer guide <span class="ev ev-ver">VERIFIED</span></span></li>
+    <li>Respect the service&rsquo;s limits &mdash; they shape what the cash tile can promise: <strong>24 requests or fewer per day</strong> (violations warn, then disable the token), and the Bridge refreshes each bank <strong>roughly once every 24 hours</strong>, at a time of day that varies. So the scoreboard&rsquo;s cash number is a <em>daily</em> truth, not a live ticker &mdash; and it should say so on its face.
+      <span class="cite">Rate limit: Bridge developer guide <span class="ev ev-ver">VERIFIED</span>; once-daily refresh: Actual Budget docs <span class="ev ev-ver">VERIFIED</span></span></li>
+    <li>Verify: reconcile the first <code>/accounts</code> pull against the month-end balances already proven from the statement PDFs, account by account. Thirteen months of those balances chain to the penny <span class="ev ev-doc">DOC</span> &mdash; the feed must tie to them before the board trusts it.</li>
+  </ol>
+  <p class="small">Historical depth caveat: the sync pulls at most 90 days per request window, and how far back each institution provides data varies by bank. <span class="ev ev-ver">VERIFIED</span> Deeper history stays sourced from the statement PDFs already analyzed.</p>
+</section>
+
+<!-- ============================= 5. WHAT THE GAME GETS ============================= -->
+<section id="feeds">
+  <h2>5. What The Game Gets From Each Pipe</h2>
+  <div class="rule"></div>
+  <p>The scoreboard&rsquo;s native scoring needs per-job material, labor, and commission cost. Schmidt has none of that today &mdash; which is why the current board scores on cash-closure and ticket size instead, and says so on its face. <span class="ev ev-doc">DOC</span> This table is the honest inventory of each data element, where it comes from, and what stands between here and there.</p>
+  <div class="tblwrap"><table>
+    <tr><th>Data element</th><th>Source system</th><th>Connection</th><th>Status</th></tr>
+    <tr><td><strong>Per-job revenue</strong> (invoice totals)</td><td>ActionFlow invoices, pushed into QuickBooks</td><td>A, then B</td><td><span class="pill pill-setup">Setup required</span> &mdash; flows once A is licensed and configured; readable via exports today from either system</td></tr>
+    <tr><td><strong>Per-job material cost</strong></td><td>QuickBooks &mdash; inventory items received and consumed with the Customer:Job field populated (the item-workflow procedures already specified for this engagement)</td><td>B</td><td><span class="pill pill-unk">Not yet captured</span> &mdash; a process build, not a software purchase. No source describes ActionFlow posting cost to QuickBooks <span class="ev ev-doc">DOC</span></td></tr>
+    <tr><td><strong>Per-job labor (burdened)</strong></td><td>Nowhere today. No public source describes ActionFlow capturing labor hours to a job <span class="ev ev-doc">DOC &mdash; absence</span></td><td>&mdash;</td><td><span class="pill pill-gated">Gated / unknown</span> &mdash; ask ActionFlow support; otherwise built from timesheets + the burdened-rate work already done</td></tr>
+    <tr><td><strong>Overhead</strong> (the &ldquo;Wall&rdquo; tile)</td><td>QuickBooks P&amp;L</td><td>B</td><td><span class="pill pill-work">Available now</span> &mdash; with the records-reliability caveat carried visibly</td></tr>
+    <tr><td><strong>A/R open balances</strong> (current red/amber scoring)</td><td>QuickBooks A/R Aging Detail export</td><td>B (near-term path)</td><td><span class="pill pill-work">Working today</span> &mdash; this is what the existing board was built from <span class="ev ev-doc">DOC</span></td></tr>
+    <tr><td><strong>Cash reality</strong> (balances + every transaction)</td><td>The banks, via SimpleFin <code>/accounts</code></td><td>C</td><td><span class="pill pill-setup">Setup required</span> &mdash; daily refresh, 90-day windows, protocol fully public</td></tr>
+    <tr><td><strong>Job registers</strong> (quotes, installs, square footage)</td><td>ActionFlow reports/exports</td><td>Export (tier-dependent)</td><td><span class="pill pill-gated">Gated</span> &mdash; &ldquo;Downloadable Data&rdquo; is a top-tier feature; export formats are nowhere published <span class="ev ev-doc">DOC</span></td></tr>
+  </table></div>
+</section>
+
+<!-- ============================= 6. ORDER OF OPERATIONS ============================= -->
+<section id="order">
+  <h2>6. The Order of Operations</h2>
+  <div class="rule"></div>
+  <p>Sequence and dependencies only. No durations &mdash; none would be honest.</p>
+  <ol class="steps">
+    <li><strong>One client conversation unlocks three gates at once.</strong> Ask for: (a) the ActionFlow billing screen (which tier &mdash; decides whether Connection A is licensed); (b) the support-portal login for support.actionflow.net (unlocks the vendor&rsquo;s setup documentation); (c) the primary bank&rsquo;s name plus Blake&rsquo;s go-ahead on read-only ODBC. Everything else depends on at least one of these.</li>
+    <li><strong>SimpleFin can start in parallel with everything.</strong> Connection C depends only on the bank names and on whoever holds the bank logins &mdash; not on ActionFlow, not on the ledger cleanup. It is the shortest path to the first trustworthy number on the board.</li>
+    <li><strong>Read the vendor&rsquo;s QuickBooks KB articles before configuring anything</strong> (Phase B before Phases C&ndash;D). The Desktop mechanism is unpublished; the gated articles or the support call settle it. Configuration before documentation is how systems end up half-installed &mdash; this client has lived that already. <span class="ev ev-doc">DOC</span></li>
+    <li><strong>Run the COGS register test before trusting any cost figure</strong> (Section 3a, step 4). Its answer decides whether the cost-side cleanup is a coding fix or a systems chase.</li>
+    <li><strong>Job-tagged cost capture is the long pole.</strong> The item-receiving and consumption procedures put material cost onto jobs going forward; labor-to-job needs the ActionFlow answer (or a timesheet process). Only after cost lands on jobs does the scoreboard&rsquo;s native profit scoring switch on &mdash; before that, the board keeps its current cash-closure scoring, honestly labelled.</li>
+    <li><strong>Then rebuild the board on live feeds:</strong> ODBC (or scheduled exports) for the ledger side, the SimpleFin access URL for the cash side, ActionFlow&rsquo;s registers for job identity. The board&rsquo;s architecture already supports this &mdash; the static page and the live page are the same code with the transport swapped. <span class="ev ev-doc">DOC</span></li>
+  </ol>
+</section>
+
+<!-- ============================= 7. GATED / OPEN ITEMS ============================= -->
+<section id="gated">
+  <h2>7. Open and Gated Items &mdash; Consolidated</h2>
+  <div class="rule"></div>
+  <div class="tblwrap"><table>
+    <tr><th>#</th><th>Item</th><th>Class</th><th>Unlock path</th></tr>
+    <tr><td>1</td><td>Which ActionFlow subscription tier Schmidt is on &mdash; decides whether the QuickBooks integration is licensed at all</td><td><span class="ev ev-gated">GATED</span></td><td>Client billing screen or invoice; ActionFlow support 314-328-6627</td></tr>
+    <tr><td>2</td><td>Support-portal login for support.actionflow.net</td><td><span class="ev ev-gated">GATED</span></td><td>Blake or Diane retrieves/resets; else the phone script</td></tr>
+    <tr><td>3</td><td>The vendor&rsquo;s QuickBooks setup articles (Integrations &rarr; QuickBooks section &mdash; confirmed to exist)</td><td><span class="ev ev-gated">GATED</span></td><td>Item 2, then read and save the articles</td></tr>
+    <tr><td>4</td><td>Desktop connection mechanism &mdash; Web Connector .qwc, SDK, or middleware; and where the company file must be reachable from</td><td><span class="ev ev-gated">GATED</span></td><td>Support call / gated KB. Phase D applies only if the answer is &ldquo;Web Connector&rdquo;</td></tr>
+    <tr><td>5</td><td>What exactly syncs (document-level vs summary), which QuickBooks accounts pushed records post to, whether payments land in Undeposited Funds, duplicate-customer matching, sync-error surface</td><td><span class="ev ev-gated">GATED</span></td><td>Support question list (delivered 7/31); answers in writing</td></tr>
+    <tr><td>6</td><td>Invoice-number overlap behavior between the two systems</td><td><span class="ev ev-gated">GATED</span></td><td>Same &mdash; the question is already on the vendor&rsquo;s community board, unanswered publicly</td></tr>
+    <tr><td>7</td><td>Phased-jobs job-name rule (search-snippet only)</td><td><span class="ev ev-unc">UNCONFIRMED</span></td><td>Confirm the full KB article after login</td></tr>
+    <tr><td>8</td><td>Whether ActionFlow captures labor hours to a job &mdash; the single most consequential unknown for job costing</td><td><span class="ev ev-gated">GATED</span></td><td>Support call + the client&rsquo;s own reports-menu screen</td></tr>
+    <tr><td>9</td><td>Primary bank&rsquo;s name for accounts ***650 / ***922 / ***317 &mdash; not present in any statement&rsquo;s extracted text</td><td><span class="ev ev-unc">UNKNOWN</span></td><td>Read the logo on any statement PDF page 1, or ask Diane</td></tr>
+    <tr><td>10</td><td>Whether that bank and First Horizon are reachable through the SimpleFin Bridge (MX)</td><td><span class="ev ev-unc">UNKNOWN</span></td><td>Ten seconds at beta-bridge.simplefin.org/search-institutions, in a browser, after item 9</td></tr>
+    <tr><td>11</td><td>&ldquo;First Horizon&rdquo; attribution for ***708 &mdash; the export self-identifies only as &ldquo;Business Checking&rdquo;</td><td><span class="ev ev-unc">UNCONFIRMED</span></td><td>One-line confirmation from the client</td></tr>
+    <tr><td>12</td><td>Whether Steve&rsquo;s personal ***317 connects at all</td><td>Decision</td><td>Steve&rsquo;s call; if yes, under his own Bridge login only</td></tr>
+    <tr><td>13</td><td>Exact wording of the QuickBooks ODBC menu item and of the Application Certificate / Authorize New Web Service dialogs</td><td><span class="ev ev-unc">UNCONFIRMED</span></td><td>Intuit&rsquo;s pages timed out in three consecutive research sessions; the on-screen text is authoritative when we are at the machine</td></tr>
+    <tr><td>14</td><td>Whether Schmidt licenses QuickBooks Advanced Inventory and whether class tracking is configured</td><td><span class="ev ev-gated">GATED</span></td><td>The client&rsquo;s QuickBooks screen, at the machine</td></tr>
+  </table></div>
+</section>
+
+<!-- ============================= 8. SOURCES ============================= -->
+<section id="sources" class="srcs">
+  <h2>8. Sources</h2>
+  <div class="rule"></div>
+  <h4>Fetched live while writing this page (8/2/2026)</h4>
+  <ul>
+    <li>simplefin.org and simplefin.org/protocol.html &mdash; protocol, token claim flow, /accounts schema</li>
+    <li>bridge.simplefin.org &rarr; 302 &rarr; beta-bridge.simplefin.org &mdash; pricing ($1.50/mo or $15/yr + tax), 25-institution/25-app limits</li>
+    <li>beta-bridge.simplefin.org/info/developers &mdash; setup-token claim (single-use), <code>version=2</code>, 90-day windows, 24-requests/day limit</li>
+    <li>beta-bridge.simplefin.org/search-institutions &mdash; exists; requires a human browser (JS), our banks unverified</li>
+    <li>actualbudget.org/docs/advanced/bank-sync/simplefin/ &mdash; Bridge UI menu names, MX upstream, pay-before-connect, once-daily refresh, 90-day history caveat</li>
+    <li>actionflow.net/about/partner-integrations/ &mdash; re-verified verbatim; integration statement unchanged</li>
+    <li>qodbc.com/what-is-qodbc/ (FLEXquarters) &mdash; read-only ODBC included in Enterprise 2024, &ldquo;main file menu under Utilities,&rdquo; SDK wrapper</li>
+    <li>conductor.is/blog/quickbooks-desktop-api-in-2026 &mdash; SDK / qbXML / Web Connector stack current in 2026; Enterprise on the same model</li>
+    <li>dancingnumbers.com QuickBooks Enterprise ODBC guide &mdash; DSN configuration, 32-bit administrator path, QRemote, separate credential</li>
+    <li>quickbooks.intuit.com help articles (ODBC setup L1Am8lpxa; Web Connector L4Vp7VI44) &mdash; <strong>timed out again</strong>; titles and search snippets only. Third consecutive session with this failure mode.</li>
+    <li>developer.intuit.com QB Desktop get-started &mdash; fetched but content truncated; not relied on</li>
+  </ul>
+  <h4>Documents already in the engagement (cited as DOC above)</h4>
+  <ul>
+    <li>ActionFlow system briefing (7/29/2026) and the integration research source log (7/31/2026)</li>
+    <li>ActionFlow.QuickBooks.Integration.StepByStep guide, v1.0 (7/31/2026) &mdash; this page carries its Phases A&ndash;E forward and extends them</li>
+    <li>QuickBooks Enterprise inventory / job-costing remediation procedures (7/30/2026)</li>
+    <li>Bank statement analysis, 26 PDFs, June 2025 &ndash; June 2026, with the four-account map</li>
+    <li>QuickBooks account-level balance sheet and P&amp;L analysis (the COGS catch-all finding)</li>
+    <li>The Game architecture specification and the Schmidt board build notes</li>
+    <li>Schmidt visual brand kit (palette and typography used on this page)</li>
+  </ul>
+  <p class="small" style="margin-top:14px">Secondary Web Connector references carried from the 7/31 guide: conductor.is (Web Connector guide), support.myworks.software, docs.railz.ai, blog.accountinghelpline.com. Intuit first-party corroboration remains an open follow-up until Intuit&rsquo;s pages answer.</p>
+</section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>Prepared by Dale Linn &middot; Schmidt Countertops &amp; Construction, Inc. engagement</span>
+    <span class="idsmark">IDS</span>
+  </div>
+</footer>
+
+</body>
+</html>
