@@ -399,6 +399,8 @@
 
     <p>Project settings override global settings. Start global and only drop project-specific overrides when you have a real reason.</p>
 
+    <div class="note">Every setting that file accepts is documented at <a href="https://docs.claude.com/en/docs/claude-code/settings" target="_blank" rel="noopener">docs.claude.com &rarr; Claude Code settings</a> (opens in a new tab). You don't need to read it now &mdash; bookmark it for the day you want something this page didn't cover.</div>
+
     <p><strong>Permissions &mdash; stop getting asked the same question every time.</strong></p>
 
     <p>By default, Claude asks before running most shell commands. That's good. But after the tenth "yes, run <code>npm install</code>" prompt, you want to allowlist the safe ones. Example global <code>settings.json</code>:</p>
@@ -463,7 +465,7 @@
       <li><code>/help</code> &mdash; list everything available.</li>
     </ul>
 
-    <p><strong>Skills</strong> are slash commands that come with their own instructions. They're like little pre-built recipes. <code>/review</code> is a skill. <code>/init</code> is a skill. You can install more, and you can write your own.</p>
+    <p><strong>Skills</strong> are slash commands that come with their own instructions. They're like little pre-built recipes. <code>/review</code> is a skill. <code>/init</code> is a skill. You can install more, and you can write your own. The full list of built-in slash commands is at <a href="https://docs.claude.com/en/docs/claude-code/slash-commands" target="_blank" rel="noopener">docs.claude.com &rarr; slash commands</a> (opens in a new tab), and you can always type <code>/help</code> inside Claude Code to see what's available right now.</p>
 
     <div class="explain-box">
       <strong>When to write a custom skill.</strong> If you find yourself giving Claude the same multi-paragraph instructions at the start of every session ("review this code for X, Y, Z using these conventions"), turn it into a skill. Next time, you just type <code>/my-review</code> and Claude already knows what to do. Custom skills are folders of instructions under <code>~/.claude/skills/</code> &mdash; ask Claude to build one for you when you need it.
@@ -573,7 +575,7 @@
 
     <p>This is a full tutorial on its own. For now, just know:</p>
     <ul>
-      <li>MCP servers live in <code>settings.json</code> under an <code>mcpServers</code> block</li>
+      <li>MCP servers live in <code>settings.json</code> under an <code>mcpServers</code> block &mdash; the setup steps are at <a href="https://docs.claude.com/en/docs/claude-code/mcp" target="_blank" rel="noopener">docs.claude.com &rarr; Claude Code MCP</a></li>
       <li>Anthropic publishes servers for Gmail, Calendar, and Drive</li>
       <li>Third parties publish servers for Slack, Notion, Linear, Postgres, and more</li>
       <li>You can write your own &mdash; that's how custom middleware tools get hooked into Claude</li>
@@ -636,7 +638,8 @@
 
 <div class="next-page">
   <h3>You're done with the series.</h3>
-  <p>Open a terminal, <code>cd</code> into whichever project is on your mind, type <code>claude</code>, and build the thing.</p>
+  <p>Open Command Prompt (Start menu &rarr; type <strong>cmd</strong> &rarr; press Enter), <code>cd</code> into whichever project is on your mind, type <code>claude</code>, and build the thing.</p>
+  <p style="font-size: 14px;">When you want the reference material rather than a walkthrough, it lives at <a href="https://docs.claude.com/en/docs/claude-code/setup" target="_blank" rel="noopener">docs.claude.com &rarr; Claude Code</a>.</p>
 </div>
 
 <div style="text-align:center;">
