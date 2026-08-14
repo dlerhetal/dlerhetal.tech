@@ -482,6 +482,7 @@
       <li><strong>Exercise 1 of 3:</strong> An Eisenhower Matrix &mdash; a personal task prioritizer you open in your browser</li>
       <li><strong>Exercise 2 of 3:</strong> A client homework form that emails responses to you via Google</li>
       <li><strong>Exercise 3 of 3 (The Big One):</strong> A middleware app that imports bills into QuickBooks Online via API</li>
+      <li><strong>Then, page 5 &mdash; <a href="harness-and-memory.html">Harness &amp; Memory</a>:</strong> the settings, memory files, and habits that make every project after this one go faster</li>
     </ul>
 
     <p>Each one is harder than the last. By the end, you'll be dangerous.</p>
@@ -490,9 +491,19 @@
     <ul>
       <li>A Windows computer (you're on one &mdash; good)</li>
       <li>Internet access</li>
-      <li>A Gmail account (if you don't have one, make one now &mdash; if you can't make a Gmail account, the rest of this tutorial is going to be a bad time)</li>
+      <li>A Gmail account &mdash; if you don't have one, make one now at <a href="https://accounts.google.com/signup" target="_blank" rel="noopener">accounts.google.com/signup</a> (free)</li>
       <li>A credit card for a Claude subscription (flat monthly fee &mdash; no surprises)</li>
     </ul>
+
+    <div class="note">
+      <strong>Everything you'll sign up for, in one place</strong> &mdash; each link opens in a new tab, so you won't lose your place here:
+      <a href="https://claude.ai/" target="_blank" rel="noopener">Claude</a> (paid, Section 2) &middot;
+      <a href="https://accounts.google.com/signup" target="_blank" rel="noopener">Google account</a> (free) &middot;
+      <a href="https://nodejs.org/en/download" target="_blank" rel="noopener">Node.js</a> (free, Section 3) &middot;
+      <a href="https://github.com/signup" target="_blank" rel="noopener">GitHub</a> (free, Section 7).
+      Later pages add <a href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener">Python</a> (free) and an
+      <a href="https://developer.intuit.com/" target="_blank" rel="noopener">Intuit developer account</a> (free). Claude is the only one that costs money.
+    </div>
 
     <div class="substep" data-step="1-1">
       <input type="checkbox" id="s1-1">
@@ -514,7 +525,7 @@
       <input type="checkbox" id="s2-1">
       <label for="s2-1">Go to Claude's website (click the button below)</label>
     </div>
-    <a class="download-btn" href="https://claude.ai/" target="_blank">Open Claude.ai</a>
+    <a class="download-btn" href="https://claude.ai/" target="_blank" rel="noopener">Open Claude.ai</a>
 
     <div class="substep" data-step="2-2">
       <input type="checkbox" id="s2-2">
@@ -527,7 +538,7 @@
     </div>
 
     <div class="note">
-      <strong>Which plan?</strong> You need at least <strong>Claude Pro</strong> ($20/month) to use Claude Code. There's also <strong>Claude Max</strong> ($100/month or $200/month) for heavier usage. Start with Pro &mdash; you can upgrade later if you hit limits. This is a flat monthly fee, like Netflix. Use it as much or as little as you want.
+      <strong>Which plan?</strong> You need at least <strong>Claude Pro</strong> ($20/month) to use Claude Code. There's also <strong>Claude Max</strong> ($100/month or $200/month) for heavier usage. Start with Pro &mdash; you can upgrade later if you hit limits. This is a flat monthly fee, like Netflix. Use it as much or as little as you want. Current plans and prices are always listed at <a href="https://www.claude.com/pricing" target="_blank" rel="noopener">claude.com/pricing</a>.
     </div>
 
     <div class="substep" data-step="2-4">
@@ -557,7 +568,8 @@
       <input type="checkbox" id="s3-1">
       <label for="s3-1">Click the button below and download the <strong>LTS</strong> version (the big green button)</label>
     </div>
-    <a class="download-btn" href="https://nodejs.org/" target="_blank">Download Node.js</a>
+    <a class="download-btn" href="https://nodejs.org/en/download" target="_blank" rel="noopener">Download Node.js</a>
+    <div class="note">That button opens <a href="https://nodejs.org/en/download" target="_blank" rel="noopener">nodejs.org/en/download</a> in a new tab. Node.js is free. On the page, choose <strong>Windows</strong> and the <strong>LTS</strong> release, then download the <strong>.msi</strong> installer.</div>
 
     <div class="substep" data-step="3-2">
       <input type="checkbox" id="s3-2">
@@ -581,6 +593,10 @@
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
     </div>
 
+    <div class="warning-note">
+      <strong>If it says <em>"'node' is not recognized"</em></strong> &mdash; nothing is broken, your Command Prompt just started before Node.js did. Close that window, open a fresh one (Start menu &rarr; type <strong>cmd</strong> &rarr; Enter), and try again. Still nothing? Re-run the installer from <a href="https://nodejs.org/en/download" target="_blank" rel="noopener">nodejs.org/en/download</a> and pick <strong>Repair</strong> if it offers it.
+    </div>
+
     <div class="substep" data-step="3-4">
       <input type="checkbox" id="s3-4">
       <label for="s3-4">Verified &mdash; <code>node --version</code> shows a version number</label>
@@ -597,7 +613,9 @@
   <div class="step-body">
     <p>Now that Node.js is installed, you can install Claude Code with a single command. This downloads it from the internet and sets it up on your machine.</p>
 
-    <div class="note"><strong>Run this in Command Prompt</strong> (the same window from the last step, or open a new one):</div>
+    <div class="note"><strong>Before you start:</strong> Section 3 (Node.js) has to be finished first &mdash; this command uses <code>npm</code>, which arrives with Node.js. The official write-up of this step lives at <a href="https://docs.claude.com/en/docs/claude-code/setup" target="_blank" rel="noopener">docs.claude.com &rarr; Claude Code setup</a> if you ever want the reference version.</div>
+
+    <div class="note"><strong>Run this in Command Prompt</strong> (Start menu &rarr; type <strong>cmd</strong> &rarr; Enter &mdash; or reuse the window from the last step):</div>
     <div class="cmd-block">
       <span class="cmd-text">npm install -g @anthropic-ai/claude-code</span>
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
@@ -614,6 +632,15 @@
     <div class="cmd-block">
       <span class="cmd-text">claude --version</span>
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="warning-note">
+      <strong>If it says <em>"'claude' is not recognized"</em></strong> &mdash; try these in order. One of them almost always does it.
+      <ol style="margin: 8px 0 0 18px; padding: 0;">
+        <li>Close every Command Prompt window, open a fresh one, and run <code>claude --version</code> again. A window opened before the install can't see it.</li>
+        <li>Confirm the install actually landed: run <code>npm list -g @anthropic-ai/claude-code</code>. If it prints nothing, run the install command above once more and read the output for red text.</li>
+        <li>Still stuck? The official install and troubleshooting pages are <a href="https://docs.claude.com/en/docs/claude-code/setup" target="_blank" rel="noopener">docs.claude.com/claude-code/setup</a> and <a href="https://docs.claude.com/en/docs/claude-code/troubleshooting" target="_blank" rel="noopener">.../troubleshooting</a>.</li>
+      </ol>
     </div>
 
     <div class="substep" data-step="4-2">
@@ -751,7 +778,7 @@
   <div class="step-body">
     <p>Git is your undo button and a free offsite backup. Set it up once &mdash; from here on, you just tell Claude to handle the Git work.</p>
 
-    <div class="note"><strong>Install Git and the GitHub CLI</strong> in Command Prompt &mdash; run these one at a time, then close and reopen the window:</div>
+    <div class="note"><strong>Install Git and the GitHub CLI</strong> in Command Prompt (Start menu &rarr; type <strong>cmd</strong> &rarr; Enter) &mdash; run these one at a time, then close and reopen the window. Both are free:</div>
     <div class="cmd-block">
       <span class="cmd-text">winget install --id Git.Git -e</span>
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
@@ -762,6 +789,12 @@
     </div>
     <div class="note">
       <strong>On a company-managed computer:</strong> if an install fails with <em>"You cancelled the installation"</em> (exit code 1602) and you didn't cancel anything, your IT security policy declined it for you. Add <code>--scope user</code> to the end of each command to install without administrator rights. If that's blocked too, ask IT to install Git and the GitHub CLI.
+    </div>
+    <div class="warning-note">
+      <strong>If Command Prompt says <em>"'winget' is not recognized"</em></strong> &mdash; your Windows doesn't have the package manager. Skip the commands above and use the regular installers instead, one at a time, clicking <strong>Next</strong> through the defaults:
+      <a href="https://git-scm.com/download/win" target="_blank" rel="noopener">Git for Windows</a> &middot;
+      <a href="https://cli.github.com/" target="_blank" rel="noopener">GitHub CLI</a>.
+      Then close and reopen Command Prompt and carry on with the next step. (If you'd rather have <code>winget</code> itself, it ships with Microsoft's App Installer &mdash; details at <a href="https://learn.microsoft.com/en-us/windows/package-manager/winget/" target="_blank" rel="noopener">Microsoft's winget page</a>.)
     </div>
     <div class="substep" data-step="7-1">
       <input type="checkbox" id="s7-1">

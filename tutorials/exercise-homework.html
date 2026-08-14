@@ -170,6 +170,16 @@
 <h1>Exercise 2 of 3: Client Homework Form</h1>
 <p class="subtitle">Now you're connecting two systems: a form your clients fill out, and a Google backend that emails the answers to you. This is the bridge between "static page" and "real software."</p>
 
+<div class="note">
+  <strong>Before you start &mdash; what this exercise assumes:</strong>
+  <ul style="margin: 8px 0 0 18px; padding: 0;">
+    <li>Claude Code installed and working from <a href="index.html">Page 1: Setup &amp; Foundation</a> &mdash; <code>claude --version</code> prints a version number</li>
+    <li>A Google account, since the email backend runs on Google's servers. Free, and you may already have one: <a href="https://accounts.google.com/signup" target="_blank" rel="noopener">accounts.google.com/signup</a></li>
+    <li><a href="exercise-eisenhower.html">Exercise 1</a> finished &mdash; not strictly required, but the workflow here builds on it</li>
+  </ul>
+  Nothing in this exercise costs money. <a href="https://script.google.com/" target="_blank" rel="noopener">Google Apps Script</a> is free with any Google account.
+</div>
+
 <div class="progress-bar-container">
   <div class="progress-bar-fill" id="progressFill"></div>
   <div class="progress-label" id="progressLabel">0 / 0 steps</div>
@@ -229,14 +239,14 @@
     </div>
 
     <div class="note">
-      <strong>You need a Gmail account for this.</strong> If you don't have one, go to <a href="https://accounts.google.com/signup" target="_blank" style="color: #b8860b;">accounts.google.com</a> and create one.
+      <strong>You need a Gmail account for this.</strong> If you don't have one, go to <a href="https://accounts.google.com/signup" target="_blank" rel="noopener" style="color: #b8860b;">accounts.google.com/signup</a> and create one &mdash; it's free and takes a couple of minutes.
     </div>
 
     <div class="substep" data-step="2-1">
       <input type="checkbox" id="s2-1">
       <label for="s2-1">Open Google Apps Script (click the button below)</label>
     </div>
-    <a href="https://script.google.com/" target="_blank" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Open Google Apps Script</a>
+    <a href="https://script.google.com/" target="_blank" rel="noopener" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Open Google Apps Script</a>
 
     <div class="substep" data-step="2-2">
       <input type="checkbox" id="s2-2">
@@ -415,7 +425,7 @@ function doGet(e) {
 
     <div class="substep" data-step="4-2">
       <input type="checkbox" id="s4-2">
-      <label for="s4-2">Opened Command Prompt and navigated to the folder</label>
+      <label for="s4-2">Opened Command Prompt (Start menu &rarr; type <strong>cmd</strong> &rarr; press Enter) and navigated to the folder</label>
     </div>
 
     <div class="cmd-block">

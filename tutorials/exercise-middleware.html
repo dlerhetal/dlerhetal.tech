@@ -165,6 +165,16 @@
 <h1>Exercise 3 of 3 &mdash; The Big One: QBO Bill Import Middleware</h1>
 <p class="subtitle">This is the graduation exercise. You're going to build a middleware application that connects to QuickBooks Online, authenticates via OAuth, and imports vendor bills through the API. If you finish this, you can build anything.</p>
 
+<div class="note">
+  <strong>Before you start &mdash; what this exercise assumes:</strong>
+  <ul style="margin: 8px 0 0 18px; padding: 0;">
+    <li>Claude Code installed and working from <a href="index.html">Page 1: Setup &amp; Foundation</a> &mdash; <code>claude --version</code> prints a version number</li>
+    <li><a href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener">Python 3.11 or newer</a> &mdash; free, and Section 2 below walks you through installing it</li>
+    <li>An <a href="https://developer.intuit.com/" target="_blank" rel="noopener">Intuit developer account</a> &mdash; free, and Section 3 below walks you through creating it</li>
+  </ul>
+  Everything here runs against a QuickBooks <strong>sandbox</strong> company, not real books, and none of it costs money.
+</div>
+
 <div class="progress-bar-container">
   <div class="progress-bar-fill" id="progressFill"></div>
   <div class="progress-label" id="progressLabel">0 / 0 steps</div>
@@ -218,7 +228,8 @@
       <input type="checkbox" id="s2-1">
       <label for="s2-1">Click the button below to download Python (get version 3.11 or newer)</label>
     </div>
-    <a href="https://www.python.org/downloads/" target="_blank" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Download Python</a>
+    <a href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Download Python</a>
+    <div class="note">That button opens the Windows downloads page at <a href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener">python.org</a> in a new tab. Python is free. Take the latest stable release's <strong>Windows installer (64-bit)</strong>.</div>
 
     <div class="warning-note">
       <strong>Note:</strong> Some installers offer an <strong>"Add python.exe to PATH"</strong> checkbox, but it moves around between versions and is easy to miss. Don't hunt for it &mdash; Claude will handle it in the next step.
@@ -236,10 +247,19 @@
       <label for="s2-3">Told Claude: <strong>"Add python to my PATH"</strong></label>
     </div>
 
-    <div class="note"><strong>Verify it worked</strong> &mdash; open a NEW Command Prompt (close any old ones first) and type:</div>
+    <div class="note"><strong>Verify it worked</strong> &mdash; open a NEW Command Prompt (close any old ones first; Start menu &rarr; type <strong>cmd</strong> &rarr; press Enter) and type:</div>
     <div class="cmd-block">
       <span class="cmd-text">python --version</span>
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="warning-note">
+      <strong>If it says <em>"'python' is not recognized"</em>, or the Microsoft Store pops open</strong> &mdash; Windows can't find Python yet. Two things to try, in order:
+      <ol style="margin: 8px 0 0 18px; padding: 0;">
+        <li>Close every Command Prompt window and open a brand new one. A window opened before the install can't see it.</li>
+        <li>Start Claude Code in that new window and say: <em>"python --version isn't working after I installed Python. Fix my PATH."</em> This is exactly the kind of thing it sorts out for you.</li>
+      </ol>
+      If the Microsoft Store opens instead of printing a version, that's a Windows placeholder, not Python &mdash; close the Store and re-run the installer from <a href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener">python.org</a>.
     </div>
 
     <div class="substep" data-step="2-4">
@@ -273,7 +293,7 @@
       <input type="checkbox" id="s3-1">
       <label for="s3-1">Open the Intuit Developer portal (click the button below)</label>
     </div>
-    <a href="https://developer.intuit.com/" target="_blank" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Open Intuit Developer Portal</a>
+    <a href="https://developer.intuit.com/" target="_blank" rel="noopener" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Open Intuit Developer Portal</a>
 
     <div class="substep" data-step="3-2">
       <input type="checkbox" id="s3-2">
@@ -399,7 +419,7 @@
 
     <div class="substep" data-step="4-2">
       <input type="checkbox" id="s4-2">
-      <label for="s4-2">Opened Command Prompt and navigated to the folder</label>
+      <label for="s4-2">Opened Command Prompt (Start menu &rarr; type <strong>cmd</strong> &rarr; press Enter) and navigated to the folder</label>
     </div>
 
     <div class="cmd-block">
@@ -669,7 +689,7 @@ After building, start the Flask server so I can test.</div>
 
     <div class="substep" data-step="7-8">
       <input type="checkbox" id="s7-8">
-      <label for="s7-8">Go to your <a href="https://developer.intuit.com/" target="_blank" style="color:#4472C4;">Intuit Developer portal</a>, click Sandbox, then "Go to company" to open your sandbox QBO</label>
+      <label for="s7-8">Go to your <a href="https://developer.intuit.com/" target="_blank" rel="noopener" style="color:#4472C4;">Intuit Developer portal</a>, click Sandbox, then "Go to company" to open your sandbox QBO</label>
     </div>
 
     <div class="substep" data-step="7-9">
