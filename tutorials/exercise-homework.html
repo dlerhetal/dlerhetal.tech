@@ -122,26 +122,26 @@
     border-radius: 0 6px 6px 0; margin: 10px 0; font-size: 13px; line-height: 1.6;
   }
 
-  .url-capture {
+  .fill-box {
     background: #e8eef7; border: 1px solid #c5d4e8; border-radius: 8px;
     padding: 14px 16px; margin: 12px 0;
   }
-  .url-capture label {
+  .fill-box label {
     display: block; font-weight: 700; color: #1A3C6E; font-size: 13px; margin-bottom: 8px;
   }
-  .url-capture input {
+  .fill-box input {
     width: 100%; box-sizing: border-box; padding: 9px 12px;
     border: 1px solid #b3c4dd; border-radius: 6px; background: #fff; color: #222;
     font-family: 'Cascadia Code', Consolas, 'Courier New', monospace; font-size: 13px;
   }
-  .url-capture input:focus {
+  .fill-box input:focus {
     outline: none; border-color: #1A3C6E; box-shadow: 0 0 0 3px rgba(26,60,110,0.12);
   }
-  .url-status { font-size: 12px; margin-top: 8px; line-height: 1.5; color: #555; }
-  .url-status.ok { color: #1e7a3c; font-weight: 700; }
-  .url-status.warn { color: #c0392b; font-weight: 700; }
-  .url-slot { color: #f9e2af; font-weight: 700; }
-  .url-slot.filled { color: #a6e3a1; }
+  .fill-status { font-size: 12px; margin-top: 8px; line-height: 1.5; color: #555; }
+  .fill-status.ok { color: #1e7a3c; font-weight: 700; }
+  .fill-status.warn { color: #c0392b; font-weight: 700; }
+  .fill-slot { color: #f9e2af; font-weight: 700; }
+  .fill-slot.filled { color: #a6e3a1; }
 
   .explain-box {
     background: #e8eef7; border: 1px solid #c5d4e8; border-radius: 8px;
@@ -274,7 +274,14 @@
       <label for="s2-2">Click <strong>"New project"</strong> (the big + button)</label>
     </div>
 
-    <p>You'll see a code editor with some default text (<code>function myFunction() { }</code>). Delete all of it and replace it with the code below:</p>
+    <p>You'll see a code editor with some default text (<code>function myFunction() { }</code>). Delete all of it and replace it with the code below &mdash; but first, put your email address in the box so the script arrives ready to run.</p>
+
+    <div class="fill-box">
+      <label for="ownerEmail">Your Gmail address &mdash; where the homework submissions get sent</label>
+      <input type="text" id="ownerEmail" spellcheck="false" autocomplete="off"
+             placeholder="you@gmail.com">
+      <div class="fill-status" id="emailStatus"></div>
+    </div>
 
     <div class="code-block">
       <span class="code-label">Google Apps Script &mdash; paste this</span>
@@ -285,7 +292,7 @@ function doPost(e) {
 
   // Send an email with the homework answers
   MailApp.sendEmail({
-    to: "YOUR_EMAIL@gmail.com",
+    to: "<span class="fill-slot" id="emailSlot">YOUR_EMAIL@gmail.com</span>",
     subject: "Homework: " + (data.clientName || "Unknown"),
     body: data.body
   });
@@ -309,13 +316,9 @@ function doGet(e) {
       <label for="s2-3">Deleted the default code and pasted the script above</label>
     </div>
 
-    <div class="warning-note">
-      <strong>Change <code>YOUR_EMAIL@gmail.com</code></strong> to your actual Gmail address. This is where the homework submissions will be sent.
-    </div>
-
     <div class="substep" data-step="2-4">
       <input type="checkbox" id="s2-4">
-      <label for="s2-4">Changed the email address to my real Gmail</label>
+      <label for="s2-4">Checked that the <code>to:</code> line in the pasted script shows my real Gmail, not <code>YOUR_EMAIL@gmail.com</code></label>
     </div>
 
     <div class="substep" data-step="2-5">
@@ -461,11 +464,11 @@ function doGet(e) {
 
     <p>Now give Claude the big prompt. Paste your Web app URL below and it drops straight into the prompt &mdash; there's nothing to hand-edit in the black box.</p>
 
-    <div class="url-capture">
+    <div class="fill-box">
       <label for="webAppUrl">Your Google Apps Script Web app URL (from Section 2)</label>
       <input type="text" id="webAppUrl" spellcheck="false" autocomplete="off"
              placeholder="https://script.google.com/macros/s/AKfycb.../exec">
-      <div class="url-status" id="urlStatus"></div>
+      <div class="fill-status" id="urlStatus"></div>
     </div>
 
     <div class="code-block">
@@ -505,7 +508,7 @@ FEATURES:
 - "Client Name" field at the top
 - A "Submit" button that sends the data to this Google
   Apps Script URL:
-  <span class="url-slot" id="urlSlot">PASTE_YOUR_WEB_APP_URL_HERE</span>
+  <span class="fill-slot" id="urlSlot">PASTE_YOUR_WEB_APP_URL_HERE</span>
 - The submit should POST the answers to that URL.
   IMPORTANT: send the JSON as a plain-text body &mdash; call
   fetch with just { method: "POST", body: JSON.stringify(...) }
@@ -788,35 +791,47 @@ the success message with my name."</div>
     }
   }
 
-  // ---- Web app URL: type it once, it lands in the prompt above ----
-  const URL_KEY = 'tutorial_homework_weburl';
-  const URL_PLACEHOLDER = 'PASTE_YOUR_WEB_APP_URL_HERE';
-  const urlInput = document.getElementById('webAppUrl');
-  const urlSlot = document.getElementById('urlSlot');
-  const urlStatus = document.getElementById('urlStatus');
+  // ---- Fill-in fields: type once, the value lands in the code block above ----
+  function wireFill(cfg) {
+    const input = document.getElementById(cfg.input);
+    const slot = document.getElementById(cfg.slot);
+    const status = document.getElementById(cfg.status);
+    if (!input || !slot || !status) return;
 
-  function applyUrl(save) {
-    const v = urlInput.value.trim();
-    urlSlot.textContent = v || URL_PLACEHOLDER;
-    urlSlot.classList.toggle('filled', !!v);
-    if (!v) {
-      urlStatus.className = 'url-status';
-      urlStatus.textContent = 'Until you paste it here, the prompt below still says ' + URL_PLACEHOLDER + ' — and Claude has no idea where to send the answers.';
-    } else if (/^https:\/\/script\.google\.com\/macros\/s\/[^\/\s]+\/exec$/.test(v)) {
-      urlStatus.className = 'url-status ok';
-      urlStatus.textContent = 'Looks right, and it is now in the prompt below. Hit Copy and the URL goes with it.';
-    } else {
-      urlStatus.className = 'url-status warn';
-      urlStatus.textContent = 'That does not look like a Web app URL — it should start with https://script.google.com/macros/s/ and end in /exec. It is in the prompt below either way, so fix it here if you pasted the wrong thing.';
+    function apply(save) {
+      const v = input.value.trim();
+      slot.textContent = v || cfg.placeholder;
+      slot.classList.toggle('filled', !!v);
+      if (!v) { status.className = 'fill-status'; status.textContent = cfg.empty; }
+      else if (cfg.valid.test(v)) { status.className = 'fill-status ok'; status.textContent = cfg.ok; }
+      else { status.className = 'fill-status warn'; status.textContent = cfg.bad; }
+      if (save) { try { localStorage.setItem(cfg.key, v); } catch (e) {} }
     }
-    if (save) { try { localStorage.setItem(URL_KEY, v); } catch (e) {} }
+
+    try { input.value = localStorage.getItem(cfg.key) || ''; } catch (e) {}
+    apply(false);
+    input.addEventListener('input', function() { apply(true); });
   }
 
-  if (urlInput && urlSlot && urlStatus) {
-    try { urlInput.value = localStorage.getItem(URL_KEY) || ''; } catch (e) {}
-    applyUrl(false);
-    urlInput.addEventListener('input', function() { applyUrl(true); });
-  }
+  wireFill({
+    input: 'ownerEmail', slot: 'emailSlot', status: 'emailStatus',
+    key: 'tutorial_homework_email',
+    placeholder: 'YOUR_EMAIL@gmail.com',
+    valid: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
+    empty: 'Until you put your address here, the script below still says YOUR_EMAIL@gmail.com — and the submissions go nowhere.',
+    ok: 'Looks like an email address, and it is now in the script below. Hit Copy and it goes with it.',
+    bad: 'That does not look like an email address. It is in the script below either way, so fix it here if you mistyped.'
+  });
+
+  wireFill({
+    input: 'webAppUrl', slot: 'urlSlot', status: 'urlStatus',
+    key: 'tutorial_homework_weburl',
+    placeholder: 'PASTE_YOUR_WEB_APP_URL_HERE',
+    valid: /^https:\/\/script\.google\.com\/macros\/s\/[^\/\s]+\/exec$/,
+    empty: 'Until you paste it here, the prompt below still says PASTE_YOUR_WEB_APP_URL_HERE — and Claude has no idea where to send the answers.',
+    ok: 'Looks right, and it is now in the prompt below. Hit Copy and the URL goes with it.',
+    bad: 'That does not look like a Web app URL — it should start with https://script.google.com/macros/s/ and end in /exec. It is in the prompt below either way, so fix it here if you pasted the wrong thing.'
+  });
 
   loadState();
 </script>
