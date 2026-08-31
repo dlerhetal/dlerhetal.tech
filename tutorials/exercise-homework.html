@@ -122,6 +122,27 @@
     border-radius: 0 6px 6px 0; margin: 10px 0; font-size: 13px; line-height: 1.6;
   }
 
+  .url-capture {
+    background: #e8eef7; border: 1px solid #c5d4e8; border-radius: 8px;
+    padding: 14px 16px; margin: 12px 0;
+  }
+  .url-capture label {
+    display: block; font-weight: 700; color: #1A3C6E; font-size: 13px; margin-bottom: 8px;
+  }
+  .url-capture input {
+    width: 100%; box-sizing: border-box; padding: 9px 12px;
+    border: 1px solid #b3c4dd; border-radius: 6px; background: #fff; color: #222;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace; font-size: 13px;
+  }
+  .url-capture input:focus {
+    outline: none; border-color: #1A3C6E; box-shadow: 0 0 0 3px rgba(26,60,110,0.12);
+  }
+  .url-status { font-size: 12px; margin-top: 8px; line-height: 1.5; color: #555; }
+  .url-status.ok { color: #1e7a3c; font-weight: 700; }
+  .url-status.warn { color: #c0392b; font-weight: 700; }
+  .url-slot { color: #f9e2af; font-weight: 700; }
+  .url-slot.filled { color: #a6e3a1; }
+
   .explain-box {
     background: #e8eef7; border: 1px solid #c5d4e8; border-radius: 8px;
     padding: 16px 18px; margin: 12px 0; font-size: 14px; line-height: 1.6;
@@ -368,7 +389,7 @@ function doGet(e) {
 
     <div class="substep" data-step="2-16">
       <input type="checkbox" id="s2-16">
-      <label for="s2-16">Copied the Web app URL and saved it somewhere (you'll need it in a later step)</label>
+      <label for="s2-16">Copied the Web app URL and saved it somewhere (Section 4 gives you a box to paste it into)</label>
     </div>
 
     <div class="success-note">
@@ -438,7 +459,14 @@ function doGet(e) {
       <label for="s4-3">Started Claude Code</label>
     </div>
 
-    <p>Now give Claude the big prompt. <strong>Replace the placeholder URL</strong> with your actual Google Apps Script Web app URL:</p>
+    <p>Now give Claude the big prompt. Paste your Web app URL below and it drops straight into the prompt &mdash; there's nothing to hand-edit in the black box.</p>
+
+    <div class="url-capture">
+      <label for="webAppUrl">Your Google Apps Script Web app URL (from Section 2)</label>
+      <input type="text" id="webAppUrl" spellcheck="false" autocomplete="off"
+             placeholder="https://script.google.com/macros/s/AKfycb.../exec">
+      <div class="url-status" id="urlStatus"></div>
+    </div>
 
     <div class="code-block">
       <span class="code-label">Prompt: Build the homework form</span>
@@ -477,7 +505,7 @@ FEATURES:
 - "Client Name" field at the top
 - A "Submit" button that sends the data to this Google
   Apps Script URL:
-  PASTE_YOUR_WEB_APP_URL_HERE
+  <span class="url-slot" id="urlSlot">PASTE_YOUR_WEB_APP_URL_HERE</span>
 - The submit should POST the answers to that URL.
   IMPORTANT: send the JSON as a plain-text body &mdash; call
   fetch with just { method: "POST", body: JSON.stringify(...) }
@@ -510,7 +538,7 @@ sending it to a real client.</div>
 
     <div class="substep" data-step="4-4">
       <input type="checkbox" id="s4-4">
-      <label for="s4-4">Replaced <code>PASTE_YOUR_WEB_APP_URL_HERE</code> with my actual URL</label>
+      <label for="s4-4">Pasted my Web app URL into the box above (the prompt shows the real URL now, not the placeholder)</label>
     </div>
 
     <div class="substep" data-step="4-5">
@@ -758,6 +786,36 @@ the success message with my name."</div>
       localStorage.removeItem(STORAGE_KEY);
       updateProgress();
     }
+  }
+
+  // ---- Web app URL: type it once, it lands in the prompt above ----
+  const URL_KEY = 'tutorial_homework_weburl';
+  const URL_PLACEHOLDER = 'PASTE_YOUR_WEB_APP_URL_HERE';
+  const urlInput = document.getElementById('webAppUrl');
+  const urlSlot = document.getElementById('urlSlot');
+  const urlStatus = document.getElementById('urlStatus');
+
+  function applyUrl(save) {
+    const v = urlInput.value.trim();
+    urlSlot.textContent = v || URL_PLACEHOLDER;
+    urlSlot.classList.toggle('filled', !!v);
+    if (!v) {
+      urlStatus.className = 'url-status';
+      urlStatus.textContent = 'Until you paste it here, the prompt below still says ' + URL_PLACEHOLDER + ' — and Claude has no idea where to send the answers.';
+    } else if (/^https:\/\/script\.google\.com\/macros\/s\/[^\/\s]+\/exec$/.test(v)) {
+      urlStatus.className = 'url-status ok';
+      urlStatus.textContent = 'Looks right, and it is now in the prompt below. Hit Copy and the URL goes with it.';
+    } else {
+      urlStatus.className = 'url-status warn';
+      urlStatus.textContent = 'That does not look like a Web app URL — it should start with https://script.google.com/macros/s/ and end in /exec. It is in the prompt below either way, so fix it here if you pasted the wrong thing.';
+    }
+    if (save) { try { localStorage.setItem(URL_KEY, v); } catch (e) {} }
+  }
+
+  if (urlInput && urlSlot && urlStatus) {
+    try { urlInput.value = localStorage.getItem(URL_KEY) || ''; } catch (e) {}
+    applyUrl(false);
+    urlInput.addEventListener('input', function() { applyUrl(true); });
   }
 
   loadState();
