@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Tutorial &mdash; Exercise 3 of 3 (The Big One): Contractors Cloud Job Log Middleware</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    background: #f4f6f9;
+    color: #222;
+    padding: 0; margin: 0;
+  }
+
+  .tutorial-nav {
+    background: #1A3C6E;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .nav-title { color: #fff; font-size: 13px; font-weight: 400; padding: 8px 20px 0; opacity: 0.7; }
+  .nav-links { display: flex; flex-wrap: wrap; padding: 0 12px 0; }
+  .nav-links a {
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 12px 12px;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a.active { color: #fff; border-bottom-color: #FFCD00; }
+
+  .content { max-width: 820px; margin: 0 auto; padding: 24px 20px 60px; }
+  h1 { color: #1A3C6E; font-size: 26px; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
+
+  .progress-bar-container {
+    background: #ddd; border-radius: 12px; height: 24px; margin-bottom: 28px; overflow: hidden; position: relative;
+  }
+  .progress-bar-fill {
+    background: linear-gradient(90deg, #4472C4, #1A3C6E); height: 100%; width: 0%; border-radius: 12px; transition: width 0.4s ease;
+  }
+  .progress-label {
+    position: absolute; top: 0; left: 0; right: 0; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  .section {
+    background: #fff; border-radius: 10px; padding: 20px 24px; margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07); border-left: 4px solid #4472C4;
+  }
+  .section.done { border-left-color: #27ae60; opacity: 0.7; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .step-number {
+    background: #1A3C6E; color: #fff; width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0;
+  }
+  .section.done .step-number { background: #27ae60; }
+  .section-title { font-size: 18px; font-weight: 600; color: #1A3C6E; }
+  .section.done .section-title { text-decoration: line-through; color: #888; }
+
+  .step-body { margin-left: 44px; }
+  .step-body p { margin-bottom: 10px; line-height: 1.6; }
+  .step-body ul { margin: 0 0 12px 20px; line-height: 1.6; }
+  .step-body li { margin-bottom: 4px; }
+
+  .substep {
+    display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0f0f0;
+  }
+  .substep:last-child { border-bottom: none; }
+  .substep input[type="checkbox"] {
+    width: 20px; height: 20px; margin-top: 2px; cursor: pointer; accent-color: #1A3C6E; flex-shrink: 0;
+  }
+  .substep label { cursor: pointer; line-height: 1.5; }
+  .substep.checked label { text-decoration: line-through; color: #999; }
+
+  .cmd-block {
+    display: flex; align-items: center; background: #1e1e2e; color: #cdd6f4; border-radius: 8px;
+    padding: 10px 14px; margin: 8px 0 12px 0;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace; font-size: 13px; gap: 10px;
+  }
+  .cmd-text { flex: 1; word-break: break-all; user-select: all; }
+  .copy-btn {
+    background: #4472C4; color: #fff; border: none; border-radius: 6px;
+    padding: 6px 14px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.2s;
+  }
+  .copy-btn:hover { background: #1A3C6E; }
+  .copy-btn.copied { background: #27ae60; }
+
+  .code-block {
+    background: #1e1e2e; color: #cdd6f4; border-radius: 8px; padding: 16px 18px; margin: 8px 0 14px 0;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace; font-size: 13px;
+    line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; position: relative;
+  }
+  .code-block .copy-btn { position: absolute; top: 8px; right: 8px; }
+  .code-block .code-label {
+    display: block; color: #89b4fa; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;
+    border-bottom: 1px solid #313244; padding-bottom: 6px;
+  }
+
+  .note {
+    background: #fff8e1; border-left: 4px solid #FFCD00; padding: 12px 16px;
+    border-radius: 0 6px 6px 0; margin: 10px 0; font-size: 13px; line-height: 1.6;
+  }
+  .note strong { color: #b8860b; }
+
+  .success-note {
+    background: #e8f5e9; border-left: 4px solid #27ae60; padding: 12px 16px;
+    border-radius: 0 6px 6px 0; margin: 10px 0; font-size: 13px; line-height: 1.6;
+  }
+
+  .warning-note {
+    background: #fbe9e7; border-left: 4px solid #e74c3c; padding: 12px 16px;
+    border-radius: 0 6px 6px 0; margin: 10px 0; font-size: 13px; line-height: 1.6;
+  }
+
+  .explain-box {
+    background: #e8eef7; border: 1px solid #c5d4e8; border-radius: 8px;
+    padding: 16px 18px; margin: 12px 0; font-size: 14px; line-height: 1.6;
+  }
+  .explain-box strong { color: #1A3C6E; }
+
+  .next-page {
+    background: #1A3C6E; color: #fff; border-radius: 10px;
+    padding: 24px 28px; margin-top: 28px; text-align: center;
+  }
+  .next-page h3 { margin-bottom: 8px; font-size: 18px; }
+  .next-page p { opacity: 0.8; margin-bottom: 16px; font-size: 14px; line-height: 1.6; }
+
+  .prev-link { display: inline-block; color: #4472C4; text-decoration: none; font-size: 14px; margin-bottom: 16px; }
+  .prev-link:hover { text-decoration: underline; }
+
+  .reset-btn {
+    background: none; border: 1px solid #ccc; color: #888;
+    padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; margin-top: 20px;
+  }
+  .reset-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+</style>
+</head>
+<body>
+
+<nav class="tutorial-nav">
+  <div class="nav-title">Claude Code Tutorial Series</div>
+  <div class="nav-links">
+    <a href="index.html">Setup &amp; Foundation</a>
+    <a href="exercise-eisenhower.html">1. Eisenhower Matrix</a>
+    <a href="exercise-homework.html">2. Email Form</a>
+    <a href="exercise-middleware.html">3. Middleware (QuickBooks)</a>
+    <a href="exercise-middleware-cc.html" class="active">3. Middleware (Contractors Cloud)</a>
+    <a href="harness-and-memory.html">Harness &amp; Memory</a>
+  </div>
+</nav>
+
+<div class="content">
+
+<a class="prev-link" href="exercise-homework.html">&larr; Back to Exercise 2 of 3</a>
+
+<h1>Exercise 3 of 3 &mdash; The Big One: Contractors Cloud Job Log Middleware</h1>
+<p class="subtitle">This is the graduation exercise. You're going to build a middleware application that connects to Contractors Cloud, authenticates with an API token, reads your projects back out, and writes a job log note onto one of them through the API. If you finish this, you can build anything.</p>
+
+<div class="note">
+  <strong>Before you start &mdash; what this exercise assumes:</strong>
+  <ul style="margin: 8px 0 0 18px; padding: 0;">
+    <li>Claude Code installed and working from <a href="index.html">Page 1: Setup &amp; Foundation</a> &mdash; <code>claude --version</code> prints a version number</li>
+    <li><a href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener">Python 3.11 or newer</a> &mdash; free, and Section 2 below walks you through installing it</li>
+    <li>A Contractors Cloud login with permission to create an API access token &mdash; Section 3 below walks you through getting one, including what to ask for if you can't see the screen</li>
+  </ul>
+  This is the Contractors Cloud version of Exercise 3. If your books live in QuickBooks Online instead, take the <a href="exercise-middleware.html">QuickBooks version</a>. Same exercise, different system.
+</div>
+
+<div class="progress-bar-container">
+  <div class="progress-bar-fill" id="progressFill"></div>
+  <div class="progress-label" id="progressLabel">0 / 0 steps</div>
+</div>
+
+<!-- ==================== SECTION 1: WHAT AND WHY ==================== -->
+<div class="section" id="section1">
+  <div class="section-header">
+    <div class="step-number">1</div>
+    <div class="section-title">What Is Middleware &amp; Why Build It?</div>
+  </div>
+  <div class="step-body">
+    <div class="explain-box">
+      <strong>Middleware is software that sits between two systems and makes them talk to each other.</strong> You have Contractors Cloud. You also have information that lives outside it &mdash; a crew's texts from the roof, a supplier's delivery confirmation, a spreadsheet somebody keeps. Right now, someone retypes that into the CRM by hand. Your middleware automates that &mdash; it takes the job information and pushes it into Contractors Cloud through the API.
+    </div>
+
+    <p><strong>What is an API?</strong></p>
+    <p>An API (Application Programming Interface) is a set of rules for how software talks to other software. When you log into your bank's website, you're using a user interface (UI) &mdash; buttons, forms, visual stuff. An API is like a UI for software. Your code sends a structured request ("add this note to the Elm Street job") and Contractors Cloud processes it, just as if someone had typed it in manually.</p>
+
+    <p><strong>What is a bearer token?</strong></p>
+    <p>A bearer token is how Contractors Cloud knows your app is allowed into the account. Think of it like a valet key &mdash; you give the valet a special key that starts the car but won't open the trunk. The token gives your app access without sharing your password, and it carries only the permissions of the user who created it. Your code sends it on every single request, in a header that reads <code>Authorization: Bearer YOUR_TOKEN</code>. That is the whole handshake.</p>
+
+    <div class="explain-box">
+      <strong>This is simpler than the QuickBooks version of this exercise on purpose.</strong> QuickBooks makes you walk an OAuth dance: redirect the user to Intuit, catch them coming back, trade a code for a token, refresh the token when it expires. Contractors Cloud skips all of that. You create a token on a settings screen, you put it in a file, you send it on every request. Less to build. Also less to hide behind &mdash; a bearer token is a naked key, so how you store it matters more, which is Section 3.
+    </div>
+
+    <p><strong>There is no sandbox. Read that twice.</strong></p>
+    <p>QuickBooks gives developers a fake company full of fake data to practice on. Contractors Cloud does not. There is one environment and it is the live one. Everything you do in this exercise happens in your real account, against your real jobs, and your team will see it.</p>
+    <p>That is not a reason to skip the exercise. It is a reason to work in a specific order, and this exercise is built in that order:</p>
+    <ul>
+      <li><strong>Read first, and read a lot.</strong> Every <code>GET</code> request is harmless. You cannot break anything by asking questions. Spend your mistakes here.</li>
+      <li><strong>Write exactly once, and write something additive.</strong> The one write in this exercise adds a note to a project. It does not change a contract, a price, a milestone, or a customer record.</li>
+      <li><strong>Label the write so a human knows what it is.</strong> Your test note will start with the words <code>API TEST</code>, so if a project manager sees it, they know it isn't a real job instruction.</li>
+      <li><strong>Clean up after yourself, and expect that to be the hard part.</strong> Section 8 covers why deleting is not always allowed.</li>
+    </ul>
+
+    <p><strong>What a real build looks like:</strong></p>
+    <p>We have built a full document processing middleware for a client. It ingests PDFs, parses line items, maps them to records in the client's system, learns vendor patterns over time, validates everything, then pushes finished records in. It handles delivery documents, freight calculations, pricing lookups, and drift detection.</p>
+    <p>Yours does one thing: push a job note. That's the seed. Everything else grows from it.</p>
+
+    <div class="substep" data-step="1-1">
+      <input type="checkbox" id="s1-1">
+      <label for="s1-1">I understand what middleware is, what an API and a bearer token do, and that there is no sandbox &mdash; read first, write once, label it, clean up</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 2: INSTALL PYTHON ==================== -->
+<div class="section" id="section2">
+  <div class="section-header">
+    <div class="step-number">2</div>
+    <div class="section-title">Install Python</div>
+  </div>
+  <div class="step-body">
+    <p>The middleware runs on Python using Flask (a lightweight web framework). The exercises so far were just HTML files &mdash; this one is a real application with a server.</p>
+
+    <div class="substep" data-step="2-1">
+      <input type="checkbox" id="s2-1">
+      <label for="s2-1">Click the button below to download Python (get version 3.11 or newer)</label>
+    </div>
+    <a href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener" style="display:inline-block; background:#1A3C6E; color:#fff; text-decoration:none; padding:12px 24px; border-radius:8px; font-size:15px; font-weight:600; margin:6px 0;">Download Python</a>
+    <div class="note">That button opens the Windows downloads page at <a href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener">python.org</a> in a new tab. Python is free. Take the latest stable release's <strong>Windows installer (64-bit)</strong>.</div>
+
+    <div class="warning-note">
+      <strong>Note:</strong> Some installers offer an <strong>"Add python.exe to PATH"</strong> checkbox, but it moves around between versions and is easy to miss. Don't hunt for it &mdash; Claude will handle it in the next step.
+    </div>
+
+    <div class="substep" data-step="2-2">
+      <input type="checkbox" id="s2-2">
+      <label for="s2-2">Clicked <strong>"Install Now"</strong> and let it finish</label>
+    </div>
+
+    <div class="note"><strong>On a company-managed computer:</strong> "Install Now" puts Python in your own user folder, no administrator rights needed, so it usually works even on locked-down machines. If your IT security policy blocks it anyway, ask IT to install Python 3.11 or newer.</div>
+
+    <div class="substep" data-step="2-3">
+      <input type="checkbox" id="s2-3">
+      <label for="s2-3">Told Claude: <strong>"Add python to my PATH"</strong></label>
+    </div>
+
+    <div class="note"><strong>Verify it worked</strong> &mdash; open a NEW Command Prompt (close any old ones first; Start menu &rarr; type <strong>cmd</strong> &rarr; press Enter) and type:</div>
+    <div class="cmd-block">
+      <span class="cmd-text">python --version</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="warning-note">
+      <strong>If it says <em>"'python' is not recognized"</em>, or the Microsoft Store pops open</strong> &mdash; Windows can't find Python yet. Two things to try, in order:
+      <ol style="margin: 8px 0 0 18px; padding: 0;">
+        <li>Close every Command Prompt window and open a brand new one. A window opened before the install can't see it.</li>
+        <li>Start Claude Code in that new window and say: <em>"python --version isn't working after I installed Python. Fix my PATH."</em> This is exactly the kind of thing it sorts out for you.</li>
+      </ol>
+      If the Microsoft Store opens instead of printing a version, that's a Windows placeholder, not Python &mdash; close the Store and re-run the installer from <a href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener">python.org</a>.
+    </div>
+
+    <div class="substep" data-step="2-4">
+      <input type="checkbox" id="s2-4">
+      <label for="s2-4">Verified &mdash; <code>python --version</code> shows 3.11 or higher</label>
+    </div>
+
+    <div class="note"><strong>If Python was already installed</strong>, skip this section. You just need version 3.11+.</div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 3: GET YOUR API TOKEN ==================== -->
+<div class="section" id="section3">
+  <div class="section-header">
+    <div class="step-number">3</div>
+    <div class="section-title">Get Your Contractors Cloud API Token</div>
+  </div>
+  <div class="step-body">
+    <p>To talk to Contractors Cloud through the API, you need an API access token. You create it inside the Contractors Cloud web app, on your own account. It is free and it takes about a minute, assuming your user has the permission to do it.</p>
+
+    <div class="note">
+      <strong>Heads up on the app layout:</strong> Contractors Cloud moves settings screens around between
+      releases, so the exact menu names below may not match what you see. The <em>concepts</em> don't
+      change &mdash; you're creating an API access token, copying it once, and finding your company id.
+      Hunt for those ideas, and if a label looks different, tell Claude Code what's on your screen and
+      it'll orient you.
+    </div>
+
+    <p><strong>Create the token:</strong></p>
+
+    <div class="substep" data-step="3-1">
+      <input type="checkbox" id="s3-1">
+      <label for="s3-1">Log into Contractors Cloud in your browser, as the user whose permissions you want the app to have</label>
+    </div>
+
+    <div class="substep" data-step="3-2">
+      <input type="checkbox" id="s3-2">
+      <label for="s3-2">Go to <strong>Integrations</strong>, then <strong>API Access Tokens</strong> (it may sit under a Settings or Admin menu depending on your version)</label>
+    </div>
+
+    <div class="substep" data-step="3-3">
+      <input type="checkbox" id="s3-3">
+      <label for="s3-3">Create a new token and give it a name you'll recognize later, like "Job Log Middleware"</label>
+    </div>
+
+    <div class="warning-note">
+      <strong>The token is shown once and never again.</strong> This is normal and it is deliberate. Copy it the moment it appears and paste it straight into the <code>.env</code> file you'll create in Section 4. If you lose it, you don't recover it &mdash; you delete that token and create a new one, which costs you nothing.
+    </div>
+
+    <div class="substep" data-step="3-4">
+      <input type="checkbox" id="s3-4">
+      <label for="s3-4">Copied the token somewhere safe on my own machine</label>
+    </div>
+
+    <div class="warning-note">
+      <strong>Read this before you go any further. Your token is a naked key.</strong>
+      <ul style="margin: 8px 0 0 18px; padding: 0;">
+        <li>Anyone holding it can do everything your user account can do, with no password and no second factor.</li>
+        <li>It goes in your local <code>.env</code> file and nowhere else. Not in the code. Not in a comment. Not in a screenshot.</li>
+        <li><strong>Never paste it into a chat window.</strong> Not into Claude Code, not into email, not into a text message, not into a support ticket. Claude does not need to see your token to write code that uses it &mdash; the code reads it from the file at run time. This is a rule for every API key you will ever handle, and this is the exercise where you build the habit.</li>
+        <li>If you think it leaked, delete it on that same Integrations screen and make a new one. Takes a minute, ends the problem.</li>
+      </ul>
+    </div>
+
+    <p><strong>If you can't find that screen:</strong></p>
+    <p>Creating API tokens is a permissioned action, so a limited user may not see it at all. If the menu isn't there, don't go hunting through settings. Ask your Contractors Cloud administrator, or Contractors Cloud support, for exactly this:</p>
+
+    <div class="code-block">
+      <span class="code-label">What to ask for</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+I'd like to use the Contractors Cloud REST API
+(api.contractorscloud.com/api/v1). Two things please:
+
+1. Enable API access for my user and grant me
+   permission to create an API access token on the
+   Integrations > API Access Tokens screen. If that
+   isn't something my user can have, please create a
+   token for me instead and send it to me securely.
+
+2. Tell me the numeric company id for our company,
+   the one that goes in /companies/{id}/ URLs.
+
+I'm building a small internal read-and-write tool.
+Read only to start.</div>
+
+    <div class="substep" data-step="3-5">
+      <input type="checkbox" id="s3-5">
+      <label for="s3-5">I have a token &mdash; either I created one, or an administrator sent me one</label>
+    </div>
+
+    <p><strong>Find your company id:</strong></p>
+    <p>Contractors Cloud organizes a lot of the API around companies. Several URLs you'll use have a numeric company id sitting in the middle of them, like <code>/companies/YOUR_COMPANY_ID/leads</code>. You need that number.</p>
+    <p>The good news is you do not have to go find it in the web app. Once your token works, the API will tell you: the record for the logged-in user carries a default company on it. Section 6 makes that call. For now, just know that the number exists and that you'll have it in a few minutes.</p>
+
+    <div class="substep" data-step="3-6">
+      <input type="checkbox" id="s3-6">
+      <label for="s3-6">I know my company id, or I know I'll get it from the API in Section 6</label>
+    </div>
+
+    <div class="success-note">
+      <strong>You now have everything you need from Contractors Cloud:</strong><br>
+      &bull; An API access token<br>
+      &bull; The base URL: https://api.contractorscloud.com/api/v1<br>
+      &bull; A company id (or a plan to get one in Section 6)<br><br>
+      Keep the token in a file on your own machine. You will paste it into <code>.env</code> yourself in the next section, by hand, and you will not show it to Claude.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 4: SET UP PROJECT ==================== -->
+<div class="section" id="section4">
+  <div class="section-header">
+    <div class="step-number">4</div>
+    <div class="section-title">Set Up the Project</div>
+  </div>
+  <div class="step-body">
+    <div class="substep" data-step="4-1">
+      <input type="checkbox" id="s4-1">
+      <label for="s4-1">Create a new folder: <code>C:\dev\JobLogImporter</code></label>
+    </div>
+
+    <div class="cmd-block">
+      <span class="cmd-text">cd C:\dev\JobLogImporter</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="4-2">
+      <input type="checkbox" id="s4-2">
+      <label for="s4-2">Opened Command Prompt (Start menu &rarr; type <strong>cmd</strong> &rarr; press Enter) and navigated to the folder</label>
+    </div>
+
+    <div class="cmd-block">
+      <span class="cmd-text">claude</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="4-3">
+      <input type="checkbox" id="s4-3">
+      <label for="s4-3">Started Claude Code</label>
+    </div>
+
+    <p>First, have Claude set up the project structure. Notice what this prompt does <em>not</em> contain: your token. It tells Claude to write a <code>.env</code> file with a placeholder in it, and you will replace the placeholder yourself, in Notepad, in a moment.</p>
+
+    <div class="code-block">
+      <span class="code-label">Prompt: Set up the middleware project</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+Set up this project. Create:
+
+1. CLAUDE.md (at the project root) with project rules:
+   Flask app on localhost:5000. Contractors Cloud has
+   NO sandbox, so every call hits the live account.
+   Reads are unrestricted; the only write allowed in
+   this project is adding a note to a project. Never
+   commit .env or secrets to git. Never print the API
+   token to the console or into a log file.
+
+2. context/PROJECT.md - We're building a simple
+   Contractors Cloud job log middleware. Flask app on
+   localhost:5000. Authenticates with a bearer token.
+   Lists projects from the CRM and lets me post a note
+   onto one of them.
+
+3. context/JOURNAL.md - Starting project. Setting up
+   workspace.
+
+4. A .env file with EXACTLY these lines and these
+   placeholder values, unchanged (DO NOT commit this to
+   git, and do not ask me for the real token, I will
+   fill it in myself):
+   CC_API_TOKEN=YOUR_TOKEN_GOES_HERE
+   CC_BASE_URL=https://api.contractorscloud.com/api/v1
+   CC_COMPANY_ID=YOUR_COMPANY_ID
+
+5. A .gitignore that excludes .env files
+
+6. A .env.example that is a copy of .env, safe to
+   commit, so I remember which variables exist.
+
+Do not ask me for my API token at any point. The code
+must read it from .env at run time.</div>
+
+    <div class="substep" data-step="4-4">
+      <input type="checkbox" id="s4-4">
+      <label for="s4-4">Gave Claude the prompt and it created all the files</label>
+    </div>
+
+    <p>Now put your token in, by hand:</p>
+
+    <div class="substep" data-step="4-5">
+      <input type="checkbox" id="s4-5">
+      <label for="s4-5">Opened <code>C:\dev\JobLogImporter\.env</code> in Notepad</label>
+    </div>
+
+    <div class="substep" data-step="4-6">
+      <input type="checkbox" id="s4-6">
+      <label for="s4-6">Replaced <code>YOUR_TOKEN_GOES_HERE</code> with my real token, saved, and closed the file</label>
+    </div>
+
+    <div class="note">
+      <strong>Leave <code>CC_COMPANY_ID</code> as the placeholder for now</strong> if you don't have the number yet. Section 6 gets it for you, and you'll come back and fill it in then.
+    </div>
+
+    <div class="warning-note">
+      <strong>Your .env file contains a live key to your CRM.</strong> The .gitignore ensures it won't get uploaded if you ever use Git. But also: don't copy your .env file to other computers, don't email it, don't put it in a shared folder, and don't paste its contents into any chat or forum. If Claude ever offers to print the file for you, tell it no.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 5: BUILD THE MIDDLEWARE ==================== -->
+<div class="section" id="section5">
+  <div class="section-header">
+    <div class="step-number">5</div>
+    <div class="section-title">Build the Middleware</div>
+  </div>
+  <div class="step-body">
+    <p>Now for the big build. This prompt tells Claude to create the entire Flask application. It's longer than previous prompts because there's more to build, but the pattern is the same &mdash; describe what you want, Claude builds it.</p>
+
+    <div class="code-block">
+      <span class="code-label">Prompt: Build the job log importer</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+Build a Flask application that talks to the Contractors
+Cloud API. Here's what I need:
+
+ARCHITECTURE:
+- app.py as the main Flask app (port 5000)
+- Load CC_API_TOKEN, CC_BASE_URL and CC_COMPANY_ID from
+  .env using python-dotenv. Never print the token.
+- Write a small cc_client.py module of your own. Do not
+  install a third party Contractors Cloud package. Every
+  request sends these headers:
+    Authorization: Bearer &lt;token from .env&gt;
+    Accept: application/json
+    Content-Type: application/json
+- The client must return BOTH the HTTP status code and
+  the response body to the caller, and must not raise on
+  a 4xx. I want to see the status code in the UI.
+- Rate limit yourself: at least 0.25 seconds between
+  requests, so we stay under the published ceiling.
+- List endpoints are paginated. Handle page[number] and
+  page[size] and follow the pages until they run out.
+
+PAGES:
+1. Home page (/) - Dashboard showing:
+   - Connection status, which you determine by calling
+     GET /meta/status and then GET /users/me
+   - The name of the authenticated user and the id of
+     their default company, pulled from /users/me
+   - A link to the projects page
+
+2. Projects page (/projects) - A table of projects
+   pulled live from GET /projects, showing at minimum
+   the project id, number, name and city. Each row
+   links to the note form for that project.
+
+3. Note form (/projects/&lt;id&gt;/note) - A form with:
+   - The project id and name shown read only at the top
+   - A note body textarea
+   - A "Post note to Contractors Cloud" submit button
+   - It POSTs to /projects/&lt;id&gt;/notes
+
+4. Result page - After posting, show the HTTP status
+   code, the new note's id, and the note body EXACTLY AS
+   THE API RETURNED IT, read back with a follow up GET.
+   Do not show me what I typed. Show me what the server
+   actually stored.
+
+REQUIREMENTS:
+- Install the Python packages needed (flask,
+  python-dotenv, requests)
+- Create a requirements.txt
+- Clean, professional UI (use Bootstrap 5 for styling)
+- Error handling: when a call returns 4xx, show the
+  status code and the API's own error message on the
+  page. Do not swallow errors and do not fake success.
+- Show clear status messages throughout the process
+
+Keep it simple. No PDF upload, no parsing, no syncing.
+Just: read projects, post one note, read it back. The
+simplest possible working middleware.
+
+After building, start the Flask server so I can test.</div>
+
+    <div class="substep" data-step="5-1">
+      <input type="checkbox" id="s5-1">
+      <label for="s5-1">Gave Claude the build prompt</label>
+    </div>
+
+    <div class="substep" data-step="5-2">
+      <input type="checkbox" id="s5-2">
+      <label for="s5-2">Reviewed Claude's plan &mdash; it should mention Flask, the bearer token header, the Contractors Cloud endpoints, and the page structure</label>
+    </div>
+
+    <div class="substep" data-step="5-3">
+      <input type="checkbox" id="s5-3">
+      <label for="s5-3">Approved the plan</label>
+    </div>
+
+    <div class="note">
+      <strong>This build takes longer than the previous exercises.</strong> Claude is creating multiple files (app.py, cc_client.py, templates, requirements.txt), installing Python packages, and possibly setting up the Flask server. Let it work. If it asks you to approve running commands (like <code>pip install</code>), say yes.
+    </div>
+
+    <div class="substep" data-step="5-4">
+      <input type="checkbox" id="s5-4">
+      <label for="s5-4">Claude created all the files and installed the dependencies</label>
+    </div>
+
+    <div class="substep" data-step="5-5">
+      <input type="checkbox" id="s5-5">
+      <label for="s5-5">The Flask server started (Claude should start it, or told me how to)</label>
+    </div>
+
+    <div class="note">
+      <strong>If Claude didn't start the server,</strong> ask it: "Start the Flask server for me." Or you can ask Claude to run <code>python app.py</code>. You should see something like <code>* Running on http://127.0.0.1:5000</code> in the output.
+    </div>
+
+    <div class="note">
+      <strong>Before you click anything, check one thing.</strong> Ask Claude: <em>"Show me every place in this project where the token is used, and confirm it is never written to a log, a template, or the console."</em> Reading the answer is part of the exercise. A middleware that leaks its own key into a log file is a middleware you cannot deploy.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 6: CONNECT ==================== -->
+<div class="section" id="section6">
+  <div class="section-header">
+    <div class="step-number">6</div>
+    <div class="section-title">Connect to Contractors Cloud</div>
+  </div>
+  <div class="step-body">
+    <p>The server is running. Now let's connect it to your Contractors Cloud account. This happens in two calls, and it's worth understanding why there are two.</p>
+
+    <div class="explain-box">
+      <strong>Call one asks "is the API up?" Call two asks "does my key work?"</strong> <code>GET /meta/status</code> needs no token at all &mdash; it just proves your machine can reach the API and that the API is online. <code>GET /users/me</code> needs your token, and answers a different question: who am I connected as. When a connection fails, knowing which of those two broke tells you immediately whether the problem is your network or your key. Split your diagnostics like this in everything you build.
+    </div>
+
+    <div class="substep" data-step="6-1">
+      <input type="checkbox" id="s6-1">
+      <label for="s6-1">Asked Claude to open <a href="http://localhost:5000" target="_blank" style="color: #4472C4;">http://localhost:5000</a> in my browser (or just click the link)</label>
+    </div>
+
+    <div class="substep" data-step="6-2">
+      <input type="checkbox" id="s6-2">
+      <label for="s6-2">The dashboard shows the API status as Online</label>
+    </div>
+
+    <div class="substep" data-step="6-3">
+      <input type="checkbox" id="s6-3">
+      <label for="s6-3">The dashboard shows <strong>my own name</strong> as the authenticated user</label>
+    </div>
+
+    <div class="success-note">
+      <strong>That's the whole handshake.</strong> No redirects, no authorization screen, no token refresh. Your app sent a header and the API answered with your identity. Everything else you ever do against this API is that same request with a different URL on the end of it.
+    </div>
+
+    <div class="substep" data-step="6-4">
+      <input type="checkbox" id="s6-4">
+      <label for="s6-4">Noted the <strong>default company id</strong> shown on the dashboard, and put it in <code>.env</code> as <code>CC_COMPANY_ID</code></label>
+    </div>
+
+    <div class="note">
+      <strong>You'll need to restart the Flask server</strong> after editing <code>.env</code>, because the values are read when the app starts. Press <code>Ctrl+C</code> in the server window and run <code>python app.py</code> again, or just ask Claude to restart it.
+    </div>
+
+    <p><strong>Now read some real data back.</strong></p>
+
+    <div class="substep" data-step="6-5">
+      <input type="checkbox" id="s6-5">
+      <label for="s6-5">Clicked through to the projects page and saw a table of my <strong>actual jobs</strong>, pulled live from the CRM</label>
+    </div>
+
+    <p>Stop and look at that for a second. That table was not typed by anyone. Your code asked Contractors Cloud a question and Contractors Cloud answered it. That is the read half of middleware, and it is already useful on its own &mdash; every dashboard, every report, every export you ever build starts exactly here.</p>
+
+    <div class="warning-note">
+      <strong>If the connection failed,</strong> go back to Claude Code and tell it what happened. Paste the status code and any error message (paste the <em>error</em>, never the token). Common issues:<br>
+      &bull; <strong>401 Unauthorized</strong> &mdash; the token is wrong, expired, or was pasted with a stray space or line break. Open <code>.env</code> and check that the value sits on one line with nothing after it.<br>
+      &bull; <strong>403 Forbidden</strong> &mdash; the token is valid but the user it belongs to lacks permission for that endpoint. This is an account permissions question for your administrator, not a code bug.<br>
+      &bull; <strong>An HTML page instead of JSON</strong> &mdash; you forgot the <code>Accept: application/json</code> header. The API will hand you a web page if you don't ask for data.<br>
+      &bull; <strong>404 on a path you were sure about</strong> &mdash; see Section 8. This one has a specific trap in it.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 7: WRITE ==================== -->
+<div class="section" id="section7">
+  <div class="section-header">
+    <div class="step-number">7</div>
+    <div class="section-title">Write Your First Record</div>
+  </div>
+  <div class="step-body">
+    <p>The moment of truth. You're going to create a record in Contractors Cloud through your middleware.</p>
+
+    <div class="warning-note">
+      <strong>This one is real.</strong> There is no sandbox, so this note lands on a live job and your team can see it in the activity feed. Pick your project deliberately: an old job, a completed job, or one of your own. Do not pick a job a crew is working today.
+    </div>
+
+    <div class="substep" data-step="7-1">
+      <input type="checkbox" id="s7-1">
+      <label for="s7-1">Chose a project I'm comfortable writing a test note onto, and clicked through to its note form</label>
+    </div>
+
+    <div class="substep" data-step="7-2">
+      <input type="checkbox" id="s7-2">
+      <label for="s7-2">Typed a note body that <strong>starts with the words <code>API TEST</code></strong>, so anyone who sees it knows what it is</label>
+    </div>
+
+    <div class="substep" data-step="7-3">
+      <input type="checkbox" id="s7-3">
+      <label for="s7-3">Clicked <strong>"Post note to Contractors Cloud"</strong></label>
+    </div>
+
+    <div class="substep" data-step="7-4">
+      <input type="checkbox" id="s7-4">
+      <label for="s7-4">Saw a success page with an HTTP status code and a new note id</label>
+    </div>
+
+    <p>Now verify it actually made it in. Not in your app &mdash; in the CRM:</p>
+
+    <div class="substep" data-step="7-5">
+      <input type="checkbox" id="s7-5">
+      <label for="s7-5">Opened that same project in the Contractors Cloud web app, in a browser tab</label>
+    </div>
+
+    <div class="substep" data-step="7-6">
+      <input type="checkbox" id="s7-6">
+      <label for="s7-6">Found my note in the project's activity feed, with my name on it and the text I typed</label>
+    </div>
+
+    <div class="success-note">
+      <strong>You just pushed data into your CRM through the API.</strong><br><br>
+      Think about what happened: you typed information into YOUR app, your app talked to Contractors Cloud's servers through the API, and a note appeared on a job. No manual data entry. No copy-pasting. Software talking to software.<br><br>
+      This is what middleware does. This is the pattern for everything.
+    </div>
+
+    <p><strong>Now make a mistake on purpose.</strong></p>
+    <p>You typed <code>API TEST</code> and whatever came after it. Suppose you got that wording wrong and want to fix it. The obvious move is to update the note. Try it, and watch what happens:</p>
+
+    <div class="code-block">
+      <span class="code-label">Prompt: Try to edit the note</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+Add a temporary route to the app that lets me edit the
+note I just created. It should send:
+
+PUT /projects/&lt;project_id&gt;/notes/&lt;note_id&gt;
+with a JSON body containing a new "body" value.
+
+Then, in the same request cycle, do a GET on that same
+note and show me BOTH the status code from the PUT and
+the body field that came back from the GET.
+
+Do not tell me it worked based on the status code.
+Show me the note as the server has it.</div>
+
+    <div class="substep" data-step="7-7">
+      <input type="checkbox" id="s7-7">
+      <label for="s7-7">Ran the edit and got back a status code of <strong>200</strong></label>
+    </div>
+
+    <div class="substep" data-step="7-8">
+      <input type="checkbox" id="s7-8">
+      <label for="s7-8">Read the note back and saw that the body is <strong>completely unchanged</strong></label>
+    </div>
+
+    <div class="warning-note">
+      <strong>That is the single most important thing on this page.</strong> The API returned <code>200 OK</code>. Your request succeeded. And your edit did not happen. A note's body is immutable once created: the endpoint accepts your request, updates the couple of fields it is willing to update, and silently discards the <code>body</code> you sent. No error. No warning. Just a green light and a lie.<br><br>
+      <strong>A 200 means "I understood your request." It does not mean "I did what you meant."</strong> If you had trusted that status code, your app would have shown a happy confirmation screen while the wrong text sat on a live job.
+    </div>
+
+    <div class="explain-box">
+      <strong>So how do you correct a note?</strong> You don't. You replace it. POST a new note with the corrected text, confirm it landed, then DELETE the old one. Two writes and a read instead of one write, because the system's rules say so rather than because you'd have designed it that way. Half of integration work is finding out what the other system will and will not let you do, and then building around it honestly.
+    </div>
+
+    <p><strong>Clean up:</strong></p>
+
+    <div class="substep" data-step="7-9">
+      <input type="checkbox" id="s7-9">
+      <label for="s7-9">Asked Claude to add a route that sends <code>DELETE /projects/&lt;project_id&gt;/notes/&lt;note_id&gt;</code>, and deleted the test note</label>
+    </div>
+
+    <div class="note">
+      <strong>If the delete comes back 403, that is not a bug.</strong> Deleting a note requires elevated permissions in your organization, and your user may not have them. Two honest options: ask an administrator to remove it, or leave it. It says <code>API TEST</code> on the front, which is exactly why you labeled it that way in the first place. Now you also know something real about your own account's permissions, which you would not have learned from reading documentation.
+    </div>
+
+    <div class="substep" data-step="7-10">
+      <input type="checkbox" id="s7-10">
+      <label for="s7-10">Test note deleted &mdash; or it returned 403 and I know why, and the note is labeled clearly</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 8: WHEN THE API FIGHTS BACK ==================== -->
+<div class="section" id="section8">
+  <div class="section-header">
+    <div class="step-number">8</div>
+    <div class="section-title">When the API Fights Back &mdash; The Traps</div>
+  </div>
+  <div class="step-body">
+    <p>You've made a handful of calls and they mostly worked. Real integration work is the other days. Every item below is a thing that actually happens on this API, costs an afternoon the first time, and costs ten seconds once you've seen it. Read them now so you recognize them later.</p>
+
+    <p><strong>1. A 404 does not always mean the thing is gone.</strong></p>
+    <p>It can also mean you invented a path. The documentation talks about lead sources, so <code>/lead-sources</code> feels like an obvious guess. It returns <code>404</code>. The real path hangs the collection off the company:</p>
+    <div class="cmd-block">
+      <span class="cmd-text">GET /companies/YOUR_COMPANY_ID/leads</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+    <p>The lesson is not "memorize this path." It is that a 404 from an API you're new to means "check the URL" far more often than it means "no such record." Look up the actual endpoint before you assume the data isn't there.</p>
+
+    <p><strong>2. A 200 does not always mean it saved.</strong></p>
+    <p>You proved this one yourself in Section 7. A note body is immutable; the PUT returns 200 and drops the field. The general rule that comes out of it: <strong>after any write that matters, read it back and compare.</strong> Your app should verify against the server's copy, not against the value it sent. That one habit will save you more grief than any other thing on this page.</p>
+
+    <p><strong>3. A 400 for a filter that looks perfectly reasonable.</strong></p>
+    <p>Filters are per endpoint, not global. <code>filter[company_id]</code> works in plenty of places, and on <code>/accounts</code> it returns <code>400</code>. Nothing about your syntax is wrong; that endpoint simply doesn't offer that filter. Check the endpoint's own list of supported filters rather than assuming a filter that worked next door works here.</p>
+
+    <p><strong>4. A 422 because a field is longer than you thought.</strong></p>
+    <p>Several fields have length caps that are easy to blow past with real-world data:</p>
+    <ul>
+      <li><code>address_street</code> &mdash; 50 characters</li>
+      <li><code>title</code> &mdash; 50 characters</li>
+      <li><code>phone_work</code> &mdash; 14 characters, which a formatted number with an extension exceeds immediately</li>
+    </ul>
+    <p>They're in the API's schema, and they are exactly the kind of detail nobody reads until a batch import dies on record 340. If you're pushing data in from a spreadsheet, validate lengths on your side first and decide deliberately what to do with the overflow, rather than letting the API decide by rejecting it.</p>
+
+    <p><strong>5. Some things the API will not do at all.</strong></p>
+    <p>Custom field <em>values</em> can be read and set through the API. Custom field <em>definitions</em> cannot be created through it &mdash; those are configured in the web app only. If your plan depends on your middleware standing up new fields automatically, the plan needs changing. Find the walls early; they're cheaper to discover in design than in the middle of a build.</p>
+
+    <p><strong>6. Side effects you didn't ask for.</strong></p>
+    <p>Creating a project does more than create a project. It writes a system note into the activity feed, it fires a webhook, it geocodes the address if you didn't supply coordinates, and in an account with CompanyCam connected it spawns a matching place over there too. None of that is a defect. It is what "create a project" means in this system. Before you automate a write, ask what else that write sets in motion &mdash; and remember there's no sandbox in which to find out gently.</p>
+
+    <p><strong>7. There is a rate limit, and you should stay well under it.</strong></p>
+    <p>The ceiling sits around 300 requests per minute. A loop over a few hundred jobs will hit that without trying. Put a small deliberate pause between requests (a quarter of a second is plenty), and cache what you've already fetched so a re-run doesn't re-ask. Your build prompt in Section 5 already asked Claude for both.</p>
+
+    <div class="explain-box">
+      <strong>The one rule underneath all seven:</strong> the API's response is a claim, not a receipt. Verify by reading back. Every serious integration you build will have a verification step, and the ones that don't are the ones that quietly corrupt data for six weeks before anyone notices.
+    </div>
+
+    <div class="substep" data-step="8-1">
+      <input type="checkbox" id="s8-1">
+      <label for="s8-1">I read the seven traps, and I understand why I verify a write by reading it back</label>
+    </div>
+
+    <div class="substep" data-step="8-2">
+      <input type="checkbox" id="s8-2">
+      <label for="s8-2">Asked Claude to write these into my project's CLAUDE.md, so the next session starts knowing them</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 9: WRAP UP ==================== -->
+<div class="section" id="section9">
+  <div class="section-header">
+    <div class="step-number">9</div>
+    <div class="section-title">Save Progress &amp; Wrap Up</div>
+  </div>
+  <div class="step-body">
+    <p>Update your memory log with everything you accomplished:</p>
+
+    <div class="cmd-block">
+      <span class="cmd-text">Update context/JOURNAL.md with everything we did. Include the Contractors Cloud connection status, what the app looks like, what we tested, which traps we hit, and ideas for next features. Do not write the token into the journal.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <div class="substep" data-step="9-1">
+      <input type="checkbox" id="s9-1">
+      <label for="s9-1">Updated context/JOURNAL.md</label>
+    </div>
+
+    <div class="substep" data-step="9-2">
+      <input type="checkbox" id="s9-2">
+      <label for="s9-2">Confirmed my test note is cleaned up, or clearly labeled and accounted for</label>
+    </div>
+
+    <div class="substep" data-step="9-3">
+      <input type="checkbox" id="s9-3">
+      <label for="s9-3">Typed <code>exit</code> to end the Claude Code session</label>
+    </div>
+
+    <div class="note">
+      <strong>To stop the Flask server:</strong> Go to the Command Prompt window where the server is running and press <code>Ctrl+C</code>. To start it again later, navigate to the folder and run <code>python app.py</code>.
+    </div>
+
+    <div class="note">
+      <strong>One housekeeping item, whenever you're finished experimenting.</strong> If you built this token just to learn on, go back to Integrations &rarr; API Access Tokens and delete it. An unused live key sitting in a folder is the kind of thing you want to retire on purpose rather than forget about. Making a new one later takes a minute.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 10: WHERE TO GO ==================== -->
+<div class="section" id="section10">
+  <div class="section-header">
+    <div class="step-number">10</div>
+    <div class="section-title">Where to Go From Here</div>
+  </div>
+  <div class="step-body">
+    <p>You've built three things of increasing complexity:</p>
+
+    <ul>
+      <li><strong>A standalone tool</strong> (Eisenhower Matrix) &mdash; HTML only, no backend</li>
+      <li><strong>A connected form</strong> (Homework Email) &mdash; HTML + Google Apps Script backend</li>
+      <li><strong>A real middleware</strong> (Job Log Importer) &mdash; Python + Flask + a bearer token + the Contractors Cloud API</li>
+    </ul>
+
+    <p>The pattern is always the same:</p>
+    <ol>
+      <li>Create a project folder with CLAUDE.md and a context/ folder (PROJECT.md, JOURNAL.md)</li>
+      <li>Describe what you want to Claude</li>
+      <li>Review the plan, approve it, let Claude build it</li>
+      <li>Test, customize, iterate</li>
+      <li>Update context/JOURNAL.md before closing</li>
+    </ol>
+
+    <p><strong>Ideas for what to build next:</strong></p>
+    <ul>
+      <li>Turn the projects page into a real dashboard &mdash; jobs by milestone, by rep, by month, with the numbers you actually manage to</li>
+      <li>Pull material orders and contracts and put revenue and material cost side by side on one screen</li>
+      <li>Push job updates in from wherever they start &mdash; a form your crews fill out on a phone, a shared spreadsheet, an email inbox</li>
+      <li>Export a weekly report to a spreadsheet on a schedule, so nobody has to remember to run it</li>
+      <li>Connect to other APIs &mdash; Google, a supplier portal, an accounting system, whatever else your business runs on</li>
+    </ul>
+
+    <p>Every one of these follows the same pattern you just learned. The only difference is which API you're talking to and what the UI looks like. Claude handles the technical details. You handle the vision.</p>
+
+    <div class="substep" data-step="10-1">
+      <input type="checkbox" id="s10-1">
+      <label for="s10-1">I finished the tutorial series. I understand the workflow. Time to build real things.</label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DONE ==================== -->
+<div id="allDone" style="display:none; text-align:center; padding: 30px; background: #e8f5e9; border-radius: 12px; margin-top: 20px;">
+  <h2 style="color: #27ae60; margin-bottom: 8px;">Tutorial Complete!</h2>
+  <p style="color: #555; line-height: 1.6;">You went from "what's a terminal?" to building middleware that reads and writes your CRM, against a live system, without breaking it. That's not a small thing. The tools are yours now &mdash; Claude Code, the foundation (CLAUDE.md plus a context/ folder with PROJECT.md and JOURNAL.md), and the workflow. Go build something your business needs.</p>
+</div>
+
+<div class="next-page" style="background: linear-gradient(135deg, #1A3C6E, #4472C4);">
+  <h3>You Made It.</h3>
+  <p>Three exercises. Three levels of complexity. One more page &mdash; the habits and harness settings that separate fighting the tool from cooperating with it.</p>
+  <p style="margin-top: 14px;"><a href="harness-and-memory.html" style="display: inline-block; background: #FFCD00; color: #1A3C6E; text-decoration: none; padding: 10px 24px; border-radius: 8px; font-weight: 700; font-size: 14px;">On to Harness &amp; Memory &rarr;</a></p>
+</div>
+
+<div style="text-align:center;">
+  <button class="reset-btn" onclick="resetAll()">Reset all checkboxes</button>
+  <br><br>
+  <a href="index.html" style="color: #4472C4; font-size: 13px;">Back to the beginning</a>
+</div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'tutorial_middleware_cc_state';
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const totalSteps = checkboxes.length;
+
+  function loadState() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const checked = JSON.parse(saved);
+      checkboxes.forEach(cb => {
+        if (checked.includes(cb.id)) {
+          cb.checked = true;
+          cb.closest('.substep').classList.add('checked');
+        }
+      });
+    }
+    updateProgress();
+  }
+
+  function saveState() {
+    const checked = [];
+    checkboxes.forEach(cb => { if (cb.checked) checked.push(cb.id); });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+  }
+
+  function updateProgress() {
+    let done = 0;
+    checkboxes.forEach(cb => { if (cb.checked) done++; });
+    const pct = Math.round((done / totalSteps) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = done + ' / ' + totalSteps + ' steps (' + pct + '%)';
+    document.querySelectorAll('.section').forEach(section => {
+      const subs = section.querySelectorAll('input[type="checkbox"]');
+      let allDone = true;
+      subs.forEach(cb => { if (!cb.checked) allDone = false; });
+      if (allDone && subs.length > 0) section.classList.add('done');
+      else section.classList.remove('done');
+    });
+    document.getElementById('allDone').style.display = (done === totalSteps) ? 'block' : 'none';
+  }
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', function() {
+      this.closest('.substep').classList.toggle('checked', this.checked);
+      saveState();
+      updateProgress();
+    });
+  });
+
+  function copyCmd(btn) {
+    const text = btn.parentElement.querySelector('.cmd-text').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function copyCode(btn) {
+    const block = btn.closest('.code-block');
+    const label = block.querySelector('.code-label');
+    let text = block.textContent;
+    if (label) text = text.replace(label.textContent, '');
+    text = text.replace('Copy', '').replace('Copied!', '').trim();
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function resetAll() {
+    if (confirm('Reset all checkboxes? This cannot be undone.')) {
+      checkboxes.forEach(cb => { cb.checked = false; cb.closest('.substep').classList.remove('checked'); });
+      localStorage.removeItem(STORAGE_KEY);
+      updateProgress();
+    }
+  }
+
+  loadState();
+</script>
+
+</body>
+</html>
