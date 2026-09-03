@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Free Channel: The Map Pack</title>
+<style>
+  @page { size: letter; margin: .55in; }
+  * { box-sizing: border-box; }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    font-family: Calibri, "Segoe UI", Arial, sans-serif;
+    color: #1A1A1A;
+    margin: 0;
+    padding: 0;
+    font-size: 10.3pt;
+    line-height: 1.34;
+  }
+  .sheet { padding: 0; }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 3px solid #1A3C6E;
+    padding-bottom: 7px;
+    margin-bottom: 12px;
+  }
+  h1 {
+    color: #1A3C6E;
+    font-size: 20pt;
+    margin: 0;
+    letter-spacing: .2px;
+  }
+  .subtitle {
+    color: #444;
+    font-size: 10pt;
+    margin-top: 3px;
+  }
+  .tag {
+    background: #1A3C6E;
+    color: #FFCD00;
+    font-size: 8.5pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding: 5px 11px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  h2 {
+    color: #1A3C6E;
+    font-size: 13pt;
+    margin: 16px 0 6px 0;
+    border-bottom: 1px solid #D9DEE6;
+    padding-bottom: 3px;
+  }
+  h2 .stepnum {
+    display: inline-block;
+    background: #1A3C6E;
+    color: #fff;
+    font-weight: bold;
+    font-size: 9pt;
+    width: 19px;
+    height: 19px;
+    line-height: 19px;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 7px;
+    vertical-align: middle;
+  }
+  p { margin: 6px 0; }
+  .intro {
+    background: #F4F6F9;
+    border-left: 4px solid #FFCD00;
+    padding: 8px 12px;
+    margin-bottom: 4px;
+    font-size: 10pt;
+    color: #2A2A2A;
+  }
+  .statrow {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0 4px 0;
+  }
+  .statbox {
+    flex: 1;
+    background: #1A3C6E;
+    color: #fff;
+    border-radius: 4px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .statbox.gold { background: #FFF6D9; border: 1px solid #FFCD00; color: #7A5B00; }
+  .statbox .num {
+    font-size: 19pt;
+    font-weight: bold;
+    display: block;
+    line-height: 1.1;
+  }
+  .statbox .lbl {
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+  }
+  .source-note {
+    font-size: 7.6pt;
+    color: #6B6B6B;
+    margin: 3px 0 2px 0;
+  }
+  .factor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 9px;
+    margin: 8px 0 4px 0;
+  }
+  .factor {
+    border: 1px solid #D9DEE6;
+    border-top: 3px solid #1A3C6E;
+    border-radius: 3px;
+    padding: 8px 9px;
+  }
+  .factor .fname {
+    font-weight: bold;
+    color: #1A3C6E;
+    font-size: 10.3pt;
+    display: block;
+    margin-bottom: 3px;
+  }
+  .factor p { margin: 4px 0; font-size: 9.3pt; }
+  .quote {
+    font-style: italic;
+    color: #444;
+    font-size: 8.6pt;
+    border-left: 2px solid #D9DEE6;
+    padding-left: 6px;
+    margin: 4px 0;
+  }
+  table.status {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 4px 0;
+    font-size: 9.3pt;
+  }
+  table.status th {
+    background: #1A3C6E;
+    color: #fff;
+    text-align: left;
+    padding: 5px 8px;
+    font-size: 8.6pt;
+    text-transform: uppercase;
+    letter-spacing: .2px;
+  }
+  table.status td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #E4E8EE;
+    vertical-align: top;
+  }
+  table.status tr:nth-child(even) td { background: #F7F9FC; }
+  .checklist {
+    list-style: none;
+    margin: 6px 0 4px 0;
+    padding: 0;
+  }
+  .checklist li {
+    padding: 5px 0 5px 26px;
+    border-bottom: 1px solid #EDEFF3;
+    position: relative;
+    font-size: 9.6pt;
+  }
+  .checklist li:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #1A3C6E;
+    border-radius: 3px;
+  }
+  .checklist li strong { color: #1A3C6E; }
+  table.scan {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 4px 0;
+    font-size: 9.1pt;
+  }
+  table.scan th {
+    background: #1A3C6E;
+    color: #fff;
+    text-align: left;
+    padding: 5px 7px;
+    font-size: 8.2pt;
+    text-transform: uppercase;
+    letter-spacing: .2px;
+  }
+  table.scan td {
+    padding: 5px 7px;
+    border-bottom: 1px solid #E4E8EE;
+    vertical-align: top;
+  }
+  table.scan tr:nth-child(even) td { background: #F7F9FC; }
+  .result-in {
+    color: #1A6E3C;
+    font-weight: bold;
+  }
+  .result-out {
+    color: #8A2A2A;
+  }
+  .result-na {
+    color: #8A6B00;
+    font-style: italic;
+  }
+  .badge {
+    font-size: 6.6pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    vertical-align: middle;
+  }
+  .badge.research {
+    background: #E7EEF9;
+    color: #1A3C6E;
+    border: 1px solid #1A3C6E;
+  }
+  .badge.observed {
+    background: #E8F3EC;
+    color: #1A6E3C;
+    border: 1px solid #1A6E3C;
+  }
+  .method-note {
+    background: #FFF6D9;
+    border: 1px solid #FFCD00;
+    border-radius: 3px;
+    padding: 8px 10px;
+    font-size: 8.9pt;
+    color: #4A3D00;
+    margin: 6px 0 8px 0;
+  }
+  .method-note strong { color: #1A3C6E; }
+  footer {
+    margin-top: 14px;
+    padding-top: 6px;
+    border-top: 1px solid #D9DEE6;
+    display: flex;
+    justify-content: space-between;
+    font-size: 7.8pt;
+    color: #8A8A8A;
+  }
+  a { color: #1A3C6E; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <div>
+      <h1>The Free Channel: The Map Pack</h1>
+      <div class="subtitle">Top Tier Roofing and Remodeling, LLC &middot; how the top-3 local box works, and where you stand in it today</div>
+    </div>
+    <div class="tag">Free, no ad spend</div>
+  </header>
+
+  <div class="intro">
+    When someone searches "roofer near me" or "roofing contractor Albertville MN," the first
+    thing they usually see is not a list of blue links. It is a box with a small map and three
+    business names, called the <strong>local pack</strong> or <strong>map pack</strong>. It sits
+    above almost everything else on the page, it costs nothing to appear in, and it is where a
+    homeowner with a leaking roof is most likely to stop looking and start calling.
+  </div>
+
+  <div class="statrow">
+    <div class="statbox">
+      <span class="num">28.8%</span>
+      <span class="lbl">of clicks go to the map pack</span>
+    </div>
+    <div class="statbox gold">
+      <span class="num">13.8%</span>
+      <span class="lbl">of clicks go to paid Local Services ads</span>
+    </div>
+    <div class="statbox">
+      <span class="num">$0</span>
+      <span class="lbl">cost to appear in the map pack</span>
+    </div>
+  </div>
+  <div class="source-note">
+    Source: <a href="https://www.brightlocal.com/research/local-services-ads-click-study/" target="_blank" rel="noopener">BrightLocal, "Local Services Ads Click Study,"</a>
+    published 2018, a controlled click study across five home-service trades. It is an industry
+    benchmark, not a measurement of your own site, and roofing was not one of the trades tested.
+    The pattern it shows, that the free map pack out-clicks paid Local Services ads, is the reason
+    this channel is worth the same attention as anything you'd pay for.
+  </div>
+
+  <h2><span class="stepnum">1</span>How a position in the box gets won</h2>
+  <p>Google itself names three things that decide who shows up in the map pack and in what
+  order. None of them can be bought directly.</p>
+
+  <div class="factor-grid">
+    <div class="factor">
+      <span class="fname">Distance</span>
+      <p>How far your business is from the person searching, or from the area they typed in.</p>
+      <p class="quote">"How far each business is from the customer who's searching."</p>
+    </div>
+    <div class="factor">
+      <span class="fname">Relevance</span>
+      <p>How well your listing matches what was searched: your categories, the services you list,
+      and the words on your site and profile.</p>
+      <p class="quote">"How well a Business Profile matches what someone is searching for."</p>
+    </div>
+    <div class="factor">
+      <span class="fname">Prominence</span>
+      <p>How well-known and well-reviewed your business is: review count, review rating, and how
+      complete your Google Business Profile is.</p>
+      <p class="quote">"More reviews and positive ratings can help your business's local ranking."</p>
+    </div>
+  </div>
+  <div class="source-note">
+    Source: Google's own local-ranking guidance, <a href="https://support.google.com/business/answer/7091?hl=en" target="_blank" rel="noopener">support.google.com/business/answer/7091</a>.
+  </div>
+
+  <p><strong>Where you already stand on prominence:</strong> a 5.0 rating across 21 Google
+  reviews, climbing, and every review answered so far. That is a genuinely strong prominence
+  signal, and it is the hardest one for a competitor to fake. Several competitors in this trade
+  area carry 300 to 700+ reviews, so the honest read is: quality is not the gap, volume is, and
+  volume is a habit, not a redesign.</p>
+
+  <p><strong>Where the picture is thin or simply unconfirmed:</strong> categories, service-area
+  setup, photo count, hours as configured, and whether Posts or Q&amp;A are being used are all
+  things we cannot see from outside your Google Business Profile dashboard. That is not a finding
+  that they are missing, it is a two-minute check that has not been made yet, and it is listed
+  below because it is free and it is the fastest lever on relevance.</p>
+
+  <h2><span class="stepnum">2</span>What moves this, this week, at no cost</h2>
+  <ul class="checklist">
+    <li><strong>Fill in every category your Google Business Profile dashboard offers.</strong>
+    A primary category of "Roofing contractor" plus every secondary category that genuinely
+    applies (siding, gutters, remodeling) widens which searches you show up for.</li>
+    <li><strong>Turn on service area for your towns.</strong>
+    Confirm Albertville, St Michael, Otsego, Monticello, Buffalo, and Elk River are set as
+    service areas inside the profile, not just implied by your address.</li>
+    <li><strong>Post an update when a job wraps.</strong>
+    Google Posts are a free feed attached to your listing. A finished job with a photo is a
+    live, current signal that the business is active.</li>
+    <li><strong>Add photos from finished jobs as they happen.</strong>
+    Photo count and recency both feed how complete and current your profile looks.</li>
+    <li><strong>Keep replying to every new review.</strong>
+    You are already doing this on all 21. Do not let it slip as volume grows, it is one of the
+    cheapest trust signals a homeowner reads before they call.</li>
+    <li><strong>Check hours are accurate inside the profile itself.</strong>
+    The website states one set of hours; whether the Google listing matches is a two-minute
+    check worth making once.</li>
+  </ul>
+
+  <h2><span class="stepnum">3</span>Where you actually rank today: a free position scan</h2>
+  <p>To show what "prominence and distance" mean in practice, we checked where Top Tier shows up
+  in Google's map results for a roofing search near each of your six towns.</p>
+
+  <div class="method-note">
+    <strong>Method and confidence, stated plainly:</strong> this was run using Google's live map
+    results for a "[roofing search] near [town]" query, observed on <strong>2026-09-02</strong>,
+    at zero cost. It reflects the full ranked list Google Maps returns, which the top-3 pack on a
+    Google search draws from, but it is a single snapshot per town, not a multi-point grid across
+    each town (the more expensive, paid version of this check). Read a top-3 finish below as
+    strong evidence of a map-pack position. Read "not in the list" as evidence the business is
+    not showing up prominently for that search, not proof it appears nowhere at all.
+  </div>
+
+  <table class="scan">
+    <tr><th>Town</th><th>Search used</th><th>Result</th><th>Notes</th></tr>
+    <tr>
+      <td>Albertville</td>
+      <td>Roofing contractor near Albertville, MN</td>
+      <td class="result-in">#2 of 14 <span class="badge observed">In the pack</span></td>
+      <td>Your home town. Well inside where the top-3 box draws from.</td>
+    </tr>
+    <tr>
+      <td>Otsego</td>
+      <td>Roofing contractor near Otsego, MN</td>
+      <td class="result-in">#5 of 14 <span class="badge observed">Just outside</span></td>
+      <td>Visible on the list, one tier below where the box cuts off.</td>
+    </tr>
+    <tr>
+      <td>St Michael</td>
+      <td>Six search variations tried</td>
+      <td class="result-na">Not obtained</td>
+      <td>The free tool used could not return a result for this town on any of six tries.
+      Genuinely unknown, not a finding of "not ranking." Worth a direct look in a browser.</td>
+    </tr>
+    <tr>
+      <td>Monticello</td>
+      <td>Roofer near Monticello, MN</td>
+      <td class="result-out">Not in top 13</td>
+      <td>A 593-review incumbent (Perfect Exteriors) leads this town by a wide margin.</td>
+    </tr>
+    <tr>
+      <td>Buffalo</td>
+      <td>Roofing contractor near Buffalo, MN</td>
+      <td class="result-out">Not in top 14</td>
+      <td>List is dominated by other Buffalo-based small shops.</td>
+    </tr>
+    <tr>
+      <td>Elk River</td>
+      <td>Roofing company near Elk River, MN</td>
+      <td class="result-out">Not in top 14</td>
+      <td>A local incumbent (Northface Construction) leads this town.</td>
+    </tr>
+  </table>
+
+  <p>The pattern matches what the prominence factor predicts: the town where you are strongest
+  is the town you are physically in, and the towns where an established, heavily-reviewed
+  competitor already sits are the towns where you do not yet show up. That is not a wall, it is
+  the review-volume gap from Section 1 showing up as a ranking effect. Distance and relevance
+  cannot fully make up for it in the towns you don't operate out of, but a growing review count
+  and a fully filled-out profile close the gap that is actually closeable.</p>
+
+  <footer>
+    <span>Top Tier Roofing and Remodeling, LLC &middot; Albertville, MN &middot; toptiermn.com</span>
+    <span>Prepared 2026-09-02</span>
+  </footer>
+
+</div>
+</body>
+</html>

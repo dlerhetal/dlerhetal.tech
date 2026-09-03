@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LSA Pitfalls</title>
+<style>
+  @page { size: letter; margin: .5in; }
+  * { box-sizing: border-box; }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    font-family: Calibri, "Segoe UI", Arial, sans-serif;
+    color: #1A1A1A;
+    margin: 0;
+    padding: 0;
+    font-size: 9.6pt;
+    line-height: 1.22;
+  }
+  .sheet { padding: 0; }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 3px solid #1A3C6E;
+    padding-bottom: 6px;
+    margin-bottom: 9px;
+  }
+  h1 {
+    color: #1A3C6E;
+    font-size: 17pt;
+    margin: 0;
+    letter-spacing: .2px;
+  }
+  .subtitle {
+    color: #444;
+    font-size: 9pt;
+    margin-top: 2px;
+  }
+  .tag {
+    background: #1A3C6E;
+    color: #FFCD00;
+    font-size: 8pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding: 4px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .intro {
+    background: #F4F6F9;
+    border-left: 4px solid #FFCD00;
+    padding: 6px 10px;
+    margin-bottom: 9px;
+    font-size: 9pt;
+    color: #2A2A2A;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px 14px;
+  }
+  .item {
+    border-top: 1px solid #D9DEE6;
+    padding-top: 4px;
+  }
+  .item .num {
+    display: inline-block;
+    background: #1A3C6E;
+    color: #fff;
+    font-weight: bold;
+    font-size: 7.8pt;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+  .item .name {
+    font-weight: bold;
+    color: #1A3C6E;
+    font-size: 9.7pt;
+  }
+  .item p {
+    margin: 2px 0 0 20px;
+    color: #262626;
+  }
+  .badge {
+    font-size: 6.4pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+  .badge.research {
+    background: #E7EEF9;
+    color: #1A3C6E;
+    border: 1px solid #1A3C6E;
+  }
+  .badge.general {
+    background: #FFF6D9;
+    color: #7A5B00;
+    border: 1px solid #FFCD00;
+  }
+  footer {
+    margin-top: 9px;
+    padding-top: 5px;
+    border-top: 1px solid #D9DEE6;
+    display: flex;
+    justify-content: space-between;
+    font-size: 7.5pt;
+    color: #8A8A8A;
+  }
+  .legend {
+    font-size: 7.5pt;
+    color: #6B6B6B;
+    margin-top: 7px;
+  }
+  .legend span { margin-right: 14px; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <div>
+      <h1>Local Services Ads: Know the Pitfalls Going In</h1>
+      <div class="subtitle">Top Tier Roofing and Remodeling: a working guide, not a case against LSA</div>
+    </div>
+    <div class="tag">Read before you turn it on</div>
+  </header>
+
+  <div class="intro">
+    LSA is a good channel and it is worth running. This sheet is not the case for or against it,
+    that decision is made. It is the list of traps that catch contractors who did not see them
+    coming, so you walk in with your eyes open.
+  </div>
+
+  <div class="grid">
+
+    <div class="item">
+      <span class="num">1</span><span class="name">The badge is not instant</span>
+      <span class="badge research">Research</span>
+      <p>The Google Verified badge requires proof of license, proof of insurance, and a
+      background check on the owner and on field staff, run by a third-party screener. Plan on
+      several weeks between applying and going live, not a few days. Have your license and
+      insurance documents ready before you start the application so paperwork is not the delay.</p>
+    </div>
+
+    <div class="item">
+      <span class="num">2</span><span class="name">You pay per lead, and bad leads are hard to get credited</span>
+      <span class="badge research">Research</span>
+      <p>You are charged when a customer contacts you, even a missed call that goes to
+      voicemail. Google now scores leads automatically and issues some credits on its own, but it
+      no longer credits leads simply because the caller was outside your service area or wanted a
+      job you do not do. Getting the service area and job types right at setup matters more than
+      it used to, because there is less recourse afterward.</p>
+    </div>
+
+    <div class="item">
+      <span class="num">3</span><span class="name">A busy week can spend faster than you expect</span>
+      <span class="badge research">Research</span>
+      <p>You set a weekly budget, but Google can spend above it in any single week, up to a
+      monthly cap. In storm season, a surge in calls can burn the monthly cap early and take you
+      dark for the rest of the month, right when demand is highest. Watch the spend during storm
+      weeks rather than assuming it evens out on its own.</p>
+    </div>
+
+    <div class="item">
+      <span class="num">4</span><span class="name">Ranking rewards reviews and fast answering, not just budget</span>
+      <span class="badge research">Research</span>
+      <p>Google's own ranking factors are your bid, your review count and rating, and your
+      responsiveness to calls and messages. Answering quickly is already a strength here, so this
+      one works in your favor as long as whoever answers the phone keeps doing what they are
+      already doing.</p>
+    </div>
+
+    <div class="item">
+      <span class="num">5</span><span class="name">More reviews buys more leads, not necessarily cheaper ones</span>
+      <span class="badge research">Research</span>
+      <p>A thin review count does not always show up as a higher price per lead, it shows up as
+      winning fewer of the auctions in the first place. The fix is the same either way: a steady
+      flow of new Google reviews is what moves this number, and it is free.</p>
+    </div>
+
+    <div class="item">
+      <span class="num">6</span><span class="name">Leads are often shared with other contractors</span>
+      <span class="badge general">General knowledge</span>
+      <p>A homeowner can request quotes through LSA from more than one company at the same time.
+      Being first to respond is a real advantage, not a courtesy.</p>
+    </div>
+
+    <div class="item">
+      <span class="num">7</span><span class="name">LSA reviews sit on a separate page from your main Google reviews</span>
+      <span class="badge general">General knowledge</span>
+      <p>A review collected through the LSA flow shows on your Local Services profile, not
+      automatically on your regular Google Business Profile listing that customers find through
+      Maps and search. Keep asking for reviews directly on your Google Business Profile as well,
+      LSA does not replace that.</p>
+    </div>
+
+    <div class="item">
+      <span class="num">8</span><span class="name">Service area and job type settings quietly cut you out</span>
+      <span class="badge research">Research</span>
+      <p>If a town, ZIP code, or job type is not checked in your LSA settings, you simply do not
+      appear for that search, no error, no notice. Review these settings whenever the service area
+      or the job mix changes, not just once at setup.</p>
+    </div>
+
+    <div class="item">
+      <span class="num">9</span><span class="name">Your business name has to match, everywhere, exactly</span>
+      <span class="badge research">Research</span>
+      <p>The name on your license, your certificate of insurance, your Google Business Profile,
+      and your LSA application all need to read identically. A mismatch is one of the most common
+      reasons approval stalls. Check this before you apply, not after Google flags it.</p>
+    </div>
+
+  </div>
+
+  <div class="legend">
+    <span><strong>Research</strong> = confirmed in the project's own LSA research, sourced to Google's published documentation.</span>
+    <span><strong>General knowledge</strong> = well-established LSA practice, not separately confirmed in the project's own research.</span>
+  </div>
+
+  <footer>
+    <span>Top Tier Roofing and Remodeling, LLC &middot; Albertville, MN</span>
+    <span>Prepared for Guy Saxby</span>
+  </footer>
+
+</div>
+</body>
+</html>

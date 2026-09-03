@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Tier - Year-End Sales Pacing</title>
+<style>
+  :root{
+    --blue:#1A3C6E; --gold:#FFCD00; --ink:#1c2530; --muted:#5b6672;
+    --line:#dde3ea; --bg:#f4f6f9; --card:#ffffff;
+    --good:#1f7a4d; --warn:#b8860b; --bad:#b23b3b;
+    --grid:#e7ecf2;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:Calibri,"Segoe UI",system-ui,Arial,sans-serif;line-height:1.5;}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 22px 60px;}
+  header.top{border-bottom:4px solid var(--gold);padding-bottom:16px;margin-bottom:22px;}
+  header.top .kicker{color:var(--blue);font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;font-size:12px;}
+  header.top h1{margin:6px 0 4px;font-size:30px;color:var(--blue);line-height:1.15;}
+  header.top .sub{color:var(--muted);font-size:15px;}
+  .internal{display:inline-block;margin-top:10px;background:#eef2f7;border:1px solid var(--line);
+    color:var(--muted);font-size:12px;padding:3px 9px;border-radius:4px;}
+  h2{color:var(--blue);font-size:20px;margin:34px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line);}
+  h3{color:var(--blue);font-size:16px;margin:20px 0 6px;}
+  p{margin:8px 0;}
+  .lead{font-size:16px;}
+  /* stat tiles */
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0 6px;}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 15px;
+    box-shadow:0 1px 2px rgba(20,40,70,.05);}
+  .tile .lab{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;}
+  .tile .big{font-size:27px;font-weight:800;margin:6px 0 2px;color:var(--blue);line-height:1.05;}
+  .tile .note{font-size:12.5px;color:var(--muted);}
+  .tile.verdict{background:var(--blue);color:#fff;}
+  .tile.verdict .lab{color:#cdd9ea;}
+  .tile.verdict .big{color:#fff;font-size:23px;}
+  .tile.verdict .note{color:#dbe4f0;}
+  .pill{display:inline-block;font-weight:800;font-size:11px;padding:2px 8px;border-radius:20px;}
+  .pill.bad{background:#f7e1e1;color:var(--bad);}
+  .pill.warn{background:#f6edcf;color:#8a6400;}
+  .pill.good{background:#e0f0e7;color:var(--good);}
+  /* cards / boxes */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 18px;margin:14px 0;
+    box-shadow:0 1px 2px rgba(20,40,70,.05);}
+  table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0;}
+  th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);}
+  th:first-child,td:first-child{text-align:left;}
+  thead th{background:#f0f4f8;color:var(--blue);border-bottom:2px solid var(--line);font-size:12.5px;
+    text-transform:uppercase;letter-spacing:.03em;}
+  tbody tr:hover{background:#f8fafc;}
+  .r-strong td{font-weight:800;background:#fbfcfe;}
+  .num{font-variant-numeric:tabular-nums;}
+  .measured{color:var(--good);font-weight:700;}
+  .modeled{color:var(--warn);font-weight:700;}
+  .tag{font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;vertical-align:middle;}
+  .tag.m{background:#e0f0e7;color:var(--good);}
+  .tag.d{background:#f6edcf;color:#8a6400;}
+  .chartwrap{overflow-x:auto;}
+  svg{display:block;max-width:100%;height:auto;}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--muted);margin:6px 2px 0;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .sw{width:16px;height:4px;border-radius:2px;display:inline-block;}
+  .sw.box{width:12px;height:12px;border-radius:3px;}
+  .caveat{background:#fbfaf3;border:1px solid #eadfae;border-left:5px solid var(--gold);border-radius:8px;
+    padding:16px 18px;margin:16px 0;font-size:13.5px;}
+  .caveat h3{margin-top:0;color:#7a5c00;}
+  .src{font-size:12px;color:var(--muted);}
+  .src a{color:var(--blue);}
+  ul{margin:8px 0 8px 2px;padding-left:20px;} li{margin:5px 0;}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .foot{margin-top:34px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;}
+  @media(max-width:820px){.tiles{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}
+  @media(max-width:520px){.tiles{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="kicker">Top Tier Roofing &amp; Remodeling &nbsp;&middot;&nbsp; Albertville, Minnesota</div>
+  <h1>Year-End Sales Pacing: are we still on track for $1.2M?</h1>
+  <div class="sub">$700,000 sold year to date &middot; target $1,200,000 &middot; as of September 3, 2026</div>
+  <span class="internal">Internal working analysis - consultant to owners. Not a client hand-out.</span>
+</header>
+
+<!-- ===================== VERDICT TILES ===================== -->
+<div class="tiles">
+  <div class="tile verdict">
+    <div class="lab">The verdict</div>
+    <div class="big">Behind pace</div>
+    <div class="note">$1.2M is a stretch. Base case lands near $1.0M unless the fall runs hot.</div>
+  </div>
+  <div class="tile">
+    <div class="lab">Sold year to date</div>
+    <div class="big">$700K</div>
+    <div class="note">58% of the $1.2M target, with ~67% of the year (245 of 365 days) already gone.</div>
+  </div>
+  <div class="tile">
+    <div class="lab">Projected year-end</div>
+    <div class="big">$0.95M - $1.09M</div>
+    <div class="note">Base case about $1.0M. A $110K - $250K miss vs $1.2M.</div>
+  </div>
+  <div class="tile">
+    <div class="lab">This time last year</div>
+    <div class="big">About even</div>
+    <div class="note">On normal cash collections 2026 is ~8% ahead of 2025; 2025 finished at $1.19M.</div>
+  </div>
+</div>
+<p class="src" style="margin-top:4px;">
+  <span class="tag m">MEASURED</span> figures come from the bank statements (below).
+  <span class="tag d">MODELED</span> figures apply a seasonal curve and are labeled wherever they appear.
+</p>
+
+<!-- ===================== ANSWER: ON TRACK? ===================== -->
+<h2>Are we still on track for $1.2M? No - behind, and the calendar is working against us</h2>
+<p class="lead">
+  $700,000 is in the book with about two-thirds of the year gone. The problem is not just the gap;
+  it is <strong>when</strong> the gap has to close. Roofing money is made in the summer, and the summer
+  is already inside the $700,000. Only the fall tail is left.
+</p>
+
+<div class="card">
+  <h3>The gap, plainly</h3>
+  <table>
+    <tbody>
+      <tr><td>Target</td><td class="num">$1,200,000</td></tr>
+      <tr><td>Sold to date (early September)</td><td class="num">$700,000</td></tr>
+      <tr class="r-strong"><td>Gap still to sell</td><td class="num">$500,000</td></tr>
+      <tr><td>Months left in the year</td><td class="num">~3.95</td></tr>
+      <tr><td>Sales pace needed, Sep - Dec</td><td class="num">$126,700 / mo</td></tr>
+      <tr><td>Pace run so far, Jan - early Sep</td><td class="num">$86,900 / mo</td></tr>
+      <tr class="r-strong"><td>Required step-up over current pace</td><td class="num">+46%</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-bottom:0;">
+    Hitting $1.2M means selling <strong>46% faster every month from here to New Year's than the company
+    has averaged all year</strong> - and doing it in the back quarter, after the peak install months.
+    That is why the honest answer is "stretch," not "on track."
+  </p>
+</div>
+
+<!-- ===================== CHART A: cumulative vs target ===================== -->
+<h2>2025 vs 2026: cumulative revenue against the $1.2M line</h2>
+<div class="card">
+  <div class="chartwrap">
+  <svg viewBox="0 0 960 460" role="img" aria-label="Cumulative revenue 2025 modeled versus 2026, against the 1.2 million dollar target">
+    <!-- plot area: x 70..930 (860 wide, 12 month steps), y 40..410 (0..1300k) -->
+    <!-- gridlines + y labels -->
+    <g font-size="12" fill="#8a97a5" font-family="Calibri,Segoe UI,sans-serif">
+      <!-- y grid at 0,200,400,600,800,1000,1200 -->
+      <line x1="70" y1="410" x2="930" y2="410" stroke="#c7d0da"/>
+      <line x1="70" y1="353.1" x2="930" y2="353.1" stroke="#eef2f6"/><text x="62" y="357" text-anchor="end">200</text>
+      <line x1="70" y1="296.2" x2="930" y2="296.2" stroke="#eef2f6"/><text x="62" y="300" text-anchor="end">400</text>
+      <line x1="70" y1="239.2" x2="930" y2="239.2" stroke="#eef2f6"/><text x="62" y="243" text-anchor="end">600</text>
+      <line x1="70" y1="182.3" x2="930" y2="182.3" stroke="#eef2f6"/><text x="62" y="186" text-anchor="end">800</text>
+      <line x1="70" y1="125.4" x2="930" y2="125.4" stroke="#eef2f6"/><text x="62" y="129" text-anchor="end">1,000</text>
+      <text x="62" y="414" text-anchor="end">0</text>
+      <text x="30" y="230" text-anchor="middle" transform="rotate(-90 30 230)" fill="#5b6672" font-weight="700">Cumulative $ (thousands)</text>
+    </g>
+    <!-- TARGET line at 1,200k  y = 410 - 1200/1300*370 = 410-341.5=68.5 -->
+    <line x1="70" y1="68.5" x2="930" y2="68.5" stroke="#b23b3b" stroke-width="2" stroke-dasharray="2 4"/>
+    <text x="926" y="62" text-anchor="end" font-size="12.5" fill="#b23b3b" font-weight="800">Target $1.20M</text>
+    <!-- 2025 final marker 1,189.9k y=410-1189.9/1300*370=410-338.6=71.4 -->
+    <!-- pace-to-target diagonal 0 -> 1200 -->
+    <line x1="70" y1="410" x2="930" y2="68.5" stroke="#c2b26a" stroke-width="1.6" stroke-dasharray="5 5"/>
+    <text x="720" y="150" font-size="12" fill="#8a7a2e" font-weight="700">even pace to $1.2M</text>
+
+    <!-- x axis month labels: 12 steps, x = 70 + i*(860/11)=70+i*78.18 -->
+    <g font-size="12" fill="#5b6672" font-family="Calibri,Segoe UI,sans-serif" text-anchor="middle">
+      <text x="70" y="428">Jan</text><text x="148.2" y="428">Feb</text><text x="226.4" y="428">Mar</text>
+      <text x="304.5" y="428">Apr</text><text x="382.7" y="428">May</text><text x="460.9" y="428">Jun</text>
+      <text x="539.1" y="428">Jul</text><text x="617.3" y="428">Aug</text><text x="695.5" y="428">Sep</text>
+      <text x="773.6" y="428">Oct</text><text x="851.8" y="428">Nov</text><text x="930" y="428">Dec</text>
+    </g>
+
+    <!-- 2025 MODELED cumulative bookings (dashed gold), ends at 1,189.9 -->
+    <!-- points (x, y): y=410 - val/1300*370 ; val in k -->
+    <!-- J23.8 F47.6 M95.2 A178.5 May309.4 Jun464 Jul630.6 Aug785.3 Sep916.2 Oct1035.1 Nov1130.4 Dec1189.9 -->
+    <polyline fill="none" stroke="#b8860b" stroke-width="2.4" stroke-dasharray="7 4"
+      points="70,403.2 148.2,396.5 226.4,382.9 304.5,359.2 382.7,321.9 460.9,277.9 539.1,230.5 617.3,186.5 695.5,149.2 773.6,115.4 851.8,88.3 930,71.4"/>
+    <circle cx="930" cy="71.4" r="4" fill="#b8860b"/>
+    <text x="924" y="88" text-anchor="end" font-size="12" fill="#b8860b" font-weight="800">2025 finished $1.19M</text>
+
+    <!-- 2026 ACTUAL to date: straight ramp 0 (Jan) -> 700 at ~Sep3.
+         Sep3 x = between Sep(695.5) and Oct(773.6): +3/30 of step = 695.5+7.8=703.3 ; y=410-700/1300*370=410-199.2=210.8 -->
+    <polyline fill="none" stroke="#1A3C6E" stroke-width="3.2" points="70,410 703.3,210.8"/>
+    <circle cx="703.3" cy="210.8" r="5" fill="#1A3C6E"/>
+    <text x="703.3" y="228" text-anchor="middle" font-size="12.5" fill="#1A3C6E" font-weight="800">$700K now</text>
+
+    <!-- 2026 projections from (703.3,210.8) to Dec(930): strong 1094 (y=410-1094/1300*370=410-311.4=98.6), normal 1000 (y=410-284.6=125.4), conservative 946 (y=410-269.3=140.7) -->
+    <line x1="703.3" y1="210.8" x2="930" y2="98.6" stroke="#1f7a4d" stroke-width="2" stroke-dasharray="4 3"/>
+    <line x1="703.3" y1="210.8" x2="930" y2="125.4" stroke="#1A3C6E" stroke-width="2" stroke-dasharray="4 3"/>
+    <line x1="703.3" y1="210.8" x2="930" y2="140.7" stroke="#b23b3b" stroke-width="2" stroke-dasharray="4 3"/>
+    <circle cx="930" cy="98.6" r="3.5" fill="#1f7a4d"/><text x="924" y="103" text-anchor="end" font-size="11.5" fill="#1f7a4d" font-weight="700">strong $1.09M</text>
+    <circle cx="930" cy="125.4" r="3.5" fill="#1A3C6E"/><text x="924" y="141" text-anchor="end" font-size="11.5" fill="#1A3C6E" font-weight="700">base $1.00M</text>
+    <circle cx="930" cy="140.7" r="3.5" fill="#b23b3b"/><text x="924" y="156" text-anchor="end" font-size="11.5" fill="#b23b3b" font-weight="700">low $0.95M</text>
+  </svg>
+  </div>
+  <div class="legend">
+    <span><span class="sw" style="background:#1A3C6E"></span> 2026 sold to date <span class="tag m">reported</span></span>
+    <span><span class="sw" style="background:#b8860b"></span> 2025 cumulative <span class="tag d">MODELED curve</span></span>
+    <span><span class="sw" style="background:#b23b3b"></span> $1.2M target</span>
+    <span><span class="sw" style="background:#1f7a4d"></span> 2026 projections (Sep - Dec)</span>
+  </div>
+  <p class="src" style="margin-top:10px;">
+    The blue line is drawn straight to the one point we can stand behind - $700K reported by early
+    September; the month-by-month 2026 split is not reliable because the CRM records administrative
+    dates, not sale dates. The 2025 curve is modeled from a Minnesota roofing seasonal curve tied to
+    the return's full-year $1,189,873 (it is a shape, not a measured monthly series). The take-away is
+    the geometry: 2026 is running below the even-pace line to $1.2M, and every projection lands short.
+  </p>
+</div>
+
+<!-- ===================== SCENARIOS ===================== -->
+<h2>Run-rate vs seasonal: three honest year-end cases</h2>
+<p>
+  The naive "straight-line" read - $700K over 8.05 months is $86,900/mo, times twelve - lands at
+  <strong>$1.04M</strong>. But roofing is not straight-line, so here is the same $700K carried to
+  year-end under three seasonal assumptions for how much of the year normally lands after Labor Day.
+</p>
+<div class="card">
+  <table>
+    <thead>
+      <tr><th>Case</th><th>Sep - Dec share of full year</th><th>Sep - Dec adds</th><th>Year-end</th><th>vs $1.2M</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Low</strong> - cold snaps early, quiet storm fall</td><td class="num">26%</td><td class="num">+$246K</td><td class="num">$0.95M</td><td class="num" style="color:var(--bad)">-$254K</td></tr>
+      <tr class="r-strong"><td><strong>Base</strong> - a normal Minnesota fall</td><td class="num">30%</td><td class="num">+$300K</td><td class="num">$1.00M</td><td class="num" style="color:var(--bad)">-$200K</td></tr>
+      <tr><td><strong>Strong</strong> - active, storm-driven Q4</td><td class="num">36%</td><td class="num">+$394K</td><td class="num">$1.09M</td><td class="num" style="color:var(--warn)">-$107K</td></tr>
+      <tr><td>Straight-line reference (no seasonality)</td><td class="num">-</td><td class="num">+$343K</td><td class="num">$1.04M</td><td class="num" style="color:var(--bad)">-$157K</td></tr>
+      <tr><td><em>What $1.2M actually requires</em></td><td class="num">~42%</td><td class="num">+$500K</td><td class="num">$1.20M</td><td class="num">even</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-bottom:0;">
+    <strong>The non-obvious point:</strong> seasonality does <em>not</em> rescue this number. In April
+    or May, a back-loaded season would be an argument that the big months are still ahead. In September
+    they are behind you - the summer install peak is already inside the $700K. To reach $1.2M the fall
+    would have to be ~42% of the whole year's sales, which is above anything in this company's short
+    record (see the seasonal box below). $1.2M is reachable only in a genuinely strong,
+    storm-driven Q4.
+  </p>
+</div>
+
+<!-- ===================== THIS TIME LAST YEAR ===================== -->
+<h2>Where were we this time last year?</h2>
+<p class="lead">
+  Two ways to answer it, because "sold" and "collected" are not the same clock. Both say roughly the
+  same thing: <strong>2026 is pacing about even with 2025 - and 2025 finished at $1.19M, just under
+  the $1.2M goal.</strong>
+</p>
+
+<div class="two">
+  <div class="card">
+    <h3>Measured: cash in the door <span class="tag m">MEASURED</span></h3>
+    <p style="font-size:13.5px;">Deposits through July (the last month both years have a complete
+      statement), from the bank record:</p>
+    <table>
+      <tbody>
+        <tr><td>2026, Jan - Jul collected</td><td class="num measured">$550K</td></tr>
+        <tr><td>2025, Jan - Jul collected (excl. one-off)</td><td class="num">$508K</td></tr>
+        <tr class="r-strong"><td>2026 vs 2025, normal collections</td><td class="num" style="color:var(--good)">+8%</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:0;">
+      2025's raw Jan - Jul deposits look far higher ($915K), but $407K of that was a single
+      March 2025 deposit that is partly not job revenue (a transfer, retainage release, or batched
+      lump). Set it aside and 2026 is running a touch <strong>ahead</strong> of last year on real
+      collections.
+    </p>
+  </div>
+  <div class="card">
+    <h3>Modeled: sold to date <span class="tag d">MODELED</span></h3>
+    <p style="font-size:13.5px;">Applying the seasonal curve to 2025's known $1.19M finish, to
+      estimate where bookings stood at this point last year:</p>
+    <table>
+      <tbody>
+        <tr><td>2025 sold by early Sep (modeled)</td><td class="num modeled">~$800K</td></tr>
+        <tr><td>2026 sold by early Sep (reported)</td><td class="num measured">$700K</td></tr>
+        <tr class="r-strong"><td>2026 vs 2025 bookings</td><td class="num" style="color:var(--warn)">~ -12%</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:0;">
+      On a bookings basis the estimate says 2026 is modestly behind last year's pace. The two views
+      differ because 2025's cash was front-loaded by that March lump; treat the two as a band, not a
+      contradiction - 2026 is within roughly 10% of last year either way.
+    </p>
+  </div>
+</div>
+<p>
+  <strong>The encouraging read:</strong> 2025 ended at $1,189,873 - the company has done essentially
+  this number before, one year ago, off a similar mid-year position. <strong>The sober read:</strong>
+  it landed <em>just under</em> $1.2M even in a good year, so clearing the bar in 2026 needs the fall
+  to beat last fall, not merely match it.
+</p>
+
+<!-- ===================== WHAT THE REST OF YEAR SHOULD LOOK LIKE ===================== -->
+<h2>What the rest of the year should look like</h2>
+<p>
+  Two columns below: what each month <em>needs</em> to contribute to hit $1.2M, and what a
+  seasonally normal month <em>should</em> contribute given the curve. Where "needed" sits well above
+  "normal," that month is carrying an unrealistic load.
+</p>
+<div class="card">
+  <table>
+    <thead>
+      <tr><th>Month</th><th>Needed for $1.2M</th><th>Seasonally normal <span class="tag d">MOD</span></th><th>Realistic?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>September (remaining)</td><td class="num">~$120K</td><td class="num">~$120K</td><td><span class="pill good">plausible</span></td></tr>
+      <tr><td>October</td><td class="num">~$127K</td><td class="num">~$110K</td><td><span class="pill warn">a reach</span></td></tr>
+      <tr><td>November</td><td class="num">~$127K</td><td class="num">~$85K</td><td><span class="pill bad">unlikely</span></td></tr>
+      <tr><td>December</td><td class="num">~$127K</td><td class="num">~$55K</td><td><span class="pill bad">very unlikely</span></td></tr>
+      <tr class="r-strong"><td>Sep - Dec total</td><td class="num">$500K</td><td class="num">~$370K</td><td><span class="pill warn">$130K short</span></td></tr>
+    </tbody>
+  </table>
+  <p style="margin-bottom:0;">
+    A normal fall carries roughly <strong>$370K</strong>, which lands the year near <strong>$1.07M</strong>.
+    The $1.2M target asks each of the four cold-weather months to sell at the summer peak rate, right
+    through a Minnesota November and December when installs slow down. September and early October are
+    where the realistic push is; November and December will not close a $130K gap on their own.
+  </p>
+</div>
+
+<!-- ===================== EXTERNAL FACTORS (filled after research) ===================== -->
+<h2>Outside factors: seasonality, weather, and the economy</h2>
+<div id="external">
+  <p>
+    None of this is enough history inside Top Tier to build a curve from - the company is barely two
+    years old. So the seasonal shape leans on outside Minnesota roofing data, and the weather and
+    economy are checked against public sources. Every claim below carries its source.
+  </p>
+
+  <div class="two">
+    <div class="card">
+      <h3>1. Minnesota roofing seasonality - real, and it works against a big Q4</h3>
+      <ul style="font-size:13.5px;">
+        <li>The slow season in northern states runs roughly <strong>November through March</strong>;
+          work concentrates spring through fall
+          (<span class="src"><a href="https://www.jobnimbus.com/blog/roofing-slow-season">jobnimbus.com/blog/roofing-slow-season</a></span>).</li>
+        <li>An NRCA-cited figure puts winter revenue about <strong>30% below the peak summer months</strong>
+          for the average roofer
+          (<span class="src"><a href="https://roofpredict.com/blog/optimizing-roofing-seasonal-cash">roofpredict.com</a></span>).</li>
+        <li>Beacon Roofing Supply's 10-K reports its lowest sales and net income in the
+          <strong>January - March quarter</strong> (deep winter), strong spring through early fall
+          (<span class="src"><a href="https://www.sec.gov/Archives/edgar/data/1124941/000156459020054777/becn-10k_20200930.htm">SEC 10-K</a></span>).</li>
+        <li>The best planned-replacement window in Minnesota is <strong>August through October</strong>,
+          with mid-September to mid-October ideal
+          (<span class="src"><a href="https://owlroofing.com/blog/best-time-replace-roof-minnesota/">owlroofing.com</a></span>,
+          <span class="src"><a href="https://lutgensco.com/best-time-of-year-for-a-roof-replacement/">lutgensco.com</a></span>).</li>
+      </ul>
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:0;">
+        <strong>What it means here:</strong> Q4 <em>opens</em> in peak season (Sep - Oct) and
+        <em>tapers hard</em> into Nov - Dec. That is exactly why the base case front-loads the fall push
+        into September and October and expects little from December. No source gives a hard
+        month-by-month percentage split, so the curve is a defensible shape, not a measured table -
+        labeled MODELED throughout.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>2. 2026 hail - an active year that brushed the doorstep</h3>
+      <ul style="font-size:13.5px;">
+        <li>2026 was an <strong>active severe-weather year</strong> in Minnesota - first tornadoes and
+          hail to 3 inches on April 13 (south-central MN)
+          (<span class="src"><a href="https://www.dnr.state.mn.us/climate/journal/tornado-hail-april-13-2026.html">MN DNR</a></span>).</li>
+        <li><strong>June 19, 2026 - the closest event:</strong> a cell developed on the
+          <strong>Wright / Meeker / Stearns county border</strong> and drove <strong>1-inch-plus hail
+          through the Hanover - Corcoran corridor, immediately adjacent to St Michael and Albertville</strong>
+          (<span class="src"><a href="https://www.weather.gov/mpx/19June2026_AfternoonHail_Wind">NWS MPX</a></span>,
+          <span class="src"><a href="https://www.dnr.state.mn.us/climate/journal/north-metro-hail-june-19-2026.html">MN DNR</a></span>).</li>
+        <li>The most damaging 2-inch cores landed in the <strong>north / northeast metro</strong>
+          (NE Minneapolis, Fridley, Shoreview, Woodbury), <strong>not directly on Albertville</strong>
+          (same NWS / DNR sources).</li>
+      </ul>
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:0;">
+        <strong>What it means here:</strong> a mild positive for the strong case - there is real
+        storm-driven insurance work in the surrounding area to chase this fall. But the punishing cores
+        missed the client's towns, and hail damage <em>inside</em> Albertville / St Michael / Otsego /
+        Big Lake / Buffalo / Monticello could <strong>not be confirmed</strong> from public reports. So
+        weather nudges toward the base-to-strong band, it does not manufacture the $500K.
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>3. Economy and housing - neutral, a slight positive</h3>
+    <ul style="font-size:13.5px;">
+      <li>Twin Cities home prices stable to modestly rising - metro median ~$395,000, low-single-digit
+        appreciation expected in 2026, tight supply
+        (<span class="src"><a href="https://titlemark.com/minnesota-housing-market-2026/">titlemark.com</a></span>).</li>
+      <li>30-year mortgage rates easing to ~<strong>6.1 - 6.2%</strong> in 2026, down from 7%+ in
+        2024 - 25
+        (<span class="src"><a href="https://neversperpichrealestate.com/blog/twin-cities-housing-market-2026-prices-trends-inventory-and-what-buyers-should-expect">neversperpichrealestate.com</a></span>).</li>
+      <li>Harvard's remodeling index (LIRA) projects home-improvement spending growth easing from
+        ~2.1% mid-2026 to ~1.6% by year-end - <strong>slow, steady, not a boom</strong>
+        (<span class="src"><a href="https://www.jchs.harvard.edu/press-releases/remodeling-growth-set-downshift-late-2026">JCHS Harvard</a></span>).</li>
+    </ul>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:0;">
+      <strong>Bottom line on outside factors:</strong> normal-to-modestly-favorable. Timing is the
+      tailwind (Sep - Oct peak), the active hail year is a mild demand positive, and the macro backdrop
+      is neutral. Nothing here changes the verdict - it supports the base-to-strong band ($1.0M - $1.09M)
+      and argues against the low case, but nothing points to the record fall that $1.2M would require.
+    </p>
+  </div>
+</div>
+
+<!-- ===================== METHODS / CAVEATS ===================== -->
+<h2>Methods and caveats - read before quoting any number</h2>
+<div class="caveat">
+  <h3>What is measured</h3>
+  <ul>
+    <li><strong>Monthly deposits, both years</strong> - from Deerwood Bank business checking (acct
+      ...1214), 19 consecutive statements Jan 2025 through Jul 2026, parsed to a monthly rollup
+      (<span class="src">work/bank_monthly_rollup_260825.csv</span>, forensics in
+      <span class="src">work/bank_forensics_260825.md</span>). All 19 months tie to the statement's own
+      totals to the cent, and December 2025 ending cash ($248,279) ties to the filed Form 1065. This is
+      the reliable revenue-<em>timing</em> signal.</li>
+    <li><strong>2025 full-year revenue $1,189,873</strong> - filed 2025 Form 1065, gross receipts.</li>
+    <li><strong>2026 sold to date $700,000</strong> and the <strong>$1.2M target</strong> - stated by
+      the owners / Dale as of early September 2026.</li>
+  </ul>
+  <h3>What is modeled (and labeled as such throughout)</h3>
+  <ul>
+    <li>The <strong>seasonal curve</strong> used to redistribute annual revenue across months, and the
+      2025 "sold by early September" estimate built from it. It is a shape informed by Minnesota
+      roofing seasonality plus the company's own deposit pattern - not a measured monthly bookings
+      series.</li>
+    <li>The <strong>three year-end cases</strong> (low / base / strong) are scenario arithmetic on the
+      $700K actual, not forecasts with a confidence interval.</li>
+  </ul>
+  <h3>The two caveats that matter most</h3>
+  <ul>
+    <li><strong>CRM dates are not sale dates.</strong> Contractors Cloud records administrative /
+      data-entry dates (bulk-entry sessions cluster timestamps; <span class="src">sale_closed_at</span>
+      is effectively unused), and contract dollars are contaminated by siding and gutter scope on
+      multi-trade jobs. A naive "revenue by month" pull from the CRM is unreliable and is deliberately
+      <em>not</em> the revenue timeline here.</li>
+    <li><strong>Deposits lag sales.</strong> Cash arrives after the sale by the collection cycle -
+      matched deposits in the record show 25 to 72 days of lag. So the deposit timeline is a proxy for
+      <em>when cash lands</em>, which trails <em>when work is sold</em> by roughly one to two months.
+      The $700K "sold" figure is ahead of the $550K "collected" figure for exactly this reason.</li>
+    <li><strong>The $407K March 2025 deposit is set aside</strong> in the like-for-like comparison. It
+      is a single unmatched deposit, larger than any job, partly non-revenue (transfer / retainage /
+      batch), and it cannot be resolved without the general ledger. Including it distorts every 2025
+      pace figure upward.</li>
+    <li><strong>Only ~2 partial years of history exist</strong> (business started 2024), so the
+      seasonal signal is a thin sliver. The curve leans on outside Minnesota roofing data because the
+      company's own history is too short to trust on its own.</li>
+  </ul>
+</div>
+
+<div class="foot">
+  Internal working analysis for the Top Tier engagement. Figures marked MEASURED are from the bank
+  record and the filed return; figures marked MODELED are scenario estimates. Reusable monthly series:
+  <span class="src">work/pacing_monthly_260903.csv</span>. Prepared 2026-09-03.
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>toptiermn.com: what to fix</title>
+<style>
+:root{--blue:#1A3C6E;--gold:#FFCD00;--ink:#141414;--mut:#5b6472;--line:#c9d2de}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#eef1f5;color:var(--ink);font:18px/1.55 Calibri,"Segoe UI",system-ui,sans-serif;
+ -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.bar{max-width:8.5in;margin:0 auto;padding:12px 4px;text-align:right}
+.bar button{font:600 15px/1 Calibri,"Segoe UI",sans-serif;color:#fff;background:var(--blue);
+ border:0;border-radius:5px;padding:9px 18px;cursor:pointer}
+.bar button:hover{background:#24528f}
+.sheet{max-width:8.5in;margin:0 auto;background:#fff;padding:0 0 40px;box-shadow:0 2px 12px rgba(0,0,0,.13)}
+.hd{background:var(--blue);color:#fff;padding:22px 30px;border-bottom:6px solid var(--gold)}
+.hd h1{margin:0;font-size:26px}
+.hd .s{opacity:.88;font-size:16px;margin-top:5px}
+.body{padding:20px 30px 0}
+h2{color:var(--blue);font-size:21px;margin:24px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--gold);
+ break-after:avoid;page-break-after:avoid}
+p{margin:10px 0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:16px}
+th{background:var(--blue);color:#fff;text-align:left;padding:8px 10px}
+td{border-bottom:1px solid var(--line);padding:8px 10px;vertical-align:top}
+thead{display:table-header-group}
+tr{break-inside:avoid;page-break-inside:avoid}
+.f{border:1px solid var(--line);border-radius:8px;margin:0 0 14px;overflow:hidden;
+ break-inside:avoid;page-break-inside:avoid}
+.fh{background:#f3f6fa;border-bottom:1px solid var(--line);padding:10px 15px;
+ display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.fh .n{font-size:19px;font-weight:700;color:var(--blue)}
+.fh .e{font-size:15px;color:var(--mut);white-space:nowrap}
+.fb{padding:9px 15px 12px;font-size:17px}
+.fb .obs{color:var(--mut);font-size:15px;margin-top:6px}
+.tag{display:inline-block;background:var(--blue);color:#fff;font-size:11px;font-weight:700;
+ letter-spacing:1px;padding:2px 7px;border-radius:3px;vertical-align:2px;margin-right:7px}
+.note{background:#fffdf0;border-left:5px solid var(--gold);padding:13px 17px;margin:14px 0;
+ break-inside:avoid;page-break-inside:avoid}
+.foot{padding:14px 30px 0;color:var(--mut);font-size:14px;border-top:1px solid var(--line);margin-top:20px}
+@page{size:letter portrait;margin:.5in}
+@media print{
+ body{background:#fff;font-size:11.5pt}
+ .bar{display:none}
+ .sheet{box-shadow:none;margin:0;padding:0;max-width:none;width:auto}
+ .hd{padding:12px 0 10px;border-bottom-width:4px}
+ .hd h1{font-size:17pt}.hd .s{font-size:9.5pt}
+ .body{padding:10px 0 0}.foot{padding:10px 0 0;font-size:8.5pt}
+ h2{font-size:13pt;margin:16px 0 7px}
+ .fh .n{font-size:12pt}.fh .e{font-size:9pt}.fb{font-size:10pt;padding:7px 13px 10px}
+ .fb .obs{font-size:8.5pt}
+ .f{margin-bottom:9px}
+ .note{font-size:10pt;padding:10px 14px}
+ table{font-size:9.5pt}th,td{padding:5px 8px}
+}
+</style></head><body>
+
+<div class="bar"><button onclick="window.print()">Print</button></div>
+
+<div class="sheet">
+<div class="hd">
+  <h1>toptiermn.com: what to fix</h1>
+  <div class="s">Observed directly from the live site, 2026-08-27 &middot; Fixes only, no rebuild</div>
+</div>
+<div class="body">
+
+<div class="note">
+<b>Start with 1 and 2.</b> They are the only two items on this list that change whether a visitor can
+actually reach you. Everything after them changes whether a visitor finds you in the first place.
+</div>
+
+<h2>The seven fixes, all free, all under a day</h2>
+
+<div class="f">
+  <div class="fh"><span class="n">1. Nobody can tap the phone number</span><span class="e">30 minutes</span></div>
+  <div class="fb">There is not one <code>tel:</code> link anywhere on the site. The phone number is
+    plain text, so on a phone it cannot be tapped to call. Most roofing traffic is mobile.
+    <div class="obs"><span class="tag">OBSERVED</span>0 tel: links on the homepage.</div></div>
+</div>
+
+<div class="f">
+  <div class="fh"><span class="n">2. No way to ask for a quote from the front page</span><span class="e">1 hour</span></div>
+  <div class="fb">The homepage has no form at all. There is a single form on the whole site, on a
+    separate quote page a visitor has to find.
+    <div class="obs"><span class="tag">OBSERVED</span>0 form elements on the homepage.</div></div>
+</div>
+
+<div class="f">
+  <div class="fh"><span class="n">3. The license number appears nowhere</span><span class="e">20 minutes</span></div>
+  <div class="fb">Minnesota requires the contractor license number on advertising. Theirs is
+    <b>BC807923</b> and it is absent from the entire site.
+    <div class="obs"><span class="tag">OBSERVED</span>Zero occurrences of BC807923 site-wide.</div></div>
+</div>
+
+<div class="f">
+  <div class="fh"><span class="n">4. The sitemap is broken, and the site tells Google to go look at it</span><span class="e">10 minutes</span></div>
+  <div class="fb">The robots file points search engines at a sitemap address that returns
+    &ldquo;not found.&rdquo; The SEO plugin that generates it is installed but its sitemap module is
+    switched off. This is a checkbox.
+    <div class="obs"><span class="tag">OBSERVED</span>robots.txt points to /sitemap_index.xml, which returns 404. /sitemap.xml also 404.</div></div>
+</div>
+
+<div class="f">
+  <div class="fh"><span class="n">5. Google is told nothing about the business</span><span class="e">1 hour</span></div>
+  <div class="fb">There is no local business markup: no phone, no hours, no service area, no rating.
+    The only external profile the site points to is Apple Maps. <b>Their own Google Business Profile is
+    not linked from their own website</b>, and that profile is their strongest asset at 5.0 stars.
+    <div class="obs"><span class="tag">OBSERVED</span>Zero occurrences of LocalBusiness markup.</div></div>
+</div>
+
+<div class="f">
+  <div class="fh"><span class="n">6. The page claims two different towns</span><span class="e">10 minutes</span></div>
+  <div class="fb">The page title says St. Michael. The embedded business data says Albertville.
+    Pick the one that matches the Google Business Profile and make everything agree.
+    <div class="obs"><span class="tag">OBSERVED</span>Title tag and structured data disagree on the city.</div></div>
+</div>
+
+<div class="f">
+  <div class="fh"><span class="n">7. Half the work they do is invisible</span><span class="e">half a day</span></div>
+  <div class="fb">On the homepage, <b>siding, gutter, storm and hail each appear zero times</b>.
+    There is one page covering every service and no page for any individual town.
+    <div class="obs"><span class="tag">OBSERVED</span>siding 0, gutter 0, storm 0, hail 0 on the homepage.</div></div>
+</div>
+
+<h2>What this does not need</h2>
+<p>None of the seven items above requires a rebuild, a new platform, or a designer. Six are settings,
+text edits or a checkbox. The seventh is writing about work the company already does.</p>
+
+<table>
+<thead><tr><th>Fix</th><th>Effort</th><th>Needs</th></tr></thead>
+<tbody>
+<tr><td>Tappable phone number</td><td>30 min</td><td>Site editor</td></tr>
+<tr><td>Form on the homepage</td><td>1 hr</td><td>Site editor</td></tr>
+<tr><td>Add the license number</td><td>20 min</td><td>Site editor</td></tr>
+<tr><td>Switch the sitemap module on</td><td>10 min</td><td>Plugin setting</td></tr>
+<tr><td>Add local business markup and link the Google profile</td><td>1 hr</td><td>Plugin setting</td></tr>
+<tr><td>Make the town consistent</td><td>10 min</td><td>Site editor</td></tr>
+<tr><td>Pages for the other services and the towns worked</td><td>half a day</td><td>Writing</td></tr>
+</tbody>
+</table>
+
+<div class="foot">
+Every item marked OBSERVED was read directly from the live site on 2026-08-27. Effort figures are
+estimates of hands-on time, not a schedule.
+</div>
+
+</div>
+</div>
+</body></html>
