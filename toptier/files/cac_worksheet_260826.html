@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Tier: What a Customer Costs You</title>
+<style>
+  :root{
+    --blue:#1A3C6E; --blue-mid:#2E5B96; --blue-light:#E8EEF6;
+    --gold:#FFCD00; --gold-deep:#C79A00;
+    --ink:#1B1B1B; --muted:#5C6B7F; --line:#C9D4E2;
+    --good:#1D7A4C; --warn:#B4451A;
+    --paper:#fff; --wash:#F5F8FC;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--wash);color:var(--ink);
+       font-family:Calibri,"Segoe UI",system-ui,-apple-system,sans-serif;font-size:19px;line-height:1.55;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 26px 100px;}
+
+  header.cover{background:var(--blue);color:#fff;padding:44px 0 38px;border-bottom:7px solid var(--gold);}
+  header.cover .wrap{padding-bottom:0;}
+  .eyebrow{font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 12px;}
+  header h1{font-size:42px;line-height:1.12;margin:0 0 14px;}
+  header .sub{font-size:21px;color:#D6E2F2;margin:0;max-width:850px;}
+
+  .prereq{background:#FFF9E3;border:2px solid var(--gold-deep);border-radius:6px;padding:22px 26px;margin:30px 0;}
+  .prereq h2{color:#7A5E00;font-size:22px;margin:0 0 12px;}
+  .prereq ul{margin:0 0 0 4px;padding-left:22px;}
+  .prereq li{margin-bottom:9px;}
+
+  section{background:var(--paper);border:1px solid var(--line);border-radius:6px;margin:28px 0;padding:30px 32px 32px;}
+  .sec-head{display:flex;align-items:baseline;gap:16px;border-bottom:3px solid var(--gold);padding-bottom:12px;margin-bottom:20px;}
+  .sec-num{background:var(--blue);color:#fff;font-weight:700;font-size:18px;width:42px;height:42px;border-radius:4px;
+           display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  h2{font-size:28px;margin:0;color:var(--blue);line-height:1.15;}
+  h3{font-size:21px;margin:26px 0 8px;color:var(--blue);}
+  p{margin:0 0 14px;}
+
+  .src{font-size:13px;color:var(--muted);background:var(--blue-light);border-radius:3px;padding:1px 6px;font-weight:600;white-space:nowrap;}
+  .ours{background:#DCEBDF;color:#1D5637;}
+  .assume{background:#FFF0CC;color:#7A5E00;}
+  .theirs{background:#FCEDE6;color:#8A3413;}
+
+  /* input grid */
+  .field{display:grid;grid-template-columns:1fr 190px;gap:6px 20px;align-items:start;
+         border-bottom:1px solid var(--line);padding:14px 0;}
+  .field:last-child{border-bottom:none;}
+  .field .lab{font-weight:700;font-size:18px;}
+  .field .help{grid-column:1;font-size:16px;color:var(--muted);margin-top:2px;}
+  .field .inp{grid-column:2;grid-row:1 / span 2;}
+  .field input[type=number],.field input[type=text]{
+    width:100%;font-family:inherit;font-size:21px;font-weight:700;text-align:right;
+    padding:9px 11px;border:2px solid var(--blue-mid);border-radius:4px;background:#fff;color:var(--blue);}
+  .field input:focus{outline:3px solid var(--gold);}
+  .field .unit{font-size:14px;color:var(--muted);text-align:right;display:block;margin-top:4px;}
+  .field.unknown{background:#FCF6EC;}
+  .field.unknown input{border-color:var(--gold-deep);border-style:dashed;color:#7A5E00;}
+
+  .whenknown{grid-column:1 / span 2;font-size:16px;background:#FFF9E3;border-left:4px solid var(--gold-deep);
+             padding:9px 14px;margin-top:10px;}
+  .whenknown b{color:#7A5E00;}
+
+  /* results */
+  .out-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0;}
+  .out{background:var(--blue);color:#fff;border-radius:6px;padding:18px 18px 16px;}
+  .out .n{font-size:38px;font-weight:700;line-height:1;color:var(--gold);}
+  .out .l{font-size:16px;margin-top:8px;color:#D6E2F2;}
+  .out .s{font-size:13px;margin-top:6px;color:#9FB6D4;}
+  .out.pale{background:var(--blue-light);color:var(--ink);}
+  .out.pale .n{color:var(--blue);}
+  .out.pale .l{color:var(--ink);}
+  .out.pale .s{color:var(--muted);}
+  .out.alert{background:#FCEDE6;color:var(--ink);border:2px solid var(--warn);}
+  .out.alert .n{color:var(--warn);}
+  .out.alert .l,.out.alert .s{color:#6B3A22;}
+  .out.win{background:#E4F1E9;border:2px solid var(--good);color:var(--ink);}
+  .out.win .n{color:var(--good);}
+  .out.win .l,.out.win .s{color:#245B3E;}
+
+  table{border-collapse:collapse;width:100%;font-size:17px;margin:14px 0;}
+  th,td{border-bottom:1px solid var(--line);padding:8px 9px;text-align:right;}
+  th:first-child,td:first-child{text-align:left;}
+  thead th{background:var(--blue);color:#fff;border-bottom:none;}
+  tbody tr:nth-child(even){background:var(--wash);}
+  td input{width:100%;font-family:inherit;font-size:17px;text-align:right;padding:5px 7px;
+           border:1px solid var(--line);border-radius:3px;background:#fff;}
+  td input:focus{outline:2px solid var(--gold);}
+  td.calc{font-weight:700;color:var(--blue);background:#F0F5FA;}
+  caption{caption-side:bottom;text-align:left;font-size:15px;color:var(--muted);padding-top:8px;}
+
+  .flag{display:block;border-left:5px solid var(--gold-deep);background:#FFF9E3;padding:12px 16px;margin:16px 0;font-size:17px;}
+  .verdict{background:var(--blue-light);border:1px solid var(--blue-mid);border-radius:5px;padding:18px 20px;margin:20px 0 4px;}
+  .verdict .t{font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.08em;font-size:14px;margin-bottom:6px;}
+  .teach{background:var(--wash);border:1px dashed var(--blue-mid);border-radius:5px;padding:16px 20px;margin:18px 0;font-size:17px;}
+  .teach .t{font-weight:700;color:var(--blue-mid);text-transform:uppercase;letter-spacing:.08em;font-size:14px;margin-bottom:6px;}
+
+  .btn{font-family:inherit;font-size:19px;font-weight:700;padding:14px 26px;border-radius:5px;border:none;cursor:pointer;}
+  .btn-primary{background:var(--blue);color:#fff;}
+  .btn-primary:hover{background:var(--blue-mid);}
+  .btn-second{background:#fff;color:var(--blue);border:2px solid var(--blue);}
+  .btn-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:18px;}
+  #status{font-size:17px;font-weight:700;}
+
+  textarea{width:100%;font-family:inherit;font-size:18px;padding:12px;border:2px solid var(--blue-mid);
+           border-radius:4px;min-height:96px;line-height:1.5;}
+  textarea:focus{outline:3px solid var(--gold);}
+  label.qlab{display:block;font-weight:700;margin:20px 0 6px;}
+
+  ul{margin:8px 0 16px;padding-left:24px;} li{margin-bottom:8px;}
+  .foot{color:var(--muted);font-size:15px;text-align:center;padding:24px 0 0;border-top:1px solid var(--line);margin-top:30px;}
+
+  @media print{body{background:#fff;font-size:12pt;} section{border:none;} .btn-row{display:none;}}
+  @media (max-width:780px){
+    .out-grid{grid-template-columns:1fr;}
+    .field{grid-template-columns:1fr;}
+    .field .inp{grid-column:1;grid-row:auto;}
+    header h1{font-size:31px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="wrap">
+    <p class="eyebrow">Top Tier Roofing and Remodeling, LLC</p>
+    <h1>What a Customer Costs You</h1>
+    <p class="sub">A worksheet you fill in yourselves. Green numbers are ours, pulled from your tax return and your CRM, and you should correct any that look wrong. Gold numbers are assumptions we made on purpose and labeled. Everything recalculates as you type, and the page remembers what you enter.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="prereq">
+  <h2>Before you start</h2>
+  <ul>
+    <li><strong>What you need in the room:</strong> the names of every marketing program you are paying for, and roughly what each one costs a month. That is the one thing nobody outside this company can supply.</li>
+    <li><strong>What you do not need:</strong> any software, any login, any report. Every other number on this page is already filled in from your 2025 Form 1065 and your Contractors Cloud export.</li>
+    <li><strong>Helpful but not required:</strong> the last few Capital One statements. Your checking account shows zero marketing vendors across nineteen months, while the 2025 return deducts $11,412 of advertising, so that money left the company on a card.</li>
+    <li><strong>Time:</strong> about twenty minutes if you know your programs. Longer if you have to go look them up, and that is itself a finding.</li>
+    <li><strong>Nothing here is a test.</strong> Several boxes are marked as unknown on purpose. What each unknown costs you is written next to it.</li>
+  </ul>
+</div>
+
+<!-- ============ 0. WHAT CAC IS ============ -->
+<section>
+  <div class="sec-head"><div class="sec-num">0</div><h2>What we are computing, in one paragraph</h2></div>
+  <p><strong>Customer acquisition cost is the money you spend to get one signed contract.</strong> Take everything you spent on getting work in a month. Divide by the number of contracts you signed that month. That is the whole formula. The reason it is not on a report anywhere is that <strong>159 of your 161 project records say the lead came from a referral</strong>, so the system cannot tell you which dollar produced which job. <span class="src">Contractors Cloud</span></p>
+  <p>Three numbers come out of it, and they answer three different questions.</p>
+  <table>
+    <thead><tr><th>Number</th><th style="text-align:left">The question it answers</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Cost per lead</strong></td><td style="text-align:left">Is the phone ringing for a sensible price?</td></tr>
+      <tr><td><strong>Cost per appointment</strong></td><td style="text-align:left">Are you driving out to the right people, or wasting Guy's day?</td></tr>
+      <tr><td><strong>Cost per signed job</strong></td><td style="text-align:left">Does the roof pay for the customer who bought it? This is the one that matters.</td></tr>
+    </tbody>
+  </table>
+  <div class="teach">
+    <div class="t">The rule that makes all of this real</div>
+    "Referral" is only allowed as a lead source when you can type a human being's name next to it. Everything else picks a real value. That one habit, on the call, is what turns this worksheet from a one time exercise into a number you can pull every quarter without anybody's help.
+  </div>
+</section>
+
+<!-- ============ 1. SPEND ============ -->
+<section>
+  <div class="sec-head"><div class="sec-num">1</div><h2>Step one: what you spend to get work</h2></div>
+
+  <p>Fill in every program you pay for. We have prefilled the only figure we can see. <strong>Everything else in this table lives in your heads and on your card statement.</strong></p>
+
+  <table id="channelTable">
+    <thead><tr>
+      <th style="width:34%">Program or channel</th>
+      <th style="width:16%">Cost per month</th>
+      <th style="width:16%">Leads it produced last month</th>
+      <th style="width:16%">Jobs it produced last month</th>
+      <th style="width:18%">Cost per signed job</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td>Referral and word of mouth <span class="src ours">ours</span></td>
+        <td><input type="number" id="ch0_spend" value="0" step="25"></td>
+        <td><input type="number" id="ch0_leads" value="9.5" step="0.5"></td>
+        <td><input type="number" id="ch0_sales" value="3.1" step="0.1"></td>
+        <td class="calc" id="ch0_cac">not yet</td>
+      </tr>
+      <tr>
+        <td>Google Business Profile and local search</td>
+        <td><input type="number" id="ch1_spend" placeholder="0" step="25"></td>
+        <td><input type="number" id="ch1_leads" placeholder="?" step="1"></td>
+        <td><input type="number" id="ch1_sales" placeholder="?" step="1"></td>
+        <td class="calc" id="ch1_cac">not yet</td>
+      </tr>
+      <tr>
+        <td>Google paid search</td>
+        <td><input type="number" id="ch2_spend" placeholder="0" step="25"></td>
+        <td><input type="number" id="ch2_leads" placeholder="?" step="1"></td>
+        <td><input type="number" id="ch2_sales" placeholder="?" step="1"></td>
+        <td class="calc" id="ch2_cac">not yet</td>
+      </tr>
+      <tr>
+        <td>Facebook or Instagram ads</td>
+        <td><input type="number" id="ch3_spend" placeholder="0" step="25"></td>
+        <td><input type="number" id="ch3_leads" placeholder="?" step="1"></td>
+        <td><input type="number" id="ch3_sales" placeholder="?" step="1"></td>
+        <td class="calc" id="ch3_cac">not yet</td>
+      </tr>
+      <tr>
+        <td>Bought leads (Angi, HomeAdvisor, Modernize and similar)</td>
+        <td><input type="number" id="ch4_spend" placeholder="0" step="25"></td>
+        <td><input type="number" id="ch4_leads" placeholder="?" step="1"></td>
+        <td><input type="number" id="ch4_sales" placeholder="?" step="1"></td>
+        <td class="calc" id="ch4_cac">not yet</td>
+      </tr>
+      <tr>
+        <td>Website, hosting and search work</td>
+        <td><input type="number" id="ch5_spend" placeholder="0" step="25"></td>
+        <td><input type="number" id="ch5_leads" placeholder="?" step="1"></td>
+        <td><input type="number" id="ch5_sales" placeholder="?" step="1"></td>
+        <td class="calc" id="ch5_cac">not yet</td>
+      </tr>
+      <tr>
+        <td>Yard signs, door hangers, print, truck wraps</td>
+        <td><input type="number" id="ch6_spend" placeholder="0" step="25"></td>
+        <td><input type="number" id="ch6_leads" placeholder="?" step="1"></td>
+        <td><input type="number" id="ch6_sales" placeholder="?" step="1"></td>
+        <td class="calc" id="ch6_cac">not yet</td>
+      </tr>
+      <tr>
+        <td>Golf, sponsorships, networking, associations</td>
+        <td><input type="number" id="ch7_spend" placeholder="0" step="25"></td>
+        <td><input type="number" id="ch7_leads" placeholder="?" step="1"></td>
+        <td><input type="number" id="ch7_sales" placeholder="?" step="1"></td>
+        <td class="calc" id="ch7_cac">not yet</td>
+      </tr>
+      <tr>
+        <td>Anything else you pay for</td>
+        <td><input type="number" id="ch8_spend" placeholder="0" step="25"></td>
+        <td><input type="number" id="ch8_leads" placeholder="?" step="1"></td>
+        <td><input type="number" id="ch8_sales" placeholder="?" step="1"></td>
+        <td class="calc" id="ch8_cac">not yet</td>
+      </tr>
+      <tr style="background:#FFF9E3">
+        <td><strong>Total you can name</strong></td>
+        <td class="calc" id="ch_total_spend">$0</td>
+        <td class="calc" id="ch_total_leads">9.5</td>
+        <td class="calc" id="ch_total_sales">3.1</td>
+        <td class="calc" id="ch_total_cac">not yet</td>
+      </tr>
+    </tbody>
+    <caption>The referral row is prefilled from your CRM: 76 project records and 25 signed contracts between January and August 2026, divided by eight months. It costs nothing in cash, which is exactly why it never showed up as a marketing program and exactly why it is dangerous to depend on.</caption>
+  </table>
+
+  <div class="field">
+    <div class="lab">Total marketing spend a month, all in <span class="src ours">ours, and it is a floor not a fact</span></div>
+    <div class="help">Prefilled at $951, which is the $11,412 advertising deduction on your 2025 Form 1065 divided by twelve. If the programs you just listed add up to more than this, the real number is the bigger one and this box should be changed. Everything below uses this box, not the table above.</div>
+    <div class="inp"><input type="number" id="spendTotal" value="951" step="25"><span class="unit">dollars a month</span></div>
+    <div class="whenknown"><b>Why this is the single most important box on the page.</b> Your checking account shows zero marketing vendors across nineteen months while the return deducts $11,412 of advertising, so that spend cleared on a card. You describe about half a dozen programs with separate vendors, and half a dozen vendors do not fit inside $951 a month. Until this box is right, every number below it is right about the arithmetic and wrong about the amount.</div>
+  </div>
+</section>
+
+<!-- ============ 2. VOLUME ============ -->
+<section>
+  <div class="sec-head"><div class="sec-num">2</div><h2>Step two: what comes in the door</h2></div>
+
+  <div class="field">
+    <div class="lab">Leads a month <span class="src ours">ours</span></div>
+    <div class="help">Any inbound contact that got a project record created, whether or not it went anywhere. From your CRM: 76 records created January through August 2026, divided by eight.</div>
+    <div class="inp"><input type="number" id="leads" value="9.5" step="0.5"><span class="unit">leads a month</span></div>
+  </div>
+
+  <div class="field unknown">
+    <div class="lab">Site visits a month <span class="src theirs">only you know this</span></div>
+    <div class="help">How many of those leads turned into Guy or Jon actually driving out. We cannot read this: all 24 appointment records in your CRM have a blank result field. We have prefilled it equal to your lead count because Guy takes every call and runs every visit, but that is a guess and you can correct it in five seconds.</div>
+    <div class="inp"><input type="number" id="appts" value="9.5" step="0.5"><span class="unit">site visits a month</span></div>
+    <div class="whenknown"><b>What changes when you know this.</b> The gap between leads and site visits is the cheapest thing to fix in the whole business, because a lead you never drove out to costs nothing but a lead you drove out to and lost costs three hours. If site visits are close to lead count, the ninety second phone qualification is worth more than any advertising dollar.</div>
+  </div>
+
+  <div class="field">
+    <div class="lab">Signed contracts a month <span class="src ours">ours</span></div>
+    <div class="help">Jobs where a contract was approved. From your CRM: 25 contracts signed January through August 2026, divided by eight.</div>
+    <div class="inp"><input type="number" id="sales" value="3.1" step="0.1"><span class="unit">jobs a month</span></div>
+  </div>
+
+  <div class="field">
+    <div class="lab">Share of those jobs that insurance pays for <span class="src ours">ours</span></div>
+    <div class="help">36% in 2026, down from 72% in 2024. This is the one field in your CRM that is filled correctly on every contract, so this number is solid.</div>
+    <div class="inp"><input type="number" id="insShare" value="36" step="1" min="0" max="100"><span class="unit">percent</span></div>
+  </div>
+</section>
+
+<!-- ============ 3. WORTH ============ -->
+<section>
+  <div class="sec-head"><div class="sec-num">3</div><h2>Step three: what a job is worth when you get it</h2></div>
+
+  <div class="field">
+    <div class="lab">Average insurance job <span class="src ours">ours</span></div>
+    <div class="help">45 insurance contracts across 27 months. This is the number that pays for the company.</div>
+    <div class="inp"><input type="number" id="jobIns" value="41048" step="500"><span class="unit">dollars</span></div>
+  </div>
+
+  <div class="field">
+    <div class="lab">Average retail job <span class="src ours">ours</span></div>
+    <div class="help">32 retail contracts across 27 months. Roughly two fifths the size of an insurance job.</div>
+    <div class="inp"><input type="number" id="jobRetail" value="18565" step="500"><span class="unit">dollars</span></div>
+  </div>
+
+  <div class="field">
+    <div class="lab">Average job across everything, 2026 <span class="src ours">ours</span></div>
+    <div class="help">Your 2026 blend. It was $36,748 in 2025. The whole 26% fall is mix, not pricing.</div>
+    <div class="inp"><input type="number" id="jobBlend" value="27110" step="500"><span class="unit">dollars</span></div>
+  </div>
+
+  <div class="field">
+    <div class="lab">Gross margin <span class="src ours">ours</span></div>
+    <div class="help">35.79%, from the 2025 Form 1065. It is the only margin in the business that covers every job. Your working number of 33% is three points away and either one works here, so change it if you prefer yours.</div>
+    <div class="inp"><input type="number" id="gm" value="35.79" step="0.5"><span class="unit">percent</span></div>
+    <div class="whenknown"><b>One thing worth knowing about your screen.</b> Contractors Cloud sets estimated expenses to exactly 65.00% and payouts to exactly 10.00% on every single contract, so it displays a 35% margin on every job whether or not the job earned one. That is a template setting, not a measurement. On the eight jobs in your system that carry real bills, the actual range is 19.94% to 62.17%.</div>
+  </div>
+</section>
+
+<!-- ============ 4. THE ANSWER ============ -->
+<section>
+  <div class="sec-head"><div class="sec-num">4</div><h2>The answer: what a customer costs you today</h2></div>
+
+  <div class="out-grid">
+    <div class="out pale"><div class="n" id="o_cpl">not yet</div><div class="l">Cost per lead</div><div class="s">spend divided by leads</div></div>
+    <div class="out pale"><div class="n" id="o_cpa">not yet</div><div class="l">Cost per site visit</div><div class="s">spend divided by visits</div></div>
+    <div class="out"><div class="n" id="o_cac">not yet</div><div class="l">Cost per signed job</div><div class="s">this is your CAC</div></div>
+  </div>
+
+  <div class="out-grid">
+    <div class="out pale"><div class="n" id="o_gp">not yet</div><div class="l">Gross profit on an average job</div><div class="s">average job times gross margin</div></div>
+    <div class="out pale"><div class="n" id="o_pct">not yet</div><div class="l">CAC as a share of that gross profit</div><div class="s">under 20% is winning, over 33% is eating the job</div></div>
+    <div class="out win"><div class="n" id="o_payback">not yet</div><div class="l">Jobs a year that pay for the whole marketing program</div><div class="s">payback in roofs, not in months</div></div>
+  </div>
+
+  <div class="verdict">
+    <div class="t">Read this before you feel good about that number</div>
+    <p id="verdictText" style="margin:0"></p>
+  </div>
+
+  <div class="teach">
+    <div class="t">Why payback is counted in jobs and never in weeks</div>
+    A roofing month in Minnesota is not like the month before it. Counting payback in time means guessing at weather. Counting it in roofs means one honest sentence: <em>this program is paid for on the day the Nth extra roof is signed.</em> No calendar required, and nobody has to be right about the spring.
+  </div>
+</section>
+
+<!-- ============ 5. WHAT YOU CAN AFFORD ============ -->
+<section>
+  <div class="sec-head"><div class="sec-num">5</div><h2>What you can afford to pay, split insurance against retail</h2></div>
+
+  <p>This is the part that decides where the money goes. The same marketing dollar is worth more when it brings insurance work, because an insurance job carries more than twice the gross profit of a retail job.</p>
+
+  <table>
+    <thead><tr>
+      <th>Kind of job</th><th>Average job</th><th>Gross profit</th>
+      <th>Target cost per job<br><span style="font-weight:400;font-size:14px">20% of gross profit</span></th>
+      <th>Ceiling cost per job<br><span style="font-weight:400;font-size:14px">33% of gross profit</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td><strong>Insurance scoped</strong></td><td id="t_ins_job">not yet</td><td id="t_ins_gp">not yet</td><td class="calc" id="t_ins_target">not yet</td><td class="calc" id="t_ins_ceil">not yet</td></tr>
+      <tr><td><strong>Retail</strong></td><td id="t_ret_job">not yet</td><td id="t_ret_gp">not yet</td><td class="calc" id="t_ret_target">not yet</td><td class="calc" id="t_ret_ceil">not yet</td></tr>
+      <tr><td>Everything blended</td><td id="t_bl_job">not yet</td><td id="t_bl_gp">not yet</td><td class="calc" id="t_bl_target">not yet</td><td class="calc" id="t_bl_ceil">not yet</td></tr>
+    </tbody>
+    <caption>The 20% and 33% lines are a rule of thumb, not data. They are the standard test that a customer must be paid for out of the profit on the job that customer bought, with enough left over that the job still contributes to overhead. Change them if you disagree, but change them on purpose.</caption>
+  </table>
+
+  <div class="out-grid">
+    <div class="out"><div class="n" id="o_ratio">not yet</div><div class="l">An insurance lead is worth this many times a retail lead</div><div class="s">so you can afford to pay that much more for one</div></div>
+    <div class="out alert"><div class="n">$14,244</div><div class="l">Average job in the 25 to 50 mile ring, at a 35% close rate</div><div class="s">a full day of windshield time. Do not buy leads here.</div></div>
+    <div class="out pale"><div class="n">$52,177</div><div class="l">Average job in Big Lake, at an 86% close rate</div><div class="s">your best market, and lead flow there fell from 4 to 1</div></div>
+  </div>
+
+  <div class="flag">
+    <strong>The targeting rule that falls out of this table.</strong> Buy insurance scoped work preferentially. Do not buy anything in the 25 to 50 mile ring. Do not buy the metro side of I-94, where fifteen records have produced almost nothing. Every dollar you point at Big Lake, St Michael, Monticello and Otsego is pointed at where the money already is.
+  </div>
+</section>
+
+<!-- ============ 6. NEW SPEND ============ -->
+<section>
+  <div class="sec-head"><div class="sec-num">6</div><h2>What new money would buy, and where it stops working</h2></div>
+
+  <p>Everything in this section is a model, and every assumption in it is marked in gold so you can argue with it. That is the point of showing it rather than announcing a budget.</p>
+
+  <div class="field">
+    <div class="lab">New money into media a month</div>
+    <div class="help">Actual advertising: search, social, bought leads. Not the website, not a review tool.</div>
+    <div class="inp"><input type="number" id="newMedia" value="2000" step="250"><span class="unit">dollars a month</span></div>
+  </div>
+
+  <div class="field">
+    <div class="lab">New money into infrastructure a month</div>
+    <div class="help">The parts that do not buy leads directly but make every lead cheaper: a review system, listings and the profile, the website answering the three questions your customers actually ask.</div>
+    <div class="inp"><input type="number" id="newInfra" value="1000" step="250"><span class="unit">dollars a month</span></div>
+  </div>
+
+  <div class="field unknown">
+    <div class="lab">Cost of one purchased contact <span class="src assume">our assumption</span></div>
+    <div class="help">$150. Every roofing lead price we could source is a national range published by somebody selling marketing services, and they run from $25 to about $162. We assumed above nearly all of them on purpose, because a budget should assume it pays more than the brochure says.</div>
+    <div class="inp"><input type="number" id="cpc" value="150" step="10"><span class="unit">dollars</span></div>
+    <div class="whenknown"><b>This one is free to find out.</b> Walk the Google Local Services Ads signup as far as the screen that shows local lead price and volume for 55301, then stop before turning billing on. That converts the biggest guess in this model into a real local number at no cost.</div>
+  </div>
+
+  <div class="field unknown">
+    <div class="lab">Share of purchased contacts worth working <span class="src assume">our assumption</span></div>
+    <div class="help">62%. The rest are wrong service, out of area, unreachable, or not serious. This is the softest number here and it moves the answer straight up and down.</div>
+    <div class="inp"><input type="number" id="servRate" value="62" step="1" min="1" max="100"><span class="unit">percent</span></div>
+  </div>
+
+  <div class="field unknown">
+    <div class="lab">Close rate on a bought lead <span class="src assume">our assumption</span></div>
+    <div class="help">12%, which is half of your own coldest year. Your leads closed at 79% in 2024, 64% in 2025 and 24% in 2026. A stranger who clicked an ad is colder than any of those, so we planned at half the coldest.</div>
+    <div class="inp"><input type="number" id="closeRate" value="12" step="1" min="1" max="100"><span class="unit">percent</span></div>
+  </div>
+
+  <div class="field">
+    <div class="lab">Leads Guy can actually work in a month <span class="src theirs">your number</span></div>
+    <div class="help">About 25. Guy answers every call and runs every site visit. At roughly three hours per worked lead all in, 25 is 75 hours a month of estimating before he answers a single new call or touches a job in production.</div>
+    <div class="inp"><input type="number" id="ceiling" value="25" step="1"><span class="unit">worked leads a month</span></div>
+  </div>
+
+  <h3>What that buys</h3>
+
+  <div class="out-grid">
+    <div class="out pale"><div class="n" id="o_newleads">not yet</div><div class="l">Extra worked leads a month</div><div class="s">on top of what already comes in</div></div>
+    <div class="out"><div class="n" id="o_newjobs">not yet</div><div class="l">Extra signed jobs a year</div><div class="s">at the close rate above</div></div>
+    <div class="out"><div class="n" id="o_newcac">not yet</div><div class="l">Cost per extra job</div><div class="s">whole program divided by extra jobs</div></div>
+  </div>
+
+  <div class="out-grid">
+    <div class="out pale"><div class="n" id="o_newrev">not yet</div><div class="l">Extra revenue a year</div><div class="s">extra jobs times average job</div></div>
+    <div class="out pale"><div class="n" id="o_newgp">not yet</div><div class="l">Extra gross profit a year</div><div class="s">what actually stays in the company</div></div>
+    <div class="out win"><div class="n" id="o_newpayback">not yet</div><div class="l">Extra jobs that pay for the whole program</div><div class="s">break even, counted in roofs</div></div>
+  </div>
+
+  <h3>The capacity wall</h3>
+
+  <figure style="margin:10px 0 6px">
+  <svg viewBox="0 0 900 190" role="img" aria-label="Worked leads against Guy's monthly ceiling">
+    <text x="0" y="18" font-size="15" font-weight="700" fill="#1A3C6E">WORKED LEADS A MONTH AGAINST WHAT ONE MAN CAN ANSWER</text>
+    <rect x="0" y="40" width="860" height="54" fill="#E8EEF6" rx="4"/>
+    <rect id="barBase" x="0" y="40" width="0" height="54" fill="#1A3C6E" rx="4"/>
+    <rect id="barNew"  x="0" y="40" width="0" height="54" fill="#2E5B96"/>
+    <rect id="barOver" x="0" y="40" width="0" height="54" fill="#C4633A"/>
+    <line id="ceilLine" x1="0" y1="30" x2="0" y2="106" stroke="#B4451A" stroke-width="4"/>
+    <text id="ceilLabel" x="0" y="24" font-size="15" font-weight="700" fill="#B4451A">Guy's ceiling</text>
+    <text id="barText" x="0" y="132" font-size="17" fill="#1B1B1B"></text>
+    <text id="wallText" x="0" y="162" font-size="17" font-weight="700" fill="#1A3C6E"></text>
+    <text id="wasteText" x="0" y="186" font-size="16" font-weight="700" fill="#B4451A"></text>
+  </svg>
+  </figure>
+
+  <div class="teach">
+    <div class="t">The honest ceiling on the whole growth plan</div>
+    Past the wall, the economics keep looking good on paper and stop working in the truck. The next dollar buys a lead that rings out. Worse than wasted, in the Google Local Services auction a missed call lowers your ranking, so an unanswered lead makes the <em>next</em> lead more expensive. <strong>The wall moves only when somebody other than Guy reliably answers the phone.</strong> A hire, an answering service or an AI receptionist, and the cost of it belongs inside the marketing budget, not outside it.
+  </div>
+</section>
+
+<!-- ============ 7. NOT KNOWN YET ============ -->
+<section>
+  <div class="sec-head"><div class="sec-num">7</div><h2>What this worksheet cannot tell you yet, and what it costs</h2></div>
+
+  <p>Three boxes above are marked as unknown. Here is what each one is worth, so you can decide whether it is worth fixing.</p>
+
+  <table>
+    <thead><tr><th>What is missing</th><th style="text-align:left">Why it is missing</th><th style="text-align:left">What changes when you have it</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Which channel produced which job</strong></td>
+        <td style="text-align:left">159 of 161 records say "Referral", 2 say "Facebook". The field has been changed twice in twenty six months.</td>
+        <td style="text-align:left"><strong>The whole table in section one turns on.</strong> Right now you have one blended CAC. With it you get a CAC per program and you can cut the losers by name instead of by feel. Cost: zero. It is a question Guy already asks and a box he does not type into.</td>
+      </tr>
+      <tr>
+        <td><strong>Which storm produced which roof</strong></td>
+        <td style="text-align:left">Date of loss is filled on 5 of 161 records.</td>
+        <td style="text-align:left">You could look at your own book and see the July 13, 2024 hail swath street by street. You are standing inside the answer and cannot read it. Cost: zero, one field on the call.</td>
+      </tr>
+      <tr>
+        <td><strong>What a job actually cost</strong></td>
+        <td style="text-align:left">8 of 78 contracts carry a real bill. Calendar 2025 holds exactly $0.00 of job cost in the CRM.</td>
+        <td style="text-align:left">Margin per job, per city, per crew, per type, generated by the system with no consultant involved. Cost: two data entry moments per job, the supplier bill and the customer payment.</td>
+      </tr>
+      <tr>
+        <td><strong>What you actually spend on marketing</strong></td>
+        <td style="text-align:left">Zero marketing vendors appear in nineteen months of checking. The card holds it and we have no statements.</td>
+        <td style="text-align:left"><strong>Every number in section four.</strong> If existing spend turns out to be substantial, a new program is a reallocation and costs nothing new. If it is near zero, it is genuinely new money. That is the difference between an easy decision and a hard one.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="verdict">
+    <div class="t">The decision rule, once the channel column is real</div>
+    <table style="margin:6px 0 0">
+      <thead><tr><th>Cost per signed job in that channel</th><th style="text-align:left">What it means</th><th style="text-align:left">What you do</th></tr></thead>
+      <tbody>
+        <tr><td>Under <span id="r_target">not yet</span></td><td style="text-align:left">The channel is winning</td><td style="text-align:left"><strong>Put more money in it</strong></td></tr>
+        <tr><td><span id="r_mid">not yet</span></td><td style="text-align:left">Working, not thrilling</td><td style="text-align:left">Leave it alone and watch it</td></tr>
+        <tr><td>Over <span id="r_ceil">not yet</span></td><td style="text-align:left">It is eating the job</td><td style="text-align:left"><strong>Fix it or cut it</strong></td></tr>
+      </tbody>
+      <caption>Insurance work earns 1.5 times these thresholds. Retail work gets about 0.7 times them. A channel that brings insurance scoped jobs deserves more room than one that brings gutter runs.</caption>
+    </table>
+  </div>
+
+  <div class="teach">
+    <div class="t">The one number to watch that has nothing to do with money</div>
+    <strong>Calls that went to voicemail.</strong> Zero is the only acceptable answer. If it is not zero, more budget is wasted budget.
+  </div>
+</section>
+
+<p class="foot">
+Sources: 2025 Form 1065 as filed &middot; Contractors Cloud export of August 25, 2026 &middot; 19 months of Deerwood Bank statements &middot; IBISWorld industry report 23816 for the advertising benchmark &middot; RMA Annual Statement Studies 2025 to 2026, NAICS 238160.<br>
+Project 24026 is excluded from every average. Entries are saved in this browser as you type. Prepared by Dale Linn.
+</p>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var FORM = "TopTier-CACWorksheet-260826";
+  var KEY  = "toptier_cac_260826";
+
+  var CH = 9;
+  var ids = ["spendTotal","leads","appts","sales","insShare","jobIns","jobRetail","jobBlend","gm",
+             "newMedia","newInfra","cpc","servRate","closeRate","ceiling",
+             "q_programs","q_wrong","q_24026","q_notes"];
+  for(var i=0;i<CH;i++){ ids.push("ch"+i+"_spend","ch"+i+"_leads","ch"+i+"_sales"); }
+
+  function el(id){ return document.getElementById(id); }
+  function num(id){ var e=el(id); if(!e) return 0; var v=parseFloat(e.value); return isNaN(v)?0:v; }
+  function money(v){
+    if(!isFinite(v)||v===null) return "not yet";
+    return "$" + Math.round(v).toLocaleString("en-US");
+  }
+  function money2(v){
+    if(!isFinite(v)) return "not yet";
+    return "$" + v.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+  function pct(v){ return isFinite(v) ? v.toFixed(1)+"%" : "not yet"; }
+
+  /* ---------- persistence ---------- */
+  function save(){
+    var d={};
+    ids.forEach(function(id){ var e=el(id); if(e) d[id]=e.value; });
+    try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){}
+  }
+  function load(){
+    try{
+      var raw=localStorage.getItem(KEY); if(!raw) return;
+      var d=JSON.parse(raw);
+      ids.forEach(function(id){ var e=el(id); if(e && typeof d[id]==="string") e.value=d[id]; });
+    }catch(e){}
+  }
+
+  /* ---------- compute ---------- */
+  function compute(){
+    /* channel table */
+    var ts=0, tl=0, tsale=0;
+    for(var i=0;i<CH;i++){
+      var s=num("ch"+i+"_spend"), l=num("ch"+i+"_leads"), j=num("ch"+i+"_sales");
+      ts+=s; tl+=l; tsale+=j;
+      var cell=el("ch"+i+"_cac");
+      if(j>0){ cell.textContent = s>0 ? money(s/j) : "no cash cost"; }
+      else if(s>0){ cell.textContent = "no jobs yet"; cell.style.color="#B4451A"; }
+      else { cell.textContent="not yet"; cell.style.color=""; }
+    }
+    el("ch_total_spend").textContent = money(ts);
+    el("ch_total_leads").textContent = tl.toFixed(1);
+    el("ch_total_sales").textContent = tsale.toFixed(1);
+    el("ch_total_cac").textContent = tsale>0 ? money(ts/tsale) : "not yet";
+
+    /* core inputs */
+    var spend=num("spendTotal"), leads=num("leads"), appts=num("appts"), sales=num("sales");
+    var insShare=num("insShare")/100, gm=num("gm")/100;
+    var jobIns=num("jobIns"), jobRet=num("jobRetail"), jobBl=num("jobBlend");
+
+    var cpl = leads>0 ? spend/leads : NaN;
+    var cpa = appts>0 ? spend/appts : NaN;
+    var cac = sales>0 ? spend/sales : NaN;
+
+    var gpIns = jobIns*gm, gpRet = jobRet*gm, gpBl = jobBl*gm;
+    var cacPct = gpBl>0 ? (cac/gpBl)*100 : NaN;
+    var paybackJobs = gpBl>0 ? (spend*12)/gpBl : NaN;
+
+    el("o_cpl").textContent = money2(cpl);
+    el("o_cpa").textContent = money2(cpa);
+    el("o_cac").textContent = money2(cac);
+    el("o_gp").textContent  = money(gpBl);
+    el("o_pct").textContent = pct(cacPct);
+    el("o_payback").textContent = isFinite(paybackJobs) ? paybackJobs.toFixed(1) + " jobs" : "not yet";
+
+    /* verdict copy */
+    var v="";
+    if(isFinite(cac)){
+      v = "A cost of <strong>"+money2(cac)+"</strong> to sign a job looks spectacular, and it is honest arithmetic, but it is not a marketing result. "+
+          "It is what happens when <strong>159 of 161 leads arrive free from a referral network</strong> and only "+money(spend)+" a month of cash is chasing them. "+
+          "Two things are true at once: your referral engine has been carrying the whole company for free, and it is the thing the owners report is slowing. "+
+          "<strong>The number to watch is not this one. It is what the next job costs once the free leads stop covering the calendar.</strong> Section six computes that.";
+      if(spend<=0){ v = "With zero cash spend, cost per job is zero and the number means nothing. Fill in section one first."; }
+    } else {
+      v = "Enter a job count in section two and this fills in.";
+    }
+    el("verdictText").innerHTML = v;
+
+    /* affordability */
+    el("t_ins_job").textContent=money(jobIns);
+    el("t_ins_gp").textContent=money(gpIns);
+    el("t_ins_target").textContent=money(gpIns*0.20);
+    el("t_ins_ceil").textContent=money(gpIns*0.33);
+    el("t_ret_job").textContent=money(jobRet);
+    el("t_ret_gp").textContent=money(gpRet);
+    el("t_ret_target").textContent=money(gpRet*0.20);
+    el("t_ret_ceil").textContent=money(gpRet*0.33);
+    el("t_bl_job").textContent=money(jobBl);
+    el("t_bl_gp").textContent=money(gpBl);
+    el("t_bl_target").textContent=money(gpBl*0.20);
+    el("t_bl_ceil").textContent=money(gpBl*0.33);
+
+    el("r_target").textContent=money(gpBl*0.20);
+    el("r_mid").textContent=money(gpBl*0.20)+" to "+money(gpBl*0.33);
+    el("r_ceil").textContent=money(gpBl*0.33);
+
+    el("o_ratio").textContent = gpRet>0 ? (gpIns/gpRet).toFixed(1)+"x" : "not yet";
+
+    /* incremental model */
+    var media=num("newMedia"), infra=num("newInfra"), cpc=num("cpc");
+    var serv=num("servRate")/100, close=num("closeRate")/100, ceilLeads=num("ceiling");
+
+    var contactsYr = cpc>0 ? (media*12)/cpc : 0;
+    var workedYr   = contactsYr*serv;
+    var workedMo   = workedYr/12;
+    var baseMo     = leads;
+    var totalMo    = baseMo + workedMo;
+    var overflowMo = Math.max(0, totalMo - ceilLeads);
+    var convertMo  = Math.max(0, workedMo - overflowMo);
+    var jobsYr     = convertMo*12*close;
+    var programYr  = (media+infra)*12;
+    var incCAC     = jobsYr>0 ? programYr/jobsYr : NaN;
+    var revYr      = jobsYr*jobBl;
+    var gpYr       = jobsYr*gpBl;
+    var breakevenJobs = gpBl>0 ? programYr/gpBl : NaN;
+    var wastedYr   = serv>0 && cpc>0 ? (overflowMo*12/serv)*cpc : 0;
+
+    el("o_newleads").textContent = workedMo.toFixed(1);
+    el("o_newjobs").textContent  = jobsYr.toFixed(1);
+    el("o_newcac").textContent   = money(incCAC);
+    el("o_newrev").textContent   = money(revYr);
+    el("o_newgp").textContent    = money(gpYr);
+    el("o_newpayback").textContent = isFinite(breakevenJobs) ? Math.ceil(breakevenJobs)+" jobs" : "not yet";
+
+    /* capacity bar */
+    var scaleMax = Math.max(ceilLeads*1.5, totalMo*1.15, 1);
+    var W = 860;
+    function px(v){ return Math.max(0, Math.min(W, (v/scaleMax)*W)); }
+    var wBase = px(baseMo);
+    var wNew  = px(Math.min(workedMo, Math.max(0, ceilLeads-baseMo)));
+    var wOver = px(overflowMo);
+    el("barBase").setAttribute("width", wBase);
+    el("barNew").setAttribute("x", wBase); el("barNew").setAttribute("width", wNew);
+    el("barOver").setAttribute("x", wBase+wNew); el("barOver").setAttribute("width", wOver);
+    var cx = px(ceilLeads);
+    el("ceilLine").setAttribute("x1", cx); el("ceilLine").setAttribute("x2", cx);
+    el("ceilLabel").setAttribute("x", Math.min(cx+8, W-160));
+    el("ceilLabel").textContent = "Guy's ceiling, " + ceilLeads + " a month";
+
+    el("barText").textContent = baseMo.toFixed(1) + " leads a month already, plus " + workedMo.toFixed(1) +
+        " bought. That is " + totalMo.toFixed(1) + " worked leads a month.";
+
+    var wallMedia = (Math.max(0, ceilLeads - baseMo) * 12 / (serv>0?serv:1)) * cpc / 12;
+    el("wallText").textContent = "The wall sits at about " + money(wallMedia) + " a month of media, or " +
+        money(wallMedia + infra) + " a month all in. Past that, the next dollar buys a lead that rings out.";
+
+    if(overflowMo > 0.05){
+      el("wasteText").textContent = "You are past the wall by " + overflowMo.toFixed(1) +
+        " leads a month. Roughly " + money(wastedYr) + " a year is buying calls nobody can answer.";
+    } else {
+      el("wasteText").textContent = "";
+    }
+  }
+
+  /* ---------- wire up ---------- */
+  load();
+  ids.forEach(function(id){
+    var e=el(id); if(!e) return;
+    e.addEventListener("input", function(){ compute(); save(); });
+  });
+  compute();
+})();
+</script>
+</body>
+</html>

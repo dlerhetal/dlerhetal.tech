@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Running Contractors Cloud So You Can Trust It</title>
+<style>
+:root{--blue:#1A3C6E;--gold:#FFCD00;--ink:#141414;--mut:#5b6472;--line:#c9d2de;--red:#8a1c1c;}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#eef1f5;color:var(--ink);
+ font:19px/1.55 Calibri,"Segoe UI",system-ui,sans-serif;
+ -webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+.sheet{max-width:8.5in;margin:0 auto;background:#fff;padding:0 0 40px;
+ box-shadow:0 2px 12px rgba(0,0,0,.13)}
+
+.hd{background:var(--blue);color:#fff;padding:24px 32px;border-bottom:6px solid var(--gold)}
+.hd h1{margin:0;font-size:28px;letter-spacing:.2px;line-height:1.2}
+.hd .s{opacity:.9;font-size:16px;margin-top:6px}
+
+.body{padding:22px 32px 0}
+h2{color:var(--blue);font-size:22px;margin:26px 0 8px;padding-bottom:6px;
+ border-bottom:2px solid var(--gold);break-after:avoid;page-break-after:avoid}
+h3{color:var(--blue);font-size:18px;margin:18px 0 4px;break-after:avoid;page-break-after:avoid}
+p{margin:10px 0}
+ul{margin:8px 0 8px 22px;padding:0}
+li{margin:5px 0}
+b.k{color:var(--blue)}
+code{font:16px/1.4 Consolas,"Courier New",monospace;background:#eef2f8;
+ border:1px solid var(--line);border-radius:3px;padding:1px 5px}
+
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:16px}
+th{background:var(--blue);color:#fff;text-align:left;padding:8px 10px;font-weight:600;
+ vertical-align:top}
+td{border-bottom:1px solid var(--line);padding:8px 10px;vertical-align:top}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
+thead{display:table-header-group}
+tr{break-inside:avoid;page-break-inside:avoid}
+
+/* every teaching block is atomic: the browser fits what fits, nothing splits */
+.d{border:1px solid var(--line);border-radius:8px;margin:0 0 18px;
+ break-inside:avoid;page-break-inside:avoid;overflow:hidden}
+.dh{background:var(--blue);color:#fff;padding:11px 16px;
+ display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.dh .n{font-size:15px;letter-spacing:1.4px;opacity:.85;font-weight:700}
+.dh .t{font-size:21px;font-weight:700}
+.dbody{padding:6px 16px 14px}
+.grid{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;margin:10px 0 4px;
+ font-size:17px;break-inside:avoid;page-break-inside:avoid}
+.grid .lb{color:var(--blue);font-weight:700;white-space:nowrap}
+.pf{background:#fffdf0;border-left:5px solid var(--gold);padding:10px 14px;margin:12px 0 2px;
+ font-size:17px;break-inside:avoid;page-break-inside:avoid}
+.pf .tag{display:inline-block;background:var(--blue);color:#fff;font-size:12px;font-weight:700;
+ letter-spacing:1px;padding:2px 7px;border-radius:3px;vertical-align:2px;margin-right:8px}
+.pf .tag.inf{background:#5b6472}
+
+.note{background:#fffdf0;border-left:5px solid var(--gold);padding:14px 18px;margin:16px 0;
+ font-size:18px;break-inside:avoid;page-break-inside:avoid}
+.pre{background:#f3f6fa;border:1px solid var(--blue);border-left:7px solid var(--blue);
+ padding:14px 18px;margin:16px 0;break-inside:avoid;page-break-inside:avoid}
+.pre h3{margin-top:0}
+.write{border:1px dashed #9aa7b8;border-radius:6px;background:#fcfdfe;padding:8px 12px;margin:8px 0;
+ break-inside:avoid;page-break-inside:avoid}
+.write .lbl{font-size:16px;font-weight:600;color:var(--blue);margin-bottom:2px}
+.sp{height:44px}
+.sp.two{height:88px}
+.yes{color:#14611f;font-weight:700}
+.no{color:var(--red);font-weight:700}
+.foot{padding:16px 32px 0;color:var(--mut);font-size:14px;
+ border-top:1px solid var(--line);margin-top:24px}
+
+.newpage{break-before:page;page-break-before:always}
+
+/* screen-only return path */
+.tb{background:#f3f6fa;border:1px solid var(--line);border-radius:8px;padding:16px 20px;
+ margin:24px 32px 0}
+.tb h2{margin-top:0}
+.tb label{display:block;font-weight:600;color:var(--blue);margin:12px 0 4px;font-size:17px}
+.tb textarea{width:100%;font:17px/1.45 Calibri,"Segoe UI",sans-serif;padding:8px;
+ border:1px solid var(--line);border-radius:5px;min-height:72px}
+.tb select{font:17px Calibri,"Segoe UI",sans-serif;padding:6px;border:1px solid var(--line);
+ border-radius:5px}
+.tb button{font:17px Calibri,"Segoe UI",sans-serif;font-weight:700;padding:9px 18px;margin:14px 8px 0 0;
+ border:0;border-radius:5px;background:var(--blue);color:#fff;cursor:pointer}
+.tb button.alt{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+#tbmsg{margin-top:10px;font-weight:600}
+
+
+.assign{display:flex;gap:22px;flex-wrap:wrap;margin:14px 0 2px;
+ break-inside:avoid;page-break-inside:avoid}
+.ac{flex:1 1 240px;display:flex;align-items:flex-end;gap:8px}
+.ac .lbl{font-size:15px;font-weight:700;color:var(--blue);white-space:nowrap}
+.ac .line{flex:1;border-bottom:1px solid #9aa7b8;height:22px}
+.runhd{display:none}
+@media print{
+ .runhd{display:block;font-size:8.5pt;color:#5b6472;border-bottom:1px solid #c9d2de;
+  padding-bottom:3px;margin-bottom:8px}
+ .assign .lbl{font-size:10pt}
+ .assign .line{height:20pt}
+}
+
+@page{size:letter portrait;margin:.5in}
+
+@media print{
+ body{background:#fff;font-size:12.5pt}
+ .sheet{box-shadow:none;margin:0;padding:0;max-width:none;width:auto}
+ .hd{padding:14px 0 12px;border-bottom-width:4px}
+ .hd h1{font-size:20pt}
+ .hd .s{font-size:10.5pt}
+ .body{padding:12px 0 0}
+ .foot{padding:12px 0 0}
+ h2{font-size:15pt}
+ h3{font-size:12.5pt}
+ .dh .t{font-size:14pt}
+ .dh .n{font-size:9pt}
+ .grid{font-size:11pt}
+ .pf,.note{font-size:11pt}
+ table{font-size:10.5pt}
+ code{font-size:10pt}
+ .sp{height:40pt}
+ .sp.two{height:80pt}
+ .tb{display:none}
+ a{text-decoration:none;color:inherit}
+}
+</style></head><body>
+<div class="sheet">
+
+<div class="hd">
+  <h1>Running Contractors Cloud So You Can Trust It</h1>
+  <div class="s">Top Tier Roofing &amp; Remodeling &middot; Five habits, five fields, five moments &middot; Prepared 2026-08-27</div>
+</div>
+
+<div class="body">
+
+<div class="pre">
+<h2>Two things have to exist first</h2>
+<p>Neither of these is a habit. They are settings, they are inside your account, and nothing on this
+page works until they are done.</p>
+<ul>
+<li><b>The lead source list has to be built.</b> Today the catalog holds <b>two</b> entries. Asking
+anyone to pick a lead source out of a two item list is asking them to pick between two wrong answers.
+The list has to contain the ways work actually reaches you before the field can mean anything.
+Outside software cannot add these; they are created in your account, by you.</li>
+<li><b>The estimated expense defaults have to be turned off.</b> The system currently applies
+<b>65.00% estimated expenses</b> and <b>10.00% payouts</b> to every contract. Those are company
+settings, not calculations. While they are on, every margin the screen shows you is the default
+looking back at you.</li>
+</ul>
+<div class="write"><div class="lbl">The lead sources that actually occur here. Write the real list.</div><div class="sp two"></div></div>
+</div>
+
+<div class="note">
+<b>One rule that applies to all five.</b> None of these can be filled in later from memory, and none
+of them can be filled in by anyone outside the company without guessing. History stays as it is.
+Every one of these fields starts producing value from the next record forward, and never before. That
+is why the moment matters more than the field.
+</div>
+
+<div class="runhd">Running Contractors Cloud So You Can Trust It &middot; Top Tier Roofing &amp; Remodeling &middot; 2026-08-27</div>
+<h2 class="newpage">The five disciplines</h2>
+
+<div class="d">
+  <div class="dh"><span class="n">DISCIPLINE 1</span><span class="t">Lead source, before anything else is typed</span></div>
+  <div class="dbody">
+    <div class="grid">
+      <div class="lb">The field</div><div><code>leadSource</code>, set to required so the record cannot be saved without it</div>
+      <div class="lb">The moment</div><div>At record creation. The first screen, before the address, before the name</div>
+      <div class="lb">Who holds it</div><div>Whoever answers the phone and creates the record</div>
+      <div class="lb">What breaks</div><div>Nothing can be attributed. The value of a review, a mailer, a yard sign or an ad becomes an opinion instead of a measurement, and the marketing budget gets set by argument</div>
+    </div>
+    <div class="pf"><span class="tag">VERIFIED</span>The catalog holds two entries, so the field has
+    had nothing useful to hold. Referral work does not need this field: a referral announces itself by
+    name at the door. <b>The new channels do not.</b> A mailer, a review, a map listing and an ad all
+    arrive as a stranger on the phone, and the only record that they came from anywhere is the one
+    made at that moment.</div>
+    <div class="pf"><span class="tag inf">INFERENCE</span>The system already proves the fix works.
+    Cancel Reason is filled on <b>34 of 34</b> records, because the dialog will not close without it.
+    Required fields get filled. Optional fields do not. This is a settings change, not a willpower
+    problem.</div>
+    <div class="pf"><span class="tag inf">INFERENCE</span>This is the highest value field in the
+    system, and the only one on this page that is <b>completely unrecoverable</b>. A cost can be found
+    on a bank statement a year later. A completion date can be reconstructed from a photo. Where a
+    lead came from exists only in the head of the person who took the call, and only for about a day.</div>
+    <div class="assign">
+      <div class="ac"><span class="lbl">Who owns this here</span><span class="line"></span></div>
+      <div class="ac"><span class="lbl">Starting when</span><span class="line"></span></div>
+    </div>
+    <div class="write"><div class="lbl">What this looks like in our shop, and what will get in the way.</div><div class="sp two"></div></div>
+  </div>
+</div>
+
+<div class="d">
+  <div class="dh"><span class="n">DISCIPLINE 2</span><span class="t">Close the job when it closes</span></div>
+  <div class="dbody">
+    <div class="grid">
+      <div class="lb">The field</div><div>Job status, advanced to complete, which sets the completion date <code>dateDone</code></div>
+      <div class="lb">The moment</div><div>The day the crew leaves the roof, standing at the finished job</div>
+      <div class="lb">Who holds it</div><div>Whoever is on site at completion</div>
+      <div class="lb">What breaks</div><div>Cycle time, seasonality, and how long a job actually takes, all three unmeasurable. Also, any report pulled off the system describes a business one or two stages behind where you really are</div>
+    </div>
+    <div class="pf"><span class="tag">VERIFIED</span><b>48 of 58 completed jobs were closed on a
+    single day, 2026-07-23.</b> The completion date field records the day of the cleanup sweep, not
+    the day the roof was finished, so it cannot be used for anything. That is the entire reason
+    nobody can tell you your average job duration, which is the first question most of your customers
+    ask.</div>
+    <div class="pf"><span class="tag inf">INFERENCE</span>Of the five habits, this is the only one
+    that produces a number the customer wants to hear. Once a season of real completion dates exists,
+    the answer to "how long will this take" stops being an estimate and becomes something the system
+    can back up.</div>
+    <div class="assign">
+      <div class="ac"><span class="lbl">Who owns this here</span><span class="line"></span></div>
+      <div class="ac"><span class="lbl">Starting when</span><span class="line"></span></div>
+    </div>
+    <div class="write"><div class="lbl">What this looks like in our shop, and what will get in the way.</div><div class="sp two"></div></div>
+  </div>
+</div>
+
+<div class="d">
+  <div class="dh"><span class="n">DISCIPLINE 3</span><span class="t">Costs land on the job</span></div>
+  <div class="dbody">
+    <div class="grid">
+      <div class="lb">The fields</div><div><code>materialCost</code> and <code>laborPayout</code>, posted against the job, not the month</div>
+      <div class="lb">The moment</div><div>Two moments: when the supply house invoice arrives, and when the crew check is written</div>
+      <div class="lb">Who holds it</div><div>Whoever orders the material, and whoever writes the check</div>
+      <div class="lb">What breaks</div><div>Job margin does not exist. The software fills the hole with an assumption, and the assumption looks exactly like a real number on the screen</div>
+    </div>
+    <div class="pf"><span class="tag">VERIFIED</span>Of <b>25 projects</b> matched to real costs off
+    bank check images, <b>24 had zero cost recorded in the CRM</b>. Total labor cost recorded across
+    company history is <b>$404.18</b>. The money was spent, the checks cleared, the roofs went on. The
+    cost simply never reached the job record.</div>
+    <div class="pf"><span class="tag">VERIFIED</span>With no cost posted, the system falls back to
+    <b>65.00% estimated expenses</b> on every contract and <b>10.00% payouts</b>, which produces the
+    same margin on every job by construction. On <b>58 of the 78</b> jobs carrying a sold value, the
+    overhead figure is exactly 10.00% of the sale, to the penny. That is not a coincidence and it is
+    not a measurement.</div>
+    <div class="pf"><span class="tag inf">INFERENCE</span>This is the habit that gives the production
+    side of the business a reason to open the software at all. It is also the one that makes every
+    other number on this page mean something, because margin is where all of it lands.</div>
+    <div class="assign">
+      <div class="ac"><span class="lbl">Who owns this here</span><span class="line"></span></div>
+      <div class="ac"><span class="lbl">Starting when</span><span class="line"></span></div>
+    </div>
+    <div class="write"><div class="lbl">What this looks like in our shop, and what will get in the way.</div><div class="sp two"></div></div>
+  </div>
+</div>
+
+<div class="d">
+  <div class="dh"><span class="n">DISCIPLINE 4</span><span class="t">Squares on every job</span></div>
+  <div class="dbody">
+    <div class="grid">
+      <div class="lb">The fields</div><div><code>jobSquares</code>, plus <code>roofPitch</code> and <code>wasteFactor</code>. None of the three exist today and they have to be created</div>
+      <div class="lb">The moment</div><div>At contract signing, off the measurement report that has already been bought</div>
+      <div class="lb">Who holds it</div><div>Whoever sells the job and orders the report</div>
+      <div class="lb">What breaks</div><div>There is no unit. Revenue, material and labor never share a denominator, so no two jobs can be compared and no price can be defended with anything except experience</div>
+    </div>
+    <div class="pf"><span class="tag">VERIFIED</span>There is <b>no square count, pitch or waste
+    factor field anywhere in the system.</b> Meanwhile the measurement reports are already paid for:
+    <b>71 charges over 24 months, $4,645.25</b>. The number is bought, read once, used to order
+    material, and then thrown away.</div>
+    <div class="pf"><span class="tag inf">INFERENCE</span>Squares are what turn discipline 3 into
+    pricing. Cost per job tells you whether one roof made money. Cost per square tells you what to
+    charge on the next one, what a steep roof really costs you, and whether a bid is thin before you
+    sign it rather than after.</div>
+    <div class="pf"><span class="tag inf">INFERENCE</span>Right now production volume can only be
+    reconstructed backwards out of material orders. That works well enough to answer a question once,
+    but it is not something anyone can pull on a Monday morning, and it does not exist at all for a
+    job that has not been ordered yet.</div>
+    <div class="assign">
+      <div class="ac"><span class="lbl">Who owns this here</span><span class="line"></span></div>
+      <div class="ac"><span class="lbl">Starting when</span><span class="line"></span></div>
+    </div>
+    <div class="write"><div class="lbl">What this looks like in our shop, and what will get in the way.</div><div class="sp two"></div></div>
+  </div>
+</div>
+
+<div class="d">
+  <div class="dh"><span class="n">DISCIPLINE 5</span><span class="t">Contract value is what was signed</span></div>
+  <div class="dbody">
+    <div class="grid">
+      <div class="lb">The field</div><div><code>contractValue</code>, carrying the signed contract amount only</div>
+      <div class="lb">The moment</div><div>At contract signing, and again at final invoice if the scope changed and the change was agreed</div>
+      <div class="lb">Who holds it</div><div>Whoever signs the customer, and whoever issues the final invoice</div>
+      <div class="lb">What breaks</div><div>The receivable book stops being money owed and becomes a mix of money owed and money hoped for. Nobody can tell which is which by looking</div>
+    </div>
+    <div class="pf"><span class="tag">VERIFIED</span>Of <b>$1,582,182</b> of recorded receivable,
+    <b>$799,537 sits on a single job</b> as an unagreed carrier estimate. That is <b>50.5%</b> of the
+    entire receivable book, on one record, and it is not money anyone owes you.</div>
+    <div class="pf"><span class="tag inf">INFERENCE</span>A carrier estimate is a negotiating position
+    and belongs on the job as one. The contract is what a customer signed. Keeping the two in separate
+    places is what lets you look at the receivable list and know what it means, which matters most in
+    the week you actually need to know.</div>
+    <div class="assign">
+      <div class="ac"><span class="lbl">Who owns this here</span><span class="line"></span></div>
+      <div class="ac"><span class="lbl">Starting when</span><span class="line"></span></div>
+    </div>
+    <div class="write"><div class="lbl">What this looks like in our shop, and what will get in the way.</div><div class="sp two"></div></div>
+  </div>
+</div>
+
+<div class="runhd">Running Contractors Cloud So You Can Trust It &middot; Top Tier Roofing &amp; Remodeling &middot; 2026-08-27</div>
+<h2 class="newpage">Who fills what, and when</h2>
+
+<p>This is the page to pin up. The role is filled in. The name next to it is yours to assign.</p>
+
+<table>
+<thead>
+<tr><th style="width:19%">The moment</th><th style="width:24%">What gets filled</th><th style="width:21%">Role holding the file</th><th style="width:15%">Name</th><th style="width:21%">Without it</th></tr>
+</thead>
+<tbody>
+<tr>
+  <td><b>Record creation</b><br>first screen</td>
+  <td><code>leadSource</code>, required</td>
+  <td>Whoever takes the call and creates the record</td>
+  <td></td>
+  <td>No marketing can be measured. Unrecoverable after the day it happens</td>
+</tr>
+<tr>
+  <td><b>Contract signing</b></td>
+  <td><code>jobSquares</code>, <code>roofPitch</code>, <code>wasteFactor</code>, and <code>contractValue</code> at the signed amount</td>
+  <td>Whoever sells the job</td>
+  <td></td>
+  <td>No unit to compare jobs. Receivables mix real money with estimates</td>
+</tr>
+<tr>
+  <td><b>Material order</b><br>when the invoice arrives</td>
+  <td><code>materialCost</code> on the job</td>
+  <td>Whoever orders material and handles supply house invoices</td>
+  <td></td>
+  <td>Half of job cost missing, so the 65% default stands in for it</td>
+</tr>
+<tr>
+  <td><b>Crew payment</b><br>when the check is written</td>
+  <td><code>laborPayout</code> on the job</td>
+  <td>Whoever writes the check</td>
+  <td></td>
+  <td>The other half missing. No job ever shows a true margin</td>
+</tr>
+<tr>
+  <td><b>Completion</b><br>day the crew leaves</td>
+  <td>Status advanced, which sets <code>dateDone</code></td>
+  <td>Whoever is on site at the finish</td>
+  <td></td>
+  <td>No cycle time, no seasonality, and every report describes a stale business</td>
+</tr>
+<tr>
+  <td><b>Final invoice</b></td>
+  <td><code>contractValue</code> updated only if scope changed and was agreed</td>
+  <td>Whoever issues the invoice</td>
+  <td></td>
+  <td>Receivable book drifts away from what is collectible</td>
+</tr>
+</tbody>
+</table>
+
+<div class="note">
+<b>A sixty second check, not a report.</b> Once a week, pick one job that closed that week and look at
+it on screen. Lead source, material cost, labor payout, squares. Four fields, one record. If all four
+are there, the habits are holding. If one is blank, you know which moment slipped and which role was
+holding the file, without anybody having to run anything.
+</div>
+
+<div class="write"><div class="lbl">Anything about these six moments that does not match how work actually moves through here.</div><div class="sp two"></div></div>
+
+<div class="runhd">Running Contractors Cloud So You Can Trust It &middot; Top Tier Roofing &amp; Remodeling &middot; 2026-08-27</div>
+<h2 class="newpage">What you can trust today, and what you cannot yet</h2>
+
+<p>Every line below follows from the five disciplines above.</p>
+
+<h3>Trustworthy now</h3>
+<table>
+<thead><tr><th style="width:36%">Report or number</th><th>Why it holds</th></tr></thead>
+<tbody>
+<tr><td><span class="yes">TRUST</span> Customer and contact records</td><td>Names, addresses and contact details are clean and complete. This is the part of the system that has been maintained properly all along</td></tr>
+<tr><td><span class="yes">TRUST</span> Job count and the job list</td><td>Every job that exists is in there. 161 project records, with nothing missing that could be found against the bank statements</td></tr>
+<tr><td><span class="yes">TRUST</span> Sold contract value on ordinary retail jobs</td><td>What a customer signed is recorded correctly on the jobs where no carrier estimate is involved</td></tr>
+<tr><td><span class="yes">TRUST</span> Cancel reason</td><td>Filled on 34 of 34. Proof that a required field survives a busy week</td></tr>
+<tr><td><span class="yes">TRUST</span> Photo documentation on jobs</td><td>Linked on 156 of 161 projects. It is invisible in the spreadsheet exports, which is why it looks like it is not there, but it is</td></tr>
+</tbody>
+</table>
+
+<h3>Not yet trustworthy</h3>
+<table>
+<thead><tr><th style="width:36%">Report or number</th><th>What it is actually showing you</th></tr></thead>
+<tbody>
+<tr><td><span class="no">DO NOT USE</span> Any margin or profitability report</td><td>The 65.00% expense and 10.00% payout defaults, arranged in a chart. Discipline 3 has to run a full season before any of these mean anything</td></tr>
+<tr><td><span class="no">DO NOT USE</span> Cycle time, job duration, seasonality</td><td>The date of the 2026-07-23 cleanup sweep on 48 of 58 jobs. This corrects itself going forward under discipline 2, but the history is gone</td></tr>
+<tr><td><span class="no">DO NOT USE</span> Receivable total and aging</td><td>$1,582,182 that includes $799,537 of unagreed carrier estimate on one job. Half the book is not money owed. Discipline 5</td></tr>
+<tr><td><span class="no">DO NOT USE</span> Anything broken out by marketing channel or lead source</td><td>The catalog has two entries, so a channel report returns one bar. Discipline 1, and it only ever fills forward from the day the list exists</td></tr>
+<tr><td><span class="no">DO NOT USE</span> Revenue, material or labor per square</td><td>The fields do not exist yet. Discipline 4 creates them; production volume can only be reconstructed backwards until then</td></tr>
+<tr><td><span class="no">DO NOT USE</span> Job status as a picture of the field</td><td>Jobs sit at early stages that have already been paid on. Under discipline 2 the status becomes current</td></tr>
+</tbody>
+</table>
+
+<div class="note">
+<b>The order these unlock in, and why.</b> Lead source and completion status both start paying the day
+they are switched on, because both are a single action inside a screen someone is already looking at.
+Cost per job needs a season of real invoices behind it before a margin report is worth reading.
+Squares depend on nothing except the fields being created, but they only become <i>pricing</i> once
+cost per job is real, because a cost per square needs a cost. Contract value is independent of all of
+it and can be corrected on the one job that distorts the book. No dates here, because the pace is
+yours. The dependencies are not.
+</div>
+
+</div><!-- /body -->
+
+<div class="foot">
+Top Tier Roofing &amp; Remodeling &middot; Contractors Cloud data discipline &middot; 2026-08-27.
+Figures marked VERIFIED are computed from Top Tier's own CRM records and bank statements. Figures
+marked INFERENCE are reasoned from those figures and are labeled as such.
+</div>
+
+</div><!-- /sheet -->
+</body></html>

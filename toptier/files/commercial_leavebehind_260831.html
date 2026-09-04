@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Tier commercial leave behind</title>
+<style>
+/* ---- inlined verbatim from assets/design/toptier_tokens.css ---- */
+/* ==========================================================================
+   TOP TIER ROOFING & REMODELING - MARKETING ASSET DESIGN SYSTEM
+   File: assets/design/toptier_tokens.css
+   Created: 2026-08-31
+
+   This is the single source of visual truth for every marketing graphic
+   rendered by work/scripts/render_assets_260831.py.
+
+   WHOSE BRAND THIS IS
+   -------------------
+   These tokens carry TOP TIER's identity. Top Tier is the client, and these
+   assets get posted on Top Tier's Facebook, Instagram and website. The
+   consulting firm's own branding (Section Blue, Gold, the consultant
+   watermark) belongs ONLY on internal consulting deliverables and must
+   NEVER appear on anything in this file or anything it styles.
+
+   BRAND STATUS: PROVISIONAL - SEE THE SWAP BLOCK BELOW
+   ----------------------------------------------------
+   As of 2026-08-31 the file assets/brand_toptier_260831.md did not exist,
+   so the brand colors below were NOT taken from a brand document. They were
+   sampled with Pillow directly from Top Tier's own published artwork:
+
+     assets/images/from_site/Top-Tier-logo-final-sample-1.jpg
+        dominant colors: #FFFFFF, #000000, #FF0000  (white, black, red)
+     assets/images/from_site/toptiertruckwrap-e1724437980675.webp
+        dominant colors: #3E4850 family (gunmetal / steel gray)
+
+   So the brand read is: black and white, a hot red accent, gunmetal support.
+   Raw #FF0000 is too harsh for large fills and vibrates on a phone screen,
+   so --ttRed is set one step down from it. The raw logo red is preserved as
+   --ttRedLogo for anything that must match the logo exactly.
+
+   TO SWAP IN THE REAL BRAND: edit ONLY the BRAND SWAP BLOCK below. Nothing
+   else in this file, and nothing in any asset HTML, should need to change.
+   Every other token either is a fixed structural decision (spacing, type
+   scale, stroke weight) or derives from the swap block.
+   ========================================================================== */
+
+:root {
+
+  /* ======================================================================
+     BRAND SWAP BLOCK - the only part that changes when brand.md lands
+     ====================================================================== */
+
+  /* Core brand colors (PROVISIONAL, sampled from Top Tier artwork) */
+  --ttRed:            #E11B22;   /* primary accent, calls to action        */
+  --ttRedLogo:        #FF0000;   /* exact logo red, use only to match art  */
+  --ttRedDeep:        #9E1016;   /* pressed / shadowed red                 */
+  --ttRedTint:        #FDECEC;   /* pale red wash for panels               */
+  --ttInk:            #101214;   /* near black, the primary brand dark     */
+  --ttInkSoft:        #3E4850;   /* gunmetal from the truck wrap           */
+  --ttInkFaint:       #6B757D;   /* muted body text on light               */
+  --ttPaper:          #FFFFFF;   /* primary light ground                   */
+  --ttPaperAlt:       #F2F4F6;   /* panel / card ground on light           */
+  --ttLine:           #D7DCE1;   /* hairline rules on light                */
+  --ttLineDark:       #2A3238;   /* hairline rules on dark                 */
+  --ttNavy:           #003C55;   /* toptiermn.com navy, sampled from the   */
+  --ttNavyTint:       #D7E3E9;   /* client's own live site. Water color.    */
+
+  /* Brand typography (PROVISIONAL - Windows-resolvable stacks, no network
+     fetch, so rendering is deterministic offline. Replace the first family
+     in each stack when the real brand face is confirmed.) */
+  --ttFontDisplay:    "Segoe UI Black", "Arial Black", Impact, "Segoe UI", Arial, sans-serif;
+  --ttFontBody:       "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ttFontMono:       "Cascadia Mono", Consolas, "Courier New", monospace;
+
+  /* Brand facts that appear on the assets themselves.
+     MN Statute 326B.87 requires the contractor license number on EVERY
+     piece of advertising. Do not ship an ad asset without it. */
+  --ttLegalName:      "Top Tier Roofing & Remodeling, LLC";
+  --ttLicense:        "BC807923";
+  --ttPhone:          "(612) 205-5503";
+  --ttWeb:            "toptiermn.com";
+
+  /* ======================================================================
+     DERIVED SEMANTIC COLOR - do not edit, these point at the swap block
+     ====================================================================== */
+
+  --ttBg:             var(--ttPaper);
+  --ttBgDark:         var(--ttInk);
+  --ttBgPanel:        var(--ttPaperAlt);
+  --ttText:           var(--ttInk);
+  --ttTextMuted:      var(--ttInkFaint);
+  --ttTextOnDark:     #FFFFFF;
+  --ttTextMutedOnDark:#A6B0B8;
+  --ttAccent:         var(--ttRed);
+  --ttAccentOnDark:   #FF3A40;
+
+  /* Locator map. A stylized service-area map is not a technical cutaway, so
+     it gets its own small semantic group rather than borrowing the cutaway
+     water tokens. --ttWater (#2E86C1) is a bright diagram blue built for
+     flow arrows on a shingle drawing; a river drawn in it reads as cartoon.
+     The client's own site navy is the honest water color here. */
+  --ttMapLand:        #F4F6F7;   /* the ground the map sits on             */
+  --ttMapWater:       var(--ttNavy);
+  --ttMapWaterTint:   var(--ttNavyTint);
+  --ttMapRoad:        var(--ttInkSoft);
+  --ttMapDot:         var(--ttInk);
+  --ttMapDotMuted:    #8E979E;   /* outer ring towns, context not focus    */
+
+  /* ======================================================================
+     DATA GRAPHIC PALETTE - waterfalls, funnels, share-of-market figures
+     Sequential enough to read as one family, separable enough to label.
+     ====================================================================== */
+
+  --ttSeries1:        #1F3A4D;   /* deepest, use for the largest bar       */
+  --ttSeries2:        #2E5D74;
+  --ttSeries3:        #4A8DA6;
+  --ttSeries4:        #7FB8C9;
+  --ttSeries5:        #B9DCE5;   /* lightest                               */
+  --ttSeriesAccent:   var(--ttRed);        /* the one bar that matters     */
+  --ttSeriesMuted:    #C3CAD0;             /* context / everyone else      */
+
+  --ttPositive:       #1E7B4D;   /* money in, gain, gross margin           */
+  --ttPositiveTint:   #E4F2EA;
+  --ttNegative:       #B3261E;   /* money out, cost, loss                  */
+  --ttNegativeTint:   #FAE9E8;
+  --ttNeutral:        #4A5560;   /* subtotal / total bars                  */
+  --ttNeutralTint:    #EDEFF1;
+  --ttGridline:       #E1E5E9;
+  --ttAxis:           #9AA4AC;
+  --ttAnnotation:     var(--ttRed);
+
+  /* ======================================================================
+     TECHNICAL CUTAWAY MATERIALS - building science drawings
+     Fill plus a darker Edge for every material, so an SVG shape and its
+     stroke always agree. Chosen to stay distinguishable in grayscale,
+     because these get printed on mailer inserts.
+     ====================================================================== */
+
+  --ttMatLumber:        #D9B27C;   /* rafters, joists, framing, fascia     */
+  --ttMatLumberEdge:    #9E7B4C;
+  --ttMatSheathing:     #C6A882;   /* OSB / plywood deck                   */
+  --ttMatSheathingEdge: #8E7350;
+  --ttMatInsulation:    #F4D9E4;   /* batt insulation                      */
+  --ttMatInsulationEdge:#C99BAE;
+  --ttMatFlashing:      #B9C2C9;   /* step, valley, drip edge metal        */
+  --ttMatFlashingEdge:  #6E7A83;
+  --ttMatFlashingHilite:#EDF1F4;   /* the bright edge that reads as metal  */
+  --ttMatShingle:       #4B5259;   /* asphalt shingle body                 */
+  --ttMatShingleEdge:   #2C3238;
+  --ttMatShingleAlt:    #656D75;   /* alternating course, shows the lap    */
+  --ttMatUnderlayment:  #2F3A44;   /* synthetic felt                       */
+  --ttMatIceWater:      #7A3FA0;   /* ice and water shield membrane        */
+  --ttMatIceWaterEdge:  #52226F;
+  --ttMatRidgeVent:     #8A9299;
+  --ttMatDrywall:       #F0EDE7;
+  --ttMatDrywallEdge:   #C7C1B6;
+  --ttMatBrick:         #A6584C;   /* chimney / masonry                    */
+  --ttMatBrickEdge:     #71372E;
+  --ttMatAir:           #EAF1F5;   /* attic cavity, ventilated space       */
+  --ttMatSky:           #DCE9F2;   /* background behind an exterior view   */
+  --ttMatGutter:        #CFD6DC;
+  --ttMatSoffit:        #E3E7EA;
+
+  /* Water, and things going wrong. The failure red is deliberately a
+     different red from the brand red so a diagram never implies that
+     the brand mark is the defect. */
+  --ttWater:            #2E86C1;
+  --ttWaterDeep:        #1B5A85;
+  --ttWaterTint:        #D6EAF6;
+  --ttIce:              #A9D6EA;
+  --ttFail:             #C2261C;
+  --ttFailTint:         #F7DCDA;
+  --ttGood:             #1E7B4D;
+  --ttGoodTint:         #E4F2EA;
+  --ttHeat:             #E08A1E;   /* heat loss / warm air arrows          */
+  --ttHeatTint:         #FBEBD4;
+
+  /* ======================================================================
+     SVG STROKE WEIGHTS - drawing line language for the cutaways
+     Values are unitless so they drop straight into stroke-width.
+     ====================================================================== */
+
+  --ttStrokeHairline:  1;    /* hatching, texture, sub-detail              */
+  --ttStrokeThin:      2;    /* internal material edges                    */
+  --ttStrokeBase:      3;    /* standard object outline                    */
+  --ttStrokeBold:      5;    /* silhouette of the assembly                 */
+  --ttStrokeHeavy:     8;    /* the one element the drawing is about       */
+  --ttStrokeLeader:    2.5;  /* callout leader lines                       */
+  --ttStrokeArrow:     4;    /* flow arrows, water path, air path          */
+  --ttStrokeDashLong:  "14 8";
+  --ttStrokeDashShort: "6 6";
+  --ttStrokeDashDot:   "12 6 3 6";
+
+  /* ======================================================================
+     TYPE SCALE - absolute px, tuned for the 1080px social canvas.
+     Size presets below redefine these where the canvas is a different
+     size (landscape, letter). Read a value, never invent one.
+     ====================================================================== */
+
+  --ttSizeMicro:      20px;   /* legal line, license number, source note   */
+  --ttSizeCaption:    26px;   /* axis labels, small callouts               */
+  --ttSizeBody:       32px;   /* body copy                                 */
+  --ttSizeLead:       38px;   /* lead paragraph, subhead                   */
+  --ttSizeH4:         46px;
+  --ttSizeH3:         58px;
+  --ttSizeH2:         74px;
+  --ttSizeH1:         94px;
+  --ttSizeDisplay:   120px;   /* one word, one number                      */
+  --ttSizeNumber:    152px;   /* the hero figure on a stat graphic         */
+
+  --ttWeightRegular:  400;
+  --ttWeightMedium:   600;
+  --ttWeightBold:     700;
+  --ttWeightBlack:    900;
+
+  --ttLeadingTight:   1.02;   /* display headlines                         */
+  --ttLeadingSnug:    1.15;
+  --ttLeadingBase:    1.35;
+  --ttLeadingLoose:   1.5;
+
+  --ttTrackTight:     -0.02em;
+  --ttTrackBase:      0em;
+  --ttTrackWide:      0.06em;
+  --ttTrackCaps:      0.12em;  /* for uppercase eyebrow labels             */
+
+  /* ======================================================================
+     SPACING SCALE - the only gaps that exist. Do not type a raw px gap.
+     ====================================================================== */
+
+  --ttSpace1:    4px;
+  --ttSpace2:    8px;
+  --ttSpace3:   12px;
+  --ttSpace4:   16px;
+  --ttSpace5:   24px;
+  --ttSpace6:   32px;
+  --ttSpace7:   40px;
+  --ttSpace8:   56px;
+  --ttSpace9:   72px;
+  --ttSpace10:  96px;
+  --ttSpace11: 128px;
+  --ttSpace12: 160px;
+
+  --ttCanvasPad:      64px;   /* safe inset from the canvas edge           */
+  --ttCanvasPadTight: 48px;
+
+  /* ======================================================================
+     RADII, BORDERS, SHADOW
+     ====================================================================== */
+
+  --ttRadiusNone:  0px;
+  --ttRadiusSm:    6px;
+  --ttRadiusMd:   14px;
+  --ttRadiusLg:   26px;
+  --ttRadiusXl:   40px;
+  --ttRadiusPill: 999px;
+
+  --ttBorderHair: 1px solid var(--ttLine);
+  --ttBorderThin: 2px solid var(--ttLine);
+  --ttBorderBold: 4px solid var(--ttInk);
+  --ttBorderAccent: 4px solid var(--ttRed);
+
+  --ttShadowSm: 0 2px 6px rgba(16, 18, 20, 0.10);
+  --ttShadowMd: 0 8px 24px rgba(16, 18, 20, 0.14);
+  --ttShadowLg: 0 20px 60px rgba(16, 18, 20, 0.20);
+
+  /* ======================================================================
+     CANVAS PRESET DIMENSIONS - declared here for reference. The renderer
+     holds the same numbers and is the enforcing authority. If these two
+     ever disagree, the renderer wins and this comment is the bug.
+       square    1080 x 1080
+       portrait  1080 x 1350
+       story     1080 x 1920
+       landscape 1200 x 628
+       letter     816 x 1056  (8.5in x 11in at 96 CSS px per inch)
+     ====================================================================== */
+}
+
+/* ==========================================================================
+   SIZE PRESETS
+   An author writes a div carrying class asset, a data-asset-id and a data-size
+   and never types a pixel dimension. The renderer reads data-size off the
+   same attribute, so the CSS box and the exported PNG cannot disagree.
+   ========================================================================== */
+
+.asset {
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  background: var(--ttBg);
+  color: var(--ttText);
+  font-family: var(--ttFontBody);
+  font-size: var(--ttSizeBody);
+  line-height: var(--ttLeadingBase);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.asset *,
+.asset *::before,
+.asset *::after { box-sizing: border-box; }
+
+/* NEVER put a box-shadow, outline, transform or margin on .asset itself.
+   The renderer screenshots the element's own border box; anything drawn
+   outside it is silently lost, and a transform changes the captured size.
+   Put preview chrome on .assetWrap instead. */
+
+.asset[data-size="square"]    { width: 1080px; height: 1080px; }
+.asset[data-size="portrait"]  { width: 1080px; height: 1350px; }
+.asset[data-size="story"]     { width: 1080px; height: 1920px; }
+
+.asset[data-size="landscape"] {
+  width: 1200px; height: 628px;
+  --ttCanvasPad: 48px;
+  --ttCanvasPadTight: 32px;
+  --ttSizeMicro:    16px;
+  --ttSizeCaption:  20px;
+  --ttSizeBody:     24px;
+  --ttSizeLead:     30px;
+  --ttSizeH4:       36px;
+  --ttSizeH3:       46px;
+  --ttSizeH2:       58px;
+  --ttSizeH1:       74px;
+  --ttSizeDisplay:  92px;
+  --ttSizeNumber:  116px;
+}
+
+/* letter: 8.5in x 11in. Chromium lays out CSS at 96px per inch, so the
+   box is 816 x 1056 CSS px. The renderer additionally exports this preset
+   at 300 dpi (2550 x 3300) and as a vector PDF for the printer. Type is
+   sized for paper read at arm's length, not a phone at 6 inches. */
+.asset[data-size="letter"] {
+  width: 816px; height: 1056px;
+  --ttCanvasPad: 54px;
+  --ttCanvasPadTight: 36px;
+  --ttSizeMicro:     9px;
+  --ttSizeCaption:  11px;
+  --ttSizeBody:     13px;
+  --ttSizeLead:     16px;
+  --ttSizeH4:       20px;
+  --ttSizeH3:       26px;
+  --ttSizeH2:       34px;
+  --ttSizeH1:       44px;
+  --ttSizeDisplay:  60px;
+  --ttSizeNumber:   78px;
+  --ttSpace5:       16px;
+  --ttSpace6:       22px;
+  --ttSpace7:       28px;
+  --ttSpace8:       36px;
+  --ttSpace9:       48px;
+  --ttSpace10:      64px;
+  --ttStrokeBase:   2;
+  --ttStrokeBold:   3;
+  --ttStrokeHeavy:  5;
+}
+
+/* ==========================================================================
+   THEME MODIFIERS - put one on .asset alongside data-size
+   ========================================================================== */
+
+.asset.themeLight  { background: var(--ttPaper); color: var(--ttText); }
+.asset.themePanel  { background: var(--ttPaperAlt); color: var(--ttText); }
+.asset.themeDark   { background: var(--ttInk); color: var(--ttTextOnDark); }
+.asset.themeDark   { --ttText: #FFFFFF; --ttTextMuted: var(--ttTextMutedOnDark);
+                     --ttLine: var(--ttLineDark); --ttAccent: var(--ttAccentOnDark);
+                     --ttBgPanel: #1C2126; --ttGridline: #2A3238; }
+.asset.themeSteel  { background: var(--ttInkSoft); color: #FFFFFF;
+                     --ttText: #FFFFFF; --ttTextMuted: #C6CDD2;
+                     --ttLine: #56616A; --ttAccent: var(--ttAccentOnDark); }
+
+/* ==========================================================================
+   LAYOUT HELPERS
+   ========================================================================== */
+
+.ttPad        { padding: var(--ttCanvasPad); }
+.ttPadTight   { padding: var(--ttCanvasPadTight); }
+.ttFill       { width: 100%; height: 100%; }
+.ttStack      { display: flex; flex-direction: column; }
+.ttRow        { display: flex; flex-direction: row; align-items: center; }
+.ttSpread     { display: flex; justify-content: space-between; align-items: center; }
+.ttCenter     { display: flex; align-items: center; justify-content: center; }
+.ttGrow       { flex: 1 1 auto; min-height: 0; min-width: 0; }
+.ttGap2 { gap: var(--ttSpace2); } .ttGap3 { gap: var(--ttSpace3); }
+.ttGap4 { gap: var(--ttSpace4); } .ttGap5 { gap: var(--ttSpace5); }
+.ttGap6 { gap: var(--ttSpace6); } .ttGap7 { gap: var(--ttSpace7); }
+.ttGap8 { gap: var(--ttSpace8); }
+
+/* ==========================================================================
+   TYPE COMPONENTS
+   ========================================================================== */
+
+.ttEyebrow {
+  font-family: var(--ttFontBody);
+  font-size: var(--ttSizeCaption);
+  font-weight: var(--ttWeightBold);
+  letter-spacing: var(--ttTrackCaps);
+  text-transform: uppercase;
+  color: var(--ttAccent);
+  margin: 0;
+}
+.ttDisplay { font-family: var(--ttFontDisplay); font-size: var(--ttSizeDisplay);
+             font-weight: var(--ttWeightBlack); line-height: var(--ttLeadingTight);
+             letter-spacing: var(--ttTrackTight); margin: 0; }
+.ttH1 { font-family: var(--ttFontDisplay); font-size: var(--ttSizeH1);
+        font-weight: var(--ttWeightBlack); line-height: var(--ttLeadingTight);
+        letter-spacing: var(--ttTrackTight); margin: 0; }
+.ttH2 { font-family: var(--ttFontDisplay); font-size: var(--ttSizeH2);
+        font-weight: var(--ttWeightBlack); line-height: var(--ttLeadingSnug);
+        letter-spacing: var(--ttTrackTight); margin: 0; }
+.ttH3 { font-family: var(--ttFontBody); font-size: var(--ttSizeH3);
+        font-weight: var(--ttWeightBold); line-height: var(--ttLeadingSnug); margin: 0; }
+.ttH4 { font-family: var(--ttFontBody); font-size: var(--ttSizeH4);
+        font-weight: var(--ttWeightBold); line-height: var(--ttLeadingSnug); margin: 0; }
+.ttLead { font-size: var(--ttSizeLead); line-height: var(--ttLeadingBase); margin: 0; }
+.ttBody { font-size: var(--ttSizeBody); line-height: var(--ttLeadingBase); margin: 0; }
+.ttCaption { font-size: var(--ttSizeCaption); line-height: var(--ttLeadingBase);
+             color: var(--ttTextMuted); margin: 0; }
+.ttMicro { font-size: var(--ttSizeMicro); line-height: var(--ttLeadingBase);
+           color: var(--ttTextMuted); margin: 0; }
+.ttNumber { font-family: var(--ttFontDisplay); font-size: var(--ttSizeNumber);
+            font-weight: var(--ttWeightBlack); line-height: 0.95;
+            letter-spacing: var(--ttTrackTight); font-variant-numeric: tabular-nums;
+            margin: 0; }
+.ttNum { font-variant-numeric: tabular-nums; }
+.ttAccentText { color: var(--ttAccent); }
+.ttMutedText  { color: var(--ttTextMuted); }
+.ttUp   { color: var(--ttPositive); }
+.ttDown { color: var(--ttNegative); }
+
+/* ==========================================================================
+   SURFACE COMPONENTS
+   ========================================================================== */
+
+.ttCard { background: var(--ttBgPanel); border-radius: var(--ttRadiusMd);
+          padding: var(--ttSpace5); }
+.ttCardOutline { background: transparent; border: var(--ttBorderThin);
+                 border-radius: var(--ttRadiusMd); padding: var(--ttSpace5); }
+.ttBadge { display: inline-flex; align-items: center; gap: var(--ttSpace2);
+           background: var(--ttAccent); color: #FFFFFF;
+           font-weight: var(--ttWeightBold); font-size: var(--ttSizeCaption);
+           letter-spacing: var(--ttTrackWide); text-transform: uppercase;
+           padding: var(--ttSpace2) var(--ttSpace4); border-radius: var(--ttRadiusPill); }
+.ttRule { height: 2px; background: var(--ttLine); border: 0; margin: 0; }
+.ttRuleAccent { height: 6px; background: var(--ttAccent); border: 0; margin: 0;
+                width: 120px; border-radius: var(--ttRadiusPill); }
+.ttKeyline { border-left: var(--ttBorderAccent); padding-left: var(--ttSpace5); }
+
+/* ==========================================================================
+   BRAND FOOTER - required on advertising assets
+   MN 326B.87 requires the contractor license number on every piece of
+   advertising. The footer bar carries it. Any asset that is an ad, a
+   mailer or a promotional post gets this bar; a purely informational
+   diagram does not have to, but it costs nothing to include.
+   ========================================================================== */
+
+.ttFooterBar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--ttSpace5);
+  padding: var(--ttSpace4) var(--ttCanvasPad);
+  background: var(--ttInk); color: #FFFFFF;
+  font-size: var(--ttSizeMicro); letter-spacing: var(--ttTrackWide);
+}
+.ttFooterBar .ttFooterMark { font-family: var(--ttFontDisplay);
+  font-weight: var(--ttWeightBlack); letter-spacing: var(--ttTrackBase);
+  font-size: calc(var(--ttSizeMicro) * 1.5); }
+.ttFooterBar .ttFooterMark span { color: var(--ttAccentOnDark); }
+.ttLicenseLine::before { content: "MN License "; }
+
+/* ==========================================================================
+   DATA GRAPHIC PRIMITIVES
+   ========================================================================== */
+
+.ttBarPos     { background: var(--ttPositive); }
+.ttBarNeg     { background: var(--ttNegative); }
+.ttBarTotal   { background: var(--ttNeutral); }
+.ttBarAccent  { background: var(--ttAccent); }
+.ttBarMuted   { background: var(--ttSeriesMuted); }
+.ttS1 { background: var(--ttSeries1); } .ttS2 { background: var(--ttSeries2); }
+.ttS3 { background: var(--ttSeries3); } .ttS4 { background: var(--ttSeries4); }
+.ttS5 { background: var(--ttSeries5); }
+.ttGridLine { height: 1px; background: var(--ttGridline); }
+.ttAxisLine { background: var(--ttAxis); }
+
+/* ==========================================================================
+   SVG DRAWING DEFAULTS for the technical cutaways
+   Wrap a drawing in <svg class="ttDraw"> and material classes do the rest.
+   ========================================================================== */
+
+.ttDraw { display: block; width: 100%; height: 100%; overflow: visible; }
+.ttDraw text { font-family: var(--ttFontBody); fill: var(--ttText); }
+.ttDraw .ttLabel { font-size: var(--ttSizeCaption); font-weight: var(--ttWeightMedium); }
+.ttDraw .ttLabelBold { font-size: var(--ttSizeCaption); font-weight: var(--ttWeightBold); }
+.ttDraw .ttLeader { stroke: var(--ttInkSoft); stroke-width: var(--ttStrokeLeader);
+                    fill: none; stroke-linecap: round; }
+.ttDraw .ttArrowWater { stroke: var(--ttWater); stroke-width: var(--ttStrokeArrow);
+                        fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ttDraw .ttArrowAir  { stroke: var(--ttHeat); stroke-width: var(--ttStrokeArrow);
+                        fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ttDraw .ttArrowFail { stroke: var(--ttFail); stroke-width: var(--ttStrokeArrow);
+                        fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+.ttDraw .matLumber      { fill: var(--ttMatLumber);      stroke: var(--ttMatLumberEdge);      stroke-width: var(--ttStrokeThin); }
+.ttDraw .matSheathing   { fill: var(--ttMatSheathing);   stroke: var(--ttMatSheathingEdge);   stroke-width: var(--ttStrokeThin); }
+.ttDraw .matInsulation  { fill: var(--ttMatInsulation);  stroke: var(--ttMatInsulationEdge);  stroke-width: var(--ttStrokeThin); }
+.ttDraw .matFlashing    { fill: var(--ttMatFlashing);    stroke: var(--ttMatFlashingEdge);    stroke-width: var(--ttStrokeBase); }
+.ttDraw .matShingle     { fill: var(--ttMatShingle);     stroke: var(--ttMatShingleEdge);     stroke-width: var(--ttStrokeThin); }
+.ttDraw .matShingleAlt  { fill: var(--ttMatShingleAlt);  stroke: var(--ttMatShingleEdge);     stroke-width: var(--ttStrokeThin); }
+.ttDraw .matUnderlayment{ fill: var(--ttMatUnderlayment);stroke: var(--ttMatUnderlayment);    stroke-width: var(--ttStrokeHairline); }
+.ttDraw .matIceWater    { fill: var(--ttMatIceWater);    stroke: var(--ttMatIceWaterEdge);    stroke-width: var(--ttStrokeThin); }
+.ttDraw .matBrick       { fill: var(--ttMatBrick);       stroke: var(--ttMatBrickEdge);       stroke-width: var(--ttStrokeThin); }
+.ttDraw .matDrywall     { fill: var(--ttMatDrywall);     stroke: var(--ttMatDrywallEdge);     stroke-width: var(--ttStrokeThin); }
+.ttDraw .matGutter      { fill: var(--ttMatGutter);      stroke: var(--ttMatFlashingEdge);    stroke-width: var(--ttStrokeBase); }
+.ttDraw .matSoffit      { fill: var(--ttMatSoffit);      stroke: var(--ttMatFlashingEdge);    stroke-width: var(--ttStrokeThin); }
+.ttDraw .matAir         { fill: var(--ttMatAir);         stroke: none; }
+.ttDraw .matSky         { fill: var(--ttMatSky);         stroke: none; }
+.ttDraw .matWater       { fill: var(--ttWater);          stroke: var(--ttWaterDeep);          stroke-width: var(--ttStrokeThin); }
+.ttDraw .matIce         { fill: var(--ttIce);            stroke: var(--ttWaterDeep);          stroke-width: var(--ttStrokeThin); }
+.ttDraw .matFail        { fill: var(--ttFailTint);       stroke: var(--ttFail);               stroke-width: var(--ttStrokeBold); }
+.ttDraw .matGood        { fill: var(--ttGoodTint);       stroke: var(--ttGood);               stroke-width: var(--ttStrokeBold); }
+.ttDraw .outlineHeavy   { fill: none; stroke: var(--ttInk); stroke-width: var(--ttStrokeHeavy);
+                          stroke-linejoin: round; }
+.ttDraw .outlineBold    { fill: none; stroke: var(--ttInk); stroke-width: var(--ttStrokeBold);
+                          stroke-linejoin: round; }
+
+/* ==========================================================================
+   PREVIEW CHROME - gallery page only, never captured
+   Wrap each .asset in .assetWrap for a readable authoring page. The
+   renderer captures the inner .asset, so nothing here reaches the PNG.
+   ========================================================================== */
+
+.assetWrap { display: inline-block; margin: 0 0 var(--ttSpace8) 0;
+             box-shadow: var(--ttShadowMd); background: #FFFFFF; }
+.assetWrapLabel { font-family: var(--ttFontMono); font-size: 13px; color: #555;
+                  padding: 6px 8px; background: #F2F4F6; border-bottom: 1px solid #DDD; }
+
+/* ---- end tokens ---- */
+
+/* The Top Tier wordmark, cropped so the phone number and the license
+   lockup are NOT in the raster. Both of those are live text on this
+   piece, so baking them into the artwork would print them twice.
+   Source: assets/images/generated/toptier_wordmark_600dpi.png */
+.lbMark { background-image: url(data:image/png;base64,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);
+          background-repeat: no-repeat; background-position: left center;
+          background-size: contain; }
+
+/* ==================================================================
+   PAGE CHROME. None of this sits inside a .asset, so none of it
+   prints and none of it is captured by the renderer.
+   ================================================================== */
+body { background: var(--ttPaperAlt); color: var(--ttText);
+       font-family: var(--ttFontBody); margin: 0; padding: 0 0 90px; }
+.pageWrap { max-width: 1760px; margin: 0 auto; padding: 0 28px; }
+.pageHead { background: var(--ttInk); color: var(--ttTextOnDark);
+            padding: 34px 0 30px; margin-bottom: 30px; }
+.pageHead .pageWrap { padding-top: 0; }
+.pageHead h1 { font-family: var(--ttFontDisplay); font-size: 34px; margin: 0 0 8px;
+               letter-spacing: -0.01em; }
+.pageHead p { margin: 0 0 10px; max-width: 92ch; color: var(--ttTextMutedOnDark);
+              font-size: 15px; line-height: 1.55; }
+.pageHead .rule { height: 4px; width: 92px; background: var(--ttRed); margin: 0 0 18px; }
+.noteCard { background: var(--ttPaper); border: 1px solid var(--ttLine);
+            border-left: 5px solid var(--ttRed); padding: 18px 22px; margin: 0 0 26px;
+            font-size: 14px; line-height: 1.6; }
+.noteCard.info { border-left-color: var(--ttNavy); }
+.noteCard h3 { margin: 0 0 8px; font-size: 15px; font-family: var(--ttFontDisplay); }
+.noteCard ul { margin: 8px 0 0; padding-left: 20px; }
+.noteCard li { margin-bottom: 5px; }
+.specTable { width: 100%; border-collapse: collapse; font-size: 13px;
+             background: var(--ttPaper); margin: 0 0 26px; }
+.specTable th, .specTable td { border: 1px solid var(--ttLine); padding: 7px 10px;
+                               text-align: left; vertical-align: top; }
+.specTable th { background: var(--ttPaperAlt); font-weight: 700; }
+.secHead { border-top: 3px solid var(--ttInk); padding-top: 14px; margin: 44px 0 6px; }
+.secHead h2 { font-family: var(--ttFontDisplay); font-size: 24px; margin: 0 0 6px; }
+.secHead p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ttTextMuted);
+             max-width: 92ch; }
+.assetCap { font-size: 12px; color: var(--ttTextMuted); padding: 12px 0 7px;
+            display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; }
+.capId { font-family: var(--ttFontMono); color: var(--ttInk); font-weight: 700; font-size: 12px; }
+.assetWrap { margin: 0 0 40px; padding: 0; }
+
+/* ------------------------------------------------------------------
+   PROOF GUIDES. Siblings of .asset inside .assetStage, never children,
+   so the renderer's element screenshot cannot see them. Trim, safety
+   and the fold show on screen and print nowhere.
+   ------------------------------------------------------------------ */
+.assetStage { position: relative; display: inline-block; box-shadow: var(--ttShadowMd);
+              background: var(--ttPaper); }
+.proofGuides { position: absolute; inset: 0; pointer-events: none; }
+.guideTrim { position: absolute; inset: 12px; outline: 1px dashed var(--ttRed); }
+.guideSafe { position: absolute; inset: 24px; outline: 1px dashed var(--ttNavy); }
+.guideFold { position: absolute; top: 0; bottom: 0; left: 828px; width: 1px;
+             background: var(--ttRed); }
+.guideGutterL { position: absolute; top: 0; bottom: 0; left: 804px; width: 1px;
+                border-left: 1px dashed var(--ttNavy); }
+.guideGutterR { position: absolute; top: 0; bottom: 0; left: 852px; width: 1px;
+                border-left: 1px dashed var(--ttNavy); }
+.guideTag { position: absolute; font-size: 9px; letter-spacing: 0.06em;
+            text-transform: uppercase; font-family: var(--ttFontMono);
+            padding: 1px 4px; color: var(--ttPaper); }
+.guideTagTrim { top: 12px; left: 12px; background: var(--ttRed); }
+.guideTagBleed { top: 0; right: 0; background: var(--ttNavy); }
+.guideTagFold { top: 12px; left: 830px; background: var(--ttRed); }
+
+/* ==================================================================
+   THE PIECE
+
+   Flat trim   17.00 x 11.00 in   (tabloid, landscape)
+   With bleed  17.25 x 11.25 in   = 1656 x 1080 CSS px at 96 px per inch
+   Folded      8.50 x 11.00 in    one vertical fold at the center
+   At 300 dpi  5175 x 3375 px per side
+
+   The canvas is laid out at 96 CSS px per inch, which is exactly what
+   the token file's `letter` preset assumes, so the type scale below is
+   copied from that preset rather than invented. Everything else reads
+   a token.
+   ================================================================== */
+.pgSheet { width: 1656px; height: 1080px;   /* 17.25 x 11.25 in with bleed  */
+           --pgFold: 828px;   /* the crease, at the center of the canvas   */
+           --pgBleed: 12px;   /* 0.125 in                                  */
+           --pgSafe: 24px;    /* bleed plus a further 0.125 in             */
+           --ttCanvasPad: 54px; --ttCanvasPadTight: 36px;
+           --ttSizeMicro: 9px; --ttSizeCaption: 11px; --ttSizeBody: 13px;
+           --ttSizeLead: 16px; --ttSizeH4: 20px; --ttSizeH3: 26px;
+           --ttSizeH2: 34px;  --ttSizeH1: 44px;  --ttSizeDisplay: 60px;
+           --ttSizeNumber: 78px;
+           --ttSpace5: 16px; --ttSpace6: 22px; --ttSpace7: 28px;
+           --ttSpace8: 36px; --ttSpace9: 48px; --ttSpace10: 64px; }
+
+/* The cutaway drawings are reused from output/infographics_260831.html,
+   where they were drawn on a 1080 px canvas at roughly one user unit per
+   pixel. Here they are scaled down, so their label type has to stay in
+   user units or it collapses. This restores the original 26 units and
+   deliberately does NOT inherit the print type scale above. */
+.pgSheet .ttDraw .ttLabel,
+.pgSheet .ttDraw .ttLabelBold { font-size: 26px; }
+
+/* Panels. Each half of the sheet is its own box. Everything that must
+   survive the trim knife lives inside .pgSafe, which is inset on all
+   four sides, the fold side included, so nothing critical lands on
+   the crease. */
+.pgPanel { position: absolute; top: 0; bottom: 0; width: var(--pgFold); overflow: hidden; }
+.pgPanelL { left: 0; }
+.pgPanelR { left: var(--pgFold); }
+.pgSafe { position: absolute; inset: var(--pgSafe); display: flex; flex-direction: column; }
+
+/* Bands that bleed. A band stops var(--pgSafe) short of the crease so a
+   fold that lands a hair off does not wrap a color onto the next panel. */
+.pgBandTop { position: absolute; top: 0; left: 0; right: 0; }
+.pgBandBottom { position: absolute; bottom: 0; left: 0; right: 0; }
+.pgPanelL .pgBandTop, .pgPanelL .pgBandBottom { right: var(--pgSafe); }
+.pgPanelR .pgBandTop, .pgPanelR .pgBandBottom { left: var(--pgSafe); }
+
+/* On the OUTSIDE sheet the two halves are different panels, so a band has
+   to stop short of the crease or a fold landing a hair off wraps a color
+   onto the neighboring panel. The INSIDE sheet is one continuous spread,
+   so its bands run straight across the crease and only the TEXT keeps the
+   quarter inch gutter. Put pgContinuous on that asset. */
+.pgContinuous .pgPanelL .pgBandTop,
+.pgContinuous .pgPanelL .pgBandBottom { right: 0; }
+.pgContinuous .pgPanelR .pgBandTop,
+.pgContinuous .pgPanelR .pgBandBottom { left: 0; }
+.pgContinuous .pgPanelL .pgBandPad { padding-right: var(--pgSafe); }
+.pgContinuous .pgPanelR .pgBandPad { padding-left: var(--pgSafe); }
+
+/* A continuous band cannot be painted as two panel halves that abut. The
+   crease sits at CSS x 828, which at the 300 dpi scale of 3.125 is device
+   pixel 2587.5, so the two halves blend into a visible hairline down the
+   middle of the band. The fill is therefore painted once, full width, at
+   the sheet level, and the panel bands keep only their text color. */
+.pgSheetBand { position: absolute; left: 0; right: 0; }
+.pgContinuous .pgPanel .pgBandTop,
+.pgContinuous .pgPanel .pgBandBottom { background: transparent; }
+.pgBandInk { background: var(--ttInk); color: var(--ttTextOnDark); }
+.pgBandNavy { background: var(--ttNavy); color: var(--ttTextOnDark); }
+.pgBandPanel { background: var(--ttBgPanel); }
+.pgBandPad { position: absolute; inset: 0; padding: var(--pgSafe);
+             display: flex; flex-direction: column; justify-content: center; }
+.pgPanelL .pgBandPad { padding-right: 0; }
+.pgPanelR .pgBandPad { padding-left: 0; }
+
+/* Identity line. MN 326B.87 puts the contractor license number on every
+   piece of advertising and names brochures explicitly, so BC807923 is
+   live text on the cover, on the back and on the inside spread. */
+.pgIdent { display: flex; flex-wrap: wrap; align-items: baseline;
+           gap: 2px 10px; font-size: var(--ttSizeMicro);
+           letter-spacing: var(--ttTrackWide); line-height: 1.5; }
+.pgIdent b { font-weight: var(--ttWeightBold); }
+.pgIdentDot { opacity: 0.55; }
+
+/* Cover */
+.pgCoverMark { width: 242px; height: 110px; flex: 0 0 auto; }
+.pgRule { height: 6px; width: 120px; background: var(--ttAccent); flex: 0 0 auto; }
+.pgPoint { display: flex; gap: var(--ttSpace5); align-items: flex-start; }
+.pgPointNum { flex: 0 0 auto; width: 26px; height: 26px; border-radius: var(--ttRadiusPill);
+              background: var(--ttAccent); color: var(--ttTextOnDark);
+              font-family: var(--ttFontDisplay); font-size: var(--ttSizeCaption);
+              display: flex; align-items: center; justify-content: center; }
+.pgPointText { flex: 1 1 auto; font-size: var(--ttSizeBody); line-height: var(--ttLeadingBase); }
+.pgPointText b { font-weight: var(--ttWeightBold); }
+
+/* Back cover: the roof record */
+.pgGrid { border: 2px solid var(--ttInk); border-bottom: 0; }
+.pgGridRow { display: flex; border-bottom: 1px solid var(--ttLine); }
+.pgGridRow:last-child { border-bottom: 2px solid var(--ttInk); }
+.pgGridHead { background: var(--ttInk); color: var(--ttTextOnDark); border-bottom: 0; }
+.pgGridHead .pgCell { font-size: var(--ttSizeMicro); font-weight: var(--ttWeightBold);
+                      letter-spacing: var(--ttTrackWide); text-transform: uppercase;
+                      padding: 7px 8px; line-height: 1.3; }
+.pgCell { border-right: 1px solid var(--ttLine); padding: 0; height: 46px; }
+.pgGridHead .pgCell { height: auto; border-right-color: var(--ttLineDark); }
+.pgCell:last-child { border-right: 0; }
+.pgGridRow:nth-child(even) .pgCell { background: var(--ttBgPanel); }
+.pgGridHead.pgGridRow:nth-child(even) .pgCell { background: var(--ttInk); }
+.pgC1 { width: 126px; } .pgC2 { width: 176px; } .pgC3 { width: 92px; }
+.pgC4 { width: 50px; }  .pgC5 { width: 110px; } .pgC6 { flex: 1 1 auto; }
+
+/* Inside spread */
+.pgColHead { display: flex; align-items: baseline; gap: var(--ttSpace4);
+             border-bottom: 2px solid var(--ttInk); padding-bottom: 6px; }
+.pgColNum { font-family: var(--ttFontDisplay); font-size: var(--ttSizeH4);
+            color: var(--ttAccent); line-height: 1; }
+.pgColTitle { font-family: var(--ttFontDisplay); font-size: var(--ttSizeH4); line-height: 1; }
+.pgStateBar { display: flex; align-items: center; gap: var(--ttSpace4);
+              padding: 4px var(--ttSpace4); color: var(--ttTextOnDark); }
+.pgStateBad { background: var(--ttFail); }
+.pgStateGood { background: var(--ttGood); }
+.pgStateBar .pgStateWord { font-family: var(--ttFontDisplay); font-size: var(--ttSizeCaption);
+                           letter-spacing: var(--ttTrackWide); line-height: 1; }
+.pgStateBar .pgStateSay { font-size: var(--ttSizeMicro); font-weight: var(--ttWeightBold); }
+.pgCite { border-left: var(--ttBorderAccent); padding-left: var(--ttSpace4);
+          font-size: var(--ttSizeMicro); line-height: 1.5; color: var(--ttTextMuted); }
+.pgCite b { color: var(--ttText); }
+.pgQuote { font-size: var(--ttSizeLead); line-height: var(--ttLeadingBase);
+           font-weight: var(--ttWeightMedium); margin: 0; }
+.pgQuoteCite { font-size: var(--ttSizeMicro); line-height: 1.45; color: var(--ttTextMuted); margin: 0; }
+.pgApproved { font-size: var(--ttSizeBody); font-weight: var(--ttWeightBold);
+              color: var(--ttAccent); margin: 0; }
+.pgPhotoSlot { border: 2px dashed var(--ttInkFaint); background: var(--ttPaper);
+               display: flex; flex-direction: column; align-items: center;
+               justify-content: center; gap: 6px; text-align: center; padding: 0 var(--ttSpace6); }
+.pgPhotoSlot .pgSlotTitle { font-size: var(--ttSizeCaption); font-weight: var(--ttWeightBold);
+                            letter-spacing: var(--ttTrackWide); text-transform: uppercase;
+                            color: var(--ttInkFaint); }
+.pgPhotoSlot .pgSlotSpec { font-size: var(--ttSizeMicro); line-height: 1.5;
+                           color: var(--ttTextMuted); max-width: 62ch; }
+
+/* Site diagram on the cover */
+.pgSite { display: block; width: 100%; height: 316px; overflow: hidden; }
+.pgSite .pgSiteGround { fill: var(--ttMapLand); stroke: var(--ttLine); stroke-width: 2; }
+.pgSite .pgSiteDrive { fill: none; stroke: var(--ttMapRoad); stroke-width: 16; opacity: 0.22;
+                       stroke-linecap: round; stroke-linejoin: round; }
+.pgSite .pgSiteRoof { fill: var(--ttMatShingle); stroke: var(--ttMatShingleEdge); stroke-width: 2; }
+.pgSite .pgSiteRidge { stroke: var(--ttMatShingleAlt); stroke-width: 3; fill: none; }
+.pgSite .pgSiteNum { fill: var(--ttTextOnDark); font-family: var(--ttFontDisplay);
+                     font-size: 22px; }
+.pgSite .pgSiteLead { stroke: var(--ttInkFaint); stroke-width: 1.5; fill: none; opacity: 0.6; }
+.pgSite .pgSiteHubRing { fill: none; stroke: var(--ttAccent); stroke-width: 3; opacity: 0.45; }
+.pgSite .pgSiteHub { fill: var(--ttAccent); }
+.pgSite .pgSiteHubLabel { fill: var(--ttAccent); font-family: var(--ttFontDisplay);
+                          font-size: 21px; letter-spacing: 0.06em; }
+</style>
+</head>
+<body>
+
+<div class="pageHead">
+  <div class="pageWrap">
+    <div class="rule"></div>
+    <h1>Top Tier commercial leave behind</h1>
+    <p>One printed piece for owners of more than one building. It is not a mailer and it carries no
+       hook for a stranger, because it is handed to somebody who has already spoken to Guy. Its job
+       is to still be on the desk in three weeks. The front makes the argument, the inside proves the
+       craft, and the back is a blank roof record that is worth keeping on its own.</p>
+    <p>Two render assets, one per side of the sheet. Everything on both sides is drawn or set in
+       type. Nothing loads over the network. The dashed red and navy lines you can see below are
+       proof guides that sit outside the exported artwork and never print.</p>
+  </div>
+</div>
+
+<div class="pageWrap">
+
+  <div class="noteCard">
+    <h3>Format, and why</h3>
+    <ul>
+      <li><b>Flat trim 17 x 11 in, folded to 8.5 x 11 in</b>, one vertical fold at the center.
+          Tabloid duplex plus one fold is a job every copy shop and every digital press runs
+          without a conversation.</li>
+      <li><b>A folded piece reads as a document, not a flyer.</b> A flyer gets binned. A folded
+          piece with a cover gets set down, and a cover buys the inside spread the room the cutaway
+          drawings need to actually read at arm's length.</li>
+      <li><b>The back is useful on its own.</b> It is a blank roof record, one row per building.
+          That is the reason the piece survives on a desk: an owner with a dozen buildings does not
+          have roof ages on one page anywhere, and the sheet that holds them gets kept.</li>
+      <li><b>Stock:</b> 80 lb cover, matte, scored before folding. Cover weight cracks on an
+          unscored fold. 100 lb text also works and folds without a score if the run is cheap.</li>
+    </ul>
+  </div>
+
+  <div class="noteCard info">
+    <h3>Imposition</h3>
+    <ul>
+      <li><b>Side A, outside</b> (<code>commLeaveBehindOutside</code>): back cover to the LEFT of
+          the fold, front cover to the RIGHT of the fold.</li>
+      <li><b>Side B, inside</b> (<code>commLeaveBehindInside</code>): one continuous spread,
+          inside left panel to the LEFT of the fold, inside right panel to the RIGHT.</li>
+      <li><b>The two sides back up half for half:</b> the back cover is the reverse of the inside
+          left panel, and the front cover is the reverse of the inside right panel. In office
+          printer terms that is the duplex setting where the sheet turns about its 17 inch edge.
+          Pull one sheet, fold it, and confirm before the run.</li>
+      <li><b>Bleed</b> 0.125 in on every edge, so the artwork file is 17.25 x 11.25 in.
+          <b>Safety</b> a further 0.125 in inside the trim. Nothing that has to survive the knife
+          sits outside it, and nothing critical sits within 0.25 in of the crease.</li>
+      <li><b>Files to hand the printer:</b> the two
+          <code>..._17.25x11.25in.pdf</code> pages. The text in them is vector. The
+          <code>_300dpi.png</code> rasters are 5175 x 3375 and are the fallback.</li>
+    </ul>
+  </div>
+
+  <div class="noteCard">
+    <h3>What is checked, and what has to be swapped</h3>
+    <ul>
+      <li><b>MN license BC807923 is live text on both printed sides:</b> on the front cover twice,
+          on the back cover, and on the inside spread. Closed, the two panels facing out both carry
+          it. Open, the spread carries it. Minnesota Statute 326B.87 subd. 2 requires the license
+          number in advertising and names brochures explicitly. The phone number is live text too,
+          and the logo raster is the cropped wordmark with no phone or license lockup baked in, so
+          neither prints twice.</li>
+      <li><b>No insurance language beyond the verbatim quote.</b> The Insurance Federation of
+          Minnesota is quoted word for word with the full citation, and the approved line follows
+          it. Nothing on the piece interprets a policy, advises on coverage or mentions a
+          deductible, per MN 325E.66 subd. 1(a)(3) and 72B.02 subd. 6(2).</li>
+      <li><b>One photo slot, on the inside spread.</b> It is the only element that must be replaced
+          or deleted before this goes to a press. Every other element on the piece is drawn or set,
+          so the piece is complete with zero photographs.</li>
+    </ul>
+  </div>
+
+  <div class="secHead">
+    <h2>Side A &middot; outside</h2>
+    <p>Back cover left, front cover right. Fold the left half behind the right and the front cover
+       is what faces up.</p>
+  </div>
+
+  <figure class="assetWrap">
+    <figcaption class="assetCap">
+      <span class="capId">commLeaveBehindOutside</span>
+      <span>flat trim 17 x 11 in &middot; canvas with bleed 17.25 x 11.25 in &middot;
+        1656 x 1080 CSS px &middot; <strong>5175 x 3375 px at 300 dpi</strong></span>
+    </figcaption>
+    <div class="assetStage">
+
+      <div class="asset pgSheet"
+           data-size="custom"
+           data-width="1656"
+           data-height="1080"
+           data-print="true"
+           data-web="false"
+           data-asset-id="commLeaveBehindOutside"
+           data-title="Commercial leave behind, outside: back cover and front cover"
+           data-genre="mailer"
+           data-category="commercialCollateral"
+           data-platform="print">
+
+        <!-- ============================================================
+             PANEL 4, BACK COVER. The roof record.
+             ============================================================ -->
+        <div class="pgPanel pgPanelL">
+
+          <div class="pgBandTop pgBandNavy" style="height:118px">
+            <div class="pgBandPad">
+              <p class="ttEyebrow" style="color:var(--ttTextOnDark);opacity:.75">Worth keeping</p>
+              <h2 class="ttH2" style="margin-top:6px">Roof record</h2>
+            </div>
+          </div>
+
+          <div class="pgBandBottom pgBandNavy" style="height:76px">
+            <div class="pgBandPad">
+              <div class="pgIdent">
+                <b>Top Tier Roofing &amp; Remodeling, LLC</b>
+                <span class="pgIdentDot">&middot;</span>
+                <span class="ttLicenseLine">BC807923</span>
+                <span class="pgIdentDot">&middot;</span>
+                <span>(612) 205-5503</span>
+                <span class="pgIdentDot">&middot;</span>
+                <span>toptiermn.com</span>
+                <span class="pgIdentDot">&middot;</span>
+                <span>Albertville, Minnesota</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pgSafe" style="padding-top:106px;padding-bottom:68px;gap:var(--ttSpace4)">
+
+            <p class="ttBody" style="max-width:74ch">
+              One page for every roof you own. Put in whatever you already know. The rows that stay
+              blank are the ones worth finding out about.
+            </p>
+
+            <div class="pgGrid">
+              <div class="pgGridRow pgGridHead">
+                <div class="pgCell pgC1">Building</div>
+                <div class="pgCell pgC2">Address or units</div>
+                <div class="pgCell pgC3">Roof put on</div>
+                <div class="pgCell pgC4">Age</div>
+                <div class="pgCell pgC5">Last looked at</div>
+                <div class="pgCell pgC6">Notes</div>
+              </div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+              <div class="pgGridRow"><div class="pgCell pgC1"></div><div class="pgCell pgC2"></div><div class="pgCell pgC3"></div><div class="pgCell pgC4"></div><div class="pgCell pgC5"></div><div class="pgCell pgC6"></div></div>
+            </div>
+
+            <p class="ttMicro">
+              Age counts from the year the roof went on, not the year the building went up. On a
+              property built in phases those two numbers are rarely the same, and they are rarely
+              the same from one building to the next.
+            </p>
+
+          </div>
+        </div>
+
+        <!-- ============================================================
+             PANEL 1, FRONT COVER.
+             ============================================================ -->
+        <div class="pgPanel pgPanelR">
+
+          <div class="pgBandBottom pgBandNavy" style="height:76px">
+            <div class="pgBandPad">
+              <div class="pgIdent">
+                <b>Top Tier Roofing &amp; Remodeling, LLC</b>
+                <span class="pgIdentDot">&middot;</span>
+                <span class="ttLicenseLine">BC807923</span>
+                <span class="pgIdentDot">&middot;</span>
+                <span>(612) 205-5503</span>
+                <span class="pgIdentDot">&middot;</span>
+                <span>toptiermn.com</span>
+                <span class="pgIdentDot">&middot;</span>
+                <span>Albertville, Minnesota</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pgSafe" style="padding-bottom:68px;gap:var(--ttSpace4)">
+
+            <div class="lbMark pgCoverMark" role="img"
+                 aria-label="Top Tier Roofing and Remodeling"></div>
+
+            <p class="ttMicro" style="letter-spacing:var(--ttTrackWide)">
+              Roofing and remodeling &middot; Albertville, Minnesota &middot;
+              <span class="ttLicenseLine">BC807923</span>
+            </p>
+
+            <div class="pgRule"></div>
+
+            <p class="ttEyebrow" style="margin-top:2px">For owners of more than one building</p>
+
+            <h1 class="ttH1">One property.<br>Several roofs.<br>One number.</h1>
+
+            <p class="ttLead" style="max-width:56ch">
+              A multi building property is a scheduling problem before it is a roofing problem. The
+              roofs on one site were rarely put on in the same year, so they do not wear out in the
+              same year either. Somebody has to hold all of that in one place.
+            </p>
+
+            <svg class="pgSite" viewBox="0 0 760 316" role="img"
+                 aria-label="Plan of one property with six buildings, thin lines from every roof
+                             converging on a single point marked one point of contact">
+              <rect class="pgSiteGround" x="12" y="12" width="472" height="292" rx="6"/>
+              <path class="pgSiteDrive" d="M40 268 L40 150 L150 150 L150 60 L300 60 L300 150 L440 150 L440 268 Z"/>
+
+              <g class="pgSiteLead">
+                <path d="M174 71 C 380 71, 480 120, 600 158"/>
+                <path d="M286 120 C 420 120, 500 140, 600 158"/>
+                <path d="M454 85  C 520 92,  560 128, 600 158"/>
+                <path d="M156 218 C 380 232, 480 200, 600 160"/>
+                <path d="M320 235 C 440 235, 520 198, 600 160"/>
+                <path d="M456 231 C 520 226, 560 190, 600 160"/>
+              </g>
+
+              <g>
+                <rect class="pgSiteRoof" x="58" y="42" width="116" height="58" rx="3"/>
+                <path class="pgSiteRidge" d="M58 71 H174"/>
+                <text class="pgSiteNum" x="70" y="66">1</text>
+              </g>
+              <g>
+                <rect class="pgSiteRoof" x="200" y="94" width="86" height="52" rx="3"/>
+                <path class="pgSiteRidge" d="M243 94 V146"/>
+                <text class="pgSiteNum" x="211" y="127">2</text>
+              </g>
+              <g>
+                <rect class="pgSiteRoof" x="322" y="58" width="132" height="54" rx="3"/>
+                <path class="pgSiteRidge" d="M322 85 H454"/>
+                <text class="pgSiteNum" x="334" y="97">3</text>
+              </g>
+              <g>
+                <rect class="pgSiteRoof" x="56" y="186" width="100" height="64" rx="3"/>
+                <path class="pgSiteRidge" d="M56 218 H156"/>
+                <text class="pgSiteNum" x="68" y="216">4</text>
+              </g>
+              <g>
+                <rect class="pgSiteRoof" x="196" y="206" width="124" height="58" rx="3"/>
+                <path class="pgSiteRidge" d="M258 206 V264"/>
+                <text class="pgSiteNum" x="207" y="240">5</text>
+              </g>
+              <g>
+                <rect class="pgSiteRoof" x="360" y="196" width="96" height="70" rx="3"/>
+                <path class="pgSiteRidge" d="M360 231 H456"/>
+                <text class="pgSiteNum" x="372" y="228">6</text>
+              </g>
+
+
+              <circle class="pgSiteHubRing" cx="600" cy="159" r="26"/>
+              <circle class="pgSiteHub" cx="600" cy="159" r="13"/>
+              <text class="pgSiteHubLabel" x="600" y="212" text-anchor="middle">ONE POINT</text>
+              <text class="pgSiteHubLabel" x="600" y="236" text-anchor="middle">OF CONTACT</text>
+            </svg>
+
+            <div class="ttStack ttGap4" style="margin-top:2px">
+              <div class="pgPoint">
+                <span class="pgPointNum">1</span>
+                <span class="pgPointText"><b>One walk of the property.</b> Every roof looked at and
+                  every roof written down in one visit, instead of one estimate per phone call.</span>
+              </div>
+              <div class="pgPoint">
+                <span class="pgPointNum">2</span>
+                <span class="pgPointText"><b>One schedule you can sequence.</b> The buildings get put
+                  in order by condition, worst roof first, and the crew sets up once.</span>
+              </div>
+              <div class="pgPoint">
+                <span class="pgPointNum">3</span>
+                <span class="pgPointText"><b>One person to call back.</b> Guy Saxby sells the work.
+                  Keith Gutzwiller runs it. That is the whole chain of command.</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="proofGuides" aria-hidden="true">
+        <div class="guideTrim"></div>
+        <div class="guideSafe"></div>
+        <div class="guideGutterL"></div>
+        <div class="guideGutterR"></div>
+        <div class="guideFold"></div>
+        <span class="guideTag guideTagTrim">trim 17 x 11 in</span>
+        <span class="guideTag guideTagBleed">bleed 0.125 in</span>
+        <span class="guideTag guideTagFold">fold</span>
+      </div>
+
+    </div>
+  </figure>
+
+  <div class="secHead">
+    <h2>Side B &middot; inside</h2>
+    <p>One continuous spread. Two details that decide whether a roof leaks, drawn from the same
+       original cutaway set, each carrying the code section on the drawing.</p>
+  </div>
+
+  <figure class="assetWrap">
+    <figcaption class="assetCap">
+      <span class="capId">commLeaveBehindInside</span>
+      <span>flat trim 17 x 11 in &middot; canvas with bleed 17.25 x 11.25 in &middot;
+        1656 x 1080 CSS px &middot; <strong>5175 x 3375 px at 300 dpi</strong></span>
+    </figcaption>
+    <div class="assetStage">
+
+      <div class="asset pgSheet pgContinuous"
+           data-size="custom"
+           data-width="1656"
+           data-height="1080"
+           data-print="true"
+           data-web="false"
+           data-asset-id="commLeaveBehindInside"
+           data-title="Commercial leave behind, inside spread: two roof details and the insurance quote"
+           data-genre="mailer"
+           data-category="commercialCollateral"
+           data-platform="print">
+
+        <!-- The two spread wide fills, painted once so the crease carries
+             no seam. See .pgSheetBand above. -->
+        <div class="pgSheetBand pgBandInk" style="top:0;height:160px" aria-hidden="true"></div>
+        <div class="pgSheetBand pgBandPanel" style="bottom:0;height:228px" aria-hidden="true"></div>
+
+        <!-- ============================================================
+             PANEL 2, INSIDE LEFT.
+             ============================================================ -->
+        <div class="pgPanel pgPanelL">
+
+          <div class="pgBandTop pgBandInk" style="height:160px">
+            <div class="pgBandPad">
+              <p class="ttEyebrow">Two details, both hidden</p>
+              <h2 class="ttH3" style="margin-top:8px;max-width:34ch">Neither one of these is a
+                shingle. Both of them decide whether a roof leaks.</h2>
+            </div>
+          </div>
+
+          <div class="pgBandBottom pgBandPanel" style="height:228px">
+            <div class="pgBandPad" style="justify-content:flex-start;gap:var(--ttSpace4);padding-top:var(--ttSpace6)">
+              <p class="ttEyebrow">What Minnesota's own insurers told the Legislature this year</p>
+              <blockquote class="pgQuote">&ldquo;Limiting coverage for roof damage to Actual Cash
+                Value or the depreciated value based on age and condition. This means a
+                10-year-old roof would have non-recoverable depreciation applied to it.&rdquo;</blockquote>
+              <p class="pgQuoteCite">Insurance Federation of Minnesota, letter dated February 11,
+                2026, filed as Appendix D to the Legislature's Task Force on Homeowners and
+                Commercial Property Insurance Final Report.</p>
+              <p class="pgApproved">We can't help you with your policy, but we can help you with
+                your roof.</p>
+            </div>
+          </div>
+
+          <div class="pgSafe" style="padding-top:176px;padding-bottom:244px;gap:var(--ttSpace4)">
+
+            <div class="pgColHead">
+              <span class="pgColNum">1</span>
+              <span class="pgColTitle">Where the roof runs into a wall</span>
+            </div>
+
+            <div style="width:700px;margin-left:auto;margin-right:auto">
+              <div class="pgStateBar pgStateBad">
+                <span class="pgStateWord">BEFORE</span>
+                <span class="pgStateSay">Step flashing just ends at the corner</span>
+              </div>
+              <svg class="ttDraw" viewBox="0 0 980 356" style="width:700px;height:254px" role="img"
+                   aria-label="A roof running into a sidewall with no kick-out flashing, so runoff
+                               pours behind the siding">
+                <defs>
+                  <marker id="lbKoFail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                    <path d="M0 0 L10 5 L0 10 Z" fill="var(--ttFail)"/>
+                  </marker>
+                  <marker id="lbKoWat1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                    <path d="M0 0 L10 5 L0 10 Z" fill="var(--ttWater)"/>
+                  </marker>
+                  <clipPath id="lbKoWallClipB"><polygon points="60,20 600,20 600,300 60,180"/></clipPath>
+                </defs>
+                <polygon points="60,20 600,20 600,300 60,180" fill="var(--ttMatSoffit)" stroke="var(--ttMatFlashingEdge)" stroke-width="2"/>
+                <g clip-path="url(#lbKoWallClipB)" stroke="var(--ttMatFlashingEdge)" stroke-width="2" stroke-opacity=".55">
+                  <path d="M60 56 H600"/><path d="M60 92 H600"/><path d="M60 128 H600"/>
+                  <path d="M60 164 H600"/><path d="M60 200 H600"/><path d="M60 236 H600"/><path d="M60 272 H600"/>
+                </g>
+                <polygon class="matShingle" points="60,180 600,300 600,356 60,236"/>
+                <g stroke="var(--ttMatShingleEdge)" stroke-width="2" stroke-opacity=".8">
+                  <path d="M60 199 L600 319"/><path d="M60 218 L600 338"/>
+                </g>
+                <g class="matFlashing">
+                  <path d="M96 186 L156 200 L156 168 L96 154 Z"/>
+                  <path d="M172 203 L232 217 L232 185 L172 171 Z"/>
+                  <path d="M248 220 L308 234 L308 202 L248 188 Z"/>
+                  <path d="M324 237 L384 251 L384 219 L324 205 Z"/>
+                  <path d="M400 254 L460 268 L460 236 L400 222 Z"/>
+                  <path d="M476 271 L536 285 L536 253 L476 239 Z"/>
+                </g>
+                <path class="matGutter" style="fill:none" d="M604 300 L676 316 M604 336 L676 352 M604 300 V336 M676 316 V352"/>
+                <path class="ttArrowWater" marker-end="url(#lbKoWat1)" d="M150 120 L300 154 L470 226 L578 288"/>
+                <path class="ttArrowFail" marker-end="url(#lbKoFail)" d="M580 292 L596 306 L596 350"/>
+                <path d="M556 296 L600 306 L600 356 L556 346 Z" fill="var(--ttFail)" fill-opacity=".26"/>
+                <rect x="548" y="286" width="62" height="68" rx="6" fill="none" stroke="var(--ttFail)"
+                      stroke-width="var(--ttStrokeBase)" stroke-dasharray="8 6"/>
+                <g class="ttLeader">
+                  <path d="M700 96 L640 96 L540 262"/><path d="M700 216 L648 216 L606 330"/>
+                </g>
+                <g class="ttLabelBold">
+                  <text x="712" y="90">The whole roof plane<tspan x="712" dy="30">drains to this corner</tspan></text>
+                  <text x="712" y="210" fill="var(--ttFail)">With nothing to turn it,<tspan x="712" dy="30">it runs behind the</tspan><tspan x="712" dy="30">siding and stays there</tspan></text>
+                </g>
+              </svg>
+
+              <div class="pgStateBar pgStateGood" style="margin-top:8px">
+                <span class="pgStateWord">AFTER</span>
+                <span class="pgStateSay">A kick-out turns the water into the gutter</span>
+              </div>
+              <svg class="ttDraw" viewBox="0 0 980 356" style="width:700px;height:254px" role="img"
+                   aria-label="The same corner with a kick-out flashing that diverts runoff into
+                               the gutter">
+                <defs>
+                  <marker id="lbKoWat2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                    <path d="M0 0 L10 5 L0 10 Z" fill="var(--ttWater)"/>
+                  </marker>
+                  <clipPath id="lbKoWallClipA"><polygon points="60,20 600,20 600,300 60,180"/></clipPath>
+                </defs>
+                <polygon points="60,20 600,20 600,300 60,180" fill="var(--ttMatSoffit)" stroke="var(--ttMatFlashingEdge)" stroke-width="2"/>
+                <g clip-path="url(#lbKoWallClipA)" stroke="var(--ttMatFlashingEdge)" stroke-width="2" stroke-opacity=".55">
+                  <path d="M60 56 H600"/><path d="M60 92 H600"/><path d="M60 128 H600"/>
+                  <path d="M60 164 H600"/><path d="M60 200 H600"/><path d="M60 236 H600"/><path d="M60 272 H600"/>
+                </g>
+                <polygon class="matShingle" points="60,180 600,300 600,356 60,236"/>
+                <g stroke="var(--ttMatShingleEdge)" stroke-width="2" stroke-opacity=".8">
+                  <path d="M60 199 L600 319"/><path d="M60 218 L600 338"/>
+                </g>
+                <g class="matFlashing">
+                  <path d="M96 186 L156 200 L156 168 L96 154 Z"/>
+                  <path d="M172 203 L232 217 L232 185 L172 171 Z"/>
+                  <path d="M248 220 L308 234 L308 202 L248 188 Z"/>
+                  <path d="M324 237 L384 251 L384 219 L324 205 Z"/>
+                  <path d="M400 254 L460 268 L460 236 L400 222 Z"/>
+                  <path d="M476 271 L536 285 L536 253 L476 239 Z"/>
+                </g>
+                <path d="M540 254 L604 268 L648 318 L620 336 L586 300 L540 288 Z"
+                      fill="var(--ttMatFlashing)" stroke="var(--ttInk)"
+                      stroke-width="var(--ttStrokeHeavy)" stroke-linejoin="round"/>
+                <path class="matGutter" style="fill:none" d="M604 300 L676 316 M604 336 L676 352 M604 300 V336 M676 316 V352"/>
+                <path class="ttArrowWater" marker-end="url(#lbKoWat2)" d="M150 120 L300 154 L470 226 L560 274"/>
+                <path class="ttArrowWater" marker-end="url(#lbKoWat2)" d="M566 280 L610 306 L640 330"/>
+                <rect x="528" y="242" width="132" height="106" rx="6" fill="none" stroke="var(--ttGood)"
+                      stroke-width="var(--ttStrokeBase)" stroke-dasharray="8 6"/>
+                <g class="ttLeader">
+                  <path d="M708 116 L664 116 L616 280"/><path d="M708 250 L672 250 L662 330"/>
+                </g>
+                <g class="ttLabelBold">
+                  <text x="720" y="110">A short metal pan at<tspan x="720" dy="30">the bottom of the run</tspan></text>
+                  <text x="720" y="244" fill="var(--ttGood)">Turns every drop out<tspan x="720" dy="30">into the gutter instead</tspan><tspan x="720" dy="30">of into the wall</tspan></text>
+                </g>
+              </svg>
+            </div>
+
+            <p class="pgCite" style="margin-top:auto">
+              <b>IRC R903.2.1:</b> a flashing must be installed to divert water away from where the
+              eave of a sloped roof meets a vertical sidewall. Metal flashing must be corrosion
+              resistant and not less than 0.019 inch thick. The code has carried this requirement
+              since 2009 without using the trade name for the part.
+            </p>
+
+          </div>
+        </div>
+
+        <!-- ============================================================
+             PANEL 3, INSIDE RIGHT.
+             ============================================================ -->
+        <div class="pgPanel pgPanelR">
+
+          <div class="pgBandTop pgBandInk" style="height:160px">
+            <div class="pgBandPad">
+              <p class="ttLead" style="max-width:52ch">
+                Both of these cost almost nothing on the day the roof goes on, and both are
+                expensive to find later, because neither one shows up on the roof. They show up on
+                a wall, or on a ceiling, in a unit somebody is living in.
+              </p>
+            </div>
+          </div>
+
+          <div class="pgBandBottom pgBandPanel" style="height:228px">
+            <div class="pgBandPad" style="justify-content:flex-start;gap:var(--ttSpace4);padding-top:var(--ttSpace6)">
+
+              <!-- The one element on this piece that must be replaced or deleted before
+                   it goes to a press. Everything else is drawn or set in type. -->
+              <div class="pgPhotoSlot" style="height:118px">
+                <span class="pgSlotTitle">Photograph goes here</span>
+                <span class="pgSlotSpec">Subject: one completed multi building property, the whole
+                  site in frame, shot from the ground. Printed size 8.125 x 1.23 in, so the file
+                  needs to be at least <b>2440 x 370 pixels</b> for 300 dpi.</span>
+              </div>
+
+              <div class="pgIdent" style="color:var(--ttTextMuted)">
+                <b style="color:var(--ttText)">Top Tier Roofing &amp; Remodeling, LLC</b>
+                <span class="pgIdentDot">&middot;</span>
+                <span class="ttLicenseLine">BC807923</span>
+                <span class="pgIdentDot">&middot;</span>
+                <span>(612) 205-5503</span>
+                <span class="pgIdentDot">&middot;</span>
+                <span>toptiermn.com</span>
+                <span class="pgIdentDot">&middot;</span>
+                <span>Albertville, Minnesota</span>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="pgSafe" style="padding-top:176px;padding-bottom:244px;gap:var(--ttSpace4)">
+
+            <div class="pgColHead">
+              <span class="pgColNum">2</span>
+              <span class="pgColTitle">Where something goes through the deck</span>
+            </div>
+
+            <svg class="ttDraw" viewBox="0 0 952 690" style="width:700px;height:507px" role="img"
+                 aria-label="Plan view of a roof showing membrane at the eaves as required by code
+                             and added at valleys, chimney, skylight and pipe">
+              <defs>
+                <pattern id="lbIwAdd" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                  <rect width="14" height="14" fill="var(--ttMatIceWater)"/>
+                  <path d="M0 0 V14" stroke="var(--ttTextOnDark)" stroke-opacity=".45" stroke-width="5"/>
+                </pattern>
+              </defs>
+
+              <rect x="50" y="30" width="550" height="610" fill="var(--ttMatShingle)" stroke="var(--ttMatShingleEdge)" stroke-width="var(--ttStrokeBase)"/>
+
+              <rect x="50" y="30"  width="550" height="60" fill="var(--ttMatIceWater)"/>
+              <rect x="50" y="580" width="550" height="60" fill="var(--ttMatIceWater)"/>
+
+              <polygon points="270,370 306,370 240,580 204,580" fill="url(#lbIwAdd)"/>
+              <polygon points="306,370 342,370 408,580 372,580" fill="url(#lbIwAdd)"/>
+              <rect x="390" y="150" width="110" height="110" fill="url(#lbIwAdd)"/>
+              <rect x="418" y="180" width="54"  height="50"  class="matBrick"/>
+              <rect x="120" y="150" width="120" height="110" fill="url(#lbIwAdd)"/>
+              <rect x="150" y="180" width="60"  height="50"  fill="var(--ttMatSky)" stroke="var(--ttInk)" stroke-width="var(--ttStrokeBase)"/>
+              <rect x="420" y="420" width="110" height="90" fill="url(#lbIwAdd)"/>
+              <circle cx="475" cy="465" r="20" fill="var(--ttInkSoft)" stroke="var(--ttInk)" stroke-width="var(--ttStrokeBase)"/>
+
+              <path d="M50 335 H600" stroke="var(--ttMatShingleEdge)" stroke-width="var(--ttStrokeBold)"/>
+              <text class="ttLabel" x="104" y="326" fill="var(--ttTextOnDark)" style="font-size:20px">RIDGE</text>
+              <text class="ttLabel" x="306" y="548" fill="var(--ttTextOnDark)" style="font-size:20px" text-anchor="middle">dormer valleys</text>
+
+              <rect x="636" y="52" width="34" height="34" fill="var(--ttMatIceWater)"/>
+              <text class="ttLabelBold" x="684" y="78">Required by code</text>
+              <text class="ttLabel" x="636" y="130">Eaves only, and only<tspan x="636" dy="30">where ice dams have</tspan><tspan x="636" dy="30">a history. That is</tspan><tspan x="636" dy="30">all of Minnesota.</tspan></text>
+
+              <rect x="636" y="286" width="34" height="34" fill="url(#lbIwAdd)"/>
+              <text class="ttLabelBold" x="684" y="312" fill="var(--ttAccent)">Where we add it</text>
+              <text class="ttLabel" x="636" y="364">Valleys. Sidewalls.<tspan x="636" dy="30">Around the</tspan><tspan x="636" dy="30">chimney, the skylight</tspan><tspan x="636" dy="30">and every pipe that</tspan><tspan x="636" dy="30">goes through the deck.</tspan></text>
+
+              <rect x="636" y="536" width="6" height="128" fill="var(--ttAccent)"/>
+              <text class="ttLabelBold" x="660" y="566" style="font-size:24px">Every one of those<tspan x="660" dy="32">is a hole in a surface</tspan><tspan x="660" dy="32">whose whole job is</tspan><tspan x="660" dy="32">not having holes.</tspan></text>
+            </svg>
+
+            <p class="pgCite" style="margin-top:auto">
+              <b>IRC R905.1.2</b>, adopted in Minnesota Rules chapter 1309, requires an ice barrier
+              at the eaves running from the lowest edge of the roof to a point not less than
+              <b>24 inches inside the exterior wall line</b>, and 36 inches along the slope where
+              the pitch is 8:12 or steeper. Everything else shown here is <b>manufacturer
+              recommendation, not code</b>: Owens Corning specifies its WeatherLock membrane for
+              eaves, valleys, vents, chimneys and skylights.
+            </p>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="proofGuides" aria-hidden="true">
+        <div class="guideTrim"></div>
+        <div class="guideSafe"></div>
+        <div class="guideGutterL"></div>
+        <div class="guideGutterR"></div>
+        <div class="guideFold"></div>
+        <span class="guideTag guideTagTrim">trim 17 x 11 in</span>
+        <span class="guideTag guideTagBleed">bleed 0.125 in</span>
+        <span class="guideTag guideTagFold">fold</span>
+      </div>
+
+    </div>
+  </figure>
+
+  <div class="secHead">
+    <h2>Panel map</h2>
+    <p>What is on each of the four panels, and where each element came from.</p>
+  </div>
+
+  <table class="specTable">
+    <tr><th>Panel</th><th>Where it sits</th><th>What is on it</th><th>Source</th></tr>
+    <tr>
+      <td><b>1. Front cover</b></td>
+      <td>Side A, right of the fold</td>
+      <td>Wordmark, license line, the claim, the site plan diagram, three lines on what one point
+          of contact changes, navy identity bar.</td>
+      <td>The claim is Top Tier's own position for multi structure properties. The diagram is drawn
+          for this piece and asserts no numbers.</td>
+    </tr>
+    <tr>
+      <td><b>2. Inside left</b></td>
+      <td>Side B, left of the fold</td>
+      <td>Spread headline. Kick-out flashing, before and after. IRC R903.2.1 cited on the panel.
+          The Insurance Federation quote and the approved line.</td>
+      <td>Drawing reused from <code>output/infographics_260831.html</code>, asset
+          <code>kickOutFlashing</code>. Quote verbatim from the Insurance Federation of Minnesota
+          letter of 2026-02-11.</td>
+    </tr>
+    <tr>
+      <td><b>3. Inside right</b></td>
+      <td>Side B, right of the fold</td>
+      <td>Spread lead. Ice and water shield placement. IRC R905.1.2 and Minnesota Rules chapter
+          1309 cited on the panel. The photo slot. Identity line.</td>
+      <td>Drawing reused from <code>output/infographics_260831.html</code>, asset
+          <code>iceWaterPenetrations</code>, which is the rake corrected version.</td>
+    </tr>
+    <tr>
+      <td><b>4. Back cover</b></td>
+      <td>Side A, left of the fold</td>
+      <td>Roof record. Six columns, fifteen rows, navy title band, navy identity bar.</td>
+      <td>Drawn for this piece. It carries no claim, which is why it is the part that gets kept.</td>
+    </tr>
+  </table>
+
+  <div class="noteCard">
+    <h3>Render</h3>
+    <p style="margin:0"><code>python work/scripts/render_assets_260831.py --source
+       output/commercial_leavebehind_260831.html</code></p>
+  </div>
+
+</div>
+
+</body>
+</html>

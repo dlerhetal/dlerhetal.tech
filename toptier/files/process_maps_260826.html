@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Tier Roofing &amp; Remodeling: Lead Generation and Sales Cycle Process Maps</title>
+<style>
+:root{
+  --blue:#1A3C6E;
+  --blue-mid:#2F5A96;
+  --blue-tint:#EAF0F8;
+  --blue-tint2:#D7E3F2;
+  --gold:#FFCD00;
+  --gold-deep:#C99E00;
+  --gold-tint:#FFF7DA;
+  --red:#B3261E;
+  --red-tint:#FCECEB;
+  --gray:#6B7280;
+  --gray-tint:#F4F5F7;
+  --ink:#16202E;
+  --ink-soft:#4A5568;
+  --rule:#D5DBE3;
+  --paper:#FFFFFF;
+  --page:#F7F8FA;
+  --green:#1E6E3C;
+  --green-tint:#E8F4EC;
+}
+*{box-sizing:border-box;}
+html{ -webkit-text-size-adjust:100%; }
+body{
+  margin:0;
+  background:var(--page);
+  color:var(--ink);
+  font-family:Calibri,"Segoe UI","Segoe UI Variable",Candara,Optima,"Trebuchet MS",Verdana,sans-serif;
+  font-size:19px;
+  line-height:1.55;
+}
+.wrap{max-width:1320px;margin:0 auto;padding:0 26px 90px;}
+
+/* ---------- masthead ---------- */
+.masthead{
+  background:var(--blue);
+  color:#fff;
+  border-bottom:7px solid var(--gold);
+  padding:44px 0 34px;
+  margin-bottom:34px;
+}
+.masthead .wrap{padding-bottom:0;}
+.eyebrow{
+  font-size:.72em;letter-spacing:.19em;text-transform:uppercase;
+  color:var(--gold);font-weight:700;margin:0 0 12px;
+}
+.masthead h1{
+  margin:0 0 10px;font-size:2.15em;line-height:1.16;font-weight:700;letter-spacing:-.005em;
+}
+.masthead .sub{margin:0;font-size:1.02em;color:#C9D8EC;max-width:62ch;}
+.meta{
+  margin-top:24px;padding-top:18px;border-top:1px solid rgba(255,255,255,.24);
+  display:flex;flex-wrap:wrap;gap:14px 40px;font-size:.78em;color:#C9D8EC;
+}
+.meta b{display:block;color:var(--gold);text-transform:uppercase;letter-spacing:.11em;font-size:.86em;font-weight:700;margin-bottom:3px;}
+
+/* ---------- structure ---------- */
+section{margin:0 0 54px;}
+.sec-head{
+  display:flex;align-items:baseline;gap:16px;
+  border-bottom:3px solid var(--blue);padding-bottom:10px;margin:0 0 22px;
+}
+.sec-num{
+  background:var(--blue);color:#fff;font-weight:700;font-size:.78em;
+  padding:4px 13px;border-radius:3px;letter-spacing:.07em;white-space:nowrap;
+}
+.sec-head h2{margin:0;font-size:1.5em;color:var(--blue);font-weight:700;line-height:1.2;}
+h3{
+  font-size:1.13em;color:var(--blue);margin:34px 0 12px;font-weight:700;
+  border-left:5px solid var(--gold);padding-left:12px;
+}
+h4{font-size:1em;color:var(--ink);margin:24px 0 8px;font-weight:700;}
+p{margin:0 0 14px;max-width:88ch;}
+.lede{font-size:1.06em;color:var(--ink-soft);max-width:80ch;}
+ul,ol{max-width:88ch;padding-left:24px;margin:0 0 16px;}
+li{margin-bottom:7px;}
+.small{font-size:.82em;color:var(--ink-soft);}
+.hair{border:0;border-top:1px solid var(--rule);margin:32px 0;}
+
+.card{
+  background:var(--paper);border:1px solid var(--rule);border-radius:6px;
+  padding:24px 26px;margin:0 0 22px;
+}
+.card.tinted{background:var(--blue-tint);border-color:var(--blue-tint2);}
+.card.goldish{background:var(--gold-tint);border-color:#EBD583;}
+
+/* ---------- callouts ---------- */
+.callout{
+  border-left:6px solid var(--blue);background:var(--blue-tint);
+  padding:16px 20px;margin:0 0 20px;border-radius:0 5px 5px 0;
+}
+.callout.warn{border-left-color:var(--red);background:var(--red-tint);}
+.callout.act{border-left-color:var(--gold-deep);background:var(--gold-tint);}
+.callout p:last-child{margin-bottom:0;}
+.callout .ct{
+  font-size:.72em;text-transform:uppercase;letter-spacing:.15em;font-weight:700;
+  color:var(--blue);margin-bottom:6px;
+}
+.callout.warn .ct{color:var(--red);}
+.callout.act .ct{color:var(--gold-deep);}
+
+/* ---------- diagram frame ---------- */
+.diagram{
+  background:var(--paper);border:1px solid var(--rule);border-radius:6px;
+  padding:0;margin:0 0 24px;overflow:hidden;
+}
+.diagram-head{
+  background:var(--blue);color:#fff;padding:12px 22px;
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 18px;
+}
+.diagram-head .dh-t{font-weight:700;font-size:1.02em;}
+.diagram-head .dh-s{font-size:.79em;color:#C9D8EC;}
+.diagram-head.gold{background:var(--gold);color:var(--blue);}
+.diagram-head.gold .dh-s{color:#6B5500;}
+.scroll-x{overflow-x:auto;padding:26px 22px;}
+.scroll-note{
+  font-size:.74em;color:var(--ink-soft);padding:0 22px 12px;margin-top:-10px;
+}
+
+/* ---------- step boxes ---------- */
+.step{
+  position:relative;background:var(--paper);
+  border:2.5px solid var(--blue);border-radius:6px;
+  padding:12px 13px 11px;min-height:96px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.step.current{border-color:var(--blue);background:var(--blue-tint);}
+.step.undefined{border-style:dashed;border-color:var(--gray);background:var(--gray-tint);}
+.step.proposed{border-color:var(--gold-deep);background:var(--gold-tint);}
+.step.plain{border-color:var(--rule);background:var(--paper);}
+.step-id{
+  font-size:.68em;font-weight:700;letter-spacing:.1em;color:var(--blue);
+  text-transform:uppercase;
+}
+.step.undefined .step-id{color:var(--gray);}
+.step.proposed .step-id{color:var(--gold-deep);}
+.step-title{font-size:.86em;font-weight:700;line-height:1.28;}
+.step-note{font-size:.72em;color:var(--ink-soft);line-height:1.32;}
+.step-owner{
+  margin-top:auto;font-size:.68em;font-weight:700;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--blue-mid);
+}
+.step.undefined .step-owner{color:var(--gray);}
+.tag{
+  display:inline-block;font-size:.63em;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;padding:2px 7px;border-radius:3px;vertical-align:middle;
+}
+.tag.t-cur{background:var(--blue);color:#fff;}
+.tag.t-und{background:var(--gray);color:#fff;}
+.tag.t-pro{background:var(--gold);color:var(--blue);}
+.marks{position:absolute;top:-11px;right:8px;display:flex;gap:4px;}
+
+/* marker chips */
+.mk{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:.66em;font-weight:700;line-height:1;
+  width:26px;height:26px;border-radius:50%;border:2px solid var(--paper);
+}
+.mk-f{background:var(--red);color:#fff;}
+.mk-w{background:#fff;color:var(--blue);border:2px solid var(--blue);}
+.mk-star{background:var(--gold);color:var(--blue);}
+.mk-inline{border:0;width:auto;height:auto;padding:2px 8px;border-radius:11px;font-size:.7em;}
+
+/* ---------- Map A: converging swimlanes ---------- */
+.lanes{
+  display:grid;
+  grid-template-columns:168px minmax(210px,1fr) 74px minmax(190px,.8fr) 40px minmax(190px,.8fr) 40px minmax(190px,.8fr);
+  gap:14px 0;align-items:stretch;min-width:1060px;
+}
+/* Map A current state has four lane rows. Every child is placed explicitly, because
+   grid auto-placement puts row-spanning items in the first free column, which is not
+   where the spine belongs. */
+.lanes-a{grid-template-rows:repeat(4,auto);}
+.lanes-a > *{grid-row:auto;}
+.lanes-a .lane-label{grid-column:1;}
+.lanes-a .lane-cell{grid-column:2;}
+.lanes-a .rw1{grid-row:1;} .lanes-a .rw2{grid-row:2;}
+.lanes-a .rw3{grid-row:3;} .lanes-a .rw4{grid-row:4;}
+.lanes-a .bracket{grid-column:3;grid-row:1 / 5;}
+.lanes-a .sp1{grid-column:4;grid-row:1 / 5;}
+.lanes-a .ar1{grid-column:5;grid-row:1 / 5;}
+.lanes-a .sp2{grid-column:6;grid-row:1 / 5;}
+.lanes-a .ar2{grid-column:7;grid-row:1 / 5;}
+.lanes-a .sp3{grid-column:8;grid-row:1 / 5;}
+.lane-label{
+  display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+  padding-right:14px;
+  font-size:.78em;font-weight:700;color:var(--blue);line-height:1.25;
+  border-right:4px solid var(--blue-tint2);
+}
+.lane-label .ll-s{display:block;font-weight:400;font-size:.86em;color:var(--ink-soft);margin-top:2px;}
+.lane-label.dim{color:var(--gray);border-right-color:var(--rule);}
+.lane-cell{padding-left:14px;position:relative;display:flex;align-items:center;}
+.lane-cell > .step{width:100%;}
+/* feeder stub from each lane into the collecting bracket */
+.lane-cell::after{
+  content:"";position:absolute;right:-20px;top:50%;
+  width:20px;height:4px;background:var(--blue-mid);transform:translateY(-2px);
+}
+.bracket{
+  grid-column:3;grid-row:1 / -1;position:relative;
+}
+.bracket::before{
+  content:"";position:absolute;left:18px;top:48px;bottom:48px;width:4px;background:var(--blue-mid);
+}
+.bracket::after{
+  content:"";position:absolute;left:18px;top:50%;width:38px;height:4px;background:var(--blue-mid);
+  transform:translateY(-2px);
+}
+.bracket .barb{
+  position:absolute;left:56px;top:50%;transform:translateY(-50%);
+  width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;
+  border-left:12px solid var(--blue-mid);
+}
+.spine{grid-row:1 / -1;display:flex;flex-direction:column;justify-content:center;}
+.arrow-h{
+  grid-row:1 / -1;display:flex;align-items:center;justify-content:center;
+}
+.arrow-h .shaft{position:relative;width:100%;height:4px;background:var(--blue-mid);}
+.arrow-h .shaft::after{
+  content:"";position:absolute;right:-1px;top:50%;transform:translateY(-50%);
+  width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;
+  border-left:12px solid var(--blue-mid);
+}
+.arrow-h.dead .shaft{background:var(--red);}
+.arrow-h.dead .shaft::after{border-left-color:var(--red);}
+
+/* the broken review loop */
+.loopback{
+  margin-top:22px;border-top:3px dashed var(--red);padding-top:14px;
+  display:flex;align-items:flex-start;gap:14px;min-width:1060px;
+}
+.loopback .lb-badge{
+  flex:0 0 auto;background:var(--red);color:#fff;font-size:.68em;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:3px;white-space:nowrap;
+}
+.loopback .lb-txt{font-size:.8em;color:var(--ink-soft);line-height:1.4;}
+.loopback .lb-txt b{color:var(--red);}
+
+/* ---------- rails ---------- */
+.rail{min-width:1060px;}
+.rail-row{
+  display:grid;gap:0 12px;align-items:stretch;
+  border-top:1px solid var(--rule);
+}
+.rail-head{
+  display:flex;align-items:center;gap:10px;padding:9px 0 8px;
+  font-size:.71em;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);
+}
+.rail-head .swatch{width:14px;height:14px;border-radius:3px;background:var(--blue);}
+.rail-head.leak{color:var(--red);}
+.rail-head.leak .swatch{background:var(--red);}
+.rail-cell{padding:11px 12px;font-size:.75em;line-height:1.36;border-left:1px solid var(--rule);}
+.rail-cell:first-child{border-left:0;}
+.rail-cell .rc-k{font-weight:700;color:var(--ink);display:block;margin-bottom:3px;}
+.pill{
+  display:inline-block;font-size:.86em;font-weight:700;padding:1px 8px;border-radius:11px;
+  letter-spacing:.03em;margin-top:5px;
+}
+.pill.no{background:var(--red-tint);color:var(--red);border:1px solid #E9B8B4;}
+.pill.yes{background:var(--green-tint);color:var(--green);border:1px solid #B5D8C2;}
+.pill.part{background:var(--gold-tint);color:var(--gold-deep);border:1px solid #EBD583;}
+
+/* ---------- Map B: service blueprint ---------- */
+.bp{
+  display:grid;
+  grid-template-columns:186px repeat(5,minmax(196px,1fr));
+  gap:0;min-width:1180px;
+}
+.bp-phase{
+  padding:9px 12px;background:var(--blue);color:#fff;
+  font-size:.73em;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  border-left:2px solid var(--paper);text-align:center;
+}
+.bp-phase.corner{background:transparent;border-left:0;}
+.bp-band{
+  padding:14px 14px 14px 0;font-size:.76em;font-weight:700;color:var(--blue);
+  line-height:1.25;display:flex;flex-direction:column;justify-content:center;
+  border-top:1px solid var(--rule);
+}
+.bp-band .bb-s{font-weight:400;font-size:.85em;color:var(--ink-soft);margin-top:3px;}
+.bp-band.back{color:var(--ink-soft);}
+.bp-cell{
+  padding:14px 10px;border-top:1px solid var(--rule);border-left:1px solid var(--rule);
+  display:flex;flex-direction:column;gap:9px;
+}
+.bp-line{
+  grid-column:1 / -1;display:flex;align-items:center;gap:14px;
+  padding:7px 0;background:var(--paper);
+}
+.bp-line .bl-lab{
+  flex:0 0 auto;font-size:.66em;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--blue);white-space:nowrap;
+}
+.bp-line .bl-rule{flex:1 1 auto;border-top:3px dashed var(--blue-mid);}
+.bp-line.vis .bl-lab{color:var(--red);}
+.bp-line.vis .bl-rule{border-top:3px solid var(--red);}
+.bp-evidence{
+  font-size:.74em;color:var(--ink-soft);line-height:1.35;
+  background:var(--gray-tint);border:1px solid var(--rule);border-radius:5px;padding:9px 10px;
+}
+
+/* the oversized fork */
+.forkwrap{
+  display:flex;flex-direction:column;align-items:center;gap:0;
+  padding:16px 0 6px;
+}
+.diamond{
+  width:230px;height:230px;transform:rotate(45deg);
+  border:5px solid var(--blue);background:var(--gold-tint);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 7px rgba(255,205,0,.32);
+  /* rotated square: the corners extend ~48px past the layout box, so reserve it */
+  margin:52px 0 62px;
+}
+.diamond .dtxt{transform:rotate(-45deg);width:196px;text-align:center;}
+.diamond .dq{font-size:.9em;font-weight:700;color:var(--blue);line-height:1.24;}
+.diamond .dsub{font-size:.7em;color:var(--ink-soft);margin-top:7px;line-height:1.3;}
+.fork-exits{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;}
+.exit{
+  border:2.5px solid var(--blue);border-radius:6px;background:var(--paper);
+  padding:11px 15px;min-width:230px;max-width:300px;flex:0 1 300px;
+}
+.exit .ex-lab{
+  font-size:.68em;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:#fff;background:var(--blue);display:inline-block;padding:2px 9px;border-radius:3px;margin-bottom:7px;
+}
+.exit.ins{border-color:var(--gold-deep);}
+.exit.ins .ex-lab{background:var(--gold);color:var(--blue);}
+.exit .ex-val{font-size:1.18em;font-weight:700;color:var(--blue);}
+.exit .ex-note{font-size:.73em;color:var(--ink-soft);line-height:1.35;margin-top:4px;}
+
+/* ---------- tables ---------- */
+table{
+  width:100%;border-collapse:collapse;margin:0 0 20px;font-size:.82em;
+  background:var(--paper);border:1px solid var(--rule);
+}
+caption{
+  caption-side:top;text-align:left;font-size:1.02em;font-weight:700;color:var(--blue);
+  padding:0 0 8px;
+}
+th{
+  background:var(--blue);color:#fff;text-align:left;padding:9px 12px;
+  font-size:.86em;letter-spacing:.05em;text-transform:uppercase;font-weight:700;
+  border-right:1px solid rgba(255,255,255,.18);
+}
+th:last-child{border-right:0;}
+td{padding:9px 12px;border-top:1px solid var(--rule);vertical-align:top;line-height:1.4;}
+tbody tr:nth-child(even) td{background:#FAFBFC;}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+
+/* ---------- legend ---------- */
+.legend-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:16px;
+}
+.leg{
+  display:flex;gap:14px;align-items:flex-start;
+  background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:14px 15px;
+}
+.leg .swatchbox{flex:0 0 74px;}
+.leg .mini{
+  height:44px;border-radius:5px;display:flex;align-items:center;justify-content:center;
+  font-size:.66em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+}
+.leg .mini.cur{border:2.5px solid var(--blue);background:var(--blue-tint);color:var(--blue);}
+.leg .mini.und{border:2.5px dashed var(--gray);background:var(--gray-tint);color:var(--gray);}
+.leg .mini.pro{border:2.5px solid var(--gold-deep);background:var(--gold-tint);color:var(--gold-deep);}
+.leg .mini.dia{
+  width:40px;height:40px;margin:2px auto;transform:rotate(45deg);
+  border:2.5px solid var(--blue);background:var(--paper);
+}
+.leg .mini.blank{background:transparent;}
+.leg .lt{font-size:.79em;line-height:1.38;}
+.leg .lt b{display:block;font-size:1.05em;color:var(--blue);margin-bottom:2px;}
+
+/* ---------- questions ---------- */
+.qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;}
+.q{
+  background:var(--paper);border:1px solid var(--rule);border-top:4px solid var(--gold);
+  border-radius:5px;padding:16px 18px;
+}
+.q .qn{
+  font-size:.68em;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--gold-deep);margin-bottom:6px;
+}
+.q .qt{font-size:.9em;font-weight:700;line-height:1.35;margin-bottom:6px;}
+.q .qw{font-size:.76em;color:var(--ink-soft);line-height:1.4;}
+
+/* ---------- ranked leaks ---------- */
+.rank{display:flex;gap:18px;align-items:flex-start;background:var(--paper);
+  border:1px solid var(--rule);border-left:6px solid var(--red);border-radius:0 6px 6px 0;
+  padding:18px 20px;margin-bottom:16px;}
+.rank .rn{
+  flex:0 0 auto;width:46px;height:46px;border-radius:50%;background:var(--red);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:1.2em;font-weight:700;
+}
+.rank .rt{font-size:1.02em;font-weight:700;color:var(--blue);margin-bottom:5px;line-height:1.3;}
+.rank .rb{font-size:.83em;line-height:1.45;color:var(--ink-soft);}
+.rank .rb b{color:var(--ink);}
+
+/* ---------- footer ---------- */
+footer{
+  border-top:3px solid var(--blue);margin-top:56px;padding-top:20px;
+  font-size:.76em;color:var(--ink-soft);display:flex;flex-wrap:wrap;gap:12px 40px;
+  align-items:flex-start;
+}
+footer .wm{
+  opacity:.34;font-weight:700;letter-spacing:.28em;color:var(--blue);font-size:1.35em;
+  margin-left:auto;
+}
+
+/* ---------- print ---------- */
+@media print{
+  body{background:#fff;font-size:10.5pt;}
+  .wrap{max-width:none;padding:0 10mm 10mm;}
+  .masthead{padding:14mm 0 8mm;margin-bottom:8mm;}
+  section{page-break-inside:auto;margin-bottom:9mm;}
+  .diagram,.card,.callout,.rank,.q,.leg{page-break-inside:avoid;}
+  .sec-head{page-break-after:avoid;}
+  h3,h4{page-break-after:avoid;}
+  .scroll-x{overflow:visible;padding:6mm 4mm;}
+  .lanes,.rail,.bp,.loopback{min-width:0;}
+  .scroll-note{display:none;}
+  a{text-decoration:none;color:inherit;}
+}
+@media (max-width:760px){
+  body{font-size:17px;}
+  .masthead h1{font-size:1.6em;}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">Top Tier Roofing &amp; Remodeling</p>
+    <h1>Lead Generation and the Sales Cycle</h1>
+    <p class="sub">Two process maps: how a roof job is found, and how it is sold. Current state drawn
+      exactly as described, proposed state drawn separately, and every place the process is known to
+      leak marked on the face of the diagram.</p>
+    <div class="meta">
+      <div><b>Prepared by</b>Dale Linn</div>
+      <div><b>Date</b>August 26, 2026</div>
+      <div><b>Map A</b>Cross-functional flowchart with SIPOC scope header</div>
+      <div><b>Map B</b>Service blueprint</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ================= HOW TO READ ================= -->
+<section id="legend">
+  <div class="sec-head"><span class="sec-num">Start here</span><h2>How to read these maps</h2></div>
+
+  <p class="lede">Two different notations are used, on purpose, because they answer two different
+    questions. Nothing on either page requires prior training. This legend is the whole of it.</p>
+
+  <div class="card tinted">
+    <h4 style="margin-top:0">Why two notations rather than one</h4>
+    <p style="margin-bottom:10px"><b>Map A is a cross-functional flowchart, more commonly called a
+      swimlane map.</b> Each lane is a source a lead could come from. Lanes exist to make ownership
+      and handoffs visible, and the question Map A has to answer is exactly that: which channel
+      produced this lead, and did anyone write it down.</p>
+    <p style="margin-bottom:0"><b>Map B is a service blueprint.</b> Its bands are organized by what
+      the homeowner can see rather than by job title. That matters here, because one person does most
+      of the selling, so a map divided by role would produce one crowded lane and several empty ones.
+      Divided by visibility instead, the same process reveals its real shape: everything the customer
+      sees is well practiced, and almost everything behind that line is undefined.</p>
+  </div>
+
+  <div class="legend-grid">
+    <div class="leg">
+      <div class="swatchbox"><div class="mini cur">Current</div></div>
+      <div class="lt"><b>Solid blue box</b>A step that happens today, described by the owners in
+        their own words.</div>
+    </div>
+    <div class="leg">
+      <div class="swatchbox"><div class="mini und">Undefined</div></div>
+      <div class="lt"><b>Gray dashed box</b>A step that demonstrably occurs, because its output
+        exists, but which nobody has described. A gap drawn honestly is the most useful thing on a
+        map.</div>
+    </div>
+    <div class="leg">
+      <div class="swatchbox"><div class="mini pro">Proposed</div></div>
+      <div class="lt"><b>Gold box</b>Not happening today. Proposed. Never mixed into the current
+        state.</div>
+    </div>
+    <div class="leg">
+      <div class="swatchbox"><div class="mini blank"><span class="mini dia"></span></div></div>
+      <div class="lt"><b>Diamond</b>A decision. Every exit is labeled.</div>
+    </div>
+    <div class="leg">
+      <div class="swatchbox"><div class="mini blank"><span class="mk mk-f">F</span></div></div>
+      <div class="lt"><b>Fail point</b>A place the process is known to break, evidenced from Top
+        Tier's own records. Marked on the diagram with the remedy attached, not buried in a
+        footnote.</div>
+    </div>
+    <div class="leg">
+      <div class="swatchbox"><div class="mini blank"><span class="mk mk-w">W</span></div></div>
+      <div class="lt"><b>Wait point</b>Dead time the customer feels while nothing visible is
+        happening.</div>
+    </div>
+    <div class="leg">
+      <div class="swatchbox"><div class="mini blank"><span class="mk mk-star">&#9733;</span></div></div>
+      <div class="lt"><b>Moment of truth</b>A point where the homeowner forms a judgment about Top
+        Tier.</div>
+    </div>
+    <div class="leg">
+      <div class="swatchbox"><div class="mini blank"><span class="pill no">Cannot count</span></div></div>
+      <div class="lt"><b>Measurement rail</b>The band under the process. One number per step, and
+        whether the system can produce it today.</div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:22px">
+    <div class="ct">Two conventions worth knowing</div>
+    <p style="margin-bottom:10px"><b>Metrics belong under the step, not in a separate dashboard.</b>
+      This comes from value stream mapping, where every process box carries a data box beneath it.
+      A measurement that lives away from the work it measures drifts away from it too.</p>
+    <p style="margin-bottom:0"><b>Current state and proposed state are never blended.</b> Also
+      standard practice, and the reason this document draws them twice. A map that quietly mixes what
+      happens with what should happen cannot be trusted for either purpose.</p>
+  </div>
+
+  <div class="callout act">
+    <div class="ct">One deliberate borrowing, declared</div>
+    <p style="margin-bottom:0">Service blueprints do not normally carry decision diamonds. Map B has
+      one anyway, at the insurance versus retail fork, and it is drawn oversized. That fork is the
+      highest-value decision in this business, and preserving notation purity is not worth burying
+      it. Everything else on Map B is standard blueprint notation.</p>
+  </div>
+
+  <p class="small" style="margin-top:18px"><b>A note on sequence.</b> No calendar durations appear
+    anywhere in this document. Where order matters it is stated as a dependency: what must be true
+    before the next thing can work. Dependencies are defensible. Invented week counts are not.</p>
+</section>
+
+<!-- ================= MAP A ================= -->
+<section id="mapa">
+  <div class="sec-head"><span class="sec-num">Map A</span><h2>Lead generation</h2></div>
+  <p class="lede">From demand creation through to a qualified lead handed into the sales cycle.</p>
+
+  <h3>The scope agreement, before the map</h3>
+  <p>This band settles the boundary before anyone argues about it. It is a SIPOC, the standard
+    scoping frame: suppliers, inputs, process, outputs, customers. Its only job is to state where
+    lead generation ends. <b>It ends at a qualified lead. Not at a phone call, and not at a
+    contract.</b></p>
+
+  <table>
+    <caption>SIPOC: the boundary of Map A</caption>
+    <thead><tr><th>Suppliers</th><th>Inputs</th><th>Process</th><th>Outputs</th><th>Customers</th></tr></thead>
+    <tbody><tr>
+      <td>Keith's father's network. Past customers. Weather events. Google. Neighbors of active
+        jobsites. A partner sales company. Trade and supplier relationships.</td>
+      <td>A homeowner with a roof problem. A storm date. A search query. A referral conversation.
+        A review.</td>
+      <td>1. Demand is created.<br>2. A homeowner makes contact.<br>3. Source is captured.<br>
+        4. Lead is qualified.<br>5. Lead is routed.</td>
+      <td>A qualified lead with a known source, a known trigger, and a known path, insurance or
+        retail.</td>
+      <td>The sales cycle, which is Map B. Guy, the partner sales lane and Kurtis Tesmer downstream.</td>
+    </tr></tbody>
+  </table>
+
+  <h3>Map A, current state</h3>
+
+  <div class="diagram">
+    <div class="diagram-head">
+      <span class="dh-t">Current state</span>
+      <span class="dh-s">Lanes are lead sources. They converge on a single intake, and the intake is
+        where the map fails.</span>
+    </div>
+    <div class="scroll-x">
+      <div class="lanes lanes-a">
+
+        <!-- lane 1 -->
+        <div class="lane-label rw1">Referral
+          <span class="ll-s">Keith's father's network, past customers</span></div>
+        <div class="lane-cell rw1">
+          <div class="step current">
+            <div class="marks"><span class="mk mk-f">F</span></div>
+            <div class="step-id">A1 &nbsp;<span class="tag t-cur">Current</span></div>
+            <div class="step-title">Somebody in the network recommends Top Tier</div>
+            <div class="step-note">The engine that launched the company. It is slowing, not dying.</div>
+            <div class="step-owner">Owner: Keith</div>
+          </div>
+        </div>
+
+        <!-- bracket spans all lane rows -->
+        <div class="bracket">
+          <span class="barb"></span>
+        </div>
+
+        <!-- spine -->
+        <div class="spine sp1">
+          <div class="step current">
+            <div class="marks"><span class="mk mk-f">F</span></div>
+            <div class="step-id">A5 &nbsp;<span class="tag t-cur">Current</span></div>
+            <div class="step-title">Lead created in Contractors Cloud, source recorded</div>
+            <div class="step-note">159 of 161 records say "Referral." Two exceptions in 26 months.</div>
+            <div class="step-owner">Owner: Guy</div>
+          </div>
+        </div>
+
+        <div class="arrow-h ar1"><span class="shaft"></span></div>
+
+        <div class="spine sp2">
+          <div class="step current">
+            <div class="marks"><span class="mk mk-f">F</span></div>
+            <div class="step-id">A6 &nbsp;<span class="tag t-cur">Current</span></div>
+            <div class="step-title">Guy qualifies the lead</div>
+            <div class="step-note">Happens. No written criteria exist. This is where job value is
+              decided.</div>
+            <div class="step-owner">Owner: Guy</div>
+          </div>
+        </div>
+
+        <div class="arrow-h ar2"><span class="shaft"></span></div>
+
+        <div class="spine sp3">
+          <div class="step plain">
+            <div class="step-id">A7 &nbsp;<span class="tag t-cur">Current</span></div>
+            <div class="step-title">Qualified lead handed to the sales cycle</div>
+            <div class="step-note">The boundary. Map B begins here.</div>
+            <div class="step-owner">To: Map B</div>
+          </div>
+        </div>
+
+        <!-- lane 2 -->
+        <div class="lane-label rw2">Google Business Profile
+          <span class="ll-s">Exists, 18 reviews at 5.0</span></div>
+        <div class="lane-cell rw2">
+          <div class="step current">
+            <div class="marks"><span class="mk mk-f">F</span></div>
+            <div class="step-id">A2 &nbsp;<span class="tag t-cur">Current, dormant</span></div>
+            <div class="step-title">A homeowner searches and finds the profile</div>
+            <div class="step-note">The profile is live but nothing feeds it. See the review loop
+              below.</div>
+            <div class="step-owner">Owner: unassigned</div>
+          </div>
+        </div>
+
+        <!-- lane 3 -->
+        <div class="lane-label rw3">Storm and weather
+          <span class="ll-s">The demand trigger in Minnesota</span></div>
+        <div class="lane-cell rw3">
+          <div class="step current">
+            <div class="marks"><span class="mk mk-f">F</span></div>
+            <div class="step-id">A3 &nbsp;<span class="tag t-cur">Current, uncaptured</span></div>
+            <div class="step-title">A weather event creates damage and demand</div>
+            <div class="step-note">Date of Loss sits on nine records, split across two fields that do
+              not agree.</div>
+            <div class="step-owner">Owner: unassigned</div>
+          </div>
+        </div>
+
+        <!-- lane 4 -->
+        <div class="lane-label dim rw4">Everything else
+          <span class="ll-s">Jobsite presence, social, paid search, trade relationships</span></div>
+        <div class="lane-cell rw4">
+          <div class="step undefined">
+            <div class="step-id">A4 &nbsp;<span class="tag t-und">Undefined</span></div>
+            <div class="step-title">Channels that could produce a lead but are not running</div>
+            <div class="step-note">Facebook appears twice, ever, as a lead source in 26 months.</div>
+            <div class="step-owner">Owner: none</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="loopback">
+        <span class="lb-badge">A8 &nbsp; Missing entirely</span>
+        <div class="lb-txt"><b>The review request loop does not exist.</b> Lane 1 and Lane 2 are both
+          fed by satisfied customers, and nothing connects a completed job back to either one. This
+          is the structural reason the referral engine is decaying rather than compounding: every
+          finished roof is a referral and a review that was never asked for. The owners know they
+          need more reviews and have not gone after them.</div>
+      </div>
+    </div>
+    <p class="scroll-note">Wide diagram. Scroll sideways if it does not fit, or print to landscape.</p>
+  </div>
+
+  <!-- MEASUREMENT RAIL A -->
+  <div class="diagram">
+    <div class="diagram-head"><span class="dh-t">Measurement rail, Map A</span>
+      <span class="dh-s">One number per step, and whether the system can produce it today.</span></div>
+    <div class="scroll-x">
+      <div class="rail">
+        <div class="rail-head"><span class="swatch"></span>What should be counted here</div>
+        <div class="rail-row" style="grid-template-columns:repeat(5,1fr)">
+          <div class="rail-cell"><span class="rc-k">A1 to A4: channels</span>Leads created, by
+            channel.<span class="pill no">Cannot count</span></div>
+          <div class="rail-cell"><span class="rc-k">A5: lead created</span>Total leads created, by
+            month.<span class="pill yes">Works today</span></div>
+          <div class="rail-cell"><span class="rc-k">A5: source captured</span>Source capture rate,
+            and rate by channel.<span class="pill no">Cannot count</span></div>
+          <div class="rail-cell"><span class="rc-k">A6: qualified</span>Qualified rate, and the
+            insurance versus retail split.<span class="pill no">Cannot count</span></div>
+          <div class="rail-cell"><span class="rc-k">A8: review loop</span>Review requests sent,
+            reviews gained.<span class="pill no">Loop does not exist</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEAK RAIL A -->
+  <div class="diagram">
+    <div class="diagram-head" style="background:var(--red)"><span class="dh-t">Leak rail, Map A</span>
+      <span class="dh-s" style="color:#F6D2CF">What is known to go wrong, at the step where it
+        happens.</span></div>
+    <div class="scroll-x">
+      <div class="rail">
+        <div class="rail-row" style="grid-template-columns:repeat(4,1fr);border-top:0">
+          <div class="rail-cell"><span class="rc-k"><span class="mk mk-f mk-inline">F &nbsp;A1</span>
+            The founding engine is slowing</span>The company launched on a strong referral source and
+            those referrals have begun to slow during a local market slowdown. Nothing has been built
+            to replace them. This is the reason this engagement exists.</div>
+          <div class="rail-cell"><span class="rc-k"><span class="mk mk-f mk-inline">F &nbsp;A2</span>
+            The review paralysis loop</span>The owners say they are not ready to invest in digital
+            marketing because they do not have enough reviews. They have known this for five months
+            and are still at 18 reviews. The prerequisite they named is the one thing not
+            being worked on, and it is also the cheapest thing on this page to fix.</div>
+          <div class="rail-cell"><span class="rc-k"><span class="mk mk-f mk-inline">F &nbsp;A3</span>
+            The insurance trigger is not recorded</span>Date of Loss exists on nine records in total,
+            and worse than the count suggests: four rows in the insurance claims table plus five
+            answers on a separate custom field, and the two do not align. Two places to record the
+            same fact means neither gets recorded. All four claims read "Pending." Not one claim has
+            ever been closed in the system.</div>
+          <div class="rail-cell"><span class="rc-k"><span class="mk mk-f mk-inline">F &nbsp;A5</span>
+            Attribution is dead</span><b>159 of 161 records are coded "Referral."</b> Among the 62
+            open leads it is 62 of 62. The field is a default that nobody has ever been asked to
+            change. There is no attribution, so no channel can be measured, so no marketing spend can
+            ever be judged.</div>
+        </div>
+        <div class="rail-row" style="grid-template-columns:repeat(2,1fr)">
+          <div class="rail-cell"><span class="rc-k"><span class="mk mk-f mk-inline">F &nbsp;A6</span>
+            Qualifying has no criteria</span>Insurance-scoped jobs average <b>$41,048</b>. Retail jobs
+            average <b>$18,565</b>. And 19 of 25 low-value jobs were the owner's own. The qualifying
+            step is where that gets decided, and it currently has nothing written down attached to
+            it.</div>
+          <div class="rail-cell"><span class="rc-k"><span class="mk mk-f mk-inline">F &nbsp;A8</span>
+            No loop from finished job back to demand</span>Every completed roof is a referral and a
+            review that nobody asked for. The two lanes that produce leads today are both fed by
+            customers already served, and there is no step that closes that circle.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout act">
+    <div class="ct">The fix is already proven inside their own data</div>
+    <p style="margin-bottom:0"><b>34 of 34 cancellations carry a real, differentiated reason,</b>
+      because the cancel dialog requires one before it will close. Every other pick-list in the system
+      is a default nobody changed. The pattern is not carelessness, it is design: <b>they fill fields
+      the workflow forces and skip fields it does not.</b> Make Lead Source behave like Cancel Reason
+      and it will be filled at the same rate. That is the argument for every proposed step below, and
+      it is their own behavior read back to them rather than an outside opinion.</p>
+  </div>
+
+  <h3>Map A, proposed state</h3>
+  <p>Same lanes, same shape, with the gaps filled. Nothing here is a new system and nothing here is a
+    new hire.</p>
+
+  <div class="diagram">
+    <div class="diagram-head gold"><span class="dh-t">Proposed</span>
+      <span class="dh-s">Six changes, none of them software purchases.</span></div>
+    <div class="scroll-x">
+      <div class="lanes" style="grid-template-columns:repeat(3,minmax(280px,1fr));gap:16px">
+        <div>
+          <div class="step proposed" style="min-height:150px">
+            <div class="step-id">P-A1 &nbsp;<span class="tag t-pro">Proposed</span></div>
+            <div class="step-title">Make Lead Source a required field with a short, real pick-list</div>
+            <div class="step-note">Modeled on the cancel dialog that already works. Referral, Repeat
+              customer, Google search, Google Business Profile, Storm canvass, Jobsite sign, Social,
+              Partner company, Other. Short enough to pick honestly, specific enough to be useful.</div>
+            <div class="step-owner">Dependency: gates everything else</div>
+          </div>
+        </div>
+        <div>
+          <div class="step proposed" style="min-height:150px">
+            <div class="step-id">P-A2 &nbsp;<span class="tag t-pro">Proposed</span></div>
+            <div class="step-title">Require a "Referred By" name whenever Referral is chosen</div>
+            <div class="step-note">"Referral" as one bucket says nothing. "Referral, Keith's dad"
+              against "Referral, past customer" tells them which engine is slowing and which is
+              compounding.</div>
+            <div class="step-owner">Depends on: P-A1</div>
+          </div>
+        </div>
+        <div>
+          <div class="step proposed" style="min-height:150px">
+            <div class="step-id">P-A3 &nbsp;<span class="tag t-pro">Proposed</span></div>
+            <div class="step-title">Require Date of Loss on the insurance path, in one field only</div>
+            <div class="step-note">Retire the duplicate field. This turns weather from an anecdote
+              into a measurable demand signal, in a business where weather is the demand.</div>
+            <div class="step-owner">Depends on: the fork being a decision</div>
+          </div>
+        </div>
+        <div>
+          <div class="step proposed" style="min-height:150px">
+            <div class="step-id">P-A4 &nbsp;<span class="tag t-pro">Proposed</span></div>
+            <div class="step-title">Write the qualifying criteria down, on one page</div>
+            <div class="step-note">Built with the owners, not handed to them. Is there damage and a
+              plausible date of loss, has a claim been filed or would one be filed, is the property
+              inside the service area, is the scope a whole roof or a repair, who owns the property.
+              The purpose is not to turn work away. It is to choose the path on purpose.</div>
+            <div class="step-owner">Owner: Guy and Keith together</div>
+          </div>
+        </div>
+        <div>
+          <div class="step proposed" style="min-height:150px">
+            <div class="step-id">P-A5 &nbsp;<span class="tag t-pro">Proposed</span></div>
+            <div class="step-title">Build the review loop and make it a step, not a hope</div>
+            <div class="step-note">A completed job triggers a review request. It attaches to the
+              milestone template they already own, at Project Close Out, a stage that exists and has
+              never been completed. Ask the three questions customers actually ask, so the reviews
+              answer the objections before they are raised.</div>
+            <div class="step-owner">Closes the loop into A1 and A2</div>
+          </div>
+        </div>
+        <div>
+          <div class="step proposed" style="min-height:150px">
+            <div class="step-id">P-A6 &nbsp;<span class="tag t-pro">Proposed</span></div>
+            <div class="step-title">Add a second intake path, so a call arriving mid-roof still
+              becomes a lead</div>
+            <div class="step-note">A lead-generation fix wearing a sales costume. A call nobody
+              answered was never a lead. See Map B, fail point F1.</div>
+            <div class="step-owner">Dependency: before any paid traffic</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="ct">The dependency, stated as a dependency</div>
+    <p style="margin-bottom:0">Nothing in the channel column can be measured until the source field
+      is fixed. That field is the gate on the entire marketing measurement program. <b>Fix the field,
+      then measure, then spend.</b> Buying traffic before the field works means paying for leads that
+      arrive with no way to tell where they came from, which is precisely the position the business
+      is in today.</p>
+  </div>
+</section>
+
+<!-- ================= MAP B ================= -->
+<section id="mapb">
+  <div class="sec-head"><span class="sec-num">Map B</span><h2>The sales cycle</h2></div>
+  <p class="lede">From the inbound call through to a signed contract, drawn as a service blueprint.
+    Bands run from what the homeowner can see at the top down to what supports the work at the bottom.
+    The two horizontal rules are the lines that give the notation its power: everything above the line
+    of visibility is judged by the customer, and everything below it is where this business is
+    thin.</p>
+
+  <div class="diagram">
+    <div class="diagram-head">
+      <span class="dh-t">Current state</span>
+      <span class="dh-s">Five steps in solid blue are Guy's own words. Every gray dashed box is a step
+        whose output exists but which nobody has described.</span>
+    </div>
+    <div class="scroll-x">
+      <div class="bp">
+
+        <div class="bp-phase corner"></div>
+        <div class="bp-phase">Phase 1 &middot; The call</div>
+        <div class="bp-phase">Phase 2 &middot; The site visit</div>
+        <div class="bp-phase">Phase 3 &middot; The gap</div>
+        <div class="bp-phase">Phase 4 &middot; The fork</div>
+        <div class="bp-phase">Phase 5 &middot; The close</div>
+
+        <!-- EVIDENCE -->
+        <div class="bp-band">Evidence
+          <span class="bb-s">What the homeowner can see or hold</span></div>
+        <div class="bp-cell"><div class="bp-evidence">A phone number. The website. A Google Business
+          Profile with 18 reviews. A neighbor's word.</div></div>
+        <div class="bp-cell"><div class="bp-evidence">A truck in the driveway. A person on a ladder.
+          A phone taking photographs. A tape measure.</div></div>
+        <div class="bp-cell"><div class="bp-evidence">Nothing. This is the phase in which the
+          homeowner holds no evidence at all.</div></div>
+        <div class="bp-cell"><div class="bp-evidence">A claim number, if the path went to insurance.
+          An adjuster's visit.</div></div>
+        <div class="bp-cell"><div class="bp-evidence">A proposal. A contract. A warranty
+          statement.</div></div>
+
+        <!-- CUSTOMER -->
+        <div class="bp-band">Customer actions
+          <span class="bb-s">What the homeowner does</span></div>
+        <div class="bp-cell">
+          <div class="step plain"><div class="step-title">Calls Top Tier</div>
+            <div class="step-note">Usually because something is visibly wrong, or a storm just went
+              through.</div></div>
+        </div>
+        <div class="bp-cell">
+          <div class="step plain"><div class="step-title">Meets Guy at the property and shows him the
+            problem</div></div>
+        </div>
+        <div class="bp-cell">
+          <div class="step plain"><div class="marks"><span class="mk mk-w">W</span></div>
+            <div class="step-title">Waits</div>
+            <div class="step-note">The longest silence in the process, and nobody measures it.</div></div>
+        </div>
+        <div class="bp-cell">
+          <div class="step plain"><div class="step-title">Files a claim, or does not</div>
+            <div class="step-note">The homeowner's decision, heavily shaped by what they were told on
+              the phone.</div></div>
+        </div>
+        <div class="bp-cell">
+          <div class="step plain"><div class="marks"><span class="mk mk-star">&#9733;</span></div>
+            <div class="step-title">Signs, or does not</div></div>
+        </div>
+
+        <div class="bp-line"><span class="bl-lab">Line of interaction</span><span class="bl-rule"></span></div>
+
+        <!-- FRONTSTAGE -->
+        <div class="bp-band">Frontstage
+          <span class="bb-s">Visible to the homeowner. This is where quality gets judged.</span></div>
+
+        <div class="bp-cell">
+          <div class="step current">
+            <div class="marks"><span class="mk mk-star">&#9733;</span><span class="mk mk-f">F</span>
+              <span class="mk mk-w">W</span></div>
+            <div class="step-id">B1 &nbsp;<span class="tag t-cur">Current</span></div>
+            <div class="step-title">Guy answers the phone</div>
+            <div class="step-note">Every inbound call, personally.</div>
+            <div class="step-owner">Guy</div>
+          </div>
+          <div class="step current">
+            <div class="step-id">B2 &nbsp;<span class="tag t-cur">Current</span></div>
+            <div class="step-title">Gathers the address</div>
+            <div class="step-owner">Guy</div>
+          </div>
+          <div class="step current">
+            <div class="marks"><span class="mk mk-f">F</span></div>
+            <div class="step-id">B3 &nbsp;<span class="tag t-cur">Current</span></div>
+            <div class="step-title">Asks the minimum prequalifying questions</div>
+            <div class="step-note">The highest-leverage thirty seconds in the business. Not written
+              down anywhere.</div>
+            <div class="step-owner">Guy</div>
+          </div>
+          <div class="step current">
+            <div class="marks"><span class="mk mk-f">F</span></div>
+            <div class="step-id">B4 &nbsp;<span class="tag t-cur">Current</span></div>
+            <div class="step-title">Sets the appointment</div>
+            <div class="step-owner">Guy</div>
+          </div>
+        </div>
+
+        <div class="bp-cell">
+          <div class="step current">
+            <div class="marks"><span class="mk mk-star">&#9733;</span><span class="mk mk-f">F</span></div>
+            <div class="step-id">B6 &nbsp;<span class="tag t-cur">Current</span></div>
+            <div class="step-title">Talks to the homeowner</div>
+            <div class="step-note">The biggest moment of truth on the map. All three of the questions
+              customers ask most land right here.</div>
+            <div class="step-owner">Guy</div>
+          </div>
+          <div class="step current">
+            <div class="marks"><span class="mk mk-f">F</span></div>
+            <div class="step-id">B7 &nbsp;<span class="tag t-cur">Current</span></div>
+            <div class="step-title">Takes pictures</div>
+            <div class="step-owner">Guy</div>
+          </div>
+          <div class="step current">
+            <div class="marks"><span class="mk mk-f">F</span></div>
+            <div class="step-id">B8 &nbsp;<span class="tag t-cur">Current</span></div>
+            <div class="step-title">Takes measurements</div>
+            <div class="step-owner">Guy</div>
+          </div>
+        </div>
+
+        <div class="bp-cell">
+          <div class="step undefined">
+            <div class="step-id">&nbsp;<span class="tag t-und">Undefined</span></div>
+            <div class="step-title">Whatever the homeowner is told will happen next</div>
+            <div class="step-note">Not described. The map will not invent it.</div>
+            <div class="step-owner">Unassigned</div>
+          </div>
+        </div>
+
+        <div class="bp-cell">
+          <div class="step undefined">
+            <div class="step-id">&nbsp;<span class="tag t-und">Undefined</span></div>
+            <div class="step-title">The homeowner is guided toward insurance or retail</div>
+            <div class="step-note">This happens. Nobody has described how, or on what basis.</div>
+            <div class="step-owner">Unassigned</div>
+          </div>
+        </div>
+
+        <div class="bp-cell">
+          <div class="step undefined">
+            <div class="step-id">B13 &nbsp;<span class="tag t-und">Undefined</span></div>
+            <div class="step-title">A proposal is presented</div>
+            <div class="step-note">Contracts get signed, so this occurs. Guy did not name it.</div>
+            <div class="step-owner">Unassigned</div>
+          </div>
+          <div class="step current">
+            <div class="marks"><span class="mk mk-star">&#9733;</span><span class="mk mk-f">F</span></div>
+            <div class="step-id">B14 &nbsp;<span class="tag t-cur">Current</span></div>
+            <div class="step-title">The homeowner signs, or cancels</div>
+            <div class="step-note">The one place in the system where the reason is always
+              recorded.</div>
+            <div class="step-owner">Guy</div>
+          </div>
+        </div>
+
+        <div class="bp-line vis"><span class="bl-lab">Line of visibility</span><span class="bl-rule"></span></div>
+
+        <!-- BACKSTAGE -->
+        <div class="bp-band back">Backstage
+          <span class="bb-s">Invisible to the homeowner. This is where the process is thin.</span></div>
+
+        <div class="bp-cell">
+          <div class="step current">
+            <div class="marks"><span class="mk mk-f">F</span></div>
+            <div class="step-id">B5 &nbsp;<span class="tag t-cur">Current</span></div>
+            <div class="step-title">Lead entered in Contractors Cloud</div>
+            <div class="step-note">Carries the attribution failure from Map A, step A5.</div>
+            <div class="step-owner">Guy</div>
+          </div>
+        </div>
+
+        <div class="bp-cell">
+          <div class="step undefined">
+            <div class="step-id">&nbsp;<span class="tag t-und">Undefined</span></div>
+            <div class="step-title">Photos and measurements are stored somewhere</div>
+            <div class="step-note">Confirmed to be somewhere no report can read.</div>
+            <div class="step-owner">Unassigned</div>
+          </div>
+        </div>
+
+        <div class="bp-cell">
+          <div class="step undefined">
+            <div class="marks"><span class="mk mk-f">F</span></div>
+            <div class="step-id">B9 &nbsp;<span class="tag t-und">Undefined</span></div>
+            <div class="step-title">Whatever happens between the site visit and a proposal</div>
+            <div class="step-note"><b>This phase has no described steps, and that is the finding.</b>
+              Contracts get signed, so work occurs here. Who does it, and how the homeowner learns of
+              it, is the first question to ask in the room.</div>
+            <div class="step-owner">Unknown</div>
+          </div>
+        </div>
+
+        <div class="bp-cell">
+          <div class="step undefined">
+            <div class="marks"><span class="mk mk-f">F</span></div>
+            <div class="step-id">B11 &nbsp;<span class="tag t-und">Undefined</span></div>
+            <div class="step-title">The claim is scoped and the supplement is worked</div>
+            <div class="step-note">Kurtis holds the job title "Supplementor" and appears in the system
+              with zero claims, zero tasks, zero appointments and zero projects as rep.</div>
+            <div class="step-owner">Kurtis, presumed</div>
+          </div>
+          <div class="step undefined">
+            <div class="step-id">B12 &nbsp;<span class="tag t-und">Undefined</span></div>
+            <div class="step-title">Retail path: price and scope set directly</div>
+            <div class="step-owner">Guy, presumed</div>
+          </div>
+        </div>
+
+        <div class="bp-cell">
+          <div class="step undefined">
+            <div class="marks"><span class="mk mk-f">F</span></div>
+            <div class="step-id">B15 &nbsp;<span class="tag t-und">Undefined</span></div>
+            <div class="step-title">One lane of jobs runs on a different path</div>
+            <div class="step-note">A partner company, not staff. Its route through the process is not
+              documented anywhere, so the map cannot draw it.</div>
+            <div class="step-owner">Partner sales lane</div>
+          </div>
+        </div>
+
+        <div class="bp-line"><span class="bl-lab">Line of internal interaction</span><span class="bl-rule"></span></div>
+
+        <!-- SUPPORT -->
+        <div class="bp-band back">Support processes
+          <span class="bb-s">The systems the work depends on</span></div>
+        <div class="bp-cell"><div class="bp-evidence">Contractors Cloud. One phone, one person
+          answering it.</div></div>
+        <div class="bp-cell"><div class="bp-evidence">CompanyCam for photos. EagleView for aerial
+          measurement. Galaxy Forms. All purchased. None of them puts a field into any report that
+          can be aggregated, filtered or measured.</div></div>
+        <div class="bp-cell"><div class="bp-evidence">The milestone template, ten stages, already
+          built and good. Seven completions in 26 months, all on stage one.</div></div>
+        <div class="bp-cell"><div class="bp-evidence">Insurance carriers and adjusters. Four claims
+          in the system, all still marked "Pending."</div></div>
+        <div class="bp-cell"><div class="bp-evidence">The cancel dialog, which requires a reason.
+          The single best-behaved field in the business.</div></div>
+
+      </div>
+    </div>
+    <p class="scroll-note">Wide diagram. Scroll sideways if it does not fit, or print to landscape.</p>
+  </div>
+
+  <!-- THE FORK -->
+  <h3>Phase 4, drawn at its real size</h3>
+  <p>Everything above is drawn to scale with everything else. This is not, deliberately. The fork
+    between the insurance path and the retail path is the highest-value decision in this business, and
+    <b>there is currently no step at which it is made.</b> It is an outcome, not a decision.</p>
+
+  <div class="diagram">
+    <div class="diagram-head"><span class="dh-t">B10 &middot; The fork</span>
+      <span class="dh-s">Should be detected on the phone at B3 and confirmed on the roof at B6.
+        Today it resolves by accident.</span></div>
+    <div class="scroll-x">
+      <div class="forkwrap">
+        <div class="diamond"><div class="dtxt">
+          <div class="dq">Is this an insurance job or a retail job?</div>
+          <div class="dsub">Undefined. No criteria, no field, no step.</div>
+        </div></div>
+        <div class="fork-exits">
+          <div class="exit ins">
+            <span class="ex-lab">Exit: Insurance</span>
+            <div class="ex-val">$41,048</div>
+            <div class="ex-note">Average job value on the insurance path. Requires a date of loss, a
+              claim, and a supplement worked properly.</div>
+          </div>
+          <div class="exit">
+            <span class="ex-lab">Exit: Retail</span>
+            <div class="ex-val">$18,565</div>
+            <div class="ex-note">Average job value on the retail path. Price and scope set directly
+              with the homeowner.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <div class="ct">Why this one matters more than everything else on the page</div>
+    <p style="margin-bottom:0">The difference between the two exits is roughly <b>$22,000 of average
+      job value</b>, and <b>19 of 25 low-value jobs were the owner's own.</b> The person best at
+      selling is making this call with nothing written down to make it against. This is not a
+      criticism of judgment. It is an argument that judgment exercised a hundred times without a
+      criterion cannot be taught to anyone else, cannot be checked, and cannot be improved.</p>
+  </div>
+
+  <!-- MEASUREMENT RAIL B -->
+  <h3>The measurement rail</h3>
+  <p>This is the layer that turns a picture into a management instrument. Leading indicators are the
+    ones still open to influence. Lagging indicators confirm what already happened. A good scorecard
+    pairs each leading indicator with the lagging result it produces. Read the right-hand column
+    downward before reading anything else on this page.</p>
+
+  <table>
+    <caption>Map B, measurement rail: what should be counted, and what can be</caption>
+    <thead><tr><th>Step</th><th>The number that belongs here</th><th>Type</th>
+      <th>Can it be counted today?</th></tr></thead>
+    <tbody>
+      <tr><td><b>B1</b> Call answered</td><td>Calls received, calls answered, answer rate, speed to
+        first contact</td><td>Leading</td><td><span class="pill no">No</span> Nothing captures a
+        missed call</td></tr>
+      <tr><td><b>B3</b> Qualified</td><td>Qualified rate, and the insurance versus retail split at
+        first contact</td><td>Leading</td><td><span class="pill no">No</span> No criteria, no
+        field</td></tr>
+      <tr><td><b>B4</b> Appointment set</td><td>Appointments set, and set-to-sat rate</td>
+        <td>Leading</td><td><span class="pill no">No</span> Outcome blank on 24 of 24</td></tr>
+      <tr><td><b>B6</b> Site visit held</td><td>Sat-to-sold rate</td><td>Leading</td>
+        <td><span class="pill no">No</span> Same blank field</td></tr>
+      <tr><td><b>B9</b> Proposal issued</td><td>Proposals issued, proposal-to-close rate</td>
+        <td>Leading</td><td><span class="pill no">No</span> Milestones stop at stage one</td></tr>
+      <tr><td><b>B10</b> The fork</td><td>Share of jobs on the insurance path</td><td>Leading</td>
+        <td><span class="pill no">No</span> Not a recorded decision</td></tr>
+      <tr><td><b>B14</b> Signed</td><td>Win rate, average contract value</td><td>Lagging</td>
+        <td><span class="pill part">Partly</span> Contract value works</td></tr>
+      <tr><td><b>B14</b> Lost</td><td>Loss reason mix</td><td>Lagging</td>
+        <td><span class="pill yes">Yes</span> 34 of 34 recorded</td></tr>
+      <tr><td><b>Whole cycle</b></td><td>Days from first call to signature</td><td>Lagging</td>
+        <td><span class="pill no">No</span> Cycle time erased by a bulk close-out</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="ct">The teaching point</div>
+    <p style="margin-bottom:0">One row works. <b>Top Tier does not need a dashboard, they need the
+      fields a dashboard would read.</b> A dashboard built on this process today would display a
+      column of zeros, and it would be correct to do so. Fields first. Then measurement. Then spend.</p>
+  </div>
+
+  <!-- LEAK RAIL B -->
+  <h3>The leak rail</h3>
+
+  <div class="diagram">
+    <div class="diagram-head" style="background:var(--red)"><span class="dh-t">Fail points, Map B</span>
+      <span class="dh-s" style="color:#F6D2CF">Each one sits at the step where it bites, with the
+        evidence attached.</span></div>
+    <div class="scroll-x">
+      <div class="rail">
+        <div class="rail-row" style="grid-template-columns:repeat(3,1fr);border-top:0">
+          <div class="rail-cell"><span class="rc-k"><span class="mk mk-f mk-inline">F1 &nbsp;B1</span>
+            One phone, one person</span>Guy answers every call and runs every site visit, which means
+            the hours he is least able to pick up are exactly the hours he is doing the work that
+            generates the next call. <b>Nobody knows what happens to a call when he is on a roof.</b>
+            Spend that produces more calls than one person can answer converts to nothing, and a
+            homeowner with a leak calls the next contractor on the list.</div>
+          <div class="rail-cell"><span class="rc-k"><span class="mk mk-f mk-inline">F2 &nbsp;B3</span>
+            "Minimum" is not written down</span>The questions vary by call and the answers land
+            nowhere a report can read. This is the step where the insurance fork should be detected
+            and where date of loss should be captured. Neither happens systematically. It costs
+            nothing to fix and it changes the value of everything downstream.</div>
+          <div class="rail-cell"><span class="rc-k"><span class="mk mk-f mk-inline">F3 &nbsp;B4</span>
+            The funnel has no numerator</span><b>Appointment outcome is blank on 24 of 24 records.
+            All of them.</b> Set-to-sat and sat-to-sold are the two core conversion metrics of a
+            roofing sales operation, and neither can be computed. Without them there is no way to tell
+            whether a shortage of sales is a marketing problem or a selling problem.</div>
+        </div>
+        <div class="rail-row" style="grid-template-columns:repeat(3,1fr)">
+          <div class="rail-cell"><span class="rc-k"><span class="mk mk-f mk-inline">F4 &nbsp;B6</span>
+            The three questions have no standard answer</span>The three things customers ask most, in
+            the owners' own order: <b>how long will this job take, are you an employee, and how long
+            is the warranty and what does it cover.</b> The second is a trust question created by the
+            all-subcontractor labor model. The first cannot currently be answered from data, because
+            48 of 58 completed jobs were stamped done on a single day, erasing cycle time. <b>The most
+            common question their customers ask is the one their own system can no longer
+            answer.</b></div>
+          <div class="rail-cell"><span class="rc-k"><span class="mk mk-f mk-inline">F5 &nbsp;B7</span>
+            Photographs that no report can see</span>None of the three connected tools contributes a
+            single field that any Contractors Cloud report can aggregate, filter or measure. Stated
+            carefully, because it matters: absence from a report export is not proof the tools go
+            unused. What is proven is narrower and still costly. Open one recent project and see what
+            appears. Five minutes settles it.</div>
+          <div class="rail-cell"><span class="rc-k"><span class="mk mk-f mk-inline">F6 &nbsp;B8</span>
+            Measurements that live in another application</span>EagleView is confirmed purchased and
+            its output confirmed absent from the CRM. The account is real and reports have been
+            pulled. Nothing measured has landed anywhere a report can read, so the moment anyone wants
+            squares they open a second application.</div>
+        </div>
+        <div class="rail-row" style="grid-template-columns:repeat(2,1fr)">
+          <div class="rail-cell"><span class="rc-k"><span class="mk mk-f mk-inline">F7 &nbsp;B9</span>
+            A good template nobody finishes</span>The milestone template is ten stages and somebody
+            thought about it properly. Across 230 milestone rows on 23 records there have been
+            <b>seven completions in 26 months, and all seven are on stage one.</b> Every stage from
+            "Sign Deal or Cancel" onward has been completed zero times. This is not a template
+            problem.</div>
+          <div class="rail-cell"><span class="rc-k"><span class="mk mk-f mk-inline">F9 &nbsp;B11</span>
+            A named role that appears nowhere in the process</span>Kurtis Tesmer's job title is
+            "Supplementor." He appears in the system with zero claims, zero tasks, zero appointments
+            and zero projects as rep. A named specialist sitting directly on the fork worth $22,000 of
+            average job value, with no recorded participation in it, is the most under-examined thing
+            on this map.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout act">
+    <div class="ct">F10 at B14 &middot; Good news wearing bad news clothes</div>
+    <p><b>The reasons they lose are already known, and price is barely one of them.</b> All 34
+      cancellations carry a real, chosen reason, because the cancel dialog demands one. This is the
+      only field in the system that is filled completely with differentiated values, and it is a small
+      goldmine that is already working.</p>
+    <table style="margin-bottom:14px">
+      <thead><tr><th>Reason the job was lost</th><th class="num">Count</th><th>What it actually
+        means</th></tr></thead>
+      <tbody>
+        <tr><td>Lost to competition</td><td class="num">10</td><td>The only competitive intelligence
+          in the business.</td></tr>
+        <tr><td>Unable to Perform Work</td><td class="num">8</td><td><b>A qualification failure, not a
+          sales failure.</b> Eight jobs reached a decision point before anyone established Top Tier
+          could do the work. These belong to step B3, on the phone.</td></tr>
+        <tr><td>Unqualified Lead</td><td class="num">5</td><td>Also B3.</td></tr>
+        <tr><td>No Response from Customer</td><td class="num">5</td><td>Lands in the Phase 3 silence.</td></tr>
+        <tr><td>No work / No damage</td><td class="num">2</td><td>A site visit that a phone call could
+          have prevented.</td></tr>
+        <tr><td>Exceeds Customer Budget</td><td class="num">2</td><td>Price.</td></tr>
+        <tr><td>Not profitable</td><td class="num">1</td><td>Price.</td></tr>
+        <tr><td>Duplicate</td><td class="num">1</td><td>Someone is paying attention.</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-bottom:0"><b>Only 3 of 34 died on price.</b> Discounting is not the answer to this
+      problem, and their own data says so. <b>Thirteen of 34 died at qualification</b>, which is a step
+      that takes thirty seconds and currently has nothing written down behind it.</p>
+  </div>
+
+  <h3>Map B, proposed state</h3>
+
+  <div class="diagram">
+    <div class="diagram-head gold"><span class="dh-t">Proposed</span>
+      <span class="dh-s">Eight changes. None of them is a new system, and none of them is a new
+        hire.</span></div>
+    <div class="scroll-x">
+      <div class="lanes" style="grid-template-columns:repeat(4,minmax(250px,1fr));gap:16px">
+        <div><div class="step proposed" style="min-height:190px">
+          <div class="step-id">P-B1 &nbsp;<span class="tag t-pro">Proposed</span></div>
+          <div class="step-title">A second answer for the phone</div>
+          <div class="step-note">The mechanism is the owners' choice: a rollover, a shared line, an
+            answering service, or a call-back rule with a hard commitment. What is not optional is
+            that <b>every inbound call becomes a record, including the ones nobody answered.</b> A
+            missed call that leaves no trace cannot be counted, and what cannot be counted cannot be
+            fixed.</div>
+          <div class="step-owner">Before any spend that raises call volume</div>
+        </div></div>
+        <div><div class="step proposed" style="min-height:190px">
+          <div class="step-id">P-B2 &nbsp;<span class="tag t-pro">Proposed</span></div>
+          <div class="step-title">Write the prequalifying questions down</div>
+          <div class="step-note">Guy already asks them. This does not add a step, it standardizes one,
+            and it converts the most valuable thirty seconds in the business into data. Must include
+            the insurance trigger, the date of loss, the address and service-area check, and the scope
+            question.</div>
+          <div class="step-owner">Attaches to B3</div>
+        </div></div>
+        <div><div class="step proposed" style="min-height:190px">
+          <div class="step-id">P-B3 &nbsp;<span class="tag t-pro">Proposed</span></div>
+          <div class="step-title">Require the appointment outcome</div>
+          <div class="step-note">Same mechanic as the cancel dialog. Three values are enough to start:
+            Held, No-show, Rescheduled. This one field creates set-to-sat and sat-to-sold, the two
+            numbers that reveal whether a marketing problem is really a sales problem.</div>
+          <div class="step-owner">Attaches to B4</div>
+        </div></div>
+        <div><div class="step proposed" style="min-height:190px">
+          <div class="step-id">P-B4 &nbsp;<span class="tag t-pro">Proposed</span></div>
+          <div class="step-title">Answer the three questions once, in writing</div>
+          <div class="step-note">How long the job takes, whether the crew is theirs and how that
+            works, and what the warranty covers. The same three answers belong on the website, in the
+            proposal, in the review request, and in Guy's mouth at B6. They are currently answered
+            live, and differently every time.</div>
+          <div class="step-owner">Attaches to B6 and to Map A</div>
+        </div></div>
+        <div><div class="step proposed" style="min-height:190px">
+          <div class="step-id">P-B5 &nbsp;<span class="tag t-pro">Proposed</span></div>
+          <div class="step-title">Name the step between the site visit and the proposal</div>
+          <div class="step-note">Whatever it actually is. This map cannot propose a step that was
+            never described, so this box holds a question rather than an answer. <b>That conversation
+            is the deliverable.</b></div>
+          <div class="step-owner">Fills the Phase 3 void</div>
+        </div></div>
+        <div><div class="step proposed" style="min-height:190px">
+          <div class="step-id">P-B6 &nbsp;<span class="tag t-pro">Proposed</span></div>
+          <div class="step-title">Make the fork a decision, at B3 and again at B10</div>
+          <div class="step-note">The path is recorded as a field, on purpose, early. Insurance or
+            retail, chosen and written down rather than discovered later. It is the difference between
+            a $41,048 average and an $18,565 average, and right now nobody decides it.</div>
+          <div class="step-owner">Depends on: P-A4 criteria</div>
+        </div></div>
+        <div><div class="step proposed" style="min-height:190px">
+          <div class="step-id">P-B7 &nbsp;<span class="tag t-pro">Proposed</span></div>
+          <div class="step-title">Define where Kurtis enters</div>
+          <div class="step-note">A named handoff into the supplement path, with something specific
+            handed back. Today the role exists on the organization chart and nowhere in the
+            process.</div>
+          <div class="step-owner">Attaches to B11</div>
+        </div></div>
+        <div><div class="step proposed" style="min-height:190px">
+          <div class="step-id">P-B8 &nbsp;<span class="tag t-pro">Proposed</span></div>
+          <div class="step-title">Walk one job all the way through the template they already own</div>
+          <div class="step-note">The template is good and it is already built. One job carried to
+            Project Close Out restores cycle time, proves the system works, and produces the answer to
+            the question customers ask most. One job, not a rollout.</div>
+          <div class="step-owner">Attaches to B9 and to P-A5</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUESTIONS ================= -->
+<section id="questions">
+  <div class="sec-head"><span class="sec-num">Next</span><h2>The six questions these maps cannot
+    answer</h2></div>
+  <p class="lede">Each of these sits on a gray dashed box. None can be resolved from records. All six
+    are questions for the owners, and answering them is what converts the undefined boxes into real
+    ones.</p>
+
+  <div class="qgrid">
+    <div class="q"><div class="qn">Step B1</div>
+      <div class="qt">What happens to a call when Guy is on a roof?</div>
+      <div class="qw">Nobody knows, and this is the ceiling on every dollar of future marketing spend.
+        Until it is answered, more demand does not mean more revenue.</div></div>
+    <div class="q"><div class="qn">Step B9</div>
+      <div class="qt">After the site visit, what actually happens before a proposal exists?</div>
+      <div class="qw">Who does it, and how does the homeowner find out? This is the largest void on
+        either map, and it is where "No Response from Customer" comes from.</div></div>
+    <div class="q"><div class="qn">Step B11</div>
+      <div class="qt">Where does Kurtis enter the insurance path?</div>
+      <div class="qw">Who hands him the job, and what does he hand back? He sits on the most valuable
+        decision in the business and appears nowhere in the record of it.</div></div>
+    <div class="q"><div class="qn">Step B15</div>
+      <div class="qt">How does the partner sales lane actually run?</div>
+      <div class="qw">One question, not a project. The answer changes how that lane is drawn and
+        changes nothing else on either map.</div></div>
+    <div class="q"><div class="qn">Steps B7 and B8</div>
+      <div class="qt">What do the connected tools actually put on the screen?</div>
+      <div class="qw">Open one recent project and look. Five minutes settles whether three purchased
+        tools are contributing anything a report can use.</div></div>
+    <div class="q"><div class="qn">Steps A6 and B10</div>
+      <div class="qt">What are the qualifying criteria?</div>
+      <div class="qw">There are none written down, and this is the step that decides whether a job is
+        worth $41,048 or $18,565.</div></div>
+  </div>
+</section>
+
+<!-- ================= RANKED LEAKS ================= -->
+<section id="leaks">
+  <div class="sec-head"><span class="sec-num">Summary</span><h2>The three worst leaks</h2></div>
+  <p class="lede">If nothing else from these two maps survives the meeting, these three should.</p>
+
+  <div class="rank">
+    <div class="rn">1</div>
+    <div><div class="rt">Attribution is dead at the intake field</div>
+      <div class="rb"><b>159 of 161 leads are coded "Referral," with two exceptions in 26 months, and
+        62 of 62 open leads carry the same single value.</b> Lead source is captured and never used.
+        No channel can be measured, so no marketing spend can ever be judged, so every downstream
+        decision in this engagement runs through one field that takes an afternoon to fix. This gates
+        everything.</div></div>
+  </div>
+
+  <div class="rank">
+    <div class="rn">2</div>
+    <div><div class="rt">The most valuable decision in the business is not a step</div>
+      <div class="rb">Insurance-scoped jobs average <b>$41,048</b> against <b>$18,565</b> retail, a
+        swing of roughly $22,000 per job, and <b>19 of 25 low-value jobs were the owner's own.</b> The
+        fork has no criteria, no field, and no moment at which it is consciously made. It is currently
+        an outcome rather than a decision.</div></div>
+  </div>
+
+  <div class="rank">
+    <div class="rn">3</div>
+    <div><div class="rt">The conversion funnel has no numerator</div>
+      <div class="rb"><b>Appointment outcome is blank on 24 of 24 records. Milestones have been
+        completed seven times in 26 months, all seven on stage one. Cycle time was erased when 48 of
+        58 completed jobs were stamped done on a single day.</b> Set-to-sat, sat-to-sold,
+        proposal-to-close and days-to-close are all uncomputable from their own system, which means
+        nobody can currently tell whether a shortage of sales is a marketing problem or a selling
+        problem.</div></div>
+  </div>
+
+  <div class="callout act">
+    <div class="ct">The through line</div>
+    <p style="margin-bottom:0">All three leaks are the same leak. <b>Every one of them is a field that
+      is not required.</b> And the business has already proved, in its own data, that it will fill a
+      field the workflow forces: 34 of 34 cancellations carry a real reason because the cancel dialog
+      will not close without one. Nothing on these maps asks the owners to work harder or to buy
+      anything. It asks four fields to become required.</p>
+  </div>
+</section>
+
+<hr class="hair">
+
+<section id="scope">
+  <div class="sec-head"><span class="sec-num">Note</span><h2>Noted, out of scope</h2></div>
+  <p class="small">EagleView is confirmed purchased and its output confirmed absent from every
+    Contractors Cloud report. It appears on Map B as fail point F6 because that is the step where it
+    bites the sales process. The wider question of the tool stack belongs to a different workstream
+    and is not pursued here.</p>
+</section>
+
+<footer>
+  <div><b>Top Tier Roofing &amp; Remodeling</b><br>Lead Generation and Sales Cycle Process Maps<br>
+    August 26, 2026</div>
+  <div>Map A: cross-functional flowchart with SIPOC scope header.<br>
+    Map B: service blueprint, with one declared borrowing.<br>
+    Current state, proposed state and evidence drawn separately throughout.</div>
+  <div>Prepared by Dale Linn</div>
+</footer>
+
+</div>
+</body>
+</html>

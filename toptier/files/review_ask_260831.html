@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Tier: The Review Ask, Rewritten</title>
+<style>
+  :root{
+    --blue:#1A3C6E;
+    --gold:#FFCD00;
+    --ink:#16202e;
+    --muted:#5a6675;
+    --line:#d8dee7;
+    --paper:#ffffff;
+    --wash:#f4f6f9;
+    --stopbg:#fdf3f3;
+    --stopline:#c0392b;
+    --okbg:#f1f8f2;
+    --okline:#2e7d4f;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:Calibri,"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+    font-size:19px;
+    line-height:1.55;
+    color:var(--ink);
+    background:var(--wash);
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:1020px;margin:0 auto;padding:0 22px 90px}
+
+  header.top{
+    background:var(--blue);
+    color:#fff;
+    padding:30px 22px 26px;
+    border-bottom:7px solid var(--gold);
+  }
+  header.top .inner{max-width:1020px;margin:0 auto}
+  header.top .kick{
+    font-size:15px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:700;
+    margin:0 0 8px;
+  }
+  header.top h1{margin:0;font-size:38px;line-height:1.15;font-weight:700}
+  header.top p.sub{margin:12px 0 0;font-size:20px;color:#dbe4f0;max-width:760px}
+
+  h2{
+    font-size:27px;
+    color:var(--blue);
+    margin:38px 0 6px;
+    padding-bottom:8px;
+    border-bottom:3px solid var(--gold);
+  }
+  h3{font-size:22px;color:var(--blue);margin:26px 0 6px}
+  h4{font-size:19px;color:var(--blue);margin:18px 0 4px}
+  p{margin:10px 0}
+  ul,ol{margin:10px 0 10px 24px;padding:0}
+  li{margin:7px 0}
+
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-left:6px solid var(--blue);
+    border-radius:5px;
+    padding:18px 20px;
+    margin:18px 0;
+  }
+  .card.stop{border-left-color:var(--stopline);background:var(--stopbg)}
+  .card.ok{border-left-color:var(--okline);background:var(--okbg)}
+  .card.gold{border-left-color:var(--gold)}
+  .card h3:first-child,.card h4:first-child{margin-top:0}
+
+  .quote{
+    background:#fbfcfe;
+    border:1px solid var(--line);
+    border-left:6px solid var(--gold);
+    border-radius:4px;
+    padding:16px 18px;
+    margin:12px 0 10px;
+  }
+  .quote .lbl{
+    font-size:14px;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-weight:700;
+    margin:0 0 8px;
+  }
+  .quote .say{
+    margin:0;
+    font-size:20.5px;
+    line-height:1.5;
+    color:#101a26;
+  }
+  .quote .say .field{
+    background:#fff6cc;
+    border-bottom:2px solid var(--gold);
+    padding:0 4px;
+    font-weight:700;
+  }
+
+  button{
+    font-family:inherit;
+    font-size:16.5px;
+    cursor:pointer;
+    border-radius:4px;
+    padding:9px 16px;
+    border:1px solid var(--blue);
+    background:var(--blue);
+    color:#fff;
+    font-weight:600;
+  }
+  button.ghost{background:#fff;color:var(--blue)}
+  button.gold{background:var(--gold);border-color:#c9a200;color:#2b2200}
+  button:hover{opacity:.88}
+  .btnrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+  .copied{font-size:16px;color:var(--okline);font-weight:700}
+
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:18px}
+  th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+  th{background:var(--blue);color:#fff;font-weight:700}
+  tr:nth-child(even) td{background:#fafbfd}
+  td.bad{color:#8e2b22;font-weight:700}
+  td.good{color:#1e5c3a;font-weight:700}
+
+  code{
+    background:#eef1f6;
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:1px 5px;
+    font-size:16.5px;
+  }
+  a{color:var(--blue);font-weight:600}
+
+  label{display:block;font-weight:700;color:var(--blue);margin:14px 0 5px;font-size:18px}
+  input[type=text],textarea,select{
+    font-family:inherit;
+    font-size:18px;
+    width:100%;
+    padding:9px 11px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    background:#fff;
+    color:var(--ink);
+  }
+  textarea{min-height:82px;resize:vertical}
+  .hint{font-size:16px;color:var(--muted);margin:4px 0 0}
+  .status{margin-top:12px;font-size:17px;font-weight:700;min-height:24px}
+  .status.good{color:var(--okline)}
+  .status.warn{color:#8a6d00}
+  .status.err{color:var(--stopline)}
+
+  .qrbox{
+    width:150px;height:150px;
+    border:3px dashed var(--blue);
+    border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;
+    font-size:15px;
+    color:var(--muted);
+    font-weight:700;
+    padding:10px;
+    background:#fff;
+  }
+  .cardproof{
+    border:2px solid var(--blue);
+    border-radius:6px;
+    background:#fff;
+    padding:20px;
+    display:flex;
+    gap:22px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .cardproof .txt{flex:1;min-width:280px}
+  .cardproof .txt p{margin:6px 0}
+
+  footer.foot{
+    margin-top:44px;
+    padding-top:16px;
+    border-top:3px solid var(--gold);
+    font-size:16px;
+    color:var(--muted);
+  }
+
+  @media print{
+    body{background:#fff;font-size:12.5pt}
+    header.top{background:#fff;color:var(--blue);border-bottom:4px solid var(--gold)}
+    header.top h1{color:var(--blue)}
+    header.top p.sub{color:#333}
+    header.top .kick{color:#8a6d00}
+    button{display:none}
+    .card,.quote,table{break-inside:avoid}
+    .noprint{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="inner">
+    <p class="kick">Top Tier Roofing and Remodeling &nbsp;/&nbsp; Google Reviews &nbsp;/&nbsp; August 31, 2026</p>
+    <h1>The Review Ask, Rewritten</h1>
+    <p class="sub">Google changed what a business is allowed to ask a customer to write. The wording below is
+      current and safe to send today. Anything on file that lists things to ask a customer to mention is
+      out of date and should be replaced with this.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card stop">
+    <h3>Read this first, in one paragraph</h3>
+    <p>You may ask any customer for a review. You may not ask them <strong>what to put in it</strong>. Not a
+      person's name, not the type of work, not the town, not a star count. That is the whole change. The
+      reviews you already have are fine, and a customer who writes "Keith was great" on their own has done
+      nothing wrong. The rule governs <strong>your ask</strong>, not their words.</p>
+  </div>
+
+  <h2>1. The rule, in Google's own words</h2>
+
+  <div class="card">
+    <p>From Google's Rating Manipulation policy, article 7400114, in effect since February 16, 2026:</p>
+    <div class="quote">
+      <p class="lbl">Google, verbatim</p>
+      <p class="say">"When soliciting reviews, merchants should not require or pressure users to leave ratings
+        or write reviews while on the premises, nor should they <strong>request that specific content be
+        included</strong>."</p>
+    </div>
+    <div class="quote">
+      <p class="lbl">Google, verbatim, listed as a violation</p>
+      <p class="say">"Merchants requesting that staff solicit reviews that include specific content,
+        <strong>including content that identifies a staff member</strong>."</p>
+    </div>
+    <p>Read it here:
+      <a href="https://support.google.com/contributionpolicy/answer/7400114" target="_blank" rel="noopener">https://support.google.com/contributionpolicy/answer/7400114</a>
+    </p>
+    <p><strong>Two things worth pulling out of that text.</strong> First, "specific content" is broader than a
+      person's name. A service and a town are specific content too, which is the trap, because "ask them to
+      mention the roof and the city" is the single most common piece of review advice on the internet and it
+      is now a violation. Second, the words are "require or pressure." Asking is allowed. Standing there
+      waiting while they type it is a different thing.</p>
+  </div>
+
+  <div class="card ok">
+    <h3>What is not affected</h3>
+    <ul>
+      <li><strong>Your existing reviews are safe.</strong> The policy governs the ask, and there is no
+        retroactive rule. Nothing already posted needs to be touched.</li>
+      <li><strong>A customer naming somebody on their own violates nothing.</strong> If they write about the
+        crew, the town, or the roof because that is what they remember, that is a genuine experience, which
+        is exactly what the policy is protecting.</li>
+      <li><strong>Your replies to reviews are not solicitations.</strong> Writing back to a posted review is a
+        response, not an ask, and the rule above does not reach it.</li>
+    </ul>
+    <p class="hint">No enforcement mechanism is published, so nobody outside Google can tell you what the
+      penalty is or how it is detected. Treat that as a reason to stay clean rather than a reason to gamble.</p>
+  </div>
+
+  <h2>2. The four asks, ready to send</h2>
+  <p>Same rule behind all four: <strong>name the company, name nothing else.</strong> Every one of these
+    invites the customer to write whatever they actually remember, which is both compliant and, as it turns
+    out, what a stranger reading the profile finds credible.</p>
+
+  <h3>A. Text message</h3>
+  <div class="quote">
+    <p class="lbl">Text</p>
+    <p class="say" id="c1">Thanks again for trusting us with your home. If you have a minute, would you tell
+      us about your experience with Top Tier on Google? It helps a small local crew more than anything.
+      <span class="field">[review link]</span></p>
+    <div class="btnrow noprint">
+      <button class="ghost copybtn" data-src="c1">Copy this text</button>
+    </div>
+  </div>
+  <p><strong>Why it is worded this way:</strong> "tell us about your experience" hands the customer a blank
+    page instead of a checklist, so nothing specific is being requested. "If you have a minute" and the
+    absence of any star count keep it from reading as pressure.</p>
+
+  <h3>B. Email</h3>
+  <div class="quote">
+    <p class="lbl">Subject line</p>
+    <p class="say" id="c2">A quick favor from Top Tier</p>
+    <div class="btnrow noprint">
+      <button class="ghost copybtn" data-src="c2">Copy subject</button>
+    </div>
+  </div>
+  <div class="quote">
+    <p class="lbl">Body</p>
+    <p class="say" id="c3">Thanks for having us out. We are a small crew and most of our work comes from
+      people who took the time to say something about us publicly.<br><br>
+      If you are willing, would you tell us about your experience with Top Tier on Google? Whatever you
+      write is up to you, good or bad, and it takes about a minute.<br><br>
+      Here is the link: <span class="field">[review link]</span><br><br>
+      Thanks either way.<br>
+      Top Tier Roofing and Remodeling<br>
+      (612) 205-5503</p>
+    <div class="btnrow noprint">
+      <button class="ghost copybtn" data-src="c3">Copy body</button>
+    </div>
+  </div>
+  <p><strong>Why it is worded this way:</strong> "good or bad" is doing real work. Google separately bans
+    selectively soliciting positive reviews, so an ask that is open to an unhappy customer is safer than one
+    that is not, and it also costs you nothing, because an unhappy customer usually just does not answer.</p>
+
+  <h3>C. Out loud, at the job</h3>
+  <div class="quote">
+    <p class="lbl">Spoken</p>
+    <p class="say" id="c4">If we did what we said we would do, would you say so on Google? Whatever you want
+      to write. It is the only place people who do not know us can check.</p>
+    <div class="btnrow noprint">
+      <button class="ghost copybtn" data-src="c4">Copy this line</button>
+    </div>
+  </div>
+  <p><strong>Why it is worded this way:</strong> "whatever you want to write" is the compliance clause,
+    spoken. "If we did what we said we would do" invites a no, and an ask that can be declined is not
+    pressure. One caution from the policy text itself: the ban on pressuring somebody "while on the
+    premises" means the ask is fine, but handing a customer a phone and waiting is not the same as asking.</p>
+
+  <h3>D. Printed leave behind or card</h3>
+  <div class="cardproof">
+    <div class="qrbox">QR CODE<br>goes here<br><span style="font-weight:400">(generate it from your
+      review link)</span></div>
+    <div class="txt">
+      <p style="font-size:22px;font-weight:700;color:var(--blue);margin-top:0">Tell us about your experience
+        with Top Tier.</p>
+      <p>Scan the code, or search Top Tier Roofing and Remodeling on Google and leave a review. Whatever you
+        write is up to you. We read every one.</p>
+      <p style="font-size:17px;color:var(--muted)">Top Tier Roofing and Remodeling &nbsp;/&nbsp;
+        (612) 205-5503 &nbsp;/&nbsp; MN License BC807923</p>
+    </div>
+  </div>
+  <div class="btnrow noprint">
+    <button class="ghost copybtn" data-src="c5">Copy the card wording</button>
+  </div>
+  <p hidden id="c5">Tell us about your experience with Top Tier. Scan the code, or search Top Tier Roofing and Remodeling on Google and leave a review. Whatever you write is up to you. We read every one. Top Tier Roofing and Remodeling / (612) 205-5503 / MN License BC807923</p>
+  <p><strong>Why it is worded this way:</strong> a printed piece is advertising, so Minnesota statute 326B.87
+    requires the license number on it. That is why BC807923 is on the card and not on the text message.</p>
+
+  <h2>3. What you must never ask for</h2>
+  <p>These are the exact phrasings you will find if you search the internet for review advice. Every one of
+    them was standard practice until February 2026, and every one of them is now a request for specific
+    content.</p>
+
+  <table>
+    <thead>
+      <tr><th style="width:52%">Do not send this</th><th>Why it is a violation</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="bad">"If Keith took care of you, mention him by name."</td>
+        <td>Content that identifies a staff member. Named in the policy explicitly.</td>
+      </tr>
+      <tr>
+        <td class="bad">"Please mention that we replaced your roof."</td>
+        <td>Requesting a service be included. Specific content.</td>
+      </tr>
+      <tr>
+        <td class="bad">"It helps if you mention Albertville."</td>
+        <td>Requesting a town be included. Specific content, and the most common SEO advice there is.</td>
+      </tr>
+      <tr>
+        <td class="bad">"People usually mention how long it took and whether they knew who was on the roof."</td>
+        <td>A suggestion is still a request. Softening it does not change what is being asked for.</td>
+      </tr>
+      <tr>
+        <td class="bad">"If we earned five stars, would you leave five stars?"</td>
+        <td>Requesting a rating. Also reads as pressure.</td>
+      </tr>
+      <tr>
+        <td class="bad">"Let us know first if anything was wrong, and if you are happy leave a review."</td>
+        <td>Gating. Selectively soliciting positive reviews is a separate, named violation.</td>
+      </tr>
+      <tr>
+        <td class="bad">Anything of value for a review: gift card, discount, drawing, free gutter cleaning,
+          a bonus to a crew member per review.</td>
+        <td>Incentivized reviews. This one predates the 2026 change and it is the fastest way to lose a
+          profile.</td>
+      </tr>
+      <tr>
+        <td class="good">"Tell us about your experience with Top Tier."</td>
+        <td>Requests nothing specific. This is the safe form of every ask.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>4. Writing your own, so you never have to ask us again</h2>
+  <div class="card gold">
+    <p>Take any review ask you are about to send and run it through this:</p>
+    <ol>
+      <li><strong>Delete every proper noun except your own company name.</strong> No person, no town, no
+        product, no brand.</li>
+      <li><strong>Delete every number.</strong> No star counts, no ratings, no "top rated."</li>
+      <li><strong>Delete every word that describes the work.</strong> Roof, siding, gutters, storm, insurance.
+        If it survives without them, it is clean.</li>
+      <li><strong>Check it works for an unhappy customer.</strong> If you would not want this exact message
+        going to somebody who was annoyed with you, it is gating.</li>
+      <li><strong>Check nothing is offered.</strong> No discount, no entry, no thank you gift.</li>
+    </ol>
+    <p style="margin-bottom:0">What is left is a sentence that asks for a review and requests nothing.
+      That is the entire method, and it is why all four asks above are so plain.</p>
+  </div>
+
+  <h2>5. Your review link</h2>
+  <div class="card">
+    <p>Every ask above has a <span class="field">[review link]</span> placeholder in it. <strong>We do not
+      have your link and we are not going to guess at a web address</strong>, because a plausible wrong link
+      is worse than a blank one. Google generates a short link for you inside your Business Profile, under
+      the option to ask for reviews. Pull it once, paste it below, and it fills into the copy buttons on
+      this page.</p>
+    <label for="revlink">Your Google review link, pasted from the Business Profile dashboard</label>
+    <input type="text" id="revlink" placeholder="paste your review link here">
+    <p class="hint">Currently set to: <strong id="revEcho">not set yet, the placeholder will stay in the
+      copied text</strong></p>
+  </div>
+
+  <footer class="foot">
+    <p>Top Tier Roofing and Remodeling. Prepared August 31, 2026. Policy language quoted verbatim from Google
+      support article 7400114, retrieved August 31, 2026. This page covers Google's review policies only and
+      is not legal advice.</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var PLACEHOLDER = "[review link]";
+
+  function el(id){ return document.getElementById(id); }
+  function val(id){ var n = el(id); return n ? String(n.value || "").trim() : ""; }
+
+  /* ---------- review link fill ---------- */
+  function currentLink(){
+    var v = val("revlink");
+    return v ? v : PLACEHOLDER;
+  }
+  el("revlink").addEventListener("input", function(){
+    var v = val("revlink");
+    el("revEcho").textContent = v
+      ? v + " (the copy buttons will now use this)"
+      : "not set yet, the placeholder will stay in the copied text";
+    var fields = document.querySelectorAll(".field");
+    for (var i = 0; i < fields.length; i++){
+      if (fields[i].textContent.indexOf("review link") !== -1 || fields[i].dataset.filled === "1"){
+        fields[i].dataset.filled = "1";
+        fields[i].textContent = v ? v : PLACEHOLDER;
+      }
+    }
+  });
+
+  /* ---------- copy buttons ---------- */
+  function plain(node){
+    var t = node.innerText || node.textContent || "";
+    t = t.replace(/ /g, " ");
+    t = t.replace(/[ \t]+\n/g, "\n");
+    t = t.replace(/[ \t]{2,}/g, " ");
+    t = t.replace(/\n{3,}/g, "\n\n");
+    return t.trim().split(PLACEHOLDER).join(currentLink());
+  }
+  function toClipboard(text, done, fail){
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(function(){ manual(text, done, fail); });
+    } else {
+      manual(text, done, fail);
+    }
+  }
+  function manual(text, done, fail){
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); }
+    catch(e){ fail(); }
+    document.body.removeChild(ta);
+  }
+  var btns = document.querySelectorAll(".copybtn");
+  for (var i = 0; i < btns.length; i++){
+    (function(b){
+      b.addEventListener("click", function(){
+        var src = el(b.getAttribute("data-src"));
+        if (!src){ return; }
+        var original = b.textContent;
+        toClipboard(plain(src), function(){
+          b.textContent = "Copied";
+          setTimeout(function(){ b.textContent = original; }, 1800);
+        }, function(){
+          b.textContent = "Could not copy, select it by hand";
+          setTimeout(function(){ b.textContent = original; }, 2600);
+        });
+      });
+    })(btns[i]);
+  }
+
+})();
+</script>
+</body>
+</html>

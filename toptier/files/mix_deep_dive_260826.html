@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Tier: Market, Product and Customer Mix</title>
+<style>
+  :root{
+    --blue:#1A3C6E;
+    --blue-mid:#2E5B96;
+    --blue-light:#E8EEF6;
+    --gold:#FFCD00;
+    --gold-deep:#C79A00;
+    --ink:#1B1B1B;
+    --muted:#5C6B7F;
+    --line:#C9D4E2;
+    --good:#1D7A4C;
+    --warn:#B4451A;
+    --paper:#FFFFFF;
+    --wash:#F5F8FC;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--wash);
+    color:var(--ink);
+    font-family:Calibri,"Segoe UI",system-ui,-apple-system,sans-serif;
+    font-size:19px;
+    line-height:1.55;
+  }
+  .wrap{max-width:1060px;margin:0 auto;padding:0 26px 90px;}
+
+  /* ---------- cover ---------- */
+  .cover{
+    background:var(--blue);
+    color:#fff;
+    padding:52px 0 44px;
+    border-bottom:7px solid var(--gold);
+  }
+  .cover .wrap{padding-bottom:0;}
+  .eyebrow{
+    font-size:15px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold);font-weight:700;margin:0 0 12px;
+  }
+  .cover h1{font-size:44px;line-height:1.12;margin:0 0 14px;font-weight:700;}
+  .cover .sub{font-size:22px;color:#D6E2F2;margin:0 0 26px;max-width:840px;}
+  .cover .meta{font-size:16px;color:#AFC4DE;border-top:1px solid #3B5C8A;padding-top:16px;}
+
+  /* ---------- structure ---------- */
+  section{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:6px;
+    margin:30px 0;
+    padding:32px 34px 34px;
+    page-break-inside:avoid;
+  }
+  .sec-head{display:flex;align-items:baseline;gap:16px;border-bottom:3px solid var(--gold);padding-bottom:12px;margin-bottom:24px;}
+  .sec-num{
+    background:var(--blue);color:#fff;font-weight:700;font-size:18px;
+    width:42px;height:42px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+  }
+  h2{font-size:30px;margin:0;color:var(--blue);line-height:1.15;}
+  h3{font-size:22px;margin:30px 0 10px;color:var(--blue);}
+  h4{font-size:19px;margin:22px 0 8px;color:var(--blue-mid);text-transform:uppercase;letter-spacing:.06em;font-size:15px;}
+  p{margin:0 0 14px;}
+  .lead{font-size:22px;line-height:1.45;}
+
+  .src{
+    font-size:13px;color:var(--muted);background:var(--blue-light);
+    border-radius:3px;padding:1px 6px;white-space:nowrap;font-weight:600;
+  }
+  .flag{
+    display:block;border-left:5px solid var(--gold-deep);background:#FFF9E3;
+    padding:12px 16px;margin:16px 0;font-size:17px;
+  }
+  .flag strong{color:#7A5E00;}
+  .note{font-size:16px;color:var(--muted);margin:10px 0 0;}
+
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:22px 0 6px;}
+  .three .box{background:var(--wash);border:1px solid var(--line);border-radius:5px;padding:16px 18px;}
+  .three .box .k{font-size:14px;letter-spacing:.09em;text-transform:uppercase;color:var(--blue-mid);font-weight:700;margin-bottom:6px;}
+  .three .box .v{font-size:17px;}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:6px 0 24px;}
+  .kpi{background:var(--blue);color:#fff;border-radius:6px;padding:20px 20px 18px;}
+  .kpi .n{font-size:40px;font-weight:700;line-height:1;color:var(--gold);}
+  .kpi .l{font-size:16px;margin-top:8px;color:#D6E2F2;}
+  .kpi .s{font-size:13px;margin-top:8px;color:#9FB6D4;}
+
+  table{border-collapse:collapse;width:100%;font-size:17px;margin:16px 0;}
+  th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:right;}
+  th:first-child,td:first-child{text-align:left;}
+  thead th{background:var(--blue);color:#fff;border-bottom:none;font-weight:700;}
+  tbody tr:nth-child(even){background:var(--wash);}
+  tr.hi td{background:#FFF6D4;font-weight:700;}
+  tr.lo td{background:#FCEDE6;}
+  caption{caption-side:bottom;text-align:left;font-size:15px;color:var(--muted);padding-top:8px;}
+
+  figure{margin:22px 0;}
+  figcaption{font-size:16px;color:var(--muted);margin-top:8px;}
+  svg{max-width:100%;height:auto;display:block;}
+
+  .verdict{
+    background:var(--blue-light);border:1px solid var(--blue-mid);border-radius:5px;
+    padding:18px 20px;margin:22px 0 6px;font-size:19px;
+  }
+  .verdict .t{font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.08em;font-size:14px;margin-bottom:6px;}
+
+  .qa{display:grid;grid-template-columns:150px 1fr;gap:2px 20px;margin:20px 0;}
+  .qa .q{font-weight:700;color:var(--blue-mid);text-transform:uppercase;letter-spacing:.06em;font-size:14px;padding-top:4px;}
+  .qa .a{margin-bottom:14px;}
+
+  ul{margin:8px 0 16px;padding-left:24px;}
+  li{margin-bottom:8px;}
+
+  .foot{color:var(--muted);font-size:15px;text-align:center;padding:26px 0 0;border-top:1px solid var(--line);margin-top:34px;}
+
+  @media print{
+    body{background:#fff;font-size:12pt;}
+    .wrap{max-width:none;padding:0;}
+    section{border:none;box-shadow:none;margin:0 0 18pt;padding:0 0 12pt;}
+    .cover{padding:24pt 0;}
+    .kpi{background:#1A3C6E !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    thead th{background:#1A3C6E !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+  @media (max-width:760px){
+    .three,.kpi-row{grid-template-columns:1fr;}
+    .qa{grid-template-columns:1fr;}
+    .cover h1{font-size:32px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="wrap">
+    <p class="eyebrow">Top Tier Roofing and Remodeling, LLC</p>
+    <h1>Your Numbers: Market Mix, Product Mix, Customer Mix</h1>
+    <p class="sub">Everything on these pages comes out of your own tax return, your own Contractors Cloud records, and the federal weather record. Nothing here is an opinion about roofing. It is a picture of the last twenty seven months of your business.</p>
+    <p class="meta">Working session, August 26, 2026 &nbsp;&middot;&nbsp; Prepared for Guy Saxby and Keith Gutzwiller</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ================= START HERE ================= -->
+<section>
+  <div class="sec-head"><div class="sec-num">&#9733;</div><h2>Start here: you are running a good company</h2></div>
+
+  <p class="lead">Before anything else, here is where Top Tier sits against sixteen other roofing contractors of the same size, on the only outside yardstick that exists for this trade.</p>
+
+  <figure>
+  <svg viewBox="0 0 900 300" role="img" aria-label="Top Tier against the RMA roofing contractor distribution">
+    <text x="0" y="18" font-size="15" font-weight="700" fill="#1A3C6E">WHERE YOU RANK AGAINST 16 ROOFING CONTRACTORS, $1M TO $3M IN SALES</text>
+
+    <!-- row 1 -->
+    <text x="0" y="70" font-size="16" fill="#1B1B1B" font-weight="600">Gross margin</text>
+    <text x="0" y="90" font-size="14" fill="#5C6B7F">35.79%</text>
+    <rect x="200" y="52" width="580" height="26" fill="#E8EEF6" rx="3"/>
+    <line x1="490" y1="46" x2="490" y2="84" stroke="#5C6B7F" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <rect x="200" y="52" width="290" height="26" fill="#B9CBE2" rx="3"/>
+    <circle cx="490" cy="65" r="13" fill="#1A3C6E" stroke="#FFCD00" stroke-width="3"/>
+    <text x="800" y="70" font-size="17" font-weight="700" fill="#1A3C6E">50th percentile</text>
+
+    <!-- row 2 -->
+    <text x="0" y="150" font-size="16" fill="#1B1B1B" font-weight="600">Overhead</text>
+    <text x="0" y="170" font-size="14" fill="#5C6B7F">23.92% of sales</text>
+    <rect x="200" y="132" width="580" height="26" fill="#E8EEF6" rx="3"/>
+    <line x1="490" y1="126" x2="490" y2="164" stroke="#5C6B7F" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <rect x="200" y="132" width="168" height="26" fill="#9EC9AE" rx="3"/>
+    <circle cx="368" cy="145" r="13" fill="#1D7A4C" stroke="#FFCD00" stroke-width="3"/>
+    <text x="800" y="150" font-size="17" font-weight="700" fill="#1D7A4C">29th percentile</text>
+    <text x="800" y="170" font-size="14" fill="#5C6B7F">leaner than 7 in 10</text>
+
+    <!-- row 3 -->
+    <text x="0" y="230" font-size="16" fill="#1B1B1B" font-weight="600">Operating profit</text>
+    <text x="0" y="250" font-size="14" fill="#5C6B7F">11.87% of sales</text>
+    <rect x="200" y="212" width="580" height="26" fill="#E8EEF6" rx="3"/>
+    <line x1="490" y1="206" x2="490" y2="244" stroke="#5C6B7F" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <rect x="200" y="212" width="441" height="26" fill="#9EC9AE" rx="3"/>
+    <circle cx="641" cy="225" r="13" fill="#1D7A4C" stroke="#FFCD00" stroke-width="3"/>
+    <text x="800" y="230" font-size="17" font-weight="700" fill="#1D7A4C">76th percentile</text>
+    <text x="800" y="250" font-size="14" fill="#5C6B7F">better than 3 in 4</text>
+
+    <text x="200" y="282" font-size="13" fill="#5C6B7F">worst of the 16</text>
+    <text x="452" y="282" font-size="13" fill="#5C6B7F">median</text>
+    <text x="700" y="282" font-size="13" fill="#5C6B7F">best of the 16</text>
+  </svg>
+  <figcaption>RMA Annual Statement Studies 2025 to 2026, Roofing Contractors, sales $1M to $3M, national, 16 statements. Top Tier figures from the 2025 Form 1065. Percentiles are interpolated between RMA's published deciles.</figcaption>
+  </figure>
+
+  <div class="verdict">
+    <div class="t">The one line summary</div>
+    <strong>Median gross margin. Bottom third overhead. Top quarter operating profit.</strong> You keep more of every dollar than three quarters of the roofing companies your size, and you do it while spending less on overhead than seven out of ten of them. That is not luck and it is not the weather. That is how you run the company.
+  </div>
+
+  <div class="flag">
+    <strong>Say it out loud so nobody has to guess later:</strong> RMA published only sixteen statements for this industry and size, and it is national data, not Minnesota. The comparison is directional, not surgical. Also, your return was filed under business code 238290 while this benchmark is 238160, Roofing Contractors. We benchmarked against what you actually do, not what the preparer typed.
+  </div>
+
+  <p class="note">One record is excluded from every dollar figure in this entire document: project 24026, a $799,537 contract with $0 ever collected, sitting 582 days out in your aging. It is a scope or a bid entered as a contract, not revenue, and leaving it in would distort every average on every page. One question from you settles what it actually is.</p>
+</section>
+
+<!-- ================= MARKET MIX ================= -->
+<section>
+  <div class="sec-head"><div class="sec-num">1</div><h2>Market mix: who pays for the roof</h2></div>
+
+  <div class="qa">
+    <div class="q">What it is now</div>
+    <div class="a">Across 77 contracts and $2,441,252 of signed work since June 2024, <strong>insurance-scoped jobs are 45 contracts and 75.7% of your revenue</strong> at an average of <strong>$41,048</strong>. Retail is 32 contracts and 24.3% of revenue at an average of <strong>$18,565</strong>. <span class="src">Contractors Cloud</span></div>
+
+    <div class="q">What changed</div>
+    <div class="a">Insurance was <strong>72% of the jobs you signed in 2024. It is 36% of the jobs you have signed in 2026.</strong> The share of your work that a carrier pays for has been cut in half in two years. <span class="src">Contractors Cloud</span></div>
+
+    <div class="q">What it means</div>
+    <div class="a">An insurance job is <strong>2.2 times the size</strong> of a retail job. When the mix moves toward retail, your average job falls, and the number of jobs you must sell every month to cover the same overhead goes up. It feels exactly like margin falling. It is not margin. It is mix.</div>
+  </div>
+
+  <figure>
+  <svg viewBox="0 0 900 320" role="img" aria-label="Insurance share of jobs signed, by year">
+    <text x="0" y="16" font-size="15" font-weight="700" fill="#1A3C6E">SHARE OF JOBS SIGNED, BY YEAR</text>
+
+    <!-- 2024 -->
+    <text x="0" y="70" font-size="17" font-weight="700" fill="#1B1B1B">2024</text>
+    <text x="0" y="90" font-size="13" fill="#5C6B7F">Jun to Dec</text>
+    <rect x="100" y="50" width="490" height="44" fill="#1A3C6E"/>
+    <rect x="590" y="50" width="190" height="44" fill="#E0B4A0"/>
+    <text x="115" y="78" font-size="19" font-weight="700" fill="#FFCD00">72% insurance</text>
+    <text x="605" y="78" font-size="17" fill="#6B3A22">28% retail</text>
+    <text x="795" y="72" font-size="15" fill="#5C6B7F">25 jobs</text>
+
+    <!-- 2025 -->
+    <text x="0" y="150" font-size="17" font-weight="700" fill="#1B1B1B">2025</text>
+    <text x="0" y="170" font-size="13" fill="#5C6B7F">full year</text>
+    <rect x="100" y="130" width="453" height="44" fill="#1A3C6E"/>
+    <rect x="553" y="130" width="227" height="44" fill="#E0B4A0"/>
+    <text x="115" y="158" font-size="19" font-weight="700" fill="#FFCD00">67% insurance</text>
+    <text x="568" y="158" font-size="17" fill="#6B3A22">33% retail</text>
+    <text x="795" y="152" font-size="15" fill="#5C6B7F">27 jobs</text>
+
+    <!-- 2026 -->
+    <text x="0" y="230" font-size="17" font-weight="700" fill="#1B1B1B">2026</text>
+    <text x="0" y="250" font-size="13" fill="#5C6B7F">Jan to Aug</text>
+    <rect x="100" y="210" width="245" height="44" fill="#1A3C6E"/>
+    <rect x="345" y="210" width="435" height="44" fill="#C4633A"/>
+    <text x="115" y="238" font-size="19" font-weight="700" fill="#FFCD00">36%</text>
+    <text x="360" y="238" font-size="19" font-weight="700" fill="#FFFFFF">64% retail</text>
+    <text x="795" y="232" font-size="15" fill="#5C6B7F">25 jobs</text>
+
+    <line x1="100" y1="272" x2="780" y2="272" stroke="#C9D4E2"/>
+    <text x="100" y="296" font-size="15" fill="#5C6B7F">Average insurance job across all three years: $41,048. Average retail job: $18,565.</text>
+    <text x="100" y="315" font-size="14" fill="#B4451A">2024 covers seven months and 2026 covers eight, so read the percentages, not the job counts.</text>
+  </svg>
+  <figcaption>Contractors Cloud, contract signing date, 77 contracts, project 24026 excluded. Insurance versus retail is read from the contract type field, which is the one field in your CRM that is filled correctly on every single contract.</figcaption>
+  </figure>
+
+  <h3>Why the mix moved: the weather, and it is on the federal record</h3>
+
+  <p>The belief in the building is that carriers stopped paying as well. <strong>Your own numbers say the opposite, and the real answer is better news.</strong> The average insurance job you signed went <strong>up</strong> every single year: $45,079, then $64,326, then $85,569 on the jobs over $25,000. <span class="src">Contractors Cloud</span> Carriers paid <em>more</em> per claim. There were simply far fewer claims to have.</p>
+
+  <figure>
+  <svg viewBox="0 0 900 400" role="img" aria-label="Wright County hail and Top Tier insurance leads">
+    <text x="0" y="16" font-size="15" font-weight="700" fill="#1A3C6E">WRIGHT COUNTY HAIL REPORTS AT OR ABOVE ONE INCH, BY YEAR</text>
+
+    <!-- axis -->
+    <line x1="70" y1="200" x2="470" y2="200" stroke="#5C6B7F" stroke-width="2"/>
+    <line x1="70" y1="40" x2="70" y2="200" stroke="#5C6B7F" stroke-width="2"/>
+    <text x="40" y="46" font-size="13" fill="#5C6B7F">10</text>
+    <text x="46" y="126" font-size="13" fill="#5C6B7F">5</text>
+    <text x="46" y="205" font-size="13" fill="#5C6B7F">0</text>
+    <line x1="70" y1="40" x2="470" y2="40" stroke="#E8EEF6"/>
+    <line x1="70" y1="120" x2="470" y2="120" stroke="#E8EEF6"/>
+
+    <!-- bars: 2023=10, 2024=3, 2025=3, 2026=0 ; 16px per report -->
+    <rect x="95"  y="40"  width="70" height="160" fill="#8FA9C6"/>
+    <text x="130" y="32" font-size="16" font-weight="700" fill="#1A3C6E" text-anchor="middle">10</text>
+    <text x="130" y="220" font-size="15" fill="#1B1B1B" text-anchor="middle">2023</text>
+    <text x="130" y="238" font-size="12" fill="#5C6B7F" text-anchor="middle">max 1.75 in</text>
+
+    <rect x="195" y="152" width="70" height="48" fill="#1A3C6E"/>
+    <text x="230" y="144" font-size="16" font-weight="700" fill="#1A3C6E" text-anchor="middle">3</text>
+    <text x="230" y="220" font-size="15" font-weight="700" fill="#1B1B1B" text-anchor="middle">2024</text>
+    <text x="230" y="238" font-size="12" font-weight="700" fill="#B4451A" text-anchor="middle">max 3.50 in</text>
+    <text x="230" y="254" font-size="12" fill="#5C6B7F" text-anchor="middle">all on one night</text>
+
+    <rect x="295" y="152" width="70" height="48" fill="#8FA9C6"/>
+    <text x="330" y="144" font-size="16" font-weight="700" fill="#1A3C6E" text-anchor="middle">3</text>
+    <text x="330" y="220" font-size="15" fill="#1B1B1B" text-anchor="middle">2025</text>
+    <text x="330" y="238" font-size="12" fill="#5C6B7F" text-anchor="middle">max 1.75 in</text>
+
+    <rect x="395" y="196" width="70" height="4" fill="#C4633A"/>
+    <text x="430" y="188" font-size="16" font-weight="700" fill="#B4451A" text-anchor="middle">0</text>
+    <text x="430" y="220" font-size="15" font-weight="700" fill="#B4451A" text-anchor="middle">2026</text>
+    <text x="430" y="238" font-size="12" fill="#5C6B7F" text-anchor="middle">max 0.88 in</text>
+
+    <!-- right panel: leads -->
+    <text x="530" y="16" font-size="15" font-weight="700" fill="#1A3C6E">YOUR INSURANCE LEADS</text>
+
+    <rect x="530" y="46" width="340" height="76" fill="#FFF9E3" stroke="#C79A00"/>
+    <text x="548" y="76" font-size="34" font-weight="700" fill="#1A3C6E">15</text>
+    <text x="600" y="72" font-size="17" fill="#1B1B1B">insurance leads created in</text>
+    <text x="600" y="94" font-size="17" font-weight="700" fill="#1B1B1B">August and September 2024</text>
+    <text x="548" y="114" font-size="14" fill="#5C6B7F">weeks 3 to 11 after the July 13 storm</text>
+
+    <rect x="530" y="136" width="340" height="76" fill="#FCEDE6" stroke="#C4633A"/>
+    <text x="548" y="166" font-size="34" font-weight="700" fill="#B4451A">4</text>
+    <text x="590" y="162" font-size="17" fill="#1B1B1B">insurance leads in</text>
+    <text x="590" y="184" font-size="17" font-weight="700" fill="#1B1B1B">seven months of 2026</text>
+    <text x="548" y="204" font-size="14" fill="#5C6B7F">against 17 retail leads in the same window</text>
+
+    <text x="530" y="244" font-size="16" font-weight="700" fill="#1A3C6E">Six of the nine dates of loss</text>
+    <text x="530" y="266" font-size="16" fill="#1B1B1B">recorded in your CRM match a documented</text>
+    <text x="530" y="288" font-size="16" fill="#1B1B1B">federal severe weather date exactly.</text>
+
+    <!-- timeline -->
+    <line x1="70" y1="330" x2="870" y2="330" stroke="#1A3C6E" stroke-width="3"/>
+    <circle cx="150" cy="330" r="9" fill="#FFCD00" stroke="#1A3C6E" stroke-width="2"/>
+    <text x="150" y="358" font-size="14" font-weight="700" fill="#1A3C6E" text-anchor="middle">Jun 12, 2024</text>
+    <text x="150" y="376" font-size="13" fill="#5C6B7F" text-anchor="middle">Crosslake, 2.00 in</text>
+    <text x="150" y="392" font-size="13" fill="#5C6B7F" text-anchor="middle">10 lake jobs followed</text>
+
+    <circle cx="330" cy="330" r="12" fill="#FFCD00" stroke="#B4451A" stroke-width="3"/>
+    <text x="330" y="358" font-size="14" font-weight="700" fill="#B4451A" text-anchor="middle">Jul 13, 2024</text>
+    <text x="330" y="376" font-size="13" fill="#5C6B7F" text-anchor="middle">3.50 in east of Monticello</text>
+    <text x="330" y="392" font-size="13" fill="#5C6B7F" text-anchor="middle">15 insurance leads followed</text>
+
+    <circle cx="530" cy="330" r="6" fill="#8FA9C6"/>
+    <text x="530" y="358" font-size="14" fill="#5C6B7F" text-anchor="middle">2025</text>
+    <text x="530" y="376" font-size="13" fill="#5C6B7F" text-anchor="middle">weather, no severity</text>
+
+    <circle cx="700" cy="330" r="6" fill="#C4633A"/>
+    <text x="700" y="358" font-size="14" font-weight="700" fill="#B4451A" text-anchor="middle">2026</text>
+    <text x="700" y="376" font-size="13" fill="#5C6B7F" text-anchor="middle">zero qualifying hail in Wright</text>
+
+    <circle cx="845" cy="330" r="11" fill="#FFCD00" stroke="#1D7A4C" stroke-width="3"/>
+    <text x="845" y="358" font-size="14" font-weight="700" fill="#1D7A4C" text-anchor="middle">Aug 20, 2026</text>
+    <text x="845" y="376" font-size="13" fill="#5C6B7F" text-anchor="middle">Crow Wing, 2.00 in</text>
+  </svg>
+  <figcaption>NOAA National Centers for Environmental Information, Storm Events bulk detail files for 2023 through 2026, filtered to Wright, Sherburne and Crow Wing counties. Insurance lead counts from Contractors Cloud, lead creation date.</figcaption>
+  </figure>
+
+  <div class="flag">
+    <strong>The August 20, 2026 event is preliminary and it is live.</strong> Those nine reports are raw National Weather Service local storm reports and the sizes get revised during federal quality control. They landed in the exact footprint that produced the highest tickets in your history. Your Crosslake average job is $82,597. You have nine past customers in that corridor and you have not called them in twenty three months.
+  </div>
+
+  <div class="verdict">
+    <div class="t">Market mix, the verdict</div>
+    <strong>Your revenue is storm revenue, and the business did not know that about itself.</strong> Two nights in 2024 built the book. 2025 gave weather without severity. 2026 has given nothing. Your book changed shape by exactly as much as the sky did. That is a fact about the weather, not a failure by anybody in this room, and it means the lead program has to do two jobs at once: build demand that does not need hail, and be ready to move the day hail arrives.
+  </div>
+</section>
+
+<!-- ================= PRODUCT MIX ================= -->
+<section>
+  <div class="sec-head"><div class="sec-num">2</div><h2>Product mix: what you actually sell</h2></div>
+
+  <figure>
+  <svg viewBox="0 0 900 250" role="img" aria-label="Share of invoiced dollars by product line">
+    <text x="0" y="16" font-size="15" font-weight="700" fill="#1A3C6E">SHARE OF INVOICED DOLLARS, JUNE 2024 TO AUGUST 2026</text>
+
+    <rect x="0"     y="40" width="723.2" height="58" fill="#1A3C6E"/>
+    <rect x="723.2" y="40" width="43.2"  height="58" fill="#2E5B96"/>
+    <rect x="766.4" y="40" width="25.6"  height="58" fill="#6E8EB5"/>
+    <rect x="792"   y="40" width="6.4"   height="58" fill="#9EB4D0"/>
+    <rect x="798.4" y="40" width="1.6"   height="58" fill="#C9D4E2"/>
+    <rect x="800"   y="40" width="100"   height="58" fill="#F0F0F0" stroke="#C9D4E2" stroke-dasharray="4 3"/>
+
+    <text x="18" y="70" font-size="26" font-weight="700" fill="#FFCD00">ROOFING</text>
+    <text x="18" y="90" font-size="20" font-weight="700" fill="#FFFFFF">90.4%  &middot;  $2,207,742</text>
+
+    <line x1="745" y1="98" x2="700" y2="140" stroke="#5C6B7F"/>
+    <text x="560" y="158" font-size="16" font-weight="700" fill="#1B1B1B">Siding 5.4%, $131,895</text>
+
+    <line x1="780" y1="98" x2="800" y2="176" stroke="#5C6B7F"/>
+    <text x="700" y="194" font-size="15" fill="#5C6B7F">Insurance starting amount 3.2%</text>
+    <text x="700" y="212" font-size="15" fill="#5C6B7F">Upgrades 0.8%, insurance O and P 0.2%</text>
+
+    <text x="810" y="70" font-size="18" font-weight="700" fill="#B4451A">REMODELING</text>
+    <text x="810" y="92" font-size="24" font-weight="700" fill="#B4451A">0.0%</text>
+  </svg>
+  <figcaption>Contractors Cloud sales by item, 100 invoice lines, project 24026 excluded.</figcaption>
+  </figure>
+
+  <div class="qa">
+    <div class="q">What it is now</div>
+    <div class="a">You are a roofing company. Roofing is <strong>90.4% of every dollar invoiced</strong>. Siding is 5.4%. <strong>Remodeling is 0.0% of dollars and does not appear on the 2025 tax return at all.</strong> It is in the company name and nowhere else. <span class="src">Contractors Cloud</span> <span class="src">Form 1065</span></div>
+
+    <div class="q">What changed</div>
+    <div class="a">Nothing, and that is the point. In twenty seven months, <strong>siding sold on its own exactly twice</strong>, for $29,755 total. Every other siding dollar rode along on a roof.</div>
+
+    <div class="q">What it means</div>
+    <div class="a"><strong>Siding is not a second business line. It is an attachment rate.</strong> A job that carries siding averages <strong>$37,787</strong> against <strong>$29,502</strong> for a roof alone. That is a 28% bigger ticket for one extra sentence in the estimate, not a siding campaign, not a siding truck, not a siding page on the website. <span class="src">Contractors Cloud</span></div>
+  </div>
+
+  <div class="verdict">
+    <div class="t">Product mix, the verdict</div>
+    <strong>One product, one attachment, one dead name.</strong> Sell roofs. Attach siding to every roof estimate as a line the homeowner can decline. And decide on purpose whether "and Remodeling" stays in the company name, because right now the name is promising something the business does not sell.
+  </div>
+</section>
+
+<!-- ================= CUSTOMER MIX ================= -->
+<section>
+  <div class="sec-head"><div class="sec-num">3</div><h2>Customer mix: the four kinds of job you take</h2></div>
+
+  <p class="lead">Split every contract two ways, by who pays and by whether the ticket clears $25,000, and four groups fall out. Two of them are the same size and one of them is worth six times the other.</p>
+
+  <figure>
+  <svg viewBox="0 0 900 470" role="img" aria-label="The four quadrants of Top Tier's book">
+    <text x="0" y="18" font-size="15" font-weight="700" fill="#1A3C6E">77 CONTRACTS, $2,441,252, JUNE 2024 TO AUGUST 2026</text>
+
+    <!-- axis labels -->
+    <text x="252" y="52" font-size="17" font-weight="700" fill="#1A3C6E" text-anchor="middle">INSURANCE PAYS</text>
+    <text x="672" y="52" font-size="17" font-weight="700" fill="#1A3C6E" text-anchor="middle">HOMEOWNER PAYS</text>
+    <text x="24" y="180" font-size="15" font-weight="700" fill="#1A3C6E" text-anchor="middle" transform="rotate(-90 24 180)">$25,000 AND UP</text>
+    <text x="24" y="370" font-size="15" font-weight="700" fill="#1A3C6E" text-anchor="middle" transform="rotate(-90 24 370)">UNDER $25,000</text>
+
+    <!-- BULLSEYE -->
+    <rect x="44" y="66" width="416" height="196" fill="#1A3C6E" stroke="#FFCD00" stroke-width="5"/>
+    <text x="66" y="102" font-size="15" font-weight="700" fill="#FFCD00" letter-spacing="2">THE BULLSEYE</text>
+    <text x="66" y="146" font-size="42" font-weight="700" fill="#FFFFFF">$60,026</text>
+    <text x="66" y="170" font-size="17" fill="#D6E2F2">average job</text>
+    <text x="66" y="208" font-size="21" font-weight="700" fill="#FFCD00">25 jobs</text>
+    <text x="66" y="234" font-size="19" fill="#FFFFFF">$1,500,645</text>
+    <text x="66" y="254" font-size="17" fill="#D6E2F2">61.5% of all your revenue</text>
+    <rect x="300" y="200" width="140" height="46" fill="#FFCD00"/>
+    <text x="370" y="230" font-size="22" font-weight="700" fill="#1A3C6E" text-anchor="middle">61.5%</text>
+
+    <!-- FLOOR -->
+    <rect x="470" y="66" width="386" height="196" fill="#E8EEF6" stroke="#8FA9C6" stroke-width="2"/>
+    <text x="492" y="102" font-size="15" font-weight="700" fill="#1A3C6E" letter-spacing="2">THE FLOOR</text>
+    <text x="492" y="146" font-size="42" font-weight="700" fill="#1A3C6E">$49,331</text>
+    <text x="492" y="170" font-size="17" fill="#5C6B7F">average job</text>
+    <text x="492" y="208" font-size="21" font-weight="700" fill="#1A3C6E">7 jobs</text>
+    <text x="492" y="234" font-size="19" fill="#1B1B1B">$345,315</text>
+    <text x="492" y="254" font-size="17" fill="#5C6B7F">14.1% of revenue</text>
+
+    <!-- FILLER -->
+    <rect x="44" y="272" width="416" height="176" fill="#E8EEF6" stroke="#8FA9C6" stroke-width="2"/>
+    <text x="66" y="306" font-size="15" font-weight="700" fill="#1A3C6E" letter-spacing="2">THE FILLER</text>
+    <text x="66" y="348" font-size="38" font-weight="700" fill="#1A3C6E">$17,326</text>
+    <text x="66" y="370" font-size="17" fill="#5C6B7F">average job</text>
+    <text x="66" y="404" font-size="21" font-weight="700" fill="#1A3C6E">20 jobs</text>
+    <text x="66" y="428" font-size="17" fill="#5C6B7F">$346,515, 14.2% of revenue. Keep these.</text>
+
+    <!-- TRAP -->
+    <rect x="470" y="272" width="386" height="176" fill="#FCEDE6" stroke="#C4633A" stroke-width="5"/>
+    <text x="492" y="306" font-size="15" font-weight="700" fill="#B4451A" letter-spacing="2">THE TRAP</text>
+    <text x="492" y="348" font-size="38" font-weight="700" fill="#B4451A">$9,951</text>
+    <text x="492" y="370" font-size="17" fill="#5C6B7F">average job</text>
+    <text x="492" y="404" font-size="21" font-weight="700" fill="#B4451A">25 jobs</text>
+    <text x="492" y="428" font-size="17" fill="#5C6B7F">$248,776, 10.2% of revenue</text>
+    <rect x="760" y="396" width="80" height="40" fill="#C4633A"/>
+    <text x="800" y="423" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle">10.2%</text>
+  </svg>
+  <figcaption>Contractors Cloud, 77 contracts with a value above zero, project 24026 excluded. The $25,000 line is where the job costing work found the profitable band begins.</figcaption>
+  </figure>
+
+  <h3>The same twenty five jobs, six times the money</h3>
+
+  <figure>
+  <svg viewBox="0 0 900 340" role="img" aria-label="Bullseye versus Trap, equal job counts, unequal revenue">
+    <!-- BULLSEYE row -->
+    <text x="0" y="24" font-size="17" font-weight="700" fill="#1A3C6E">THE BULLSEYE &nbsp; 25 jobs</text>
+    <g fill="#1A3C6E">
+      <rect x="0" y="40" width="20" height="20"/><rect x="26" y="40" width="20" height="20"/><rect x="52" y="40" width="20" height="20"/><rect x="78" y="40" width="20" height="20"/><rect x="104" y="40" width="20" height="20"/>
+      <rect x="130" y="40" width="20" height="20"/><rect x="156" y="40" width="20" height="20"/><rect x="182" y="40" width="20" height="20"/><rect x="208" y="40" width="20" height="20"/><rect x="234" y="40" width="20" height="20"/>
+      <rect x="260" y="40" width="20" height="20"/><rect x="286" y="40" width="20" height="20"/><rect x="312" y="40" width="20" height="20"/><rect x="338" y="40" width="20" height="20"/><rect x="364" y="40" width="20" height="20"/>
+      <rect x="390" y="40" width="20" height="20"/><rect x="416" y="40" width="20" height="20"/><rect x="442" y="40" width="20" height="20"/><rect x="468" y="40" width="20" height="20"/><rect x="494" y="40" width="20" height="20"/>
+      <rect x="520" y="40" width="20" height="20"/><rect x="546" y="40" width="20" height="20"/><rect x="572" y="40" width="20" height="20"/><rect x="598" y="40" width="20" height="20"/><rect x="624" y="40" width="20" height="20"/>
+    </g>
+    <rect x="0" y="76" width="860" height="60" fill="#1A3C6E"/>
+    <text x="20" y="116" font-size="34" font-weight="700" fill="#FFCD00">$1,500,645</text>
+    <text x="290" y="116" font-size="20" fill="#FFFFFF">61.5% of everything you sold</text>
+
+    <!-- TRAP row -->
+    <text x="0" y="190" font-size="17" font-weight="700" fill="#B4451A">THE TRAP &nbsp; 25 jobs</text>
+    <g fill="#C4633A">
+      <rect x="0" y="206" width="20" height="20"/><rect x="26" y="206" width="20" height="20"/><rect x="52" y="206" width="20" height="20"/><rect x="78" y="206" width="20" height="20"/><rect x="104" y="206" width="20" height="20"/>
+      <rect x="130" y="206" width="20" height="20"/><rect x="156" y="206" width="20" height="20"/><rect x="182" y="206" width="20" height="20"/><rect x="208" y="206" width="20" height="20"/><rect x="234" y="206" width="20" height="20"/>
+      <rect x="260" y="206" width="20" height="20"/><rect x="286" y="206" width="20" height="20"/><rect x="312" y="206" width="20" height="20"/><rect x="338" y="206" width="20" height="20"/><rect x="364" y="206" width="20" height="20"/>
+      <rect x="390" y="206" width="20" height="20"/><rect x="416" y="206" width="20" height="20"/><rect x="442" y="206" width="20" height="20"/><rect x="468" y="206" width="20" height="20"/><rect x="494" y="206" width="20" height="20"/>
+      <rect x="520" y="206" width="20" height="20"/><rect x="546" y="206" width="20" height="20"/><rect x="572" y="206" width="20" height="20"/><rect x="598" y="206" width="20" height="20"/><rect x="624" y="206" width="20" height="20"/>
+    </g>
+    <rect x="0" y="242" width="142" height="60" fill="#C4633A"/>
+    <text x="20" y="282" font-size="26" font-weight="700" fill="#FFFFFF">$248,776</text>
+    <text x="164" y="282" font-size="20" fill="#1B1B1B">10.2% of everything you sold</text>
+
+    <text x="0" y="330" font-size="16" fill="#5C6B7F">Same job count. Same phone calls. Same site visits. Same truck rolls. Same start and finish from Keith.</text>
+  </svg>
+  <figcaption>Contractors Cloud, 77 contracts, project 24026 excluded. Bars are drawn to scale against each other.</figcaption>
+  </figure>
+
+  <h3>And the two piles crossed over</h3>
+
+  <figure>
+  <svg viewBox="0 0 900 380" role="img" aria-label="Bullseye and Trap job counts by signing year">
+    <text x="0" y="18" font-size="15" font-weight="700" fill="#1A3C6E">JOBS SIGNED, BY YEAR</text>
+
+    <!-- grid -->
+    <line x1="120" y1="60" x2="800" y2="60" stroke="#E8EEF6"/>
+    <line x1="120" y1="130" x2="800" y2="130" stroke="#E8EEF6"/>
+    <line x1="120" y1="200" x2="800" y2="200" stroke="#E8EEF6"/>
+    <line x1="120" y1="270" x2="800" y2="270" stroke="#5C6B7F" stroke-width="2"/>
+    <text x="92" y="66" font-size="13" fill="#5C6B7F">15</text>
+    <text x="92" y="136" font-size="13" fill="#5C6B7F">10</text>
+    <text x="98" y="206" font-size="13" fill="#5C6B7F">5</text>
+    <text x="98" y="276" font-size="13" fill="#5C6B7F">0</text>
+
+    <text x="200" y="300" font-size="17" font-weight="700" fill="#1B1B1B" text-anchor="middle">2024</text>
+    <text x="200" y="320" font-size="13" fill="#5C6B7F" text-anchor="middle">Jun to Dec</text>
+    <text x="460" y="300" font-size="17" font-weight="700" fill="#1B1B1B" text-anchor="middle">2025</text>
+    <text x="460" y="320" font-size="13" fill="#5C6B7F" text-anchor="middle">full year</text>
+    <text x="720" y="300" font-size="17" font-weight="700" fill="#1B1B1B" text-anchor="middle">2026</text>
+    <text x="720" y="320" font-size="13" fill="#5C6B7F" text-anchor="middle">Jan to Aug</text>
+
+    <!-- Bullseye 10, 11, 4  => y = 270 - n*14 -->
+    <polyline points="200,130 460,116 720,214" fill="none" stroke="#1A3C6E" stroke-width="5"/>
+    <circle cx="200" cy="130" r="10" fill="#1A3C6E"/><circle cx="460" cy="116" r="10" fill="#1A3C6E"/><circle cx="720" cy="214" r="12" fill="#1A3C6E" stroke="#FFCD00" stroke-width="3"/>
+    <text x="200" y="118" font-size="18" font-weight="700" fill="#1A3C6E" text-anchor="middle">10</text>
+    <text x="460" y="104" font-size="18" font-weight="700" fill="#1A3C6E" text-anchor="middle">11</text>
+    <text x="748" y="212" font-size="20" font-weight="700" fill="#1A3C6E">4</text>
+
+    <!-- Trap 5, 7, 13 -->
+    <polyline points="200,200 460,172 720,88" fill="none" stroke="#C4633A" stroke-width="5" stroke-dasharray="10 6"/>
+    <circle cx="200" cy="200" r="10" fill="#C4633A"/><circle cx="460" cy="172" r="10" fill="#C4633A"/><circle cx="720" cy="88" r="12" fill="#C4633A" stroke="#FFCD00" stroke-width="3"/>
+    <text x="200" y="224" font-size="18" font-weight="700" fill="#B4451A" text-anchor="middle">5</text>
+    <text x="460" y="196" font-size="18" font-weight="700" fill="#B4451A" text-anchor="middle">7</text>
+    <text x="748" y="94" font-size="20" font-weight="700" fill="#B4451A">13</text>
+
+    <!-- legend -->
+    <line x1="120" y1="348" x2="170" y2="348" stroke="#1A3C6E" stroke-width="5"/>
+    <text x="180" y="354" font-size="16" fill="#1B1B1B">Bullseye, insurance $25k and up</text>
+    <line x1="470" y1="348" x2="520" y2="348" stroke="#C4633A" stroke-width="5" stroke-dasharray="10 6"/>
+    <text x="530" y="354" font-size="16" fill="#1B1B1B">Trap, retail under $25k</text>
+
+    <rect x="600" y="40" width="290" height="56" fill="#FFF9E3" stroke="#C79A00"/>
+    <text x="616" y="64" font-size="15" font-weight="700" fill="#7A5E00">2024: two Bullseyes for every Trap.</text>
+    <text x="616" y="86" font-size="15" font-weight="700" fill="#7A5E00">2026: three Traps for every Bullseye.</text>
+  </svg>
+  <figcaption>Contractors Cloud, contract signing date. 2024 covers seven months and 2026 covers eight, so the 2026 Trap count of 13 is understated on an annualized basis, not overstated.</figcaption>
+  </figure>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="n">19 of 25</div><div class="l">Trap jobs booked by Guy</div><div class="s">Contractors Cloud, primary rep</div></div>
+    <div class="kpi"><div class="n">21%</div><div class="l">of everything sold is under $10,000, and it produces 3.3% of revenue</div><div class="s">16 jobs, $81,495</div></div>
+    <div class="kpi"><div class="n">$85,569</div><div class="l">average Bullseye job in 2026, up from $45,079 in 2024</div><div class="s">carriers paid more, not less</div></div>
+  </div>
+
+  <div class="qa">
+    <div class="q">What it means</div>
+    <div class="a"><strong>The cost of showing up does not scale down with the ticket.</strong> A $9,951 job takes a Guy phone call, a Guy site visit, an EagleView, a Keith start and finish, a crew mobilization and a truck roll. So does a $60,026 job. Guy's calendar is the scarcest thing this company owns, and nineteen of the twenty five smallest jobs on the books are sitting in it.</div>
+  </div>
+
+  <h3>What the mix shift costs you, in jobs per month</h3>
+
+  <table>
+    <thead><tr><th>At an average job of</th><th>Jobs a month to break even</th><th>Where that number comes from</th></tr></thead>
+    <tbody>
+      <tr class="hi"><td>$36,748</td><td>1.8</td><td>your 2025 blend</td></tr>
+      <tr><td>$27,110</td><td>2.4</td><td>your 2026 blend</td></tr>
+      <tr class="lo"><td>$16,646</td><td>4.0</td><td>a retail only book</td></tr>
+    </tbody>
+    <caption>Break even computed on the 2025 Form 1065: $284,621 of fixed cost, which treats the $180,000 of partner pay as fixed, at a 35.79% gross margin. Same margin, same overhead, in all three rows. Only the average job changes.</caption>
+  </table>
+
+  <p><strong>The mix shift alone raised the number of jobs you must sell every month by a third. A pure retail book more than doubles it.</strong> Two men cannot work twice as many jobs.</p>
+
+  <h3>Where the customers live</h3>
+
+  <figure>
+  <svg viewBox="0 0 900 380" role="img" aria-label="Revenue and average ticket by city">
+    <text x="0" y="16" font-size="15" font-weight="700" fill="#1A3C6E">CONTRACT DOLLARS BY CITY, AND WHAT AN AVERAGE JOB THERE IS WORTH</text>
+
+    <g font-size="16" fill="#1B1B1B">
+      <text x="0" y="56">St Michael</text>
+      <rect x="150" y="40" width="480" height="22" fill="#1A3C6E"/>
+      <text x="642" y="57" font-size="15" fill="#1B1B1B">$688,017 &nbsp;&middot;&nbsp; avg $36,211 &nbsp;&middot;&nbsp; 28.2%</text>
+
+      <text x="0" y="94">Big Lake</text>
+      <rect x="150" y="78" width="218" height="22" fill="#2E5B96"/>
+      <text x="380" y="95" font-size="15">$313,063 &nbsp;&middot;&nbsp; avg $52,177 &nbsp;&middot;&nbsp; 86% close</text>
+
+      <text x="0" y="132">Crosslake</text>
+      <rect x="150" y="116" width="173" height="22" fill="#2E5B96"/>
+      <text x="335" y="133" font-size="15">$247,791 &nbsp;&middot;&nbsp; avg $82,597, the highest in the book</text>
+
+      <text x="0" y="170">Buffalo</text>
+      <rect x="150" y="154" width="139" height="22" fill="#6E8EB5"/>
+      <text x="301" y="171" font-size="15">$198,898 &nbsp;&middot;&nbsp; avg $33,150</text>
+
+      <text x="0" y="208">Monticello</text>
+      <rect x="150" y="192" width="134" height="22" fill="#6E8EB5"/>
+      <text x="296" y="209" font-size="15">$192,345 &nbsp;&middot;&nbsp; avg $38,469</text>
+
+      <text x="0" y="246">Otsego</text>
+      <rect x="150" y="230" width="100" height="22" fill="#6E8EB5"/>
+      <text x="262" y="247" font-size="15">$143,933 &nbsp;&middot;&nbsp; avg $28,787</text>
+
+      <text x="0" y="284">Plymouth</text>
+      <rect x="150" y="268" width="81" height="22" fill="#C9D4E2"/>
+      <text x="243" y="285" font-size="15" fill="#5C6B7F">$115,364, and it is one single job</text>
+
+      <text x="0" y="322" font-weight="700" fill="#B4451A">Albertville</text>
+      <rect x="150" y="306" width="71" height="22" fill="#C4633A"/>
+      <text x="233" y="323" font-size="15" font-weight="700" fill="#B4451A">$101,369 &nbsp;&middot;&nbsp; avg $16,895 &nbsp;&middot;&nbsp; 8th best city</text>
+    </g>
+    <text x="0" y="362" font-size="15" fill="#5C6B7F">The 25 to 50 mile ring is the worst business you do: 11 sold jobs, $14,244 average, 35% close rate.</text>
+  </svg>
+  <figcaption>Contractors Cloud, 77 contracts, project 24026 excluded. An earlier pass reported St Michael at $74,378 average. That figure was inflated by project 24026 alone and is wrong. The correct average across 19 sold St Michael jobs is $36,211.</figcaption>
+  </figure>
+
+  <div class="flag">
+    <strong>Big Lake is the one to look at twice.</strong> An 86% close rate at a $52,177 average ticket is the best combination in the entire book, and lead flow there fell from 4 to 1. That is a market you are winning and losing at the same time.
+  </div>
+
+  <div class="verdict">
+    <div class="t">Customer mix, the verdict</div>
+    <strong>You are not short of leads. Lead count went up, 38 then 47 then 76.</strong> <span class="src">Contractors Cloud</span> What fell is the kind of lead reaching Guy. The work is not to get more phone calls. The work is to put the right phone call in front of the one man who can only take so many.
+  </div>
+</section>
+
+<!-- ================= WHERE THIS LEAVES US ================= -->
+<section>
+  <div class="sec-head"><div class="sec-num">4</div><h2>Where this leaves us, before we talk about growth</h2></div>
+
+  <div class="three">
+    <div class="box"><div class="k">Settled</div><div class="v">The company is well run. Median margin, lean overhead, top quarter profit against sixteen peers.</div></div>
+    <div class="box"><div class="k">Settled</div><div class="v">The mix moved because the weather moved, not because carriers got stingy. Six of nine dates of loss match a federal record.</div></div>
+    <div class="box"><div class="k">Settled</div><div class="v">Twenty five jobs are worth six times another twenty five, and Guy is carrying nineteen of the small ones.</div></div>
+  </div>
+
+  <h3>The one thing that blocks everything downstream</h3>
+
+  <p><strong>159 of your 161 records say the lead source was a referral. Two say Facebook.</strong> <span class="src">Contractors Cloud</span> That field has been changed twice in twenty six months, which means it is inheriting a default rather than recording anything. Today there is no instrument in this business that could detect a marketing lead if one arrived.</p>
+
+  <p>That is why the next thing we do together is build the cost of getting a customer from scratch, on your numbers, rather than pulling it off a report. There is no report to pull it off.</p>
+
+  <div class="verdict">
+    <div class="t">The three questions we answer next</div>
+    <ul>
+      <li>What does it actually cost you today to get one signed job, and how would you know?</li>
+      <li>What is an insurance customer worth against a retail customer, in dollars you can spend to go get one?</li>
+      <li>At what point does buying more leads stop working, because one man can only answer so many calls?</li>
+    </ul>
+  </div>
+</section>
+
+<p class="foot">
+Sources for every figure on this page: 2025 Form 1065 as filed &middot; Contractors Cloud export of August 25, 2026, 161 project records and 100 invoice lines &middot; RMA Annual Statement Studies 2025 to 2026, NAICS 238160, sales $1M to $3M, national, 16 statements &middot; NOAA National Centers for Environmental Information Storm Events, Wright, Sherburne and Crow Wing counties, 2023 through 2026 &middot; National Weather Service local storm reports for August 2026, preliminary.<br>
+Project 24026 is excluded from every dollar figure. Prepared by Dale Linn.
+</p>
+
+</div>
+</body>
+</html>

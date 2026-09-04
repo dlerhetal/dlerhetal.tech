@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Tier Facebook Post Set</title>
+<link rel="stylesheet" href="../assets/design/toptier_tokens.css">
+<style>
+/* ==========================================================================
+   GALLERY CHROME ONLY. None of this is captured by the renderer.
+   The renderer screenshots each .asset element's own border box, so every
+   panel of copy on this page sits OUTSIDE the .asset elements and cannot
+   be exported into an image.
+
+   Every asset below styles itself from assets/design/toptier_tokens.css.
+   No color value is typed raw inside an .asset block.
+   ========================================================================== */
+html,body{margin:0;padding:0}
+body{background:#20262B;font-family:"Segoe UI",system-ui,Arial,sans-serif;color:#E8EDF0}
+
+.pageHead{max-width:1180px;margin:0 auto;padding:44px 28px 10px}
+.pageHead h1{font-family:"Segoe UI Black","Arial Black",sans-serif;font-size:40px;line-height:44px;
+             margin:0 0 10px;letter-spacing:-.02em;color:#fff}
+.pageHead h1 em{font-style:normal;color:#FF3A40}
+.pageHead p{font-size:15px;line-height:24px;color:#9FB0BA;max-width:880px;margin:0 0 18px}
+
+.notes{max-width:1180px;margin:0 auto 26px;padding:0 28px;
+       display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:14px}
+.note{background:#2A3238;border-left:4px solid #FF3A40;padding:14px 16px;border-radius:0 5px 5px 0}
+.note b{display:block;font-size:11px;line-height:16px;letter-spacing:.14em;text-transform:uppercase;color:#FF3A40;margin-bottom:6px}
+.note span{display:block;font-size:13px;line-height:20px;color:#C3CFD6}
+.note code{font-family:Consolas,"Courier New",monospace;font-size:12px;color:#E8EDF0}
+
+.alarm{max-width:1180px;margin:0 auto 26px;padding:18px 22px;background:#3A2226;
+       border:1px solid #6A2A31;border-left:6px solid #FF3A40;border-radius:0 6px 6px 0;
+       max-width:1124px}
+.alarm h3{margin:0 0 8px;font-size:16px;line-height:22px;color:#fff;
+          font-family:"Segoe UI Black","Arial Black",sans-serif;letter-spacing:-.01em}
+.alarm p{margin:0 0 8px;font-size:14px;line-height:22px;color:#DCC9CC;max-width:900px}
+.alarm p:last-child{margin-bottom:0}
+.alarm code{font-family:Consolas,"Courier New",monospace;font-size:12.5px;color:#FFC9CC}
+
+.specTable{max-width:1124px;margin:0 auto 34px;border-collapse:collapse;font-size:13px;line-height:19px;
+           background:#262D33;color:#C9D5DC}
+.specTable caption{caption-side:top;text-align:left;padding:0 0 10px;color:#9FB0BA;font-size:13px;line-height:20px}
+.specTable th,.specTable td{border:1px solid #39434A;padding:8px 11px;vertical-align:top;text-align:left}
+.specTable th{background:#2F383F;color:#fff;font-weight:700}
+.specTable td b{color:#fff}
+
+.secHead{max-width:1180px;margin:46px auto 18px;padding:0 28px}
+.secHead h2{font-family:"Segoe UI Black","Arial Black",sans-serif;font-size:27px;line-height:32px;margin:0 0 8px;
+            color:#fff;letter-spacing:-.01em}
+.secHead h2 span{color:#FF3A40}
+.secHead p{font-size:14px;line-height:22px;color:#9FB0BA;max-width:880px;margin:0}
+
+.rail{max-width:1180px;margin:0 auto;padding:0 28px 70px}
+
+.post{background:#252C32;border:1px solid #39434A;border-radius:8px;padding:0 0 26px;margin:0 0 42px;overflow:hidden}
+.postHead{background:#2F383F;padding:16px 22px;border-bottom:1px solid #39434A}
+.postHead h3{margin:0;font-size:20px;line-height:26px;color:#fff;
+             font-family:"Segoe UI Black","Arial Black",sans-serif;letter-spacing:-.01em}
+.postHead h3 b{color:#FF3A40;font-weight:inherit}
+.postHead p{margin:6px 0 0;font-size:13px;line-height:20px;color:#9FB0BA}
+.postHead p span{color:#C9D5DC}
+.postInner{padding:22px 22px 0}
+
+/* Preview scaling lives on .assetWrap, never on .asset itself. */
+.assetWrap{display:block;margin:0 0 26px}
+.assetWrapLabel{font-family:Consolas,"Courier New",monospace;font-size:13px;line-height:20px;color:#B9C6CE;
+                padding:8px 10px;background:#2A3238;border-bottom:1px solid #39434A;
+                display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
+.assetWrapLabel b{color:#fff;font-family:"Segoe UI",sans-serif;font-size:14px;line-height:20px}
+.assetWrapLabel i{font-style:normal;color:#7C8B95;margin-left:auto}
+/* NO transform, zoom, margin, outline or box-shadow may touch .asset itself.
+   The renderer captures that element's own border box and any of those
+   corrupts the export. Assets sit at true pixel size here; the shipped
+   product is the PNG in assets/infographics/, not this page. */
+.shrink{display:block;box-shadow:0 10px 34px rgba(0,0,0,.42);font-size:0;line-height:0;width:max-content}
+
+/* ---- copy panels. Page furniture. Deliberately outside every .asset ---- */
+.copyPanel{background:#1E242A;border:1px solid #39434A;border-radius:6px;margin:0 0 16px;overflow:hidden}
+.copyPanel > h4{margin:0;padding:10px 14px;background:#2F383F;border-bottom:1px solid #39434A;
+                font-size:12px;line-height:16px;letter-spacing:.14em;text-transform:uppercase;color:#FF3A40}
+.copyPanel > h4 i{font-style:normal;color:#8B98A1;letter-spacing:.04em;text-transform:none;margin-left:8px}
+.copyPanel .copyInner{padding:14px}
+.copyPanel textarea{display:block;width:100%;box-sizing:border-box;background:#12171B;color:#E8EDF0;
+                    border:1px solid #39434A;border-radius:4px;padding:12px 13px;
+                    font-family:"Segoe UI",system-ui,Arial,sans-serif;font-size:14px;line-height:22px;
+                    resize:vertical}
+.copyPanel .howto{margin:8px 0 0;font-size:12px;line-height:18px;color:#7C8B95}
+.copyPanel .hookNote{margin:0 0 10px;font-size:12.5px;line-height:19px;color:#9FB0BA;
+                     border-left:3px solid #4A8DA6;padding-left:10px}
+
+.boostPanel{background:#1B2126;border:1px dashed #56616A;border-radius:6px;margin:0 0 16px;overflow:hidden}
+.boostPanel > h4{margin:0;padding:10px 14px;background:#232B31;border-bottom:1px dashed #56616A;
+                 font-size:12px;line-height:16px;letter-spacing:.14em;text-transform:uppercase;color:#9FB0BA}
+.boostPanel > h4 i{font-style:normal;color:#6E7A83;letter-spacing:.04em;text-transform:none;margin-left:8px}
+.boostPanel dl{margin:0;padding:14px;display:grid;grid-template-columns:150px 1fr;gap:8px 16px;
+               font-size:13.5px;line-height:20px}
+.boostPanel dt{color:#8B98A1;font-weight:700}
+.boostPanel dd{margin:0;color:#DDE5EA}
+.boostPanel dd code{font-family:Consolas,"Courier New",monospace;font-size:12.5px;color:#C6E1EC}
+.boostPanel .boostFoot{margin:0;padding:0 14px 14px;font-size:12px;line-height:18px;color:#7C8B95}
+
+.whyPanel{background:#1E242A;border:1px solid #39434A;border-left:4px solid #4A8DA6;border-radius:0 6px 6px 0;
+          padding:13px 16px;margin:0 0 4px}
+.whyPanel h4{margin:0 0 6px;font-size:12px;line-height:16px;letter-spacing:.14em;text-transform:uppercase;color:#7FB8C9}
+.whyPanel p{margin:0 0 8px;font-size:13.5px;line-height:21px;color:#C3CFD6}
+.whyPanel p:last-child{margin-bottom:0}
+.whyPanel b{color:#fff}
+.whyPanel .fill{color:#FFC9CC}
+
+/* ---- logo, drawn from the client's own artwork, held locally ---- */
+.ttLogo{display:block;height:auto;width:calc(var(--ttSpace12) * 2)}
+.ttLogoSm{width:calc(var(--ttSpace12) * 1.35)}
+.ttLogoStory{width:calc(var(--ttSpace12) * 2.6)}
+
+/* ---- story safe frame. Meta publishes this as percentages on every 9:16
+   placement page: leave roughly 14% of the top, 35% of the bottom and 6% of
+   each side free of text, logos and key creative. On 1080 x 1920 that is
+   269px top, 672px bottom, 65px each side. This frame rounds outward.
+   Meta adds that a Reels ad carrying a DISCLAIMER should leave the bottom
+   40% clear. The MN license number is a disclaimer, so on these three the
+   license line sits in the header, at the top of the frame, well clear of
+   the bottom 40%. ---- */
+.storySafe{padding:288px 72px 672px}
+
+@page{size:letter portrait;margin:.5in}
+@media print{
+  body{background:#fff;color:#000;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .pageHead,.notes,.assetWrapLabel{display:none}
+  .rail,.secHead{max-width:none;padding:0}
+  .assetWrap{break-inside:avoid;page-break-inside:avoid;margin:0}
+  .shrink{box-shadow:none}
+}
+</style>
+</head>
+<body>
+
+<div class="pageHead">
+  <h1>Top Tier <em>Facebook post set</em></h1>
+  <p>Eleven organic posts for the Top Tier business page, thirteen render ready graphics across three sizes.
+     Every post is written as a post: one caption, a hook that lands before the See more fold, and a comment
+     section worth opening. Under each one there is a <b>boost later</b> block carrying the headline,
+     description, button, objective and destination a promoted version would need, so turning a post into an
+     ad is a decision and not a rebuild. Everything on this page that is not inside a bordered graphic is
+     page furniture and never exports.</p>
+</div>
+
+<div class="alarm">
+  <h3>Before anything gets posted: the page problem</h3>
+  <p><b>There are two Top Tier Facebook profiles, and the website links to the wrong one.</b>
+     The live page, <code>facebook.com/profile.php?id=61561195826199</code>, has <b>230 followers and 4
+     reviews</b>, carries the tagline and the Instagram handle, and is the one these posts belong on.
+     A second, effectively dead profile, <code>facebook.com/profile.php?id=100054250837723</code>, has
+     <b>5 followers, 0 reviews and 8 photos</b>. That dead one is what <b>toptiermn.com</b> points at, in
+     both the JSON-LD <code>sameAs</code> block and the <code>article:publisher</code> meta tag.</p>
+  <p>Two consequences. Anyone who follows the social link from the website lands on an empty profile and
+     leaves. And if one of these posts ever gets boosted, the boost runs from whichever page it was
+     published on, so publishing on the wrong profile spends money building an audience on an account
+     with five followers. <b>Fix the website link to the 230 follower page before the first post goes up.</b></p>
+  <p><b>Instagram is the third loose end.</b> <code>top_tier_rr</code> has 95 posts and is the most
+     content-rich channel the company owns, and it is linked from nowhere on the website. Every graphic
+     in this set is sized for Instagram as well as Facebook, so the same file works on both.</p>
+  <p><b>One more mismatch worth closing while you are in there.</b> The website and the Google Business
+     Profile both give the address as <b>11440</b> County Road 37 NE. Facebook and Instagram both give
+     <b>14400</b>. One of those is a transposed digit, and it is inconsistent across the exact channels
+     local search reads.</p>
+</div>
+
+<table class="specTable">
+  <caption><b>Sizes used, and why these three.</b> Read off Meta's own live pages on 2026-08-31, not off a
+    marketing blog. The 1.91:1 / 1200x628 box is deliberately absent: that is a paid placement (right column,
+    which is desktop only, plus link previews) and organic feed does not use it. Meta's own right column spec
+    page now says 1:1 at 1080x1080 anyway, so 1200x628 is stale on both counts.</caption>
+  <tr><th>Ratio</th><th>Built at</th><th>Where it shows</th><th>What Meta publishes</th></tr>
+  <tr><td><b>1:1</b></td><td>1080 x 1080<br>(@2x file is 2160 x 2160)</td><td>Facebook feed, Instagram feed</td>
+      <td>Supported in both feeds and recommended for Instagram feed. 1080 x 1080 is Meta's own stated
+          1:1 figure on the minimum pixel page and on the lead ads spec page.</td></tr>
+  <tr><td><b>4:5</b></td><td>1080 x 1350<br>(@2x file is 2160 x 2700)</td><td>Facebook feed, Instagram feed</td>
+      <td>4:5 is now Meta's <b>recommended</b> ratio for single image ads in Facebook feed. Meta's headline
+          resolution for it has moved up to 1440 x 1800, while its lead ads page still publishes 1080 x 1350.
+          <b>Upload the @2x file</b>, which is 2160 x 2700 and clears both numbers.</td></tr>
+  <tr><td><b>9:16</b></td><td>1080 x 1920<br>(@2x file is 2160 x 3840)</td><td>Stories, Reels</td>
+      <td>Meta's current recommendation is 1440 x 2560; 1080 x 1920 is valid 9:16 and the @2x file exceeds
+          the recommendation. <b>Safe zone: roughly 14% off the top, 35% off the bottom, 6% each side</b>,
+          published on all four vertical placement pages. Meta adds that an ad carrying a <b>disclaimer</b>
+          should leave the <b>bottom 40%</b> clear, so the license line on all three stories sits in the
+          header rather than the footer.</td></tr>
+</table>
+
+<table class="specTable">
+  <caption><b>Two things that will bite a boost, found while checking Meta's policies.</b> Neither affects
+    an organic post. Both affect the day one of these gets money behind it.</caption>
+  <tr><th>The trap</th><th>What Meta actually says</th><th>What it costs</th></tr>
+  <tr><td><b>Financing turns an ad into a Special Ad Category</b></td>
+      <td>Since 21 January 2025, US advertisers must declare the <b>Financial products and services</b>
+          category for campaigns promoting loans, long term financing, or <b>0% APR and in-house installment
+          payments</b>. Roofing ads advertise exactly that, constantly.</td>
+      <td>Declaring it kills ZIP code targeting, kills location exclusions, kills lookalikes, and
+          <b>forces a 15 mile radius</b> around any city or pin. For a company working Albertville, St Michael,
+          Otsego and Buffalo on purpose and staying out of the metro on purpose, a forced 15 mile expansion is
+          expensive. None of the eleven posts mentions financing. Keep it that way in anything promoted.</td></tr>
+  <tr><td><b>A lead form may not ask about insurance</b></td>
+      <td>Meta's lead ads policy forbids form fields that request insurance information without prior written
+          permission, and names two examples directly: asking for a person's <b>insurance company name or
+          details</b>, and asking <b>whether a person is insured</b>. Financial fields are barred too, which
+          rules out a budget bracket question.</td>
+      <td>The single most common roofing instant form question is not allowed. Every boost destination in this
+          set is the website or the message thread, and none is a lead form, partly for this reason. A form can
+          still ask name, phone, email, address, roof age, roof type and what they observed.</td></tr>
+</table>
+
+<div class="notes">
+  <div class="note"><b>License, on every post</b><span>MN Statute 326B.87 requires the contractor license number on every piece of advertising, and a business page post promoting roofing services is advertising. <b>BC807923</b> rides on all thirteen graphics twice over: it is baked into the client's own logo artwork, and it repeats in the <code>ttFooterBar</code>. That also means a boosted version is compliant on day one.</span></div>
+  <div class="note"><b>Insurance, reporting only</b><span>The insurance posts report what insurers told the Legislature and quote the letter. None interprets a policy, promises anything, mentions a deductible or says a word about non-renewal. MN 325E.66 subd. 1(a)(1) and 1(a)(3), and 72B.02 subd. 6(2).</span></div>
+  <div class="note"><b>Written for ad review</b><span>Captions avoid asserting anything about the reader's own situation, because Meta's personal attributes policy rejects that framing and a boost puts the post through ad review. Nothing says your roof is failing or your insurer did anything.</span></div>
+  <div class="note"><b>Review policy</b><span>The review post asks for nothing specific: no staff name, no service, no town. Google Rating Manipulation policy, article 7400114, live since 2026-02-16.</span></div>
+  <div class="note"><b>No stock photography</b><span>Every graphic works with zero photographs. Where a real photo would clearly beat a drawing, there is a marked placeholder rather than a stock image of somebody else's roof.</span></div>
+  <div class="note"><b>Render</b><span><code>python work/scripts/render_assets_260831.py --source output/facebook_posts_260831.html</code></span></div>
+</div>
+
+<div class="secHead">
+  <h2>Eleven posts <span>&middot; five angles</span></h2>
+  <p>The angles: the ten year line the insurers drew, roof age you can read from the ground, local and family,
+     storm and hail, and the technical detail. The technical drawings are the ones that earn comments, because
+     they are the posts a stranger can disagree with.</p>
+</div>
+
+<div class="rail">
+<!-- ============================================================
+     POST 1 . THE TEN YEAR LINE
+     ============================================================ -->
+<section class="post">
+  <div class="postHead">
+    <h3><b>Post 1.</b> Insurers drew a line at ten years</h3>
+    <p>Angle: <span>the ten year insurance shift</span> &middot; graphics: <span>fbPostTenYear4x5</span>, <span>fbPostTenYearStory</span></p>
+  </div>
+  <div class="postInner">
+
+  <div class="assetWrap">
+    <div class="assetWrapLabel"><b>The ten year line</b> fbPostTenYear4x5 &middot; feed <i>1080 &times; 1350 &middot; 4:5</i></div>
+    <div class="shrink">
+    <div class="asset themeLight"
+         data-size="portrait"
+         data-asset-id="fbPostTenYear4x5"
+         data-title="Insurers drew a line at ten years"
+         data-genre="data"
+         data-platform="Facebook feed, Instagram feed">
+      <div class="ttStack ttFill">
+        <div class="ttStack ttGrow ttSpread" style="padding:var(--ttCanvasPad) var(--ttCanvasPad) var(--ttSpace6);flex-direction:column;align-items:stretch">
+
+          <div class="ttSpread">
+            <div>
+              <p class="ttEyebrow">Minnesota &middot; February 2026</p>
+              <h2 class="ttH1" style="margin:var(--ttSpace4) 0 0">Insurers drew<br>a line at<br><span class="ttAccentText">ten years.</span></h2>
+            </div>
+            <img class="ttLogo ttLogoSm" src="../assets/images/generated/toptier_logo_1200.png"
+                 alt="Top Tier Roofing and Remodeling LLC, telephone 612 205 5503, Minnesota license BC807923">
+          </div>
+
+          <!-- THE ROOFLINE AND TEN MARK. Canonical, see assets/design/mark_roofline_ten.svg.
+               Identical geometry in roofTurnsTen, tenYearLine and fbPostTenYearStory.
+               Not .ttDraw on purpose: that class sets overflow visible and would
+               override the numeral fill. -->
+          <svg viewBox="0 0 720 330" role="img"
+               style="display:block;height:268px;width:auto;margin:0 auto;overflow:hidden"
+               aria-label="A clean roofline over a large numeral 10">
+            <text x="354" y="321" text-anchor="middle" fill="currentColor"
+                  style="font-family:var(--ttFontDisplay);font-size:440px;letter-spacing:var(--ttTrackTight)">10</text>
+            <path d="M4 194 L360 40 L716 194" fill="none" stroke="var(--ttAccent)"
+                  stroke-width="20" stroke-linejoin="miter" stroke-linecap="butt"/>
+          </svg>
+
+          <div style="background:var(--ttInk);color:var(--ttTextOnDark);padding:var(--ttSpace6) var(--ttSpace7)">
+            <p class="ttLead" style="color:var(--ttTextOnDark);font-weight:var(--ttWeightMedium)">
+              &ldquo;Limiting coverage for roof damage to Actual Cash Value or the depreciated value based on age
+              and condition. This means a 10-year-old roof would have non-recoverable depreciation applied to it.&rdquo;
+            </p>
+            <p class="ttMicro" style="color:var(--ttTextMutedOnDark);margin-top:var(--ttSpace4);
+                      letter-spacing:var(--ttTrackWide);text-transform:uppercase;font-weight:var(--ttWeightBold)">
+              Insurance Federation of Minnesota, letter of February 11, 2026, filed as Appendix D to the
+              Legislature's Task Force on Homeowners and Commercial Property Insurance
+            </p>
+          </div>
+
+          <div style="background:var(--ttRedDeep);color:var(--ttTextOnDark);padding:var(--ttSpace5) var(--ttSpace7);text-align:center">
+            <span class="ttH4" style="font-weight:var(--ttWeightBold);line-height:var(--ttLeadingSnug)">
+              We can't help you with your policy, but we can help you with your roof.
+            </span>
+          </div>
+
+        </div>
+        <div class="ttFooterBar">
+          <span class="ttFooterMark">TOP <span>TIER</span></span>
+          <span class="ttLicenseLine">BC807923</span>
+          <span>(612) 205-5503 &middot; toptiermn.com</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="assetWrap">
+    <div class="assetWrapLabel"><b>The ten year line, story</b> fbPostTenYearStory &middot; story and reel <i>1080 &times; 1920 &middot; 9:16</i>
+      <i>safe frame 288px top / 672px bottom / 72px sides</i></div>
+    <div class="shrink">
+    <div class="asset themeDark"
+         data-size="story"
+         data-asset-id="fbPostTenYearStory"
+         data-title="Insurers drew a line at ten years, story"
+         data-genre="data"
+         data-platform="Instagram story and reel, Facebook story">
+      <div class="ttStack ttFill storySafe ttGap6">
+
+        <div class="ttSpread" style="align-items:flex-end">
+          <img class="ttLogo" style="width:calc(var(--ttSpace12) * 1.8)" src="../assets/images/generated/toptier_logo_1200_light.png"
+               alt="Top Tier Roofing and Remodeling LLC, telephone 612 205 5503, Minnesota license BC807923">
+          <span class="ttMicro" style="letter-spacing:var(--ttTrackWide);text-align:right">
+            <span class="ttLicenseLine">BC807923</span><br>(612) 205-5503 &middot; toptiermn.com</span>
+        </div>
+
+        <div>
+          <p class="ttEyebrow">Minnesota &middot; February 2026</p>
+          <h2 class="ttH2" style="margin:var(--ttSpace4) 0 0">Insurers drew a line<br>at <span class="ttAccentText">ten years.</span></h2>
+        </div>
+
+        <div style="background:var(--ttBgPanel);padding:var(--ttSpace6);border-left:var(--ttBorderAccent)">
+          <p class="ttLead" style="font-weight:var(--ttWeightMedium)">
+            &ldquo;a 10-year-old roof would have non-recoverable depreciation applied to it.&rdquo;
+          </p>
+          <p class="ttMicro" style="margin-top:var(--ttSpace4);letter-spacing:var(--ttTrackWide);
+                    text-transform:uppercase;font-weight:var(--ttWeightBold)">
+            Insurance Federation of Minnesota to the Legislature's Task Force on Homeowners and
+            Commercial Property Insurance, February 11, 2026
+          </p>
+        </div>
+
+        <div style="background:var(--ttRed);color:var(--ttTextOnDark);padding:var(--ttSpace5) var(--ttSpace6);text-align:center">
+          <span class="ttH4" style="font-weight:var(--ttWeightBold);line-height:var(--ttLeadingSnug)">
+            We can't help you with your policy, but we can help you with your roof.
+          </span>
+        </div>
+
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="copyPanel">
+    <h4>The post <i>this is the whole thing a reader sees. One caption field.</i></h4>
+    <div class="copyInner">
+      <p class="hookNote">The hook is the first sentence and it carries a number, which is what stops a
+        thumb. Everything after the first line sits behind See more, so the sentence has to work alone.</p>
+      <textarea readonly rows="17">In February, the Insurance Federation of Minnesota put a number in front of the Legislature: ten years.
+
+The letter was filed as Appendix D to the state Task Force on Homeowners and Commercial Property Insurance. It describes insurers "limiting coverage for roof damage to Actual Cash Value or the depreciated value based on age and condition," and says a 10-year-old roof would have non-recoverable depreciation applied to it.
+
+That is the industry telling lawmakers what it intends to do, in writing, on the record.
+
+We are a roofing company, not an insurance company. We can't help you with your policy, but we can help you with your roof.
+
+What we can tell you is what ten Minnesota winters actually do to asphalt, and roughly where the one over your head sits on that line. That part takes about twenty minutes and it costs nothing.
+
+Top Tier Roofing &amp; Remodeling, Albertville
+(612) 205-5503 . toptiermn.com
+MN License BC807923</textarea>
+      <p class="howto">Click in the box, Ctrl+A, Ctrl+C.</p>
+    </div>
+  </div>
+
+  <div class="boostPanel">
+    <h4>If this gets boosted later <i>not part of the post. These fields only exist on a promoted version.</i></h4>
+    <dl>
+      <dt>Headline</dt><dd>Ten winters, one roof</dd>
+      <dt>Description</dt><dd>Where yours sits</dd>
+      <dt>Button</dt><dd>Learn More</dd>
+      <dt>Objective</dt><dd>Traffic</dd>
+      <dt>Destination</dt><dd><code>toptiermn.com</code></dd>
+    </dl>
+    <p class="boostFoot">Traffic rather than leads, because this one is an argument, not an offer. Send
+      people somewhere they can read more and let the lead come later.</p>
+  </div>
+
+  <div class="whyPanel">
+    <h4>Why this post</h4>
+    <p><b>It reports, it never interprets.</b> Every insurance statement is a quotation from a filed
+      legislative document with the source printed on the graphic. The post never says what any policy
+      pays, never says anyone is covered or is not, never mentions a deductible, and never suggests
+      anyone is being dropped, because in Minnesota non-renewal over roof age is not a thing that is
+      happening. That is MN 325E.66 subd. 1(a)(3), which carries up to ten thousand dollars per
+      violation, and 72B.02 subd. 6(2), under which advertising yourself as a public adjuster is itself
+      the violation.</p>
+    <p><b>It also survives ad review.</b> The caption never asserts anything about the reader's own
+      roof or the reader's own insurer. Meta's personal attributes rule rejects copy that implies you
+      know the viewer's situation, and that rejection would arrive on the day it gets boosted, not the
+      day it gets written.</p>
+  </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     POST 2 . DATING A ROOF FROM THE DRIVEWAY
+     ============================================================ -->
+<section class="post">
+  <div class="postHead">
+    <h3><b>Post 2.</b> Three ways to date a roof without a ladder</h3>
+    <p>Angle: <span>roof age and end of life</span> &middot; graphics: <span>fbPostRoofAge1x1</span>, <span>fbPostRoofAgeStory</span></p>
+  </div>
+  <div class="postInner">
+
+  <div class="assetWrap">
+    <div class="assetWrapLabel"><b>Three ways, no ladder</b> fbPostRoofAge1x1 &middot; feed <i>1080 &times; 1080 &middot; 1:1</i></div>
+    <div class="shrink">
+    <div class="asset themeLight"
+         data-size="square"
+         data-asset-id="fbPostRoofAge1x1"
+         data-title="Three ways to date a roof without a ladder"
+         data-genre="data"
+         data-platform="Facebook feed, Instagram feed">
+      <div class="ttStack ttFill">
+        <div class="ttStack ttGrow ttGap5" style="padding:var(--ttCanvasPad) var(--ttCanvasPad) var(--ttSpace6)">
+
+          <div class="ttSpread">
+            <div>
+              <p class="ttEyebrow">From the driveway</p>
+              <h2 class="ttH2" style="margin:var(--ttSpace3) 0 0">Three ways to date<br>a roof. No ladder.</h2>
+            </div>
+            <img class="ttLogo ttLogoSm" src="../assets/images/generated/toptier_logo_1200.png"
+                 alt="Top Tier Roofing and Remodeling LLC, telephone 612 205 5503, Minnesota license BC807923">
+          </div>
+
+          <div class="ttStack ttGap5 ttGrow" style="min-height:0">
+
+            <div class="ttRow ttGap6" style="flex:1 1 0;min-height:0">
+              <svg class="ttDraw" viewBox="0 0 300 160" style="flex:0 0 300px;width:300px;height:160px;overflow:hidden" role="img"
+                   aria-label="A gutter and downspout with dark granules collected inside and a small pile of grit on the ground">
+                <rect width="300" height="160" fill="var(--ttBgPanel)"/>
+                <rect x="16" y="18" width="268" height="26" fill="var(--ttMatShingle)"/>
+                <g stroke="var(--ttBgPanel)" stroke-width="4">
+                  <path d="M70 18 V44"/><path d="M124 18 V44"/><path d="M178 18 V44"/><path d="M232 18 V44"/>
+                </g>
+                <rect x="16" y="46" width="268" height="34" fill="var(--ttMatGutter)"
+                      stroke="var(--ttMatFlashingEdge)" stroke-width="3"/>
+                <rect x="20" y="62" width="260" height="15" fill="var(--ttMatShingleEdge)"/>
+                <rect x="228" y="80" width="30" height="56" fill="var(--ttMatGutter)"
+                      stroke="var(--ttMatFlashingEdge)" stroke-width="3"/>
+                <rect x="14" y="136" width="272" height="4" fill="var(--ttLine)"/>
+                <path d="M214 136 C222 118 236 112 243 112 C250 112 264 118 272 136 Z" fill="var(--ttMatShingleEdge)"/>
+                <g fill="var(--ttMatShingleEdge)">
+                  <circle cx="196" cy="132" r="3"/><circle cx="184" cy="135" r="2.4"/><circle cx="290" cy="133" r="2.6"/>
+                </g>
+                <circle cx="243" cy="112" r="26" fill="none" stroke="var(--ttAccent)"
+                        stroke-width="var(--ttStrokeBase)" stroke-dasharray="8 6"/>
+              </svg>
+              <div>
+                <p class="ttH4" style="font-family:var(--ttFontDisplay)">1. Grit in the gutter</p>
+                <p class="ttBody ttMutedText" style="margin-top:var(--ttSpace2)">Shingles shed their granules as they age.
+                  A layer of black sand in the trough, or a pile of it at the foot of the downspout, is the surface
+                  coming off.</p>
+              </div>
+            </div>
+
+            <div class="ttRow ttGap6" style="flex:1 1 0;min-height:0">
+              <svg class="ttDraw" viewBox="0 0 300 160" style="flex:0 0 300px;width:300px;height:160px;overflow:hidden" role="img"
+                   aria-label="A roof seen from the side with a dashed straight reference line above a ridge that dips in the middle">
+                <rect width="300" height="160" fill="var(--ttBgPanel)"/>
+                <polygon points="18,142 282,142 250,74 50,74" fill="var(--ttMatShingle)"/>
+                <g stroke="var(--ttMatShingleEdge)" stroke-width="2.5" stroke-opacity=".7">
+                  <path d="M42 96 H258"/><path d="M32 120 H268"/>
+                </g>
+                <path d="M50 74 H250" fill="none" stroke="var(--ttAccent)" stroke-width="3" stroke-dasharray="9 7"/>
+                <path d="M50 76 C110 76 118 94 150 94 C182 94 190 76 250 76" fill="none"
+                      stroke="var(--ttInk)" stroke-width="7" stroke-linecap="round"/>
+                <path d="M150 78 V90" stroke="var(--ttAccent)" stroke-width="4"/>
+                <rect x="18" y="142" width="264" height="4" fill="var(--ttLine)"/>
+              </svg>
+              <div>
+                <p class="ttH4" style="font-family:var(--ttFontDisplay)">2. The line of the ridge</p>
+                <p class="ttBody ttMutedText" style="margin-top:var(--ttSpace2)">Stand back and sight along the peak.
+                  It should be dead straight. A dip or a wave means something under the deck has moved.</p>
+              </div>
+            </div>
+
+            <div class="ttRow ttGap6" style="flex:1 1 0;min-height:0">
+              <svg class="ttDraw" viewBox="0 0 300 160" style="flex:0 0 300px;width:300px;height:160px;overflow:hidden" role="img"
+                   aria-label="A document with one highlighted line for the year the roof was installed">
+                <rect width="300" height="160" fill="var(--ttBgPanel)"/>
+                <rect x="72" y="12" width="156" height="136" fill="var(--ttMatDrywall)"
+                      stroke="var(--ttMatDrywallEdge)" stroke-width="3"/>
+                <rect x="72" y="12" width="156" height="18" fill="var(--ttInkSoft)"/>
+                <g fill="var(--ttLine)">
+                  <rect x="86" y="44" width="128" height="7"/><rect x="86" y="60" width="104" height="7"/>
+                  <rect x="86" y="110" width="128" height="7"/><rect x="86" y="126" width="86" height="7"/>
+                </g>
+                <rect x="80" y="76" width="140" height="26" fill="var(--ttRedTint)" stroke="var(--ttAccent)"
+                      stroke-width="var(--ttStrokeBase)"/>
+                <text x="150" y="95" text-anchor="middle" fill="var(--ttAccent)"
+                      style="font-family:var(--ttFontDisplay);font-size:17px;letter-spacing:.08em">YEAR</text>
+              </svg>
+              <div>
+                <p class="ttH4" style="font-family:var(--ttFontDisplay)">3. The paperwork</p>
+                <p class="ttBody ttMutedText" style="margin-top:var(--ttSpace2)">The permit record or the closing file
+                  usually names the year it went on. Cheapest answer of the three, and the only exact one.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="ttFooterBar">
+          <span class="ttFooterMark">TOP <span>TIER</span></span>
+          <span class="ttLicenseLine">BC807923</span>
+          <span>(612) 205-5503 &middot; toptiermn.com</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="assetWrap">
+    <div class="assetWrapLabel"><b>Three ways, no ladder, story</b> fbPostRoofAgeStory &middot; story and reel <i>1080 &times; 1920 &middot; 9:16</i>
+      <i>safe frame 288px top / 672px bottom / 72px sides</i></div>
+    <div class="shrink">
+    <div class="asset themePanel"
+         data-size="story"
+         data-asset-id="fbPostRoofAgeStory"
+         data-title="Three ways to date a roof without a ladder, story"
+         data-genre="data"
+         data-platform="Instagram story and reel, Facebook story">
+      <div class="ttStack ttFill storySafe ttGap6">
+
+        <div class="ttSpread" style="align-items:flex-end">
+          <img class="ttLogo" style="width:calc(var(--ttSpace12) * 1.8)" src="../assets/images/generated/toptier_logo_1200.png"
+               alt="Top Tier Roofing and Remodeling LLC, telephone 612 205 5503, Minnesota license BC807923">
+          <span class="ttMicro" style="letter-spacing:var(--ttTrackWide);text-align:right">
+            <span class="ttLicenseLine">BC807923</span><br>(612) 205-5503 &middot; toptiermn.com</span>
+        </div>
+
+        <div>
+          <p class="ttEyebrow">From the driveway</p>
+          <h2 class="ttH2" style="margin:var(--ttSpace4) 0 0">Three ways to date<br>a roof. <span class="ttAccentText">No ladder.</span></h2>
+        </div>
+
+        <div class="ttStack ttGap5">
+          <div class="ttRow ttGap5">
+            <span class="ttNumber ttAccentText" style="font-size:var(--ttSizeH3);flex:0 0 auto;width:var(--ttSpace9)">1</span>
+            <div>
+              <p class="ttH4">Grit in the gutter</p>
+              <p class="ttBody ttMutedText" style="margin-top:var(--ttSpace2)">Black sand in the trough, or a pile at the foot of the downspout.</p>
+            </div>
+          </div>
+          <hr class="ttRule">
+          <div class="ttRow ttGap5">
+            <span class="ttNumber ttAccentText" style="font-size:var(--ttSizeH3);flex:0 0 auto;width:var(--ttSpace9)">2</span>
+            <div>
+              <p class="ttH4">The line of the ridge</p>
+              <p class="ttBody ttMutedText" style="margin-top:var(--ttSpace2)">Sight along the peak. It should be dead straight.</p>
+            </div>
+          </div>
+          <hr class="ttRule">
+          <div class="ttRow ttGap5">
+            <span class="ttNumber ttAccentText" style="font-size:var(--ttSizeH3);flex:0 0 auto;width:var(--ttSpace9)">3</span>
+            <div>
+              <p class="ttH4">The paperwork</p>
+              <p class="ttBody ttMutedText" style="margin-top:var(--ttSpace2)">The permit record or the closing file usually names the year.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="copyPanel">
+    <h4>The post <i>one caption field</i></h4>
+    <div class="copyInner">
+      <p class="hookNote">A list post with the count in the first line. The reader knows exactly what they
+        are getting before they decide whether to open it.</p>
+      <textarea readonly rows="19">You can date a roof from the driveway. Three ways, none of which need a ladder.
+
+1. Grit in the gutter. Asphalt shingles shed their granules as they get older. If there is a layer of black sand sitting in the trough, or a small pile of it at the foot of the downspout, that is the surface of the roof coming off a bit at a time.
+
+2. The line of the ridge. Stand back far enough to see the whole peak and sight along it. A ridge should be dead straight. A dip or a slow wave in it means something under the deck has moved, and that is a different conversation than shingles.
+
+3. The paperwork. The permit record or the closing file usually names the year it went on. It is the cheapest of the three and the only one that gives an exact answer.
+
+None of that is a diagnosis. It is three things anybody can check on a Saturday morning with a cup of coffee. If two of them look wrong, that is the point where it is worth having somebody walk it properly.
+
+What year did yours go on? Half the people reading this do not know, and that is the honest answer.
+
+Top Tier Roofing &amp; Remodeling, Albertville
+(612) 205-5503 . toptiermn.com
+MN License BC807923</textarea>
+      <p class="howto">Click in the box, Ctrl+A, Ctrl+C.</p>
+    </div>
+  </div>
+
+  <div class="boostPanel">
+    <h4>If this gets boosted later <i>not part of the post</i></h4>
+    <dl>
+      <dt>Headline</dt><dd>How old is that roof?</dd>
+      <dt>Description</dt><dd>Three checks, no ladder</dd>
+      <dt>Button</dt><dd>Learn More</dd>
+      <dt>Objective</dt><dd>Traffic</dd>
+      <dt>Destination</dt><dd><code>toptiermn.com</code></dd>
+    </dl>
+    <p class="boostFoot">The safest of the eleven to put money behind. It makes no claim about anybody,
+      touches no regulated subject, and is useful whether or not the reader ever calls.</p>
+  </div>
+
+  <div class="whyPanel">
+    <h4>Why this post</h4>
+    <p><b>It ends on a question the reader can actually answer.</b> Most people genuinely do not know
+      what year their roof went on, and saying so out loud gives them permission to admit it in the
+      comments. That is the cheapest reach a business page can buy.</p>
+    <p><b>It gives away something real.</b> Three checks anyone can do without hiring anybody. That is
+      what makes the account worth following rather than worth muting.</p>
+  </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     POST 3 . KICK-OUT FLASHING
+     ============================================================ -->
+<section class="post">
+  <div class="postHead">
+    <h3><b>Post 3.</b> The part almost nobody installs</h3>
+    <p>Angle: <span>the technical detail</span> &middot; graphic: <span>fbPostKickOut4x5</span></p>
+  </div>
+  <div class="postInner">
+
+  <div class="assetWrap">
+    <div class="assetWrapLabel"><b>Kick-out flashing</b> fbPostKickOut4x5 &middot; feed <i>1080 &times; 1350 &middot; 4:5</i></div>
+    <div class="shrink">
+    <div class="asset themeLight"
+         data-size="portrait"
+         data-asset-id="fbPostKickOut4x5"
+         data-title="The whole roof drains to this corner"
+         data-genre="technical"
+         data-platform="Facebook feed, Instagram feed">
+      <div class="ttStack ttFill">
+        <div class="ttStack ttGrow ttGap4" style="padding:var(--ttCanvasPad) var(--ttCanvasPad) var(--ttSpace5)">
+
+          <div class="ttSpread">
+            <div>
+              <p class="ttEyebrow">Roof meets wall</p>
+              <h2 class="ttH2" style="margin:var(--ttSpace3) 0 0">The whole roof drains<br>to this one corner.</h2>
+            </div>
+            <img class="ttLogo ttLogoSm" src="../assets/images/generated/toptier_logo_1200.png"
+                 alt="Top Tier Roofing and Remodeling LLC, telephone 612 205 5503, Minnesota license BC807923">
+          </div>
+
+          <div class="ttRow ttGap4" style="background:var(--ttFail);color:var(--ttTextOnDark);padding:var(--ttSpace2) var(--ttSpace4)">
+            <span style="font-family:var(--ttFontDisplay);font-size:var(--ttSizeH4);line-height:1">WITHOUT</span>
+            <span style="font-size:var(--ttSizeCaption);font-weight:var(--ttWeightBold)">Step flashing simply ends at the bottom of the run</span>
+          </div>
+          <svg class="ttDraw" viewBox="0 0 952 356" style="height:356px" role="img"
+               aria-label="A roof running into a sidewall with no kick-out flashing, so runoff pours behind the siding">
+            <defs>
+              <marker id="fbKoFail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                <path d="M0 0 L10 5 L0 10 Z" fill="var(--ttFail)"/>
+              </marker>
+              <marker id="fbKoWat1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                <path d="M0 0 L10 5 L0 10 Z" fill="var(--ttWater)"/>
+              </marker>
+              <clipPath id="fbKoWallClipB"><polygon points="60,20 600,20 600,300 60,180"/></clipPath>
+            </defs>
+            <polygon points="60,20 600,20 600,300 60,180" fill="var(--ttMatSoffit)" stroke="var(--ttMatFlashingEdge)" stroke-width="2"/>
+            <g clip-path="url(#fbKoWallClipB)" stroke="var(--ttMatFlashingEdge)" stroke-width="2" stroke-opacity=".55">
+              <path d="M60 56 H600"/><path d="M60 92 H600"/><path d="M60 128 H600"/>
+              <path d="M60 164 H600"/><path d="M60 200 H600"/><path d="M60 236 H600"/><path d="M60 272 H600"/>
+            </g>
+            <polygon class="matShingle" points="60,180 600,300 600,356 60,236"/>
+            <g stroke="var(--ttMatShingleEdge)" stroke-width="2" stroke-opacity=".8">
+              <path d="M60 199 L600 319"/><path d="M60 218 L600 338"/>
+            </g>
+            <g class="matFlashing">
+              <path d="M96 186 L156 200 L156 168 L96 154 Z"/>
+              <path d="M172 203 L232 217 L232 185 L172 171 Z"/>
+              <path d="M248 220 L308 234 L308 202 L248 188 Z"/>
+              <path d="M324 237 L384 251 L384 219 L324 205 Z"/>
+              <path d="M400 254 L460 268 L460 236 L400 222 Z"/>
+              <path d="M476 271 L536 285 L536 253 L476 239 Z"/>
+            </g>
+            <path class="matGutter" style="fill:none" d="M604 300 L676 316 M604 336 L676 352 M604 300 V336 M676 316 V352"/>
+            <path class="ttArrowWater" marker-end="url(#fbKoWat1)" d="M150 120 L300 154 L470 226 L578 288"/>
+            <path class="ttArrowFail" marker-end="url(#fbKoFail)" d="M580 292 L596 306 L596 350"/>
+            <path d="M556 296 L600 306 L600 356 L556 346 Z" fill="var(--ttFail)" fill-opacity=".26"/>
+            <rect x="548" y="286" width="62" height="68" rx="6" fill="none" stroke="var(--ttFail)"
+                  stroke-width="var(--ttStrokeBase)" stroke-dasharray="8 6"/>
+            <g class="ttLeader">
+              <path d="M700 96 L640 96 L540 262"/><path d="M700 216 L648 216 L606 330"/>
+            </g>
+            <g class="ttLabelBold">
+              <text x="712" y="90">Every drop off that<tspan x="712" dy="30">slope arrives here</tspan></text>
+              <text x="712" y="210" fill="var(--ttFail)">With nothing to turn it,<tspan x="712" dy="30">it runs behind the</tspan><tspan x="712" dy="30">siding and stays there</tspan></text>
+            </g>
+          </svg>
+
+          <div class="ttRow ttGap4" style="background:var(--ttGood);color:var(--ttTextOnDark);padding:var(--ttSpace2) var(--ttSpace4)">
+            <span style="font-family:var(--ttFontDisplay);font-size:var(--ttSizeH4);line-height:1">WITH</span>
+            <span style="font-size:var(--ttSizeCaption);font-weight:var(--ttWeightBold)">A short bent pan turns the water out into the gutter</span>
+          </div>
+          <div class="ttCenter">
+          <svg class="ttDraw" viewBox="420 228 264 122" style="height:250px;width:541px;flex:0 0 auto;overflow:hidden" role="img"
+               aria-label="Close view of a kick-out flashing at the bottom of the step flashing run, turning water into the gutter">
+            <defs>
+              <marker id="fbKoWat2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                <path d="M0 0 L10 5 L0 10 Z" fill="var(--ttWater)"/>
+              </marker>
+              <clipPath id="fbKoWallClipA"><polygon points="60,20 600,20 600,300 60,180"/></clipPath>
+            </defs>
+            <polygon points="60,20 600,20 600,300 60,180" fill="var(--ttMatSoffit)" stroke="var(--ttMatFlashingEdge)" stroke-width="2"/>
+            <g clip-path="url(#fbKoWallClipA)" stroke="var(--ttMatFlashingEdge)" stroke-width="2" stroke-opacity=".55">
+              <path d="M60 200 H600"/><path d="M60 236 H600"/><path d="M60 272 H600"/>
+            </g>
+            <polygon class="matShingle" points="60,180 600,300 600,356 60,236"/>
+            <g stroke="var(--ttMatShingleEdge)" stroke-width="2" stroke-opacity=".8">
+              <path d="M60 199 L600 319"/><path d="M60 218 L600 338"/>
+            </g>
+            <g class="matFlashing">
+              <path d="M400 254 L460 268 L460 236 L400 222 Z"/>
+              <path d="M476 271 L536 285 L536 253 L476 239 Z"/>
+            </g>
+            <path d="M540 254 L604 268 L648 318 L620 336 L586 300 L540 288 Z"
+                  fill="var(--ttMatFlashing)" stroke="var(--ttInk)"
+                  stroke-width="var(--ttStrokeHeavy)" stroke-linejoin="round"/>
+            <path class="matGutter" style="fill:none" d="M604 300 L676 316 M604 336 L676 352 M604 300 V336 M676 316 V352"/>
+            <path class="ttArrowWater" marker-end="url(#fbKoWat2)" d="M486 244 L560 274"/>
+            <path class="ttArrowWater" marker-end="url(#fbKoWat2)" d="M566 280 L610 306 L640 330"/>
+          </svg>
+          </div>
+
+          <p class="ttMicro" style="border-left:var(--ttBorderAccent);padding-left:var(--ttSpace4)">
+            <b>IRC R903.2.1:</b> a flashing must be installed to divert water away from where the eave of a sloped roof
+            meets a vertical sidewall. Metal flashing must be corrosion resistant and not less than 0.019 inch thick.
+            The code has carried this requirement since 2009 without ever using the trade name for the part.
+          </p>
+
+        </div>
+        <div class="ttFooterBar">
+          <span class="ttFooterMark">TOP <span>TIER</span></span>
+          <span class="ttLicenseLine">BC807923</span>
+          <span>(612) 205-5503 &middot; toptiermn.com</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="copyPanel">
+    <h4>The post <i>one caption field</i></h4>
+    <div class="copyInner">
+      <p class="hookNote">Opens on the claim, not on a windup. The last line is an open question aimed at
+        other trades, which is the part that fills a comment section.</p>
+      <textarea readonly rows="19">This is the part of a roof that almost nobody installs, and it is the one that rots the wall.
+
+Where a roof runs into a sidewall, the entire slope above it drains toward one corner. Step flashing carries that water down the wall, piece by piece, tucked under each course. Then the run ends. And if the last piece just stops at the bottom, all of it pours straight off the end, behind the siding, into the sheathing, and sits there.
+
+You do not see it for years. Then somebody pulls a window trim board off and there is nothing behind it.
+
+The fix is a kick-out: a short piece of bent metal at the bottom of the run that turns the water back out into the gutter. It is one of the cheapest parts on the whole job.
+
+IRC R903.2.1 has required a flashing that diverts water at that corner since 2009. It just never uses the trade name for the part, which is probably half the reason it goes missing.
+
+Go look at the bottom of any roof-to-wall run on your street. Most of them do not have one.
+
+Roofers, siders, inspectors: how often do you actually find one out there?
+
+Top Tier Roofing &amp; Remodeling, Albertville
+(612) 205-5503 . toptiermn.com
+MN License BC807923</textarea>
+      <p class="howto">Click in the box, Ctrl+A, Ctrl+C.</p>
+    </div>
+  </div>
+
+  <div class="boostPanel">
+    <h4>If this gets boosted later <i>not part of the post</i></h4>
+    <dl>
+      <dt>Headline</dt><dd>The part nobody installs</dd>
+      <dt>Description</dt><dd>Roof to wall, done right</dd>
+      <dt>Button</dt><dd>Learn More</dd>
+      <dt>Objective</dt><dd>Engagement</dd>
+      <dt>Destination</dt><dd><code>toptiermn.com</code></dd>
+    </dl>
+    <p class="boostFoot">Engagement rather than leads. This one is a credibility asset. Its job is to make
+      the page look like it is run by people who know the trade, and the reach it earns carries the
+      posts that do ask for something.</p>
+  </div>
+
+  <div class="whyPanel">
+    <h4>Why this post</h4>
+    <p><b>Technical detail is the best organic content this page can make.</b> It costs nothing, needs no
+      photograph, cannot be copied by a competitor who does not know the answer, and it argues. A homeowner
+      shares it because it is alarming. A tradesman comments on it because they have an opinion.</p>
+    <p><b>It proves the craft without claiming anything.</b> No superlatives, no promises, no comparison to
+      any named competitor. Just a code citation, a mechanism, and an invitation to go look.</p>
+  </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     POST 4 . ICE DAMS
+     ============================================================ -->
+<section class="post">
+  <div class="postHead">
+    <h3><b>Post 4.</b> An ice dam is not a gutter problem</h3>
+    <p>Angle: <span>the technical detail</span> &middot; graphic: <span>fbPostIceDam4x5</span></p>
+  </div>
+  <div class="postInner">
+
+  <div class="assetWrap">
+    <div class="assetWrapLabel"><b>How an ice dam forms</b> fbPostIceDam4x5 &middot; feed <i>1080 &times; 1350 &middot; 4:5</i></div>
+    <div class="shrink">
+    <div class="asset themeLight"
+         data-size="portrait"
+         data-asset-id="fbPostIceDam4x5"
+         data-title="An ice dam is not a gutter problem"
+         data-genre="technical"
+         data-platform="Facebook feed, Instagram feed">
+      <div class="ttStack ttFill">
+        <div class="ttStack ttGrow ttGap4" style="padding:var(--ttCanvasPad) var(--ttCanvasPad) var(--ttSpace5)">
+
+          <div class="ttSpread">
+            <div>
+              <p class="ttEyebrow">Minnesota, every February</p>
+              <h2 class="ttH2" style="margin:var(--ttSpace3) 0 0">Water runs <span class="ttAccentText">uphill</span><br>if you give it a dam.</h2>
+            </div>
+            <img class="ttLogo ttLogoSm" src="../assets/images/generated/toptier_logo_1200.png"
+                 alt="Top Tier Roofing and Remodeling LLC, telephone 612 205 5503, Minnesota license BC807923">
+          </div>
+
+          <svg class="ttDraw" viewBox="0 0 952 620" style="height:620px;flex:0 0 auto" role="img"
+               aria-label="Cutaway through an eave showing attic heat melting snow, the meltwater refreezing at the cold overhang, and water backing up under the shingles behind the ice">
+            <defs>
+              <marker id="fbIdHeat" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                <path d="M0 0 L10 5 L0 10 Z" fill="var(--ttHeat)"/>
+              </marker>
+              <marker id="fbIdWat" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                <path d="M0 0 L10 5 L0 10 Z" fill="var(--ttWater)"/>
+              </marker>
+              <marker id="fbIdFail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                <path d="M0 0 L10 5 L0 10 Z" fill="var(--ttFail)"/>
+              </marker>
+            </defs>
+
+            <polygon class="matAir" points="40,208 410,374 410,418 40,418"/>
+            <polygon class="matLumber"    points="40,152 600,404 600,448 40,196"/>
+            <polygon class="matSheathing" points="40,138 600,390 600,404 40,152"/>
+            <polygon class="matUnderlayment" points="40,130 220,211 220,215 40,134"/>
+            <polygon class="matIceWater"  points="220,211 600,382 600,390 220,219"/>
+            <polygon class="matShingle"   points="40,118 600,370 600,382 40,130"/>
+            <rect class="matLumber" x="600" y="390" width="18" height="66"/>
+            <rect class="matSoffit" x="434" y="446" width="166" height="10"/>
+            <rect class="matSheathing" x="410" y="420" width="12" height="200"/>
+            <rect class="matShingleAlt" x="422" y="456" width="12" height="164"/>
+            <rect class="matLumber" x="352" y="402" width="58" height="18"/>
+            <rect class="matLumber" x="352" y="420" width="14" height="200"/>
+            <rect class="matInsulation" x="40" y="418" width="370" height="38"/>
+            <rect class="matDrywall" x="40" y="456" width="370" height="10"/>
+
+            <path fill="var(--ttMatSky)" stroke="var(--ttAxis)" stroke-width="2.5"
+                  d="M40 118 L600 370 L600 324 L40 90 Z"/>
+            <path class="matIce" d="M418 288 L600 370 L638 388 L628 336 L548 300 L466 268 Z"/>
+            <path class="matWater" d="M316 240 L418 286 L408 302 L302 252 Z"/>
+
+            <path class="ttArrowAir" marker-end="url(#fbIdHeat)" d="M150 414 V300"/>
+            <path class="ttArrowAir" marker-end="url(#fbIdHeat)" d="M272 414 V352"/>
+            <path class="ttArrowWater" marker-end="url(#fbIdWat)" d="M150 178 L268 230"/>
+            <path class="ttArrowFail" marker-end="url(#fbIdFail)" d="M446 310 L352 268"/>
+
+            <g stroke="var(--ttInkSoft)" stroke-width="2" stroke-dasharray="6 6">
+              <path d="M220 74 V204"/><path d="M410 74 V620"/><path d="M600 74 V366"/>
+            </g>
+            <g stroke="var(--ttInk)" stroke-width="2.5" fill="none">
+              <path d="M226 74 H404"/><path d="M416 74 H594"/>
+              <path d="M220 74 L236 68 M220 74 L236 80 M410 74 L394 68 M410 74 L394 80"/>
+              <path d="M410 74 L426 68 M410 74 L426 80 M600 74 L584 68 M600 74 L584 80"/>
+            </g>
+            <text class="ttLabelBold" x="315" y="58" text-anchor="middle" fill="var(--ttMatIceWaterEdge)">24 in. minimum</text>
+            <text class="ttLabel" x="315" y="106" text-anchor="middle" style="font-size:20px">inside the wall line</text>
+            <text class="ttLabel" x="505" y="58" text-anchor="middle" style="font-size:20px">overhang</text>
+            <text class="ttLabel" x="418" y="612" style="font-size:20px" fill="var(--ttInkSoft)">exterior wall line</text>
+
+            <g class="ttLeader">
+              <path d="M694 106 L610 106 L262 172"/>
+              <path d="M694 240 L642 240 L570 344"/>
+              <path d="M694 368 L648 368 L424 296"/>
+              <path d="M694 516 L652 516 L582 380"/>
+            </g>
+            <g class="ttLabelBold">
+              <text x="706" y="112"><tspan fill="var(--ttHeat)">1.</tspan> Heat leaking out of<tspan x="706" dy="30">the house melts the</tspan><tspan x="706" dy="30">snow on the warm roof</tspan></text>
+              <text x="706" y="240"><tspan fill="var(--ttWater)">2.</tspan> The water runs down<tspan x="706" dy="30">to the cold overhang</tspan><tspan x="706" dy="30">and freezes there</tspan></text>
+              <text x="706" y="368"><tspan fill="var(--ttFail)">3.</tspan> The dam grows. Water<tspan x="706" dy="30">pools behind it and</tspan><tspan x="706" dy="30">backs UP under the</tspan><tspan x="706" dy="30">shingles</tspan></text>
+              <text x="706" y="516" fill="var(--ttMatIceWaterEdge)"><tspan>4.</tspan> Which is why the<tspan x="706" dy="30">membrane has to reach</tspan><tspan x="706" dy="30">past the wall, not just</tspan><tspan x="706" dy="30">to the gutter</tspan></text>
+            </g>
+          </svg>
+
+          <div class="ttRow ttGap4" style="background:var(--ttInk);color:var(--ttTextOnDark);padding:var(--ttSpace4) var(--ttSpace5)">
+            <span style="font-family:var(--ttFontDisplay);font-size:var(--ttSizeH4);line-height:var(--ttLeadingSnug)">
+              A bigger gutter fixes none of this. The fix is upstream, in the attic.
+            </span>
+          </div>
+
+          <p class="ttMicro" style="border-left:var(--ttBorderAccent);padding-left:var(--ttSpace4)">
+            <b>Sources:</b> the 24 inch figure is <b>IRC R905.1.2</b> as adopted in Minnesota Rules chapter 1309.
+            The mechanism and the attic fix are the Minnesota Department of Commerce Home Energy Guide,
+            <i>Attic air leaks = ice dams</i>, which names warm air leaking into the attic as the primary cause.
+            Overhang shown at 24 inches; the membrane run any given roof needs depends on how far its own eave projects.
+          </p>
+
+        </div>
+        <div class="ttFooterBar">
+          <span class="ttFooterMark">TOP <span>TIER</span></span>
+          <span class="ttLicenseLine">BC807923</span>
+          <span>(612) 205-5503 &middot; toptiermn.com</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="copyPanel">
+    <h4>The post <i>one caption field</i></h4>
+    <div class="copyInner">
+      <p class="hookNote">Contradiction in the first line. Almost everyone reading believes the opposite,
+        which is exactly why they keep reading and why they argue underneath.</p>
+      <textarea readonly rows="19">An ice dam is not a gutter problem. A bigger gutter fixes none of it.
+
+Here is the actual sequence.
+
+Heat leaks out of the house into the attic and warms the roof deck from underneath. Snow sitting on the warm part melts. That water runs down the slope until it reaches the overhang, which is cold because there is no heated house under it, and there it refreezes. The ridge of ice grows. Water pools behind it.
+
+And water that is sitting still will go wherever there is a gap. So it backs UP under the shingles, uphill, and into the deck.
+
+Two things stop it, and only one of them is a roofing job. Air sealing the attic so the heat never reaches the deck in the first place is the real fix. Ice and water membrane run far enough up the roof is the insurance policy on the fix, so that when water does back up it hits rubber instead of wood.
+
+The code number is 24 inches inside the exterior wall line, IRC R905.1.2 as adopted in Minnesota Rules chapter 1309. Note what that says. Twenty-four inches inside the WALL, not twenty-four inches up from the edge. On a house with a deep overhang those are nowhere near the same measurement, and that is where a lot of roofs quietly come up short.
+
+Top Tier Roofing &amp; Remodeling, Albertville
+(612) 205-5503 . toptiermn.com
+MN License BC807923</textarea>
+      <p class="howto">Click in the box, Ctrl+A, Ctrl+C.</p>
+    </div>
+  </div>
+
+  <div class="boostPanel">
+    <h4>If this gets boosted later <i>not part of the post</i></h4>
+    <dl>
+      <dt>Headline</dt><dd>Why ice dams come back</dd>
+      <dt>Description</dt><dd>The fix is not the gutter</dd>
+      <dt>Button</dt><dd>Learn More</dd>
+      <dt>Objective</dt><dd>Engagement</dd>
+      <dt>Destination</dt><dd><code>toptiermn.com</code></dd>
+    </dl>
+    <p class="boostFoot">If it ever gets money, it should get it in November or December, when the subject
+      is on the reader's mind and the graphic answers a question they already have.</p>
+  </div>
+
+  <div class="whyPanel">
+    <h4>Why this post</h4>
+    <p><b>It tells a homeowner something against interest.</b> The honest answer is that the primary fix is
+      in the attic, which is not a re-roof. Saying that out loud is the single most persuasive thing on
+      this page, because it is the opposite of what a storm chaser says.</p>
+    <p><b>The distinction at the end is the whole argument.</b> Twenty-four inches inside the wall line
+      rather than twenty-four inches up from the edge is a real difference on a real house, and it is
+      the kind of detail that separates a roofer from a crew.</p>
+  </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     POST 5 . DRIP EDGE
+     ============================================================ -->
+<section class="post">
+  <div class="postHead">
+    <h3><b>Post 5.</b> Two inches of metal</h3>
+    <p>Angle: <span>the technical detail</span> &middot; graphic: <span>fbPostDripEdge1x1</span></p>
+  </div>
+  <div class="postInner">
+
+  <div class="assetWrap">
+    <div class="assetWrapLabel"><b>Drip edge at the eave</b> fbPostDripEdge1x1 &middot; feed <i>1080 &times; 1080 &middot; 1:1</i></div>
+    <div class="shrink">
+    <div class="asset themeLight"
+         data-size="square"
+         data-asset-id="fbPostDripEdge1x1"
+         data-title="Two inches of metal decides where the water lands"
+         data-genre="technical"
+         data-platform="Facebook feed, Instagram feed">
+      <div class="ttStack ttFill">
+        <div class="ttStack ttGrow ttGap4" style="padding:var(--ttCanvasPad) var(--ttCanvasPad) var(--ttSpace5)">
+
+          <div class="ttSpread">
+            <div>
+              <p class="ttEyebrow">The eave</p>
+              <h2 class="ttH2" style="margin:var(--ttSpace3) 0 0">In the gutter,<br>or behind it.</h2>
+            </div>
+            <img class="ttLogo ttLogoSm" src="../assets/images/generated/toptier_logo_1200.png"
+                 alt="Top Tier Roofing and Remodeling LLC, telephone 612 205 5503, Minnesota license BC807923">
+          </div>
+
+          <div class="ttRow ttGap5" style="flex:1 1 auto;min-height:0;align-items:stretch">
+
+            <div class="ttStack" style="flex:1 1 0;min-width:0">
+              <div class="ttRow ttGap3" style="background:var(--ttFail);color:var(--ttTextOnDark);padding:var(--ttSpace2) var(--ttSpace4)">
+                <span style="font-family:var(--ttFontDisplay);font-size:var(--ttSizeH4);line-height:1">TIGHT</span>
+                <span style="font-size:var(--ttSizeCaption);font-weight:var(--ttWeightBold)">Metal against the fascia</span>
+              </div>
+              <svg class="ttDraw" viewBox="392 186 236 226" style="height:392px;overflow:hidden;flex:0 0 auto" role="img"
+                   aria-label="Close cutaway of an eave where the drip edge is tight to the fascia and water runs down the board behind the gutter">
+                <defs>
+                  <marker id="fbDeArrB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                    <path d="M0 0 L10 5 L0 10 Z" fill="var(--ttFail)"/>
+                  </marker>
+                </defs>
+                <rect x="380" y="180" width="260" height="240" fill="var(--ttBgPanel)"/>
+                <rect class="matSoffit"  x="380" y="352" width="90" height="18"/>
+                <polygon class="matLumber"    points="380,225 470,265 470,338 380,298"/>
+                <polygon class="matSheathing" points="380,202 470,242 470,265 380,225"/>
+                <polygon class="matShingle"   points="380,176 470,216 470,235 380,195"/>
+                <rect class="matLumber"  x="470" y="242" width="30" height="130"/>
+                <path d="M512 260 L512 394 L568 394 L580 373 L562 356 L586 342 L586 268 L606 260"
+                      fill="var(--ttMatGutter)" stroke="var(--ttMatFlashingEdge)" stroke-width="5" stroke-linejoin="round"/>
+                <path style="fill:none;stroke:var(--ttInk);stroke-width:15;stroke-linejoin:round;stroke-linecap:round"
+                      d="M400 210.6 L470 242 L500 256 L500 316 L509 329 L496 332"/>
+                <path style="fill:none;stroke:var(--ttMatFlashingHilite);stroke-width:8;stroke-linejoin:round;stroke-linecap:round"
+                      d="M400 210.6 L470 242 L500 256 L500 316 L509 329 L496 332"/>
+                <rect x="488" y="300" width="30" height="98" rx="6" fill="none"
+                      stroke="var(--ttFail)" stroke-width="var(--ttStrokeBase)" stroke-dasharray="8 6"/>
+                <g fill="var(--ttWater)" stroke="var(--ttWaterDeep)" stroke-width="1.5">
+                  <path transform="translate(506,338)" d="M0 0 C-6 9 -9 14 -9 18 A9 9 0 0 0 9 18 C9 14 6 9 0 0 Z"/>
+                  <path transform="translate(506,364)" d="M0 0 C-6 9 -9 14 -9 18 A9 9 0 0 0 9 18 C9 14 6 9 0 0 Z"/>
+                </g>
+                <path class="ttArrowFail" marker-end="url(#fbDeArrB)" d="M506 386 L506 404"/>
+              </svg>
+              <p class="ttH4" style="font-family:var(--ttFontDisplay);color:var(--ttFail);margin-top:var(--ttSpace3)">Behind the gutter</p>
+            </div>
+
+            <div class="ttStack" style="flex:1 1 0;min-width:0">
+              <div class="ttRow ttGap3" style="background:var(--ttGood);color:var(--ttTextOnDark);padding:var(--ttSpace2) var(--ttSpace4)">
+                <span style="font-family:var(--ttFontDisplay);font-size:var(--ttSizeH4);line-height:1">CLEAR</span>
+                <span style="font-size:var(--ttSizeCaption);font-weight:var(--ttWeightBold)">Metal held off the fascia</span>
+              </div>
+              <svg class="ttDraw" viewBox="392 186 236 226" style="height:392px;overflow:hidden;flex:0 0 auto" role="img"
+                   aria-label="Close cutaway of the same eave where the drip edge stands clear of the fascia and the water falls free into the gutter">
+                <defs>
+                  <marker id="fbDeArrA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                    <path d="M0 0 L10 5 L0 10 Z" fill="var(--ttWater)"/>
+                  </marker>
+                </defs>
+                <rect x="380" y="180" width="260" height="240" fill="var(--ttBgPanel)"/>
+                <rect class="matSoffit"  x="380" y="352" width="90" height="18"/>
+                <polygon class="matLumber"    points="380,225 470,265 470,338 380,298"/>
+                <polygon class="matSheathing" points="380,202 470,242 470,265 380,225"/>
+                <polygon class="matShingle"   points="380,176 470,216 470,235 380,195"/>
+                <rect class="matLumber"  x="470" y="242" width="30" height="130"/>
+                <path d="M512 260 L512 394 L568 394 L580 373 L562 356 L586 342 L586 268 L606 260"
+                      fill="var(--ttMatGutter)" stroke="var(--ttMatFlashingEdge)" stroke-width="5" stroke-linejoin="round"/>
+                <path style="fill:none;stroke:var(--ttInk);stroke-width:15;stroke-linejoin:round;stroke-linecap:round"
+                      d="M400 210.6 L470 242 L503 256 L513 318 L542 340 L528 348"/>
+                <path style="fill:none;stroke:var(--ttMatFlashingHilite);stroke-width:8;stroke-linejoin:round;stroke-linecap:round"
+                      d="M400 210.6 L470 242 L503 256 L513 318 L542 340 L528 348"/>
+                <rect x="494" y="246" width="62" height="112" rx="6" fill="none"
+                      stroke="var(--ttGood)" stroke-width="var(--ttStrokeBase)" stroke-dasharray="8 6"/>
+                <g fill="var(--ttWater)" stroke="var(--ttWaterDeep)" stroke-width="1.5">
+                  <path transform="translate(539,358)" d="M0 0 C-6 9 -9 14 -9 18 A9 9 0 0 0 9 18 C9 14 6 9 0 0 Z"/>
+                  <path transform="translate(542,384)" d="M0 0 C-6 9 -9 14 -9 18 A9 9 0 0 0 9 18 C9 14 6 9 0 0 Z"/>
+                </g>
+                <path class="ttArrowWater" marker-end="url(#fbDeArrA)" d="M545 392 L545 406"/>
+              </svg>
+              <p class="ttH4" style="font-family:var(--ttFontDisplay);color:var(--ttGood);margin-top:var(--ttSpace3)">Into the trough</p>
+            </div>
+
+          </div>
+
+          <p class="ttMicro" style="border-left:var(--ttBorderAccent);padding-left:var(--ttSpace4)">
+            <b>IRC R905.2.8.5</b>, adopted in Minnesota Rules chapter 1309. Drip edge is required at eaves and rakes.
+            Adjacent pieces lap not less than 2 inches. The metal extends not less than 1/4 inch below the sheathing
+            and not less than 2 inches back onto the deck, fastened not more than 12 inches on center. Underlayment
+            goes <b>over</b> the drip edge at the eave and <b>under</b> it at the rake.
+          </p>
+
+        </div>
+        <div class="ttFooterBar">
+          <span class="ttFooterMark">TOP <span>TIER</span></span>
+          <span class="ttLicenseLine">BC807923</span>
+          <span>(612) 205-5503 &middot; toptiermn.com</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="copyPanel">
+    <h4>The post <i>one caption field</i></h4>
+    <div class="copyInner">
+      <p class="hookNote">Small number, large consequence, both inside the first line. Same shape as the
+        kick-out post but a different part, so the two can run apart without repeating themselves.</p>
+      <textarea readonly rows="17">Two inches of bent metal decides whether the water lands in your gutter or behind it.
+
+Drip edge is the strip that runs along the bottom edge of a roof. Its entire job is to hold that edge out away from the fascia board so water leaves the metal and falls free.
+
+Set it tight against the fascia instead and surface tension does the rest. The water clings to the metal, wraps around it, runs down the face of the board, slips behind the gutter and sits on the wood. Rot at a fascia is almost never the gutter's fault. It is usually this.
+
+The requirement is IRC R905.2.8.5, adopted in Minnesota Rules chapter 1309. Drip edge at eaves and rakes, laps of at least 2 inches, extending at least a quarter inch below the sheathing and at least 2 inches back onto the deck, fastened at 12 inches on center or tighter.
+
+There is one more line in it that gets missed constantly: underlayment goes OVER the drip edge at the eave, and UNDER it at the rake. That order is not a preference. Reverse it and the metal is decoration.
+
+Cheap part. First place a fast job shows.
+
+Top Tier Roofing &amp; Remodeling, Albertville
+(612) 205-5503 . toptiermn.com
+MN License BC807923</textarea>
+      <p class="howto">Click in the box, Ctrl+A, Ctrl+C.</p>
+    </div>
+  </div>
+
+  <div class="boostPanel">
+    <h4>If this gets boosted later <i>not part of the post</i></h4>
+    <dl>
+      <dt>Headline</dt><dd>Two inches of metal</dd>
+      <dt>Description</dt><dd>Where fascia rot starts</dd>
+      <dt>Button</dt><dd>Learn More</dd>
+      <dt>Objective</dt><dd>Engagement</dd>
+      <dt>Destination</dt><dd><code>toptiermn.com</code></dd>
+    </dl>
+    <p class="boostFoot">Same reasoning as the kick-out post. Credibility first, and the reach it earns
+      carries the posts that ask for something.</p>
+  </div>
+
+  <div class="whyPanel">
+    <h4>Why this post</h4>
+    <p><b>It reassigns blame to the right part.</b> Everybody with a rotten fascia thinks their gutters
+      failed. Telling them it was probably the flashing detail above the gutter is new information, and
+      new information is what gets forwarded.</p>
+    <p><b>Two panels of the same drawing with one variable changed.</b> No photograph could show this,
+      which is why the drawing beats a photo here rather than standing in for one.</p>
+  </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     POST 6 . HERE WE ARE
+     Geography is projected, not drawn by eye. Town positions are the
+     US Census Bureau 2023 Gazetteer internal points; the office point is
+     the Census geocoder result for 11440 County Road 37 NE. The river and
+     the interstate are deliberately simplified lines, not survey traces.
+     ============================================================ -->
+<section class="post">
+  <div class="postHead">
+    <h3><b>Post 6.</b> Here we are</h3>
+    <p>Angle: <span>local and family</span> &middot; graphic: <span>fbPostHereWeAre4x5</span></p>
+  </div>
+  <div class="postInner">
+
+  <div class="assetWrap">
+    <div class="assetWrapLabel"><b>Here we are</b> fbPostHereWeAre4x5 &middot; feed <i>1080 &times; 1350 &middot; 4:5</i></div>
+    <div class="shrink">
+    <div class="asset themeLight"
+         data-size="portrait"
+         data-asset-id="fbPostHereWeAre4x5"
+         data-title="Here we are, Albertville"
+         data-genre="data"
+         data-platform="Facebook feed, Instagram feed">
+      <div class="ttStack ttFill">
+
+        <div class="ttSpread" style="background:var(--ttInk);padding:var(--ttSpace6) var(--ttCanvasPad);align-items:flex-start">
+          <div>
+            <p class="ttEyebrow">Wright County, Minnesota</p>
+            <h2 class="ttH1" style="margin:var(--ttSpace3) 0 0;color:var(--ttTextOnDark)">Here we are.</h2>
+            <p class="ttCaption" style="margin:var(--ttSpace4) 0 0;color:var(--ttTextMutedOnDark)">11440 County Road 37 NE<br>Albertville, MN 55301</p>
+          </div>
+          <img class="ttLogo ttLogoSm" src="../assets/images/generated/toptier_logo_1200_light.png"
+               alt="Top Tier Roofing and Remodeling LLC, telephone 612 205 5503, Minnesota license BC807923">
+        </div>
+
+        <div class="ttGrow" style="position:relative;min-height:0;overflow:hidden;background:var(--ttMapLand)">
+          <svg class="ttLoc" viewBox="0 0 1080 739" preserveAspectRatio="xMidYMid slice" role="img"
+               aria-label="Simplified locator map of central Minnesota. A red star marks the Top Tier office at Albertville, sitting on Interstate 94 between Monticello and Rogers and just southwest of the Mississippi River, with St Michael, Otsego, Elk River, Buffalo and Maple Grove around it.">
+          <style>
+          .ttLoc{position:absolute;inset:0;width:100%;height:100%;font-family:var(--ttFontBody)}
+          .ttLocLand{fill:var(--ttMapLand)}
+          .ttLocGlow{fill:none;stroke:var(--ttMapWaterTint);stroke-linecap:round;stroke-linejoin:round}
+          .ttLocRiver{fill:none;stroke:var(--ttMapWater);stroke-linecap:round;stroke-linejoin:round}
+          .ttLocRoadCase{fill:none;stroke:var(--ttMapLand);stroke-linecap:round;stroke-linejoin:round}
+          .ttLocRoad{fill:none;stroke:var(--ttMapRoad);stroke-linecap:round;stroke-linejoin:round}
+          .ttLocDot{fill:var(--ttMapDot);stroke:var(--ttMapLand)}
+          .ttLocTown{fill:var(--ttMapDot);font-weight:var(--ttWeightBold)}
+          .ttLocCounty{fill:var(--ttMapDotMuted);font-weight:var(--ttWeightBold);letter-spacing:var(--ttTrackCaps);text-transform:uppercase;opacity:.62}
+          .ttLocWater{fill:var(--ttMapWater);font-weight:var(--ttWeightBold);letter-spacing:var(--ttTrackCaps);opacity:.9}
+          .ttLocChip{fill:var(--ttMapDotMuted)}
+          .ttLocChipText{fill:var(--ttMapDotMuted);font-weight:var(--ttWeightBold);letter-spacing:var(--ttTrackCaps);text-transform:uppercase}
+          .ttLocStar{fill:var(--ttRed);stroke:var(--ttRedDeep);stroke-linejoin:round}
+          .ttLocHere{fill:var(--ttRed);font-family:var(--ttFontDisplay);font-weight:var(--ttWeightBlack)}
+          .ttLocHereSub{fill:var(--ttMapDot);font-weight:var(--ttWeightBold);letter-spacing:var(--ttTrackCaps);text-transform:uppercase}
+          .ttLocShield{fill:var(--ttMapRoad)}
+          .ttLocShieldNum{fill:var(--ttMapLand);font-family:var(--ttFontDisplay);font-weight:var(--ttWeightBlack);text-anchor:middle}
+          </style>
+          <defs><clipPath id="fbLocClip"><rect x="0" y="0" width="1080" height="739"/></clipPath>
+          <radialGradient id="fbLocGlow"><stop offset="0" stop-color="var(--ttRedTint)" stop-opacity="1"/><stop offset=".55" stop-color="var(--ttRedTint)" stop-opacity=".92"/><stop offset="1" stop-color="var(--ttRedTint)" stop-opacity="0"/></radialGradient></defs>
+          <rect class="ttLocLand" x="0" y="0" width="1080" height="739"/>
+          <text class="ttLocCounty" x="209" y="646" text-anchor="middle" font-size="25">Wright County</text>
+          <text class="ttLocCounty" x="755" y="108" text-anchor="middle" font-size="25">Sherburne County</text>
+          <g clip-path="url(#fbLocClip)">
+          <path class="ttLocGlow"  stroke-width="40" d="M -165.7 -260.8 C -150.7 -231.4 -106.9 -136.5 -75.8 -84.2 C -44.8 -31.9 -25.2 9.0 20.9 53.2 C 67.0 97.3 147.6 148.7 200.5 180.7 C 253.5 212.8 292.7 234.1 338.7 245.5 C 384.8 257.0 435.5 249.8 476.9 249.4 C 518.4 249.1 554.1 243.6 587.5 243.6 C 620.9 243.6 652.0 233.7 677.3 249.4 C 702.7 265.1 721.1 308.3 739.5 337.8 C 757.9 367.2 761.4 407.4 787.9 426.1 C 814.4 444.7 860.4 423.5 898.4 449.6 C 936.4 475.8 987.6 534.7 1015.9 583.1 C 1044.2 631.5 1054.1 684.5 1068.4 740.1 C 1082.7 795.7 1096.0 887.3 1101.6 916.7"/>
+          <path class="ttLocRiver" stroke-width="15" d="M -165.7 -260.8 C -150.7 -231.4 -106.9 -136.5 -75.8 -84.2 C -44.8 -31.9 -25.2 9.0 20.9 53.2 C 67.0 97.3 147.6 148.7 200.5 180.7 C 253.5 212.8 292.7 234.1 338.7 245.5 C 384.8 257.0 435.5 249.8 476.9 249.4 C 518.4 249.1 554.1 243.6 587.5 243.6 C 620.9 243.6 652.0 233.7 677.3 249.4 C 702.7 265.1 721.1 308.3 739.5 337.8 C 757.9 367.2 761.4 407.4 787.9 426.1 C 814.4 444.7 860.4 423.5 898.4 449.6 C 936.4 475.8 987.6 534.7 1015.9 583.1 C 1044.2 631.5 1054.1 684.5 1068.4 740.1 C 1082.7 795.7 1096.0 887.3 1101.6 916.7"/>
+          <circle cx="540" cy="370" r="118" fill="url(#fbLocGlow)"/>
+          <path class="ttLocRoadCase" stroke-width="24" d="M -193.3 -182.3 C -177.2 -161.1 -128.1 -94.7 -96.6 -54.8 C -65.0 -14.9 -40.1 21.1 -4.0 57.1 C 32.2 93.1 83.5 132.3 120.4 161.1 C 157.2 189.9 187.2 211.2 217.1 229.8 C 247.1 248.5 269.4 257.3 300.0 273.0 C 330.7 288.7 362.7 306.4 400.9 324.0 C 439.2 341.7 496.5 362.6 529.4 379.0 C 562.4 395.3 579.2 409.7 598.5 422.2 C 617.9 434.6 624.8 436.5 645.5 453.6 C 666.3 470.6 694.6 496.1 722.9 524.2 C 751.3 552.3 776.4 590.3 815.5 622.3 C 854.7 654.4 922.2 683.8 957.9 716.5 C 993.6 749.3 1012.7 793.4 1029.7 818.6 C 1046.8 843.8 1055.0 859.5 1060.1 867.7"/>
+          <path class="ttLocRoad"     stroke-width="12" d="M -193.3 -182.3 C -177.2 -161.1 -128.1 -94.7 -96.6 -54.8 C -65.0 -14.9 -40.1 21.1 -4.0 57.1 C 32.2 93.1 83.5 132.3 120.4 161.1 C 157.2 189.9 187.2 211.2 217.1 229.8 C 247.1 248.5 269.4 257.3 300.0 273.0 C 330.7 288.7 362.7 306.4 400.9 324.0 C 439.2 341.7 496.5 362.6 529.4 379.0 C 562.4 395.3 579.2 409.7 598.5 422.2 C 617.9 434.6 624.8 436.5 645.5 453.6 C 666.3 470.6 694.6 496.1 722.9 524.2 C 751.3 552.3 776.4 590.3 815.5 622.3 C 854.7 654.4 922.2 683.8 957.9 716.5 C 993.6 749.3 1012.7 793.4 1029.7 818.6 C 1046.8 843.8 1055.0 859.5 1060.1 867.7"/>
+          </g>
+          <text class="ttLocWater" x="281" y="190" font-size="23" text-anchor="middle" transform="rotate(25.1 281 190)">Mississippi River</text>
+          <rect class="ttLocShield" x="691" y="500" width="64" height="48" rx="9"/>
+          <text class="ttLocShieldNum" x="723" y="535" font-size="31">94</text>
+          <circle class="ttLocLand" cx="341" cy="254" r="19.0"/>
+          <circle class="ttLocDot" cx="341" cy="254" r="13.0" stroke-width="5"/>
+          <text class="ttLocTown" x="368" y="281" text-anchor="start" font-size="29">Monticello</text>
+          <circle class="ttLocLand" cx="586" cy="320" r="19.0"/>
+          <circle class="ttLocDot" cx="586" cy="320" r="13.0" stroke-width="5"/>
+          <text class="ttLocTown" x="613" y="310" text-anchor="start" font-size="29">Otsego</text>
+          <circle class="ttLocLand" cx="661" cy="186" r="19.0"/>
+          <circle class="ttLocDot" cx="661" cy="186" r="13.0" stroke-width="5"/>
+          <text class="ttLocTown" x="688" y="196" text-anchor="start" font-size="29">Elk River</text>
+          <circle class="ttLocLand" cx="250" cy="486" r="19.0"/>
+          <circle class="ttLocDot" cx="250" cy="486" r="13.0" stroke-width="5"/>
+          <text class="ttLocTown" x="223" y="496" text-anchor="end" font-size="29">Buffalo</text>
+          <circle class="ttLocLand" cx="491" cy="447" r="19.0"/>
+          <circle class="ttLocDot" cx="491" cy="447" r="13.0" stroke-width="5"/>
+          <text class="ttLocTown" x="491" y="491" text-anchor="middle" font-size="29">St Michael</text>
+          <circle class="ttLocLand" cx="654" cy="477" r="19.0"/>
+          <circle class="ttLocDot" cx="654" cy="477" r="13.0" stroke-width="5"/>
+          <text class="ttLocTown" x="681" y="459" text-anchor="start" font-size="29">Rogers</text>
+          <polygon class="ttLocChip" points="127.9,29.8 100.1,17.0 100.1,42.5" transform="rotate(-141.6 110.6 29.8)"/>
+          <text class="ttLocChipText" x="165" y="70" text-anchor="start" font-size="22">St Cloud</text>
+          <polygon class="ttLocChip" points="398.3,695.8 370.6,683.1 370.6,708.6" transform="rotate(116.0 381.1 695.8)"/>
+          <text class="ttLocChipText" x="418" y="657" text-anchor="start" font-size="22">Delano</text>
+          <polygon class="ttLocChip" points="888.1,704.8 860.4,692.1 860.4,717.6" transform="rotate(45.4 870.9 704.8)"/>
+          <text class="ttLocChipText" x="820" y="676" text-anchor="end" font-size="22">Minneapolis</text>
+          <polygon class="ttLocStar" points="540.0,325.5 550.3,355.3 581.8,355.9 556.7,374.9 565.9,405.1 540.0,387.1 514.1,405.1 523.3,374.9 498.2,355.9 529.7,355.3" stroke-width="4"/>
+          <text class="ttLocHere" x="462" y="374" text-anchor="end" font-size="42">Albertville</text>
+          <text class="ttLocHereSub" x="462" y="410" text-anchor="end" font-size="22">Our office</text>
+          </svg>
+        </div>
+
+        <div style="background:var(--ttRedDeep);color:var(--ttTextOnDark);padding:var(--ttSpace5) var(--ttCanvasPad);text-align:center">
+          <span class="ttH4" style="font-weight:var(--ttWeightBold);line-height:var(--ttLeadingSnug)">
+            When it hails here, it hails on our houses too.
+          </span>
+        </div>
+
+        <div class="ttFooterBar">
+          <span class="ttFooterMark">TOP <span>TIER</span></span>
+          <span class="ttLicenseLine">BC807923</span>
+          <span>(612) 205-5503 &middot; toptiermn.com</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="copyPanel">
+    <h4>The post <i>one caption field</i></h4>
+    <div class="copyInner">
+      <p class="hookNote">Place names in the first line. Local search and local readers both key off them,
+        and a person from Otsego stops on the word Otsego.</p>
+      <textarea readonly rows="16">Albertville. Right off 94, between Monticello and Rogers, a couple of miles from the Mississippi.
+
+That matters more in this trade than people think. A crew that lives forty minutes away shows up when the weather is good and is hard to reach when it is not. We are in the same weather you are. When it hails here, it hails on our houses too.
+
+The towns on this map are the ones we work in: Albertville, St Michael, Otsego, Monticello, Buffalo, Rogers, Elk River. Everything in that circle is a short drive, which is why a callback here does not turn into a scheduling problem.
+
+If you are in one of them, the number is on the map.
+
+Top Tier Roofing &amp; Remodeling, Albertville
+(612) 205-5503 . toptiermn.com
+MN License BC807923</textarea>
+      <p class="howto">Click in the box, Ctrl+A, Ctrl+C.</p>
+    </div>
+  </div>
+
+  <div class="boostPanel">
+    <h4>If this gets boosted later <i>not part of the post</i></h4>
+    <dl>
+      <dt>Headline</dt><dd>Roofers who live here</dd>
+      <dt>Description</dt><dd>Albertville and around</dd>
+      <dt>Button</dt><dd>Send Message</dd>
+      <dt>Objective</dt><dd>Awareness</dd>
+      <dt>Destination</dt><dd>Facebook Messenger, on the 230 follower page</dd>
+    </dl>
+    <p class="boostFoot">Awareness, and the destination is the message thread rather than the website,
+      because the whole point of this one is that a real person is nearby and reachable.</p>
+  </div>
+
+  <div class="whyPanel">
+    <h4>Why this post</h4>
+    <p><b>The map is projected, not drawn by eye.</b> Town positions are US Census Bureau 2023 Gazetteer
+      internal points and the office star is the Census geocoder result for 11440 County Road 37 NE. It
+      will survive somebody who knows the area looking closely at it.</p>
+    <p><b>Deliberately not a metro strategy.</b> Minneapolis is on the map only as a direction chip at the
+      edge, which is exactly where it belongs for this company.</p>
+    <p class="fill"><b>Fill in before posting:</b> confirm the street number. The website and the Google
+      Business Profile say 11440. Facebook and Instagram say 14400. The graphic uses 11440, matching
+      Google. Whichever is right, all four need to agree.</p>
+  </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     POST 7 . THE NAME ON THE TRUCK
+     ============================================================ -->
+<section class="post">
+  <div class="postHead">
+    <h3><b>Post 7.</b> Most of our work comes from somebody telling somebody else</h3>
+    <p>Angle: <span>local and family</span> &middot; graphic: <span>fbPostFamilyName1x1</span></p>
+  </div>
+  <div class="postInner">
+
+  <div class="assetWrap">
+    <div class="assetWrapLabel"><b>Word of mouth</b> fbPostFamilyName1x1 &middot; feed <i>1080 &times; 1080 &middot; 1:1</i></div>
+    <div class="shrink">
+    <div class="asset themeDark"
+         data-size="square"
+         data-asset-id="fbPostFamilyName1x1"
+         data-title="Most of our work comes from somebody telling somebody else"
+         data-genre="data"
+         data-platform="Facebook feed, Instagram feed">
+      <div class="ttStack ttFill">
+        <div class="ttStack ttGrow ttSpread" style="padding:var(--ttCanvasPad);flex-direction:column;align-items:stretch">
+
+          <div class="ttSpread" style="align-items:flex-start">
+            <p class="ttEyebrow">How the phone rings</p>
+            <img class="ttLogo ttLogoSm" src="../assets/images/generated/toptier_logo_1200_light.png"
+                 alt="Top Tier Roofing and Remodeling LLC, telephone 612 205 5503, Minnesota license BC807923">
+          </div>
+
+          <h2 class="ttH2">Most of our work<br>comes from somebody<br>telling <span class="ttAccentText">somebody else.</span></h2>
+
+          <svg class="ttDraw" viewBox="0 0 952 190" style="height:190px" role="img"
+               aria-label="A row of five simple figures connected by arrows, showing one person passing a name to the next">
+            <defs>
+              <marker id="fbWomArr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                <path d="M0 0 L10 5 L0 10 Z" fill="var(--ttAccentOnDark)"/>
+              </marker>
+            </defs>
+            <g fill="var(--ttTextMutedOnDark)">
+              <g transform="translate(40,40)"><circle cx="34" cy="26" r="26"/><path d="M0 116 A34 44 0 0 1 68 116 Z"/></g>
+              <g transform="translate(258,40)"><circle cx="34" cy="26" r="26"/><path d="M0 116 A34 44 0 0 1 68 116 Z"/></g>
+              <g transform="translate(476,40)"><circle cx="34" cy="26" r="26"/><path d="M0 116 A34 44 0 0 1 68 116 Z"/></g>
+              <g transform="translate(694,40)"><circle cx="34" cy="26" r="26"/><path d="M0 116 A34 44 0 0 1 68 116 Z"/></g>
+            </g>
+            <g transform="translate(848,40)" fill="var(--ttAccentOnDark)"><circle cx="34" cy="26" r="26"/><path d="M0 116 A34 44 0 0 1 68 116 Z"/></g>
+            <g fill="none" stroke="var(--ttAccentOnDark)" stroke-width="var(--ttStrokeArrow)" stroke-linecap="round">
+              <path d="M130 106 H236" marker-end="url(#fbWomArr)"/>
+              <path d="M348 106 H454" marker-end="url(#fbWomArr)"/>
+              <path d="M566 106 H672" marker-end="url(#fbWomArr)"/>
+              <path d="M784 106 H826" marker-end="url(#fbWomArr)"/>
+            </g>
+          </svg>
+
+          <p class="ttLead ttMutedText">We are fine with that. It is how this county has always hired trades.</p>
+
+        </div>
+        <div class="ttFooterBar" style="background:var(--ttInkSoft)">
+          <span class="ttFooterMark">TOP <span>TIER</span></span>
+          <span class="ttLicenseLine">BC807923</span>
+          <span>(612) 205-5503 &middot; toptiermn.com</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="copyPanel">
+    <h4>The post <i>one caption field</i></h4>
+    <div class="copyInner">
+      <p class="hookNote">States the thing most contractors are embarrassed about and treats it as the
+        asset it is. Ends with a question that is easy and pleasant to answer in public.</p>
+      <textarea readonly rows="17">Most of our work comes from somebody telling somebody else. We are fine with that.
+
+It is how this county has always hired trades, and it is a harder thing to build than an advertisement. Nobody puts their own name behind a crew twice.
+
+Keith Gutzwiller runs production here. His dad Gary put up pole barns all over this county for years, and there are still people who call because they remember the name. His brother Kurt sends work down from Crosslake. Guy Saxby runs the sales side and does most of the estimating.
+
+That is close to the whole org chart, and it is the reason a job here does not get handed to a crew nobody at this company has ever met.
+
+If somebody sent you our way, tell us who. We like to know, and they should probably hear about it.
+
+Top Tier Roofing &amp; Remodeling, Albertville
+(612) 205-5503 . toptiermn.com
+MN License BC807923</textarea>
+      <p class="howto">Click in the box, Ctrl+A, Ctrl+C.</p>
+    </div>
+  </div>
+
+  <div class="boostPanel">
+    <h4>If this gets boosted later <i>not part of the post</i></h4>
+    <dl>
+      <dt>Headline</dt><dd>The name behind the trucks</dd>
+      <dt>Description</dt><dd>Gutzwiller and Saxby</dd>
+      <dt>Button</dt><dd>Learn More</dd>
+      <dt>Objective</dt><dd>Awareness</dd>
+      <dt>Destination</dt><dd><code>toptiermn.com</code></dd>
+    </dl>
+    <p class="boostFoot">Weakest boost candidate of the eleven and that is fine. It is written for the people
+      who already know the name, and money spent showing it to strangers wastes the part that makes it work.</p>
+  </div>
+
+  <div class="whyPanel">
+    <h4>Why this post</h4>
+    <p><b>The referral book is the strength, so it is written as one.</b> No statistic about what share of
+      work comes from referrals, no framing of it as a gap to be closed. Just the fact, stated with a
+      straight face.</p>
+    <p><b>Names are used carefully.</b> Keith, Gary, Kurt and Guy, all as they were given by the owners.
+      Nothing is claimed about volume, county-wide market share or how many barns. If any of those four
+      would rather not appear by name, cut the sentence rather than editing around it.</p>
+  </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     POST 8 . HAIL VERSUS AGE
+     ============================================================ -->
+<section class="post">
+  <div class="postHead">
+    <h3><b>Post 8.</b> Hail and age look nothing alike</h3>
+    <p>Angle: <span>storm and hail, purely observational</span> &middot; graphic: <span>fbPostHailVsAge4x5</span></p>
+  </div>
+  <div class="postInner">
+
+  <div class="assetWrap">
+    <div class="assetWrapLabel"><b>Hail versus age</b> fbPostHailVsAge4x5 &middot; feed <i>1080 &times; 1350 &middot; 4:5</i></div>
+    <div class="shrink">
+    <div class="asset themeLight"
+         data-size="portrait"
+         data-asset-id="fbPostHailVsAge4x5"
+         data-title="Hail damage and an old roof look nothing alike"
+         data-genre="technical"
+         data-platform="Facebook feed, Instagram feed">
+      <div class="ttStack ttFill">
+        <div class="ttStack ttGrow ttGap5" style="padding:var(--ttCanvasPad) var(--ttCanvasPad) var(--ttSpace5)">
+
+          <div class="ttSpread">
+            <div>
+              <p class="ttEyebrow">Two different things</p>
+              <h2 class="ttH2" style="margin:var(--ttSpace3) 0 0">Even wear, or<br>random hits.</h2>
+            </div>
+            <img class="ttLogo ttLogoSm" src="../assets/images/generated/toptier_logo_1200.png"
+                 alt="Top Tier Roofing and Remodeling LLC, telephone 612 205 5503, Minnesota license BC807923">
+          </div>
+
+          <div class="ttRow ttGap5" style="align-items:stretch">
+
+            <div class="ttStack" style="flex:1 1 0;min-width:0">
+              <div style="background:var(--ttInkSoft);color:var(--ttTextOnDark);padding:var(--ttSpace2) var(--ttSpace4);
+                          font-family:var(--ttFontDisplay);font-size:var(--ttSizeH4);line-height:1.2">AGE</div>
+              <svg class="ttDraw" viewBox="0 0 460 330" style="height:330px;overflow:hidden" role="img"
+                   aria-label="A shingle slope worn evenly all over, with granules thinned across the whole surface and tab edges curling">
+                <defs>
+                  <pattern id="fbAgeTabA" width="66" height="42" patternUnits="userSpaceOnUse">
+                    <rect x="62" y="0" width="4" height="42" fill="var(--ttPaper)"/></pattern>
+                  <pattern id="fbAgeTabB" width="66" height="42" patternUnits="userSpaceOnUse" patternTransform="translate(33,0)">
+                    <rect x="62" y="0" width="4" height="42" fill="var(--ttPaper)"/></pattern>
+                </defs>
+                <rect width="460" height="330" fill="var(--ttMatShingleAlt)"/>
+                <g fill="var(--ttMatFlashing)" fill-opacity=".62">
+                  <ellipse cx="46"  cy="24"  rx="34" ry="12"/><ellipse cx="164" cy="20"  rx="30" ry="11"/>
+                  <ellipse cx="286" cy="26"  rx="33" ry="12"/><ellipse cx="404" cy="22"  rx="31" ry="11"/>
+                  <ellipse cx="98"  cy="66"  rx="32" ry="12"/><ellipse cx="222" cy="68"  rx="34" ry="12"/>
+                  <ellipse cx="344" cy="64"  rx="31" ry="11"/><ellipse cx="448" cy="68"  rx="28" ry="12"/>
+                  <ellipse cx="42"  cy="110" rx="31" ry="12"/><ellipse cx="162" cy="112" rx="33" ry="12"/>
+                  <ellipse cx="288" cy="108" rx="32" ry="11"/><ellipse cx="408" cy="112" rx="30" ry="12"/>
+                  <ellipse cx="102" cy="154" rx="33" ry="12"/><ellipse cx="226" cy="152" rx="31" ry="11"/>
+                  <ellipse cx="348" cy="156" rx="34" ry="12"/><ellipse cx="450" cy="152" rx="27" ry="12"/>
+                  <ellipse cx="44"  cy="196" rx="32" ry="12"/><ellipse cx="166" cy="198" rx="30" ry="11"/>
+                  <ellipse cx="290" cy="194" rx="33" ry="12"/><ellipse cx="406" cy="198" rx="32" ry="12"/>
+                  <ellipse cx="100" cy="240" rx="31" ry="12"/><ellipse cx="224" cy="238" rx="34" ry="12"/>
+                  <ellipse cx="346" cy="242" rx="30" ry="11"/><ellipse cx="452" cy="238" rx="26" ry="12"/>
+                  <ellipse cx="46"  cy="284" rx="33" ry="12"/><ellipse cx="164" cy="286" rx="31" ry="11"/>
+                  <ellipse cx="288" cy="282" rx="32" ry="12"/><ellipse cx="408" cy="286" rx="30" ry="12"/>
+                </g>
+                <rect y="0"   width="460" height="42" fill="url(#fbAgeTabA)"/>
+                <rect y="44"  width="460" height="42" fill="url(#fbAgeTabB)"/>
+                <rect y="88"  width="460" height="42" fill="url(#fbAgeTabA)"/>
+                <rect y="132" width="460" height="42" fill="url(#fbAgeTabB)"/>
+                <rect y="176" width="460" height="42" fill="url(#fbAgeTabA)"/>
+                <rect y="220" width="460" height="42" fill="url(#fbAgeTabB)"/>
+                <rect y="264" width="460" height="42" fill="url(#fbAgeTabA)"/>
+                <g fill="none" stroke="var(--ttPaper)" stroke-width="3" stroke-opacity=".9">
+                  <path d="M0 42 H460"/><path d="M0 86 H460"/><path d="M0 130 H460"/>
+                  <path d="M0 174 H460"/><path d="M0 218 H460"/><path d="M0 262 H460"/><path d="M0 306 H460"/>
+                </g>
+              </svg>
+              <p class="ttBody" style="margin-top:var(--ttSpace3)"><b>Even.</b> The whole slope thins at
+                about the same rate. Worst where the sun sits longest. Tabs go brittle and curl at the tips.
+                It takes years and it happens everywhere at once.</p>
+            </div>
+
+            <div class="ttStack" style="flex:1 1 0;min-width:0">
+              <div style="background:var(--ttFail);color:var(--ttTextOnDark);padding:var(--ttSpace2) var(--ttSpace4);
+                          font-family:var(--ttFontDisplay);font-size:var(--ttSizeH4);line-height:1.2">HAIL</div>
+              <svg class="ttDraw" viewBox="0 0 460 330" style="height:330px;overflow:hidden" role="img"
+                   aria-label="A shingle slope with scattered round impact marks of different sizes and no pattern, granules knocked away in circles">
+                <defs>
+                  <pattern id="fbHailTabA" width="66" height="42" patternUnits="userSpaceOnUse">
+                    <rect x="62" y="0" width="4" height="42" fill="var(--ttPaper)"/></pattern>
+                  <pattern id="fbHailTabB" width="66" height="42" patternUnits="userSpaceOnUse" patternTransform="translate(33,0)">
+                    <rect x="62" y="0" width="4" height="42" fill="var(--ttPaper)"/></pattern>
+                </defs>
+                <rect width="460" height="330" fill="var(--ttMatShingleAlt)"/>
+                <g>
+                  <circle cx="74"  cy="52"  r="21" fill="var(--ttInk)"/><circle cx="74"  cy="52"  r="30" fill="var(--ttInk)" fill-opacity=".28"/>
+                  <circle cx="238" cy="34"  r="13" fill="var(--ttInk)"/><circle cx="238" cy="34"  r="21" fill="var(--ttInk)" fill-opacity=".28"/>
+                  <circle cx="372" cy="96"  r="24" fill="var(--ttInk)"/><circle cx="372" cy="96"  r="34" fill="var(--ttInk)" fill-opacity=".28"/>
+                  <circle cx="150" cy="146" r="16" fill="var(--ttInk)"/><circle cx="150" cy="146" r="25" fill="var(--ttInk)" fill-opacity=".28"/>
+                  <circle cx="290" cy="182" r="20" fill="var(--ttInk)"/><circle cx="290" cy="182" r="29" fill="var(--ttInk)" fill-opacity=".28"/>
+                  <circle cx="58"  cy="228" r="14" fill="var(--ttInk)"/><circle cx="58"  cy="228" r="22" fill="var(--ttInk)" fill-opacity=".28"/>
+                  <circle cx="404" cy="248" r="17" fill="var(--ttInk)"/><circle cx="404" cy="248" r="26" fill="var(--ttInk)" fill-opacity=".28"/>
+                  <circle cx="196" cy="284" r="22" fill="var(--ttInk)"/><circle cx="196" cy="284" r="32" fill="var(--ttInk)" fill-opacity=".28"/>
+                  <circle cx="330" cy="306" r="12" fill="var(--ttInk)"/><circle cx="330" cy="306" r="20" fill="var(--ttInk)" fill-opacity=".28"/>
+                </g>
+                <rect y="0"   width="460" height="42" fill="url(#fbHailTabA)"/>
+                <rect y="44"  width="460" height="42" fill="url(#fbHailTabB)"/>
+                <rect y="88"  width="460" height="42" fill="url(#fbHailTabA)"/>
+                <rect y="132" width="460" height="42" fill="url(#fbHailTabB)"/>
+                <rect y="176" width="460" height="42" fill="url(#fbHailTabA)"/>
+                <rect y="220" width="460" height="42" fill="url(#fbHailTabB)"/>
+                <rect y="264" width="460" height="42" fill="url(#fbHailTabA)"/>
+                <g fill="none" stroke="var(--ttPaper)" stroke-width="3" stroke-opacity=".9">
+                  <path d="M0 42 H460"/><path d="M0 86 H460"/><path d="M0 130 H460"/>
+                  <path d="M0 174 H460"/><path d="M0 218 H460"/><path d="M0 262 H460"/><path d="M0 306 H460"/>
+                </g>
+                <circle cx="290" cy="182" r="44" fill="none" stroke="var(--ttFail)"
+                        stroke-width="var(--ttStrokeBold)" stroke-dasharray="10 8"/>
+              </svg>
+              <p class="ttBody" style="margin-top:var(--ttSpace3)"><b>Random.</b> Round bruises with no
+                pattern. Granules knocked off in a circle rather than a patch. Fresh hits look black because
+                the asphalt underneath has not weathered yet.</p>
+            </div>
+
+          </div>
+
+          <div class="ttRow ttGap4" style="background:var(--ttInk);color:var(--ttTextOnDark);padding:var(--ttSpace4) var(--ttSpace5)">
+            <span style="font-family:var(--ttFontDisplay);font-size:var(--ttSizeH4);line-height:var(--ttLeadingSnug)">
+              The soft metal tells you first. Gutters, vent caps, the AC fins, the mailbox.
+            </span>
+          </div>
+
+        </div>
+        <div class="ttFooterBar">
+          <span class="ttFooterMark">TOP <span>TIER</span></span>
+          <span class="ttLicenseLine">BC807923</span>
+          <span>(612) 205-5503 &middot; toptiermn.com</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="copyPanel">
+    <h4>The post <i>one caption field</i></h4>
+    <div class="copyInner">
+      <p class="hookNote">Says the reader is probably confused about something, without saying anything
+        about the reader's own roof. That distinction is what keeps it inside Meta's personal attributes rule.</p>
+      <textarea readonly rows="19">Hail damage and an old roof look nothing alike up close, and they get mixed up constantly.
+
+Age is even. The whole slope loses its granules at roughly the same rate, the worst of it sits where the sun hits longest, and the tabs go brittle and curl at the tips. It happens over years, and it happens everywhere at once.
+
+Hail is random. Round bruises scattered with no pattern to them. Granules knocked away in a circle instead of worn off in a patch. Press one and the mat underneath gives a little, like a bruise on an apple. Fresh hits look black, because the asphalt they exposed has not weathered yet.
+
+The useful part is that hail does not only hit the roof. It hits the gutter face, the vent caps, the furnace and dryer hoods, the air conditioner fins and the mailbox, and every one of those is soft metal you can look at from the ground.
+
+So if the gutters and the vents are dented, the roof took the same hit. If they are clean, be skeptical of anybody who knocks on the door and tells you the roof is destroyed.
+
+Top Tier Roofing &amp; Remodeling, Albertville
+(612) 205-5503 . toptiermn.com
+MN License BC807923</textarea>
+      <p class="howto">Click in the box, Ctrl+A, Ctrl+C.</p>
+    </div>
+  </div>
+
+  <div class="boostPanel">
+    <h4>If this gets boosted later <i>not part of the post</i></h4>
+    <dl>
+      <dt>Headline</dt><dd>Hail, or just old?</dd>
+      <dt>Description</dt><dd>How to tell them apart</dd>
+      <dt>Button</dt><dd>Learn More</dd>
+      <dt>Objective</dt><dd>Traffic</dd>
+      <dt>Destination</dt><dd><code>toptiermn.com</code></dd>
+    </dl>
+    <p class="boostFoot">Do not send this one to an instant form. Meta's lead ads policy forbids form fields
+      that ask whether somebody is insured or who their carrier is, and a storm form is exactly where that
+      question ends up. Website destination, no form.</p>
+  </div>
+
+  <div class="whyPanel">
+    <h4>Why this post</h4>
+    <p><b>Observational only, by design.</b> It describes what two things look like. It says nothing about
+      what anybody will pay, cover, deny or approve, and it never uses the words claim, coverage or policy.
+      MN 325E.66 subd. 1(a)(3) makes interpreting policy provisions a violation for an unlicensed
+      contractor, so the safe move is to stay entirely on the physical evidence.</p>
+    <p><b>The last line is the trust play.</b> Telling somebody to be skeptical of a door knocker, including
+      by implication anyone who does what a door knocker does, is worth more than a testimonial.</p>
+  </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     POST 9 . AFTER THE STORM
+     ============================================================ -->
+<section class="post">
+  <div class="postHead">
+    <h3><b>Post 9.</b> After a storm, look at eye level</h3>
+    <p>Angle: <span>storm and hail, purely observational</span> &middot; graphic: <span>fbPostAfterStormStory</span></p>
+  </div>
+  <div class="postInner">
+
+  <div class="assetWrap">
+    <div class="assetWrapLabel"><b>Four things at eye level</b> fbPostAfterStormStory &middot; story and reel <i>1080 &times; 1920 &middot; 9:16</i>
+      <i>safe frame 288px top / 672px bottom / 72px sides</i></div>
+    <div class="shrink">
+    <div class="asset themeDark"
+         data-size="story"
+         data-asset-id="fbPostAfterStormStory"
+         data-title="After a storm, look at eye level"
+         data-genre="data"
+         data-platform="Instagram story and reel, Facebook story">
+      <div class="ttStack ttFill storySafe ttGap7">
+
+        <div class="ttSpread">
+          <img class="ttLogo" style="width:calc(var(--ttSpace12) * 1.8)" src="../assets/images/generated/toptier_logo_1200_light.png"
+               alt="Top Tier Roofing and Remodeling LLC, telephone 612 205 5503, Minnesota license BC807923">
+          <span class="ttMicro" style="letter-spacing:var(--ttTrackWide);text-align:right">
+            <span class="ttLicenseLine">BC807923</span><br>(612) 205-5503 &middot; toptiermn.com</span>
+        </div>
+
+        <div>
+          <p class="ttEyebrow">After a hailstorm</p>
+          <h2 class="ttH2" style="margin:var(--ttSpace4) 0 0">Stay off the roof.<br>Look at <span class="ttAccentText">eye level.</span></h2>
+        </div>
+
+        <div class="ttStack ttGap4">
+          <div class="ttRow ttGap5">
+            <span class="ttNumber ttAccentText" style="font-size:var(--ttSizeH3);flex:0 0 auto;width:var(--ttSpace9)">1</span>
+            <p class="ttLead"><b>Gutter face and downspouts.</b> Flat metal shows a dent honestly.</p>
+          </div>
+          <div class="ttRow ttGap5">
+            <span class="ttNumber ttAccentText" style="font-size:var(--ttSizeH3);flex:0 0 auto;width:var(--ttSpace9)">2</span>
+            <p class="ttLead"><b>Vent caps and dryer hoods.</b> Visible from the ground on most houses.</p>
+          </div>
+          <div class="ttRow ttGap5">
+            <span class="ttNumber ttAccentText" style="font-size:var(--ttSizeH3);flex:0 0 auto;width:var(--ttSpace9)">3</span>
+            <p class="ttLead"><b>Air conditioner fins.</b> Thin aluminum, waist height, hard to miss.</p>
+          </div>
+          <div class="ttRow ttGap5">
+            <span class="ttNumber ttAccentText" style="font-size:var(--ttSizeH3);flex:0 0 auto;width:var(--ttSpace9)">4</span>
+            <p class="ttLead"><b>The mailbox and the deck rail.</b> Same sky, same stones, standing height.</p>
+          </div>
+        </div>
+
+        <div style="background:var(--ttRed);color:var(--ttTextOnDark);padding:var(--ttSpace5) var(--ttSpace6);text-align:center">
+          <span class="ttH4" style="font-weight:var(--ttWeightBold);line-height:var(--ttLeadingSnug)">
+            Soft metal shows hail whether the shingles do or not.
+          </span>
+        </div>
+
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="copyPanel">
+    <h4>The post <i>one caption field</i></h4>
+    <div class="copyInner">
+      <p class="hookNote">Safety instruction first, which is both true and disarming, then the list. Reads
+        as help rather than as a pitch, which is the only reason anyone tolerates a storm post.</p>
+      <textarea readonly rows="17">After a hailstorm, most of what you need to know is at eye level. You do not have to get on the roof, and you should not.
+
+Walk the outside of the house and look at four soft things.
+
+The gutter face and the downspouts. Flat metal, and it shows a dent honestly.
+
+The vent caps and the furnace or dryer hoods. On most houses you can see these from the driveway.
+
+The air conditioner fins on the side of the house. Thin aluminum at waist height.
+
+The mailbox and any metal on the deck rail. Same sky, same stones, standing height.
+
+Those four are the honest witnesses. Soft metal shows hail whether or not the shingles do, and unlike the roof they are safe to look at.
+
+Take pictures the same day, with something in the frame for scale. A quarter works fine.
+
+Top Tier Roofing &amp; Remodeling, Albertville
+(612) 205-5503 . toptiermn.com
+MN License BC807923</textarea>
+      <p class="howto">Click in the box, Ctrl+A, Ctrl+C.</p>
+    </div>
+  </div>
+
+  <div class="boostPanel">
+    <h4>If this gets boosted later <i>not part of the post</i></h4>
+    <dl>
+      <dt>Headline</dt><dd>After hail, stay off it</dd>
+      <dt>Description</dt><dd>Four things at eye level</dd>
+      <dt>Button</dt><dd>Learn More</dd>
+      <dt>Objective</dt><dd>Traffic</dd>
+      <dt>Destination</dt><dd><code>toptiermn.com</code></dd>
+    </dl>
+    <p class="boostFoot">The one worth putting money behind in the days after a real storm, because it is
+      useful on exactly that day. Website, not a form, for the same lead ads reason as post 8.</p>
+  </div>
+
+  <div class="whyPanel">
+    <h4>Why this post</h4>
+    <p><b>Nothing here is about insurance.</b> It never mentions a carrier, an adjuster, a claim, coverage or
+      a policy. It is a list of metal objects and an instruction not to climb. That is deliberate: the
+      moment a storm post starts advising on what to file, it crosses MN 325E.66 subd. 1(a)(3) and
+      72B.02 subd. 6(2), where the advertisement itself is the regulated act.</p>
+    <p><b>Story format on purpose.</b> This one is time sensitive and stories are where time sensitive
+      content lives. The graphic is built so a viewer can read every line without opening anything.</p>
+  </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     POST 10 . THE REVIEW ASK
+     Google Rating Manipulation policy, article 7400114, live since
+     2026-02-16, bars a merchant from asking for specific review content,
+     including content that identifies a staff member. The ask below names
+     nothing: no person, no service, no town.
+     ============================================================ -->
+<section class="post">
+  <div class="postHead">
+    <h3><b>Post 10.</b> Tell us about your experience</h3>
+    <p>Angle: <span>reviews</span> &middot; graphic: <span>fbPostReviewAsk1x1</span></p>
+  </div>
+  <div class="postInner">
+
+  <div class="assetWrap">
+    <div class="assetWrapLabel"><b>The review ask</b> fbPostReviewAsk1x1 &middot; feed <i>1080 &times; 1080 &middot; 1:1</i></div>
+    <div class="shrink">
+    <div class="asset themeDark"
+         data-size="square"
+         data-asset-id="fbPostReviewAsk1x1"
+         data-title="Tell us about your experience with Top Tier"
+         data-genre="data"
+         data-platform="Facebook feed, Instagram feed">
+      <div class="ttStack ttFill">
+        <div class="ttStack ttGrow ttSpread" style="padding:var(--ttCanvasPad);flex-direction:column;align-items:stretch">
+
+          <div class="ttSpread" style="align-items:flex-start">
+            <p class="ttEyebrow">On Google, today</p>
+            <img class="ttLogo ttLogoSm" src="../assets/images/generated/toptier_logo_1200_light.png"
+                 alt="Top Tier Roofing and Remodeling LLC, telephone 612 205 5503, Minnesota license BC807923">
+          </div>
+
+          <div class="ttRow ttGap6">
+            <svg class="ttDraw" viewBox="0 0 500 100" style="flex:0 0 400px;width:400px;height:80px" role="img"
+                 aria-label="Five filled stars">
+              <g fill="var(--ttHeat)">
+                <g transform="translate(0,2) scale(0.96)"><path d="M50 4 L61.8 37.6 L96 37.6 L68 58.4 L79 92 L50 71.2 L21 92 L32 58.4 L4 37.6 L38.2 37.6 Z"/></g>
+                <g transform="translate(100,2) scale(0.96)"><path d="M50 4 L61.8 37.6 L96 37.6 L68 58.4 L79 92 L50 71.2 L21 92 L32 58.4 L4 37.6 L38.2 37.6 Z"/></g>
+                <g transform="translate(200,2) scale(0.96)"><path d="M50 4 L61.8 37.6 L96 37.6 L68 58.4 L79 92 L50 71.2 L21 92 L32 58.4 L4 37.6 L38.2 37.6 Z"/></g>
+                <g transform="translate(300,2) scale(0.96)"><path d="M50 4 L61.8 37.6 L96 37.6 L68 58.4 L79 92 L50 71.2 L21 92 L32 58.4 L4 37.6 L38.2 37.6 Z"/></g>
+                <g transform="translate(400,2) scale(0.96)"><path d="M50 4 L61.8 37.6 L96 37.6 L68 58.4 L79 92 L50 71.2 L21 92 L32 58.4 L4 37.6 L38.2 37.6 Z"/></g>
+              </g>
+            </svg>
+            <div>
+              <p class="ttNumber" style="font-size:var(--ttSizeH1)">5.0</p>
+              <p class="ttCaption" style="margin-top:var(--ttSpace2);letter-spacing:var(--ttTrackCaps);text-transform:uppercase;font-weight:var(--ttWeightBold)">18 reviews</p>
+            </div>
+          </div>
+
+          <h2 class="ttH1">Tell us about<br>your experience<br>with <span class="ttAccentText">Top Tier.</span></h2>
+
+          <p class="ttLead ttMutedText">Say whatever you want to say. It is your review, not our script.</p>
+
+        </div>
+        <div class="ttFooterBar" style="background:var(--ttInkSoft)">
+          <span class="ttFooterMark">TOP <span>TIER</span></span>
+          <span class="ttLicenseLine">BC807923</span>
+          <span>(612) 205-5503 &middot; toptiermn.com</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="copyPanel">
+    <h4>The post <i>one caption field</i></h4>
+    <div class="copyInner">
+      <p class="hookNote">Leads with the number the company already earned rather than with the request.
+        The ask arrives after the reader already knows other people did it.</p>
+      <textarea readonly rows="15">Eighteen people have left us a Google review. It is sitting at 5.0.
+
+That number does more work for this company than anything else we own. It is the first thing a stranger sees when they search for a roofer around here, and it is usually the reason they call instead of scrolling past.
+
+If we have worked on your house and you have not left one, we would like to hear about it. Say whatever you want to say. It is your review, not our script, and we are not going to tell you what to put in it.
+
+Link is in the comments.
+
+Top Tier Roofing &amp; Remodeling, Albertville
+(612) 205-5503 . toptiermn.com
+MN License BC807923</textarea>
+      <p class="howto">Click in the box, Ctrl+A, Ctrl+C.</p>
+    </div>
+  </div>
+
+  <div class="boostPanel">
+    <h4>If this gets boosted later <i>not part of the post</i></h4>
+    <dl>
+      <dt>Headline</dt><dd>Five stars, eighteen times</dd>
+      <dt>Description</dt><dd>Albertville roofing</dd>
+      <dt>Button</dt><dd>Learn More</dd>
+      <dt>Objective</dt><dd>Awareness</dd>
+      <dt>Destination</dt><dd><code>toptiermn.com</code></dd>
+    </dl>
+    <p class="boostFoot">If this one ever gets boosted, boost it as proof rather than as a request. A paid
+      ad asking strangers for reviews makes no sense; a paid ad showing a 5.0 does. Cut the request
+      paragraph from the promoted version and keep the first two.</p>
+  </div>
+
+  <div class="whyPanel">
+    <h4>Why this post</h4>
+    <p><b>It asks for nothing specific, and that is a legal requirement, not a style choice.</b> Google's
+      Rating Manipulation policy, help article 7400114, live since 16 February 2026, bars a merchant from
+      requesting that specific content be included in a review, including content that identifies a staff
+      member. The clause is broader than names: asking for a service or a town is the same violation, and
+      that is the trap, because it is exactly what standard review advice tells businesses to do. The
+      compliant ask names nothing.</p>
+    <p><b>The existing eighteen reviews are safe.</b> The rule governs the solicitation, not the review. A
+      customer who names somebody unprompted has violated nothing.</p>
+    <p class="fill"><b>Fill in before posting:</b> the review link, dropped as the first comment. And check
+      the count and rating on the day it goes up. Verified at <b>5.0 with 18 reviews</b> on 2026-08-31, and
+      both numbers move.</p>
+  </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     POST 11 . EVERY SLOPE
+     ============================================================ -->
+<section class="post">
+  <div class="postHead">
+    <h3><b>Post 11.</b> We meet your adjuster on the roof</h3>
+    <p>Angle: <span>the ten year insurance shift, service side</span> &middot; graphic: <span>fbPostEverySlope4x5</span></p>
+  </div>
+  <div class="postInner">
+
+  <div class="assetWrap">
+    <div class="assetWrapLabel"><b>Every slope</b> fbPostEverySlope4x5 &middot; feed <i>1080 &times; 1350 &middot; 4:5</i></div>
+    <div class="shrink">
+    <div class="asset themeLight"
+         data-size="portrait"
+         data-asset-id="fbPostEverySlope4x5"
+         data-title="Every slope, not the two that are easy to reach"
+         data-genre="technical"
+         data-platform="Facebook feed, Instagram feed">
+      <div class="ttStack ttFill">
+        <div class="ttStack ttGrow ttGap5" style="padding:var(--ttCanvasPad) var(--ttCanvasPad) var(--ttSpace6)">
+
+          <div class="ttSpread">
+            <div>
+              <p class="ttEyebrow">What we actually do up there</p>
+              <h2 class="ttH2" style="margin:var(--ttSpace3) 0 0">Every slope. Not<br>the two that are<br>easy to reach.</h2>
+            </div>
+            <img class="ttLogo ttLogoSm" src="../assets/images/generated/toptier_logo_1200.png"
+                 alt="Top Tier Roofing and Remodeling LLC, telephone 612 205 5503, Minnesota license BC807923">
+          </div>
+
+          <svg class="ttDraw" viewBox="0 0 952 520" style="height:520px" role="img"
+               aria-label="A roof plan seen from above, an L shaped house with eight separate slopes, each one numbered">
+            <defs>
+              <pattern id="fbSlopeGrain" width="10" height="10" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1.3" fill="var(--ttPaper)" opacity=".22"/></pattern>
+            </defs>
+
+            <polygon class="matShingle"    points="60,80 600,80 520,240 140,240"/>
+            <polygon class="matShingleAlt" points="600,80 600,400 520,240"/>
+            <polygon class="matShingle"    points="60,400 600,400 520,240 140,240"/>
+            <polygon class="matShingleAlt" points="60,80 60,400 140,240"/>
+            <polygon class="matShingleAlt" points="600,170 890,170 775,285 715,285"/>
+            <polygon class="matShingle"    points="890,170 890,400 775,285"/>
+            <polygon class="matShingleAlt" points="600,400 890,400 775,285 715,285"/>
+            <polygon class="matShingle"    points="600,170 600,400 715,285"/>
+
+            <rect x="60" y="80" width="540" height="320" fill="url(#fbSlopeGrain)"/>
+            <rect x="600" y="170" width="290" height="230" fill="url(#fbSlopeGrain)"/>
+
+            <g fill="none" stroke="var(--ttPaper)" stroke-width="var(--ttStrokeBase)" stroke-opacity=".85">
+              <path d="M60 80 L140 240 L60 400"/>
+              <path d="M600 80 L520 240 L600 400"/>
+              <path d="M140 240 H520"/>
+              <path d="M600 170 L715 285 L600 400"/>
+              <path d="M890 170 L775 285 L890 400"/>
+              <path d="M715 285 H775"/>
+            </g>
+            <g fill="none" stroke="var(--ttInk)" stroke-width="var(--ttStrokeBold)" stroke-linejoin="round">
+              <path d="M60 80 H600 V170 H890 V400 H60 Z"/>
+            </g>
+            <path d="M600 170 V400" fill="none" stroke="var(--ttAccent)" stroke-width="var(--ttStrokeBold)" stroke-dasharray="12 8"/>
+
+            <g fill="var(--ttPaper)" stroke="var(--ttInk)" stroke-width="3">
+              <circle cx="330" cy="150" r="27"/><circle cx="562" cy="240" r="27"/>
+              <circle cx="330" cy="332" r="27"/><circle cx="98"  cy="240" r="27"/>
+              <circle cx="745" cy="215" r="27"/><circle cx="848" cy="285" r="27"/>
+              <circle cx="745" cy="352" r="27"/><circle cx="640" cy="285" r="27"/>
+            </g>
+            <g fill="var(--ttInk)" text-anchor="middle" style="font-family:var(--ttFontDisplay);font-size:30px">
+              <text x="330" y="161">1</text><text x="562" y="251">2</text>
+              <text x="330" y="343">3</text><text x="98"  y="251">4</text>
+              <text x="745" y="226">5</text><text x="848" y="296">6</text>
+              <text x="745" y="363">7</text><text x="640" y="296">8</text>
+            </g>
+
+            <g class="ttLeader"><path d="M604 452 L604 420 L600 300"/></g>
+            <text class="ttLabelBold" x="616" y="462" fill="var(--ttAccent)">Valley. Where two planes meet
+              <tspan x="616" dy="30">and everything collects.</tspan></text>
+
+            <g class="ttLeader"><path d="M300 468 L300 430 L330 366"/></g>
+            <text class="ttLabelBold" x="60" y="478">Eight planes on one ordinary house
+              <tspan x="60" dy="30">and only two of them face the street.</tspan></text>
+          </svg>
+
+          <div style="background:var(--ttInk);color:var(--ttTextOnDark);padding:var(--ttSpace6) var(--ttSpace7)">
+            <p class="ttH4" style="font-weight:var(--ttWeightBold);line-height:var(--ttLeadingSnug)">
+              We meet your adjuster on the roof, document every slope, and make sure nothing gets missed.
+            </p>
+          </div>
+
+          <p class="ttMicro" style="border-left:var(--ttBorderAccent);padding-left:var(--ttSpace4)">
+            Drawing is a generic hip and gable plan, not any particular house. Slope count varies with the
+            roof. We are roofers, not an insurance company: we measure, we photograph, and we hand over the file.
+          </p>
+
+        </div>
+        <div class="ttFooterBar">
+          <span class="ttFooterMark">TOP <span>TIER</span></span>
+          <span class="ttLicenseLine">BC807923</span>
+          <span>(612) 205-5503 &middot; toptiermn.com</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="copyPanel">
+    <h4>The post <i>one caption field</i></h4>
+    <div class="copyInner">
+      <p class="hookNote">Short declarative hook. It says what happens rather than what is promised, which
+        is both better copy and the only version of this that is legal to publish.</p>
+      <textarea readonly rows="16">When an adjuster comes out, we meet them on the roof.
+
+We can't help you with your policy, but we can help you with your roof. What that means in practice is that somebody from Top Tier is standing on the shingles while the inspection happens, with a tape and a camera, walking every plane rather than the two that face the street.
+
+An ordinary hip and gable house has eight separate slopes. Two of them are visible from the driveway. The rest are somebody's job to go and look at.
+
+We meet your adjuster on the roof, document every slope, and make sure nothing gets missed.
+
+That is the whole of it. We are roofers. We measure, we photograph, we hand you the file, and the rest of it is between you and your insurer.
+
+Top Tier Roofing &amp; Remodeling, Albertville
+(612) 205-5503 . toptiermn.com
+MN License BC807923</textarea>
+      <p class="howto">Click in the box, Ctrl+A, Ctrl+C.</p>
+    </div>
+  </div>
+
+  <div class="boostPanel">
+    <h4>If this gets boosted later <i>not part of the post</i></h4>
+    <dl>
+      <dt>Headline</dt><dd>Eight slopes, all walked</dd>
+      <dt>Description</dt><dd>We measure and photograph</dd>
+      <dt>Button</dt><dd>Send Message</dd>
+      <dt>Objective</dt><dd>Awareness</dd>
+      <dt>Destination</dt><dd>Facebook Messenger, on the 230 follower page</dd>
+    </dl>
+    <p class="boostFoot">The most sensitive of the eleven to promote, because a boost puts it through ad
+      review with insurance-adjacent language in it. If it goes anywhere, it goes as awareness with a
+      message thread, never to an instant form, because Meta's lead ads policy forbids form fields asking
+      whether somebody is insured or naming their carrier.</p>
+  </div>
+
+  <div class="whyPanel">
+    <h4>Why this post</h4>
+    <p><b>Every regulated word is absent.</b> No coverage, no claim, no policy in Top Tier's own voice
+      except inside the one approved sentence, no advocacy, no representation, no deductible, no free
+      anything. What is described is measurement and documentation, which is roofing work. MN 325E.66
+      subd. 1(a)(3) bars a contractor interpreting policy provisions, and 72B.02 subd. 6(2) makes
+      advertising yourself as a public adjuster the violation in itself. Neither happens here.</p>
+    <p><b>The eight slope fact is what makes it convincing.</b> It gives a reason the service matters
+      instead of asserting that it does, and the drawing proves it in one look.</p>
+  </div>
+
+  </div>
+</section>
+
+<div class="secHead">
+  <h2>What is missing <span>&middot; and deliberately so</span></h2>
+  <p>No photograph of Top Tier's own work appears anywhere in this set, because none of the available images
+     are usable as marketing. The CompanyCam library is adjuster documentation, shot for a different purpose.
+     The website runs 19 stock photographs against 22 real ones. Rather than dressing these posts in a stock
+     picture of somebody else's roof, every graphic is drawn and works without any photograph at all. The place
+     a real photo would earn its keep is a completed job, shot in daylight, with the sky in frame and the
+     ground clean, and that is a thing to go and take rather than a thing to buy.</p>
+</div>
+
+
+</div>
+
+</body>
+</html>

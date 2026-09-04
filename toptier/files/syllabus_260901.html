@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Tier: the work behind each day, to Thursday 10 September</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #F5F7F8; color: #1F2124; font-family: 'Trebuchet MS', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 1080px; margin: 0 auto;
+         padding: 0 22px 72px; }
+.top { background: #003C55; color: #fff; margin: 0 -22px 30px; padding: 34px 22px 28px; }
+.top .inner { max-width: 1080px; margin: 0 auto; }
+.kicker { text-transform: uppercase; letter-spacing: .13em; font-size: 11.5px;
+           font-weight: bold; color: #9FC3D4; margin: 0 0 10px; }
+h1 { margin: 0 0 12px; font-size: 30px; line-height: 1.2; font-weight: bold; }
+.stand { margin: 0; max-width: 62ch; color: #DCE8EE; font-size: 15.5px; }
+.rule { height: 4px; background: #EC1F25; margin: 20px 0 0; width: 88px; }
+
+h2 { font-size: 21px; margin: 44px 0 6px; color: #003C55; }
+h2 .num { color: #EC1F25; }
+.sub { margin: 0 0 18px; color: #4A4E52; max-width: 74ch; }
+
+/* ---- day cards ---- */
+.day { background: #FFFFFF; border: 1px solid #DFE3E6; border-left: 5px solid #003C55;
+        border-radius: 5px; margin: 0 0 14px; padding: 18px 22px; }
+.day.done { background: #EDEFF1; border-color: #D5D9DC; border-left-color: #A8AFB4;
+             color: #5A6167; }
+.day.rest { background: #F5F7F8; border-style: dashed; border-left-color: #B9C0C5; }
+.day.last { border-left-color: #EC1F25; }
+.dayhead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px;
+            margin: 0 0 10px; }
+.dayname { font-size: 19px; font-weight: bold; color: #003C55; }
+.day.done .dayname, .day.rest .dayname { color: #5A6167; }
+.day.last .dayname { color: #EC1F25; }
+.meet { font-size: 11.5px; text-transform: uppercase; letter-spacing: .1em;
+         font-weight: bold; color: #fff; background: #EC1F25; border-radius: 3px;
+         padding: 3px 9px; }
+.headline { font-size: 17px; line-height: 1.45; margin: 0 0 12px; max-width: 72ch; }
+.four { display: flex; flex-wrap: wrap; gap: 10px 40px; }
+.slot { min-width: 220px; }
+.slotlab { text-transform: uppercase; letter-spacing: .1em; font-size: 10.5px;
+            font-weight: bold; color: #7A8288; margin: 0 0 3px; }
+.slotval { margin: 0; font-size: 15px; }
+.slotval b { color: #003C55; }
+.lands li { margin: 0 0 2px; }
+ul.lands { margin: 0; padding: 0 0 0 17px; }
+.none { color: #858D93; }
+
+/* ---- syllabus steps ---- */
+.stepgrid { margin: 12px 0 0; border-top: 1px solid #DFE3E6; }
+.step { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 12px 0;
+         border-bottom: 1px solid #DFE3E6; }
+.badge { flex: 0 0 auto; align-self: flex-start; font-size: 10.5px; font-weight: bold;
+          letter-spacing: .08em; text-transform: uppercase; padding: 4px 9px;
+          border-radius: 3px; background: #003C55; color: #fff; white-space: nowrap; }
+.badge.guy { background: #003C55; }
+.badge.keith { background: #2E6E52; }
+.badge.dale { background: #6B7378; }
+.badge.both { background: #EC1F25; }
+.badge.out { background: #8A5A12; }
+.stepbody { flex: 1 1 480px; min-width: 300px; }
+.stepbody p { margin: 0 0 5px; }
+.why { font-size: 14.5px; color: #4A4E52; }
+.tag { display: inline-block; font-size: 10.5px; letter-spacing: .07em;
+        color: #7A8288; border: 1px solid #DFE3E6; border-radius: 3px;
+        padding: 2px 7px; margin: 3px 0 0; }
+
+/* ---- ten cards ---- */
+.ten { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.card { background: #FFFFFF; border: 1px solid #DFE3E6; border-radius: 5px;
+         padding: 18px 22px; border-top: 4px solid #003C55; }
+.card h3 { margin: 0 0 2px; font-size: 18px; color: #003C55; }
+.code { font-size: 12px; letter-spacing: .09em; color: #7A8288; margin: 0 0 10px; }
+.card dl { margin: 0; }
+.card dt { text-transform: uppercase; letter-spacing: .1em; font-size: 10.5px;
+            font-weight: bold; color: #7A8288; margin: 11px 0 3px; }
+.card dd { margin: 0; }
+.landsline { font-weight: bold; color: #EC1F25; }
+
+/* ---- tables ---- */
+table { width: 100%; border-collapse: collapse; background: #FFFFFF;
+         border: 1px solid #DFE3E6; font-size: 14.5px; }
+th { background: #003C55; color: #fff; text-align: left; padding: 9px 12px;
+      font-size: 11.5px; text-transform: uppercase; letter-spacing: .09em; }
+td { padding: 10px 12px; border-top: 1px solid #DFE3E6; vertical-align: top; }
+tbody tr:nth-child(even) td { background: #FAFBFC; }
+.scroll { overflow-x: auto; }
+
+.note { background: #FFFFFF; border: 1px solid #DFE3E6; border-left: 5px solid #EC1F25;
+         border-radius: 5px; padding: 16px 20px; margin: 0 0 18px; }
+.note p { margin: 0 0 8px; } .note p:last-child { margin: 0; }
+.note strong { color: #003C55; }
+
+footer { margin: 56px 0 0; padding: 20px 0 0; border-top: 2px solid #003C55;
+          font-size: 13px; color: #4A4E52; }
+footer .name { color: #003C55; font-weight: bold; }
+
+@media print {
+  body { background: #fff; font-size: 11.5pt; }
+  .day, .card, table, .note { break-inside: avoid; }
+  .top { background: #fff; color: #1F2124; }
+  .top .kicker { color: #EC1F25; } .top .stand { color: #4A4E52; }
+}
+@media (max-width: 640px) {
+  h1 { font-size: 24px; } .slot { min-width: 100%; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><div class="inner">
+<p class="kicker">Top Tier Roofing and Remodeling</p>
+<h1>The work behind each day, to Thursday 10 September</h1>
+<p class="stand">The same days as the calendar, with the work under each one: who does it, what it depends on, and what it unlocks. Ten pieces of work, all ten landing by Thursday 10 September.</p>
+<div class="rule"></div>
+</div></div>
+<div class="note">
+<p><strong>The headline view is the companion document,
+<a href="deliverables_calendar_simple_260901.html">What happens each day</a>.</strong>
+This document carries the work behind every line on it.</p>
+</div>
+<div class="note">
+<p><strong>One thing about the calendar that matters more than it looks.</strong>
+Your insurance agent, the web agency, the print shop and the two marketing vendors are all closed Saturday 5, Sunday 6 and Labor Day Monday 7 September. We work through the holiday. They do not. That is why every deadline for something coming from THEM sits at close of business Friday 4 September, and not on Monday.</p>
+<p><strong>Where you see "too late after", that is the last day a request can go out and
+still land.</strong> Six of the ten depend on somebody outside sending something back, so
+the date that decides them is not the day the work happens. It is the day somebody asked.</p>
+</div>
+<h2>Day by day</h2>
+<p class="sub">The same ten days as the calendar, with the work under each one. Where a line carries your name, that step is yours.</p>
+<div class="day done">
+  <div class="dayhead"><span class="dayname">Monday 31 August</span></div>
+  <p class="headline">Already done. Every request that has to come from outside went out, and the week&#x27;s build started.</p>
+  <p class="why">Nothing on this day needs doing again. It is here so nothing looks dropped. What went out on Monday is now sitting with somebody else, and where it has not come back it appears in the list of what I need from outside, further down, with the last day it can arrive.</p>
+  <p class="slotval none">None.</p>
+  <div class="stepgrid"><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>The job photo software access key, the closing bank balance for Saturday 29 August, the proposal to your insurance agent, and a print shop chosen for the branded buckets and folders with the imprint cost and a delivery date asked for in writing. The bank balance is in, and the cash flow model is already rolled forward on it.</p><p class="why">Anything here that has not come back yet appears in the list of what I need from outside, with the last day it can arrive.</p><span class="tag">S4ISIC1, F1ISIC0, S0ISIC2, S5ISIC1</span></div>
+</div><div class="step">
+  <span class="badge keith">KEITH</span>
+  <div class="stepbody"><p>The 21 roofing photographs on the list, into the shared folder.</p><p class="why">Nothing prints until they land.</p><span class="tag">S1ISIC2</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>The eleven website changes sent to the web agency as one batch, each copy line with the Minnesota statute beside it, plus the footer correction riding along as a neutral eleventh item so the agency touches the page once instead of twice.</p><p class="why">Sending them as one batch on the 31st is what gives the agency a full working week before they close on Friday.</p><span class="tag">S1ISIC2</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>The postcard front rebuilt onto your own brand: your red and Trebuchet MS, sampled from your own website, across every face.</p><p class="why">The brand question is settled. What is still open is the size and the wording, and that is what the review on Friday decides.</p><span class="tag">S0ISIC2</span></div>
+</div></div>
+</div>
+<div class="day">
+  <div class="dayhead"><span class="dayname">Tuesday 1 September</span><span class="meet">Meeting at one o&#x27;clock</span></div>
+  <p class="headline">Our meeting at one o&#x27;clock, and every request that has to come from outside goes out today.</p>
+  <p class="why">Today is the day the asks go out, face to face rather than by email, because everything from outside has to be back by close of Friday. Start with the email to your insurance agent: it is the one with four separate documents behind it and the slowest of the four is an endorsement your carrier has to issue.</p>
+  <p class="slotval none">None.</p>
+  <div class="stepgrid"><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Email your insurance agent for three documents: the certificate of insurance on an ACORD form, written confirmation of the $2M umbrella, and the workers compensation certificate.</p><p class="why">These four documents are what the property managers ask for. Ask by today, too late after close of Friday 4 September, because the agency is shut Saturday, Sunday and Labor Day.</p><span class="tag">S5ISIC1</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>In the same email, ask for the waiver of subrogation as a separate item, and expect a conversation about it.</p><p class="why">It is not on a standard policy. It is an endorsement that has to be requested and it usually costs money. This is the slowest of the four. Ask for it now and do not assume it comes back with the others.</p><span class="tag">S5ISIC1</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Tell me from your own certificate whether Top Tier carries the $2M umbrella.</p><p class="why">Several property manager portals will not let you register without it, so the answer decides how many of the 65 you can reach.</p><span class="tag">S5ISIC1</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Email the web agency and ask for two things: the eleven changes live, and a date in writing for when they go live.</p><p class="why">You are the paying client, so this carries weight mine does not. The changes have to be live by Wednesday 9 September so I can read them on your pages before the final status is written.</p><span class="tag">S1ISIC2</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>In the same email, ask the agency for your own administrator login to the site.</p><p class="why">Today they are the only people who can change a line on your own website. That is the dependency behind this piece of work, and your own login is what removes it permanently.</p><span class="tag">S1ISIC2</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Find and send both signed marketing vendor orders.</p><p class="why">You signed them, so they are in your own email or files. Without them nobody can tell you what either contract obligates you to.</p><span class="tag">S4ISIC1</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Tell me which company one of the marketing vendors actually is, from a statement descriptor, a bill or an email address.</p><p class="why">Until this lands I cannot tell you anything about that vendor. Too late after Wednesday 2 September.</p><span class="tag">S4ISIC1</span></div>
+</div><div class="step">
+  <span class="badge both">GUY and DALE</span>
+  <div class="stepbody"><p>We set Lead Source as a required field in your CRM, in the browser, together. It takes minutes.</p><p class="why">Too late after Wednesday 2 September. Set later than that and there is not a full week of records to read at your own meeting on the 8th. This single setting is what two pieces of work stand on. We do it with you at the keyboard rather than me at it, and we walk the funnel while we are in there: what each stage means, what moves a record from one to the next, and where the count comes from. Doing it for you would last exactly as long as I am here.</p><span class="tag">S3ISIC1, M3ISIC0</span></div>
+</div><div class="step">
+  <span class="badge both">GUY, KEITH and DALE</span>
+  <div class="stepbody"><p>We walk the three cards on the wall: what each is worth, who owns it, and when it is due.</p><span class="tag">M1ISIC0</span></div>
+</div><div class="step">
+  <span class="badge both">GUY, KEITH and DALE</span>
+  <div class="stepbody"><p>We put the review process on the table and walk it: the wording that is compliant, the past customer list, and where the count goes on the wall beside the lead count.</p><p class="why">Google bars a business from asking a customer to mention anything specific in a review, including a staff member, a service or a town. Article 7400114. That is a legal constraint and its source, and breaking it is what would put the 18 reviews you already have at risk. When and how you ask is yours.</p><span class="tag">S8ISIC0</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Your three commercial visits this week, whenever they fit.</p><span class="tag">S5ISIC1</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I bring the numbers to the meeting: leads, reviews and jobs, counted weekly, and the chain that connects them.</p><span class="tag">M3ISIC0</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I hand over the commercial visit routine with the 131 organizations ranked. Three a week is the pace you set. Which three and in what order is your route to plan.</p><span class="tag">S5ISIC1</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I email the mail house for a quote on handling and freight, the two lines still unpriced.</p><p class="why">The size cannot be chosen and the order cannot be placed until those two lines are priced.</p><span class="tag">S0ISIC2</span></div>
+</div></div>
+</div>
+<div class="day">
+  <div class="dayhead"><span class="dayname">Wednesday 2 September</span><span class="meet">Review meeting</span></div>
+  <p class="headline">Our review meeting, and the CRM settings go in with Guy at the keyboard.</p>
+  <p class="why">Two things are too late after today: lead source made required, and the identity of the second marketing vendor. Everything else on this day is build work.</p>
+  <p class="slotval none">None.</p>
+  <div class="stepgrid"><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Approve the bucket and folder artwork so the shop can schedule production.</p><p class="why">Every day this waits comes off the front of their production time, and there is a holiday weekend in the middle of it.</p><span class="tag">S5ISIC1</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Email the web agency a second time if the pages have not changed.</p><span class="tag">S1ISIC2</span></div>
+</div><div class="step">
+  <span class="badge both">GUY and DALE</span>
+  <div class="stepbody"><p>We create three new fields on the job record in your CRM, in the browser rather than the app: Squares, Pitch, Waste. About ten minutes.</p><p class="why">A square is the only unit where what you charge, what the material costs and what the labor costs share a denominator. Right now no field in your system holds it. These three fields are also the first half of the measurement plan: they are where the number gets captured. The page that says how to read them comes over on the 8th.</p><span class="tag">S4ISIC1, M3ISIC0</span></div>
+</div><div class="step">
+  <span class="badge both">GUY and KEITH</span>
+  <div class="stepbody"><p>Start working the past customer list. It is every completed job in your CRM that has not already left you a review. The pace is yours.</p><p class="why">These are people who finished a job with you and were never asked. They are the whole reason this piece of work can land inside the fortnight. The second list is already built and comes over with it: 104 records out of your own CRM where the roof was never done, 74 of them lost to a competitor and 89 flagged top priority. Nobody on that list is asked for a review. It is a call list, and it is worked for the work.</p><span class="tag">S8ISIC0</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I send the print ready logo and phone number artwork to whichever shop you pick, so nothing waits on artwork.</p><span class="tag">S5ISIC1</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I build the marketing budget into the cash flow model.</p><span class="tag">F1ISIC0</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I correct the summary sheet so this meeting carries the right number, $150,000.</p><span class="tag">M1ISIC0</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I choose the postcard size as soon as the mail house quotes handling and freight.</p><p class="why">If that quote has not come back by close of Friday 4 September, nothing mails.</p><span class="tag">S0ISIC2</span></div>
+</div></div>
+</div>
+<div class="day">
+  <div class="dayhead"><span class="dayname">Thursday 3 September</span></div>
+  <p class="headline">A clear build day with no meetings, and the bucket and folder order goes in so production starts before the holiday weekend.</p>
+  <p class="why">The order is the only thing on this day that anyone outside touches. Everything else is work that depends on nobody.</p>
+  <p class="slotval none">None.</p>
+  <div class="stepgrid"><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Place the bucket and folder order and get the delivery date in writing.</p><p class="why">Ordered today rather than Friday, so production starts before the holiday weekend rather than after it. This is the single answer that decides whether the kit is in your hands on the 9th.</p><span class="tag">S5ISIC1</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Switch on the free contact routes on your Facebook page. Six are already on: the phone number, the email, the website link, the Instagram link, the message button and reviews. Three are not. The address on the page reads 14400 County Rd 37 NE where your own website and your Google listing both read 11440. The times you are open are not shown. Neither are the towns you cover. Set those three, and turn on the automatic reply if it is not on already, so a message that arrives while you are on a roof is answered the moment it lands.</p><p class="why">Nothing here waits on the web agency, the print shop or a vendor. It is free, it is all in the page settings, and it is done from the phone in your pocket, which is why it sits on the one clear day rather than in the Friday block. It unlocks two things at once. Every route above is a way a customer reaches you without waiting for a call back. And a customer who can message you is a customer who can be asked for a review, which is the work running beside it, where the ask has to stay simple because Google bars asking a customer to mention anything specific. Two of the 293 job records in your system name Facebook as where the work came from, against 231 people following the page.</p><span class="tag">S1ISIC2</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I build the price per square curve from the 25 jobs that carry real cost data.</p><span class="tag">F1ISIC0</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I write up the Google Local Services Ads pitfalls, explain the free channel underneath it, and scan where you sit on the map.</p><span class="tag">S1ISIC2</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I score the mailer homes in Otsego, Monticello and Buffalo on sale date and storm history.</p><p class="why">Those three cities publish no roof permit records at all, so nothing here waits on a city clerk.</p><span class="tag">S0ISIC2</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I pull the job photo library, once the access key is in.</p><span class="tag">S4ISIC1</span></div>
+</div></div>
+</div>
+<div class="day">
+  <div class="dayhead"><span class="dayname">Friday 4 September</span></div>
+  <p class="headline">A short day, the last day anything can reach us from outside, and the postcard review closes.</p>
+  <p class="why">This is the deadline day, not Monday. Everything I need from your insurance agent, from the web agency, from the print shop and from the two marketing vendors has to be here by close of business today, because all of them are shut Saturday, Sunday and Labor Day Monday. We work through the holiday. They do not.</p>
+  <p class="slotval none">None.</p>
+  <div class="stepgrid"><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Check that all four insurance documents are in before your agent closes for the weekend. Whatever arrived by today is what goes into the folder on Monday.</p><span class="tag">S5ISIC1</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Get the web agency&#x27;s go-live date in writing before they close.</p><p class="why">A date in writing today is what turns this from waiting into a commitment I can check on Wednesday.</p><span class="tag">S1ISIC2</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Send both signed vendor orders and the vendor identity if either is still outstanding.</p><span class="tag">S4ISIC1</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>The postcard review closes today. The card is in review and it is not approved. Several people are looking at it, and more faces are being drawn now so the review has real options in front of it rather than one card to accept or reject.</p><p class="why">What has to come out of today is a size. The order cannot be placed on Tuesday without one.</p><span class="tag">S0ISIC2</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I put together a one page list of the 26 card charges I could not match to a vendor, totalling $43,681.56, so you can tell me what they are.</p><p class="why">Most of them are probably obvious to you and not to me.</p><span class="tag">F1ISIC0</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I write down the first week&#x27;s numbers, so the second week has something to move against.</p><span class="tag">M3ISIC0</span></div>
+</div></div>
+</div>
+<div class="day rest">
+  <div class="dayhead"><span class="dayname">Saturday and Sunday 5 and 6 September</span></div>
+  <p class="headline">Nobody is working, here or there.</p>
+  <p class="why">Everything we asked for is sitting with somebody else over the weekend. We will know on Monday. This is exactly why every deadline sat on Friday.</p>
+  <p class="slotval none">None.</p>
+  
+</div>
+<div class="day">
+  <div class="dayhead"><span class="dayname">Monday 7 September</span></div>
+  <p class="headline">We work Labor Day. Guy and I assemble the folder from what arrived by Friday, and the cash flow model moves into your hands.</p>
+  <p class="why">Your insurance agency, the web agency and the print shop are all closed today, so nothing new arrives from outside. That does not change what we deliver. It is the reason every deadline sat on Friday the 4th.</p>
+  <p class="slotval"><span class="landsline">Lands today:</span> The cash flow model, in your hands. Training concludes and you run it every week from here.</p>
+  <div class="stepgrid"><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Assemble the folder with me: the triage card, the certificate of insurance, the umbrella confirmation, the waiver of subrogation, the workers compensation certificate, the signed W-9, and license BC807923.</p><p class="why">Whatever arrived by Friday is what goes in. A folder that is short one document still goes out; it just goes out short.</p><span class="tag">S5ISIC1</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Your three commercial visits this week, whenever they fit. We look at last week&#x27;s against the ranked list.</p><span class="tag">S5ISIC1, S3ISIC1</span></div>
+</div><div class="step">
+  <span class="badge both">GUY and KEITH</span>
+  <div class="stepbody"><p>Keep working the past customer list, and tell me what you are hearing back.</p><span class="tag">S8ISIC0</span></div>
+</div><div class="step">
+  <span class="badge both">GUY, KEITH and DALE</span>
+  <div class="stepbody"><p>We sit down with the cash flow model and walk it end to end: where every number comes from, what you change each week, and what it is telling you. This is the hand-over, and it is the point at which the model becomes yours.</p><p class="why">This model is not a document that ends. It is an instrument you keep running every week after I leave. That is what this piece of work was for.</p><span class="tag">F1ISIC0</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I build a mechanism for the follow-up sequence. Right now it lives in your heads.</p><span class="tag">M5ISIC0</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I prepare the print order on the back version that carries no agent panel.</p><p class="why">Your insurance agent is captive to one carrier, so any co-branded piece needs that carrier&#x27;s written approval and the turnaround is not knowable. Both backs exist at every size. We print the one that needs nobody&#x27;s permission, and his version becomes a second drop later.</p><span class="tag">S0ISIC2</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I read how much of your CRM is actually being used: which fields are filled, which sit empty, and which parts of what you pay for are never touched.</p><p class="why">This is a read you can repeat yourselves once a quarter. That is why I am showing you how I got it rather than just handing you the answer.</p><span class="tag">S4ISIC1, S3ISIC1</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I read both vendor contracts and finish the software review.</p><span class="tag">S4ISIC1</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I check the live pages. If they have not changed, I say so today rather than argue about it on Thursday.</p><p class="why">Today is when we still have three working days to fix it. Thursday is not.</p><span class="tag">S1ISIC2</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I bring the cash flow model up to date for the week before we sit down with it. Your closing balance for Saturday 29 August is already in it, so it opens on your real money.</p><span class="tag">F1ISIC0</span></div>
+</div></div>
+</div>
+<div class="day">
+  <div class="dayhead"><span class="dayname">Tuesday 8 September</span><span class="meet">Meeting at one o&#x27;clock</span></div>
+  <p class="headline">Our meeting at one o&#x27;clock, and Guy runs it.</p>
+  <p class="why">This is the hand-over meeting, and four pieces of work land in it. Guy takes the chair. It is also the last day the print order can be placed and still count.</p>
+  <p class="slotval"><span class="landsline">Lands today:</span> How we run the weekly meetings; The numbers we watch; How the work flows; The sales pipeline</p>
+  <div class="stepgrid"><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>You run this meeting. I sit in and say nothing unless you ask.</p><p class="why">This is the whole test for that piece of work. Not that the meeting happens, but that it happens without me.</p><span class="tag">M1ISIC0</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>You read the lead count off your own screen, from records that have carried a lead source since the 1st.</p><p class="why">It will be a small count, because the field only applies to records created from 1 September and your lead volume is deliberately low right now. A small number read by the owner is still the owner reading his own number. This is the test of the training, not of the software. You pull the number, you say what it means, and you say what you would do about it.</p><span class="tag">M3ISIC0</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>You read the review count off your own profile and put it on the board beside the lead count.</p><p class="why">It stood at 18 on 31 August. What matters is that the number is on the wall and that you are the one reading it.</p><span class="tag">S8ISIC0</span></div>
+</div><div class="step">
+  <span class="badge keith">KEITH</span>
+  <div class="stepbody"><p>Walk the process maps with Guy and me and tell me where the map is wrong.</p><p class="why">They have to be your maps. A map I drew that nobody corrected is a document, not a process.</p><span class="tag">M5ISIC0</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I read the pipeline counts off a full week of records.</p><span class="tag">S3ISIC1</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I place the print order.</p><p class="why">This is the last day it can be placed and still count.</p><span class="tag">S0ISIC2</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I hand over one page, how to read your own numbers: every number worth reading, where it is captured, who captures it, how often you read it, and what a move in it is telling you.</p><p class="why">This is the measurement plan on a single side of paper, so knowing where a figure came from never depends on me being in the room.</p><span class="tag">M3ISIC0</span></div>
+</div><div class="step">
+  <span class="badge out">THE PRINT SHOP</span>
+  <div class="stepbody"><p>Buckets and folders delivered, if the quote said they could be.</p><span class="tag">S5ISIC1</span></div>
+</div></div>
+</div>
+<div class="day">
+  <div class="dayhead"><span class="dayname">Wednesday 9 September</span><span class="meet">Review meeting</span></div>
+  <p class="headline">Our review meeting, and three more pieces are confirmed working.</p>
+  <p class="why">Everything that is going to land is confirmed today, so Thursday is a clean last day rather than a scramble. Today is also the day the website changes have to be live, because I read them myself before the final status is written.</p>
+  <p class="slotval"><span class="landsline">Lands today:</span> Your software; How a sales visit runs; The mailer</p>
+  <div class="stepgrid"><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Count the kit contents with me, and load the buckets and folders if they arrived.</p><span class="tag">S5ISIC1</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Confirm with the web agency that the eleven changes are live. This is the last working day before the final status is written.</p><span class="tag">S1ISIC2</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I sign off the software review against what the two vendor contracts actually said.</p><span class="tag">S4ISIC1</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I confirm the print order with the printer.</p><span class="tag">S0ISIC2</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I open and read the live pages. An agency saying it is done is not evidence that it is done.</p><span class="tag">S1ISIC2</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I check every one of the ten against what is actually true, not what was planned.</p><span class="tag">all ten</span></div>
+</div></div>
+</div>
+<div class="day last">
+  <div class="dayhead"><span class="dayname">Thursday 10 September</span></div>
+  <p class="headline">The last day of the engagement: the final status on all ten, the summary sheet reissued, and the hand-off.</p>
+  <p class="why">The last day is built so that it depends on nobody outside this office. Two pieces of work land today, and they land last because they are the two that had somebody else in the middle of them.</p>
+  <p class="slotval"><span class="landsline">Lands today:</span> Getting reviews; Your website and everything online; All ten written up and handed over</p>
+  <div class="stepgrid"><div class="step">
+  <span class="badge both">GUY and KEITH</span>
+  <div class="stepbody"><p>Final read of the review count off your own profile, with the past customer list in front of you and the compliant wording in your hands. From here the ask runs on every job you close, and every review that lands after today still counts.</p><p class="why">This is what the process being yours looks like: the list, the wording, the count on the wall, and the ask built into closing a job rather than run as a campaign.</p><span class="tag">S8ISIC0</span></div>
+</div><div class="step">
+  <span class="badge guy">GUY</span>
+  <div class="stepbody"><p>Confirm the website changes are live on your own pages, and that you now hold your own administrator login to the site.</p><p class="why">The login is what makes the next change yours to make.</p><span class="tag">S1ISIC2</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I write the final status on all ten into my firm&#x27;s reporting system.</p><span class="tag">all ten</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I reissue the summary sheet with the wall total at $150,000 and the real completion figure.</p><span class="tag">M1ISIC0</span></div>
+</div><div class="step">
+  <span class="badge dale">DALE</span>
+  <div class="stepbody"><p>I issue the final summary of everything we finished.</p><span class="tag">all ten</span></div>
+</div><div class="step">
+  <span class="badge both">GUY, KEITH and DALE</span>
+  <div class="stepbody"><p>Hand-off: what you run from here, who holds each piece, and where every open thread sits.</p><span class="tag">all ten</span></div>
+</div></div>
+</div>
+<h2>The ten, and how each one lands</h2>
+<p class="sub">These are the ten pieces of work in Appendix A of the plan you signed, in the same order, each with the reference number you already hold. All ten land by Thursday 10 September.</p>
+<div class="ten">
+<div class="card">
+  <h3>How we run the weekly meetings</h3>
+  <p class="code">M1ISIC0 &nbsp;&middot;&nbsp; Critical Path Method</p>
+  <dl>
+    <dt>What fills it</dt><dd>The three cards on the wall in your office, the signed card carrying $150,000 and Guy&#x27;s name, the Tuesday meeting, the Wednesday review, and the summary sheet.</dd>
+    <dt>Lands</dt><dd><span class="landsline">Tuesday 8 September</span>. Guy runs the meeting himself and I sit in without speaking. The method is instituted with both owners, which is the whole management team this company has today.</dd>
+    <dt>What makes it land</dt><dd>Nothing from outside this office. Guy takes the chair on the 8th and the summary sheet carries $150,000.</dd>
+  </dl>
+</div>
+<div class="card">
+  <h3>The numbers we watch</h3>
+  <p class="code">M3ISIC0 &nbsp;&middot;&nbsp; Metrics to Monitor</p>
+  <dl>
+    <dt>What fills it</dt><dd>The handful of numbers worth reading every week: leads, reviews and jobs, counted weekly, with the chain that connects them. Behind those numbers sits the measurement plan, which is how you know what you have and where you are: what gets measured, where each figure is captured, who captures it, and how often it is read. Two pieces make it real. The Squares, Pitch and Waste fields go onto the job record on Wednesday 2 September, so a roof can be measured at all. A single page, how to read your own numbers, is handed over at the meeting on Tuesday 8 September.</dd>
+    <dt>Lands</dt><dd><span class="landsline">Tuesday 8 September</span>. Guy reads his own lead count and his own review count off his own screens, at his own meeting, instead of me reporting them to him.</dd>
+    <dt>What makes it land</dt><dd>Lead source has to be a required field from 1 September so there is a week of records to read on the 8th. That is one setting, and we do it together on the 1st. Nothing else in this one comes from outside your office. The three job record fields go in on the 2nd with Guy at the keyboard rather than mine, and the one page that ties every number to where it is captured is mine to write and hand over on the 8th.</dd>
+  </dl>
+</div>
+<div class="card">
+  <h3>How the work flows</h3>
+  <p class="code">M5ISIC0 &nbsp;&middot;&nbsp; Process Mapping</p>
+  <dl>
+    <dt>What fills it</dt><dd>Maps of how the work actually flows: where a lead comes from, what happens next, and who touches it. Lead generation and the sales cycle, retail and commercial.</dd>
+    <dt>Lands</dt><dd><span class="landsline">Tuesday 8 September</span>. The maps are yours, changed wherever Keith says they are wrong, and the follow-up sequence has a mechanism instead of living in your heads.</dd>
+    <dt>What makes it land</dt><dd>Keith walks the maps with us on the 8th and says where they are wrong. Nothing outside this office gates it.</dd>
+  </dl>
+</div>
+<div class="card">
+  <h3>Getting reviews</h3>
+  <p class="code">S8ISIC0 &nbsp;&middot;&nbsp; Customer Review Process</p>
+  <dl>
+    <dt>What fills it</dt><dd>The wording that is compliant, the past customer list, the count on the wall, and the ask built into closing a job. Alongside it, and already built, is the call list: 104 records pulled out of your own CRM covering people whose roof, on your own record, was never done. 98 of them never reached production, 74 are marked lost to a competitor, 43 are still sitting at Lead and were never moved, and 89 are flagged top priority. The oldest goes back to June 2024. It is a different list from the finished customers who were never asked for a review, and it is worked for a different reason, but it is the same motion: going back through the people already in your system instead of buying new ones.</dd>
+    <dt>Lands</dt><dd><span class="landsline">Thursday 10 September</span>. The process is running in your hands rather than mine, and reviews are arriving through it.</dd>
+    <dt>What makes it land</dt><dd>This one is a process, not a tally, and six things have to be true by Thursday. All six sit inside this office. One, the compliant wording is written down and you both hold it. Two, the past customer list is built and you are working it: every completed job in your CRM that has not already left you a review. Three, you can both state Google&#x27;s rule in your own words, because breaking it is what puts the reviews you already have at risk. Four, the ask is part of closing a job rather than a separate campaign, so it keeps running when I am gone. Five, the count sits on the wall beside the lead count and Guy reads it at the Tuesday meeting off your own profile. Six, the count has moved off 18. Reviews that land after the 10th keep counting. The call list is handed over with the rest of it. Nobody is asked for a review on that list, because those roofs were never done. It is worked for the work, and it is yours to run at whatever pace suits the season.</dd>
+  </dl>
+</div>
+<div class="card">
+  <h3>The sales pipeline</h3>
+  <p class="code">S3ISIC1 &nbsp;&middot;&nbsp; Sales Funnel</p>
+  <dl>
+    <dt>What fills it</dt><dd>Where work comes from, stage by stage, with the 131 commercial organizations sitting at the top of it and your market, product and customer mix behind them.</dd>
+    <dt>Lands</dt><dd><span class="landsline">Tuesday 8 September</span>. You can see how much work is sitting at each stage, off records that have carried a lead source since 1 September.</dd>
+    <dt>What makes it land</dt><dd>Records created since 1 September have to actually move between stages, which is why the setting goes in on the 1st and not later, and why the three visits a week matter this fortnight. The training is the whole point of this one rather than a bonus on top of it. I do not set the field and hand you a funnel. We set it together with Guy at the keyboard on the 1st, we walk what each stage means and what moves a record between them, and on the 8th Guy reads the count off his own screen at his own meeting. If I did it for you, it would stop the day I left.</dd>
+  </dl>
+</div>
+<div class="card">
+  <h3>Your software</h3>
+  <p class="code">S4ISIC1 &nbsp;&middot;&nbsp; Tech Stack Review</p>
+  <dl>
+    <dt>What fills it</dt><dd>Your CRM, your job photo software, the record problems, the new fields on the job record, and the two outside marketing vendors holding pieces of your business. It also carries a straight read of how much of that software you are actually using: which fields are filled, which are empty, and what you are paying for and not touching.</dd>
+    <dt>Lands</dt><dd><span class="landsline">Wednesday 9 September</span>. The job records are sorted, the new fields are live, the photo software is connected, and both vendor contracts have been read against what you are actually paying for.</dd>
+    <dt>What makes it land</dt><dd>Three things from Guy, and none of them is difficult: the photo software access key, both signed vendor orders, and which company one of those vendors actually is. All three by close of Friday 4 September. The read of what you are actually using is mine to produce, and the point of it is not the report. It is that you can repeat it yourselves once a quarter and see the same thing I saw.</dd>
+  </dl>
+</div>
+<div class="card">
+  <h3>How a sales visit runs</h3>
+  <p class="code">S5ISIC1 &nbsp;&middot;&nbsp; Sales Cycle</p>
+  <dl>
+    <dt>What fills it</dt><dd>The visit routine and the ranked queue behind it, the five step commercial framework, the triage card and the blank roof record you leave behind, the 65 property managers, and the kit you carry.</dd>
+    <dt>Lands</dt><dd><span class="landsline">Wednesday 9 September</span>. The routine is running at three visits a week, the folder is assembled, and the branded buckets and folders are in your hands.</dd>
+    <dt>What makes it land</dt><dd>Four documents from your insurance agent by close of Friday 4 September, and the buckets and folders arriving from the shop. The order goes in Thursday 3 September so production starts before the holiday weekend rather than after it.</dd>
+  </dl>
+</div>
+<div class="card">
+  <h3>The mailer</h3>
+  <p class="code">S0ISIC2 &nbsp;&middot;&nbsp; Drip Marketing</p>
+  <dl>
+    <dt>What fills it</dt><dd>The homeowner postcard, the 1,433 homes it goes to, the insurance campaign with the Minnesota statutes read at the source, and the agent panel.</dd>
+    <dt>Lands</dt><dd><span class="landsline">Wednesday 9 September</span>. Designed, targeted, priced, legally cleared and ordered. The drop itself mails after the engagement ends, and that is what finished means for this one.</dd>
+    <dt>What makes it land</dt><dd>The card is in review and not approved. It comes out of review on Friday 4 September with a size chosen, the mail house quotes handling and freight, and the order goes in on Tuesday 8 September. More faces are being drawn now, so the review has real options in front of it rather than one card to accept or reject.</dd>
+  </dl>
+</div>
+<div class="card">
+  <h3>Your website and everything online</h3>
+  <p class="code">S1ISIC2 &nbsp;&middot;&nbsp; Digital Marketing</p>
+  <dl>
+    <dt>What fills it</dt><dd>The eleven website changes, your Google listing at 5.0 stars from 18 reviews, social, the 17 finished graphics, the 21 photographs, the image library and the vendor inventory.</dd>
+    <dt>Lands</dt><dd><span class="landsline">Thursday 10 September</span>. The changes are live on your own pages, read and confirmed by me on the live site rather than reported to me.</dd>
+    <dt>What makes it land</dt><dd>The agency pushes the changes. That is one outside company, one batch of work and one date. Four things make it land. One, the whole batch went as a single item on 31 August so they touch the page once instead of eleven times. Two, every line carries the Minnesota statute beside it, so this is a compliance fix and not a preference. Three, Guy asks as the paying client on Tuesday 1 September and again on Wednesday if nothing has moved. Four, Guy gets a go-live date in writing before they close on Friday 4 September. The changes have to be live by Wednesday 9 September so I can read the pages myself before the final status is written. In the same email Guy asks for his own administrator login, which is what stops this being one company&#x27;s decision ever again.</dd>
+  </dl>
+</div>
+<div class="card">
+  <h3>The cash flow model</h3>
+  <p class="code">F1ISIC0 &nbsp;&middot;&nbsp; Cash Forecast Model</p>
+  <dl>
+    <dt>What fills it</dt><dd>The 13 week cash flow model, week 1 ending 5 September through week 13 ending 28 November, with net profit 2025 against 2026, profitability job by job, the marketing budget, price per square and the card charge list.</dd>
+    <dt>Lands</dt><dd><span class="landsline">Monday 7 September</span>. In your hands. This one is not a document that ends and it is not meant to be. Training concludes on the 7th and you keep running it every week after I leave. What lands is the hand-over: you know where every number comes from, what you change each week, and what it is telling you.</dd>
+    <dt>What makes it land</dt><dd>Your closing bank balance for Saturday 29 August is in and the model is already rolled forward on it, so the week it opens on is your real money rather than a forecast. What is left is the last three pieces inside the model, and all three are mine to build: the marketing budget, the price per square, and the card charge list. Two figures still come from your side and neither one holds up the hand-over: the partner tax set-aside, from you or your accountant ahead of the 15 September payment, and the August bank statement once the month closes.</dd>
+  </dl>
+</div>
+</div>
+<h2>What I need from outside, and by when</h2>
+<p class="sub">Every deadline in this table is worked backwards from the other side's own calendar, not ours. Your insurance agent, the web agency, the print shop and the two marketing vendors are all shut Saturday, Sunday and Labor Day Monday, so Friday 4 September is the real deadline for anything coming from them.</p>
+<div class="scroll"><table><thead><tr><th>What is needed</th><th>For</th><th>Ask by</th><th>Who supplies it</th><th>Too late after</th><th>If it does not arrive</th></tr></thead><tbody>
+<tr><td><b>Imprint cost and a written delivery date for the buckets and folders</b></td><td>How a sales visit runs</td><td>Mon 31 August, already asked</td><td>Guy chooses the shop, the shop quotes</td><td>Tue 1 September for the quote, Thu 3 September for the order</td><td>The kit is not in your hands on the 9th. This is the single answer that decides it.</td></tr>
+<tr><td><b>The access key for your job photo software</b></td><td>Your software</td><td>Mon 31 August, already asked</td><td>Guy, from the software console</td><td>Fri 4 September</td><td>The software review closes with that one system unread. 616 job photos are already in hand another way, so what is lost is the rest of the library.</td></tr>
+<tr><td><b>The eleven website changes live, and a go-live date in writing</b></td><td>Your website and everything online</td><td>Mon 31 August sent, Guy asks Tue 1 September</td><td>The web agency does it. Guy asks as the paying client</td><td>Fri 4 September for the written date, Wed 9 September for the changes themselves</td><td>Copy that has to change to meet Minnesota law stays live on your pages, and the site keeps sending visitors to an inactive social page.</td></tr>
+<tr><td><b>Your own administrator login to the website</b></td><td>Your website and everything online</td><td>Tue 1 September</td><td>The web agency issues it, Guy asks</td><td>Fri 4 September</td><td>Every future change to your own website stays somebody else&#x27;s decision.</td></tr>
+<tr><td><b>Certificate of insurance, umbrella confirmation, workers compensation certificate</b></td><td>How a sales visit runs</td><td>Tue 1 September</td><td>Guy asks, the insurance agent issues</td><td>Fri 4 September</td><td>The folder goes out short, and the 56 property managers with no portal get an incomplete kit.</td></tr>
+<tr><td><b>Waiver of subrogation endorsement, asked for separately</b></td><td>How a sales visit runs</td><td>Tue 1 September</td><td>Guy asks, the insurance carrier issues</td><td>Fri 4 September</td><td>This is the long pole of the four. It is not on a standard policy, it has to be requested as an endorsement, and it usually costs money. Expect it to be the one that does not come back with the others.</td></tr>
+<tr><td><b>Both signed marketing vendor orders</b></td><td>Your software</td><td>Tue 1 September</td><td>Guy, from his own records</td><td>Fri 4 September</td><td>Nobody can tell you what either contract obligates you to.</td></tr>
+<tr><td><b>Which company one of the marketing vendors is</b></td><td>Your software</td><td>Tue 1 September</td><td>Guy, from a descriptor, a bill or an email address</td><td>Wed 2 September</td><td>I cannot tell you anything about that vendor, and the line stays a note.</td></tr>
+<tr><td><b>Lead source made required on new records</b></td><td>The sales pipeline and the numbers we watch</td><td>Tue 1 September</td><td>Guy and Dale together, in the browser</td><td>Wed 2 September</td><td>Nothing accumulates. Set later than Wednesday and there is nothing to read at your own meeting on the 8th.</td></tr>
+<tr><td><b>Handling and freight, the two unpriced lines</b></td><td>The mailer</td><td>Tue 1 September</td><td>Dale asks, the mail house quotes</td><td>Fri 4 September</td><td>The size cannot be chosen and the order cannot be placed.</td></tr>
+<tr><td><b>The postcard out of review, with a size chosen</b></td><td>The mailer</td><td>Fri 4 September</td><td>Guy, and whoever else is reviewing it</td><td>Fri 4 September</td><td>No size is chosen and no order can be placed on Tuesday.</td></tr>
+<tr><td><b>Reviews posted by past customers</b></td><td>Getting reviews</td><td>Wed 2 September, and every job you close from here</td><td>Your customers, in their own time</td><td>not ours to schedule</td><td>The process still runs and still belongs to you. Every review that lands after the 10th keeps counting.</td></tr>
+</tbody></table></div>
+<h2>Two things I have deliberately routed around</h2>
+<p class="sub">Neither can be hurried by anyone here, so rather than let them decide whether a piece of work lands, each has a way around it, and what that costs is stated.</p>
+<div class="scroll"><table><thead><tr><th>What</th><th>The way around it, and what it costs</th></tr></thead><tbody>
+<tr><td><b>Written advertising approval from your insurance agent&#x27;s carrier</b></td><td>He is captive to a single carrier, so that carrier reviews any co-branded contractor piece and may say no to co-branding outright. That turnaround is not knowable and not his to hurry. Two backs exist at every size, one carrying his panel and one carrying none, both print ready. We print the one without the panel, his version becomes a second drop later, and a no costs nothing but that panel.</td></tr>
+<tr><td><b>Roof permit records from Otsego, Monticello and Buffalo</b></td><td>Those three cities publish nothing at all, so the homes there get scored on sale date and storm history instead, on Thursday 3 September. Nothing waits on a city clerk.</td></tr>
+</tbody></table></div>
+<h2>Where the numbers in these two documents come from</h2>
+<p class="sub">Every count below was recounted from the underlying file on 1 September rather than carried forward from an older document.</p>
+<div class="scroll"><table><thead><tr><th>Figure</th><th>Counted from</th></tr></thead><tbody>
+<tr><td><b>1,433 homes on the mailer list</b></td><td>1,913 candidate parcels less the 480 that had already pulled a re-roof permit, counted from the parcel file itself.</td></tr>
+<tr><td><b>131 commercial organizations to call</b></td><td>the commercial records now loaded and live in your CRM under lead source Commercial Outbound, counted from the load file itself: 65 property management companies, 32 owners holding three or more buildings, 29 insurance agencies, 4 condo associations and the single largest concentration. They are organizations to call, not buildings; only 33 of the 131 rows carry a building count at all.</td></tr>
+<tr><td><b>the past customers still to ask</b></td><td>the completed jobs in your CRM that have not already left a review.</td></tr>
+<tr><td><b>18 reviews at 5.0 stars</b></td><td>your Google Business Profile, read live on 31 August 2026.</td></tr>
+<tr><td><b>17 finished graphics</b></td><td>the drawing set, every dimension cited on the drawing.</td></tr>
+<tr><td><b>65 property managers, 8 running a vendor portal and 56 running none</b></td><td>the property manager file behind the commercial routine.</td></tr>
+</tbody></table></div>
+<footer>
+<p>Top Tier Roofing and Remodeling, LLC. Commenced 24 August 2026.
+Last day Thursday 10 September 2026.</p>
+<p class="name">Dale Linn</p>
+</footer>
+</div>
+</body>
+</html>

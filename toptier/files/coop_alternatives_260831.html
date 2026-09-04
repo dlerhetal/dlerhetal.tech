@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where the Marketing Money Actually Is</title>
+<style>
+  :root{
+    --blue:#1A3C6E;
+    --gold:#FFCD00;
+    --ink:#1c2530;
+    --muted:#54606e;
+    --line:#d7dde5;
+    --paper:#ffffff;
+    --wash:#f4f7fb;
+    --green:#1e7a3c;
+    --greenwash:#eef8f0;
+    --red:#b3231f;
+    --redwash:#fdf2f1;
+    --amber:#8a6100;
+    --amberwash:#fff8e6;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:#eef1f5;
+    color:var(--ink);
+    font-family:Calibri,"Segoe UI",Tahoma,Verdana,Geneva,sans-serif;
+    font-size:19px;
+    line-height:1.55;
+    print-color-adjust:exact;
+    -webkit-print-color-adjust:exact;
+  }
+  .sheet{
+    max-width:1040px;
+    margin:0 auto;
+    background:var(--paper);
+    padding:0 0 60px 0;
+    box-shadow:0 0 24px rgba(20,35,60,.14);
+  }
+  header.masthead{
+    background:var(--blue);
+    color:#fff;
+    padding:32px 44px 28px 44px;
+    border-bottom:7px solid var(--gold);
+  }
+  header.masthead .kicker{
+    display:inline-block;
+    background:var(--gold);
+    color:var(--blue);
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:1.1px;
+    text-transform:uppercase;
+    padding:4px 11px;
+    border-radius:3px;
+    margin-bottom:14px;
+  }
+  header.masthead h1{
+    margin:0 0 10px 0;
+    font-size:36px;
+    line-height:1.13;
+    letter-spacing:.2px;
+  }
+  header.masthead p{
+    margin:0;
+    font-size:19px;
+    color:#d5e0f0;
+    max-width:80ch;
+  }
+  main{padding:0 44px;}
+  section{
+    margin:38px 0 0 0;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  h2{
+    font-size:27px;
+    color:var(--blue);
+    margin:0 0 6px 0;
+    padding-bottom:8px;
+    border-bottom:3px solid var(--gold);
+    line-height:1.2;
+  }
+  h3{
+    font-size:21px;
+    color:var(--blue);
+    margin:26px 0 6px 0;
+    line-height:1.25;
+  }
+  h4{
+    font-size:19px;
+    color:var(--ink);
+    margin:18px 0 4px 0;
+  }
+  p{margin:10px 0;}
+  ul,ol{margin:10px 0 10px 0;padding-left:26px;}
+  li{margin:6px 0;}
+  .lede{
+    background:var(--wash);
+    border-left:7px solid var(--blue);
+    padding:20px 24px;
+    font-size:20px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .lede p:first-child{margin-top:0;}
+  .lede p:last-child{margin-bottom:0;}
+  .card{
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:18px 22px;
+    margin:16px 0;
+    background:var(--paper);
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .card.good{border-left:7px solid var(--green);background:var(--greenwash);}
+  .card.warn{border-left:7px solid var(--amber);background:var(--amberwash);}
+  .card.stop{border-left:7px solid var(--red);background:var(--redwash);}
+  .card.flat{border-left:7px solid var(--blue);background:var(--wash);}
+  .card h3,.card h4{margin-top:0;}
+  .tag{
+    display:inline-block;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.7px;
+    text-transform:uppercase;
+    padding:2px 7px;
+    border-radius:3px;
+    vertical-align:2px;
+    white-space:nowrap;
+  }
+  .tag.v{background:#0f5c2e;color:#fff;}
+  .tag.s{background:#6b5300;color:#fff;}
+  .tag.n{background:#7a2320;color:#fff;}
+  .rank{
+    display:inline-block;
+    background:var(--blue);
+    color:var(--gold);
+    font-weight:700;
+    font-size:16px;
+    width:30px;
+    height:30px;
+    line-height:30px;
+    text-align:center;
+    border-radius:50%;
+    margin-right:9px;
+    vertical-align:2px;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:16px 0;
+    font-size:16px;
+  }
+  .tablewrap{overflow-x:auto;}
+  th,td{
+    border:1px solid var(--line);
+    padding:9px 11px;
+    text-align:left;
+    vertical-align:top;
+  }
+  th{
+    background:var(--blue);
+    color:#fff;
+    font-size:15px;
+    letter-spacing:.3px;
+  }
+  tbody tr:nth-child(even){background:var(--wash);}
+  td.no{color:var(--red);font-weight:700;}
+  td.yes{color:var(--green);font-weight:700;}
+  a{color:#0d4a99;}
+  a.src{
+    font-family:Consolas,"Courier New",monospace;
+    font-size:13px;
+    word-break:break-all;
+    color:#0d4a99;
+  }
+  .srcline{
+    margin:8px 0 0 0;
+    padding-top:8px;
+    border-top:1px dotted var(--line);
+    font-size:14px;
+    color:var(--muted);
+  }
+  .srcline b{color:var(--ink);}
+  .money{font-weight:700;color:var(--blue);}
+  .ask{
+    background:#fff;
+    border:2px dashed var(--blue);
+    padding:14px 18px;
+    margin:14px 0;
+    border-radius:4px;
+  }
+  .ask b{color:var(--blue);}
+  .fill{
+    background:var(--wash);
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:14px 18px;
+    margin:14px 0;
+  }
+  label{display:block;font-weight:700;margin-bottom:5px;color:var(--blue);}
+  .hint{font-size:16px;color:var(--muted);margin:0 0 8px 0;}
+  textarea,select,input[type=text]{
+    width:100%;
+    font-family:inherit;
+    font-size:18px;
+    padding:9px 11px;
+    border:1px solid #b9c3cf;
+    border-radius:4px;
+    background:#fff;
+    color:var(--ink);
+  }
+  textarea{min-height:86px;resize:vertical;}
+  .btnrow{margin:16px 0 8px 0;}
+  button{
+    font-family:inherit;
+    font-size:18px;
+    font-weight:700;
+    padding:11px 22px;
+    border:none;
+    border-radius:4px;
+    background:var(--blue);
+    color:#fff;
+    cursor:pointer;
+    margin-right:10px;
+  }
+  button.ghost{background:#fff;color:var(--blue);border:2px solid var(--blue);}
+  .status{font-size:16px;color:var(--muted);margin-top:8px;}
+  footer{
+    margin-top:46px;
+    padding:22px 44px 0 44px;
+    border-top:3px solid var(--gold);
+    font-size:15px;
+    color:var(--muted);
+  }
+  .legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    font-size:15px;
+    margin:12px 0 0 0;
+    color:var(--muted);
+  }
+  @page{size:letter portrait;margin:.5in;}
+  @media print{
+    body{background:#fff;font-size:12pt;}
+    .sheet{box-shadow:none;max-width:none;}
+    main{padding:0;}
+    header.masthead{padding:18px 20px;}
+    footer{padding:16px 0 0 0;}
+    .noprint{display:none;}
+    table{font-size:10pt;}
+    a{color:#0d4a99;text-decoration:none;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header class="masthead">
+  <span class="kicker">Top Tier Roofing and Remodeling</span>
+  <h1>Where the Marketing Money Actually Is</h1>
+  <p>Manufacturer and distributor funding for the direct mail campaign, after Owens Corning said no to co-op. Every claim below carries a source link and a verification label. Built 2026-08-31.</p>
+</header>
+
+<main>
+
+<section>
+  <h2>The answer</h2>
+  <div class="lede">
+    <p><b>Matt is right that there is no percentage co-op fund at Owens Corning, and he is right about the whole category: almost nobody in asphalt roofing runs classic spend-matched co-op any more.</b> What replaced it is <b>purchase-based money</b>, meaning you buy shingles, you get dollars back, and you spend those dollars on whatever you want, including a mailer. That reframes the question. The ask is no longer "will you fund half my ad," it is "how many dollars per square am I leaving on the counter, and who files the paperwork for me."</p>
+    <p>On that basis there are <b>four doors</b>, and three of them are open to Top Tier today at current size with zero certification:</p>
+    <ol>
+      <li><b>CertainTeed Contractor Cash Back</b> pays <span class="money">$1.50 to $2.50 per square</span> on shingles with no tier, no certification and no volume floor. Register, submit invoices, get a Visa card.</li>
+      <li><b>IKO ROOFPRO Advantage</b> pays <span class="money">$1.50 per square</span> on named shingle lines with a 500 square per year minimum and a signed agreement.</li>
+      <li><b>ABC Supply in Rogers</b>, nine miles up 101, runs the actual mailer as a program: single family, owner occupied, homes ten years and older, inside a zip code or a radius, and they hand back the list of who received it. They also auto-file the manufacturer rebates above on your behalf.</li>
+      <li><b>Owens Corning is not closed, it is mislabeled.</b> OC's own network page says members earn <b>promo funds</b> on qualifying purchases that can be applied to marketing materials and lead generation tools, and can now be moved to a checking account or debit card. That is money. Preferred status, which the two year clock cleared in May 2026, adds a free custom design service that explicitly does direct mail.</li>
+    </ol>
+    <p><b>The single highest value move is the distributor, not the manufacturer.</b> ABC Supply is the only place where the mailer and the money sit at the same counter, and where somebody else does the rebate filing for a shop with no back office.</p>
+  </div>
+  <div class="legend">
+    <span><span class="tag v">Verified</span> read first hand on the brand's own site or its own published document</span>
+    <span><span class="tag s">Secondary</span> trade press, distributor summary or third party</span>
+    <span><span class="tag n">Not published</span> terms are not public, must be asked</span>
+  </div>
+</section>
+
+<section>
+  <h2>1. The Owens Corning premise check</h2>
+  <p>Before going elsewhere, test what "we don't do co-op money" actually means. It turns out to mean two true things and one false one.</p>
+
+  <div class="card good">
+    <h3>True, and it is money: OC network members earn promo funds on purchases <span class="tag v">Verified</span></h3>
+    <p>From the Owens Corning Roofing Contractor Network page, under the heading "Total Rewards, Totally Awesome," OC's own words:</p>
+    <p><i>"Earn cash back on qualifying product purchases and apply where and when you want it. Members can earn promo funds on qualifying Owens Corning Roofing purchases that can be easily applied to purchasing valuable marketing materials, branded merchandise and lead-generation tools. For additional convenience and immediate access, funding can now be transferred to your existing checking or savings bank account or debit cards."</i></p>
+    <p>The same page lists three member benefit headings: "Grow Your Business with Owens Corning," "Customized Marketing Materials," and <b>"Reimbursement Claims."</b> So there is a reimbursement mechanism inside the program. What there is not, anywhere on the public page, is a published percentage, a cap or a spend match.</p>
+    <p class="srcline"><b>Source:</b> <a class="src" href="https://www.owenscorning.com/en-us/roofing/rewards-program" target="_blank" rel="noopener">https://www.owenscorning.com/en-us/roofing/rewards-program</a></p>
+  </div>
+
+  <div class="card good">
+    <h3>True: Preferred and Platinum unlock a free custom design service that covers direct mail <span class="tag v">Verified</span></h3>
+    <p>Same page: <i>"All Owens Corning Contractor Network members automatically receive self-service marketing support options, including template designs for doorhangers, posters, product displays and more that you can customize on the OCConnect Resource Center to communicate your homeowner message. Owens Corning Roofing Platinum and Preferred Contractors can also tap into our dedicated custom graphic design resource, Local Marketing Advantage (LMA), by taking their co-branded concepts to the next level."</i></p>
+    <p>OC's own Local Marketing Advantage flyer describes LMA as a <i>"Unique, complimentary benefit that provides you with tailored or custom graphic designs for a variety of marketing collateral,"</i> and the collateral shown includes <b>Direct Mail</b>, door hangers, ads, job site signs and folders. Complimentary means free design labor, not free postage. It is still real value against a mailer budget.</p>
+    <p><b>Currency flag:</b> the LMA flyer carries publication number 10023410 and a February 2019 date. It is the document Owens Corning links from the live 2026 page, so it is current in the sense that OC still publishes it, but the design of the program may have moved since. Confirm scope with the rep.</p>
+    <p class="srcline"><b>Sources:</b><br>
+      <a class="src" href="https://www.owenscorning.com/en-us/roofing/rewards-program" target="_blank" rel="noopener">https://www.owenscorning.com/en-us/roofing/rewards-program</a><br>
+      <a class="src" href="https://www.owenscorning.com/dms/10023410" target="_blank" rel="noopener">https://www.owenscorning.com/dms/10023410</a>
+    </p>
+  </div>
+
+  <div class="card warn">
+    <h3>What Preferred requires <span class="tag v">Verified in part</span> <span class="tag s">Secondary in part</span></h3>
+    <p><b>Verified, from Owens Corning's own flyer:</b> <i>"Owens Corning Roofing Contractors must meet the following eligibility requirements: Have passed an installation workmanship inspection. Carry at least $1,000,000 in general liability insurance. Have been screened for financial stability and customer service."</i></p>
+    <p><b>Verified, from the network page footnote:</b> <i>"Owens Corning Roofing Platinum and Preferred Contractors are the only roofing professionals authorized to provide an extended warranty."</i> That makes Preferred a closing tool, not just a badge.</p>
+    <p><b>Secondary, and not confirmed on any Owens Corning page:</b> the widely repeated contractor-side account that Preferred requires two consecutive years in business under the same name plus a 50 percent Owens Corning product share, and that Platinum requires three years plus an 80 percent share, membership in the NRCA, and an Area Sales Manager nomination. Owens Corning does not publish a tier requirement table publicly. <b>Treat every one of those numbers as unconfirmed until the rep states them.</b></p>
+    <p class="srcline"><b>Sources:</b><br>
+      <a class="src" href="https://www.owenscorning.com/dms/10023410" target="_blank" rel="noopener">https://www.owenscorning.com/dms/10023410</a><br>
+      <a class="src" href="https://cmbroof.com/are-you-worthy-meeting-the-owens-corning-preferred-contractor-requirements/" target="_blank" rel="noopener">https://cmbroof.com/are-you-worthy-meeting-the-owens-corning-preferred-contractor-requirements/</a><br>
+      <a class="src" href="https://www.modernbuilderssupply.com/owens-corning-preferred-contractor" target="_blank" rel="noopener">https://www.modernbuilderssupply.com/owens-corning-preferred-contractor</a>
+    </p>
+  </div>
+
+  <div class="card flat">
+    <h3>The verdict, and what changes about the ask</h3>
+    <p>Matt's statement is almost certainly accurate as stated. Owens Corning does not run a co-op advertising fund in the classic sense of reimbursing a share of an ad buy. But there is Owens Corning money, it is earned on purchases, and there is a free design resource gated behind Preferred. So <b>the question to put to Matt is not about co-op at all.</b></p>
+    <div class="ask">
+      <p><b>What to ask Owens Corning:</b></p>
+      <ol>
+        <li>What is our current promo fund earning rate on qualifying purchases, in dollars or percent per square, and what is the balance today?</li>
+        <li>What are the Preferred tier requirements in this territory, and what does a nomination take, now that the business has passed two years?</li>
+        <li>Does Preferred change the promo fund rate, or only add Local Marketing Advantage and the extended warranty?</li>
+        <li>Is Local Marketing Advantage still live in 2026, and does it still cover direct mail design?</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>2. The manufacturers, side by side</h2>
+  <p>Read the "Money on a mailer" column first. That is the only column that answers the question.</p>
+  <div class="tablewrap">
+  <table>
+    <thead>
+      <tr>
+        <th style="width:14%">Manufacturer</th>
+        <th style="width:20%">Program and tiers</th>
+        <th style="width:24%">Eligibility bar</th>
+        <th style="width:26%">Money on a mailer</th>
+        <th style="width:16%">Fits Top Tier?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Owens Corning</b></td>
+        <td>Roofing Contractor Network. Member, Preferred, Platinum Preferred.</td>
+        <td>Workmanship inspection, $1M general liability, financial and customer service screen. <span class="tag v">Verified</span> Tier year and share thresholds not published. <span class="tag n">Not published</span></td>
+        <td>Promo funds earned on qualifying purchases, spendable on marketing materials and lead generation tools, transferable to a bank account. Rate not published. Preferred and Platinum add free custom design (LMA) including direct mail. <span class="tag v">Verified</span></td>
+        <td class="yes">Yes, and Preferred is now in reach</td>
+      </tr>
+      <tr>
+        <td><b>GAF</b></td>
+        <td>Certified, Certified Plus, Master Elite.</td>
+        <td>All three tiers: state licensed where required, $1,000,000 liability insurance, workers compensation insurance. That is the entire published bar. GAF adds that it "may also consider factors including, but not limited to, years of roofing experience, and customer reviews." <span class="tag v">Verified</span></td>
+        <td class="no">No co-op fund exists. GAF's own mandated consumer disclosure says contractors "may receive benefits, such as loyalty rewards points and discounts on marketing tools." Points only: 1.5% back for Master Elite, 1.0% for Certified and Certified Plus on purchases from 1/1/2026. <span class="tag v">Verified</span></td>
+        <td class="yes">Certified yes. Master Elite no, see below</td>
+      </tr>
+      <tr>
+        <td><b>CertainTeed</b></td>
+        <td>Contractor Cash Back rebate (open to all). Separately: ShingleMaster and SELECT ShingleMaster credentials.</td>
+        <td><b>Cash Back: none.</b> "Program is strictly for siding and roofing remodeling/retrofit contractors." Register for a Contractor ID, submit invoices within 90 days. <span class="tag v">Verified</span></td>
+        <td class="yes">$1.50 per square on Landmark PRO, Landmark Premium, NorthGate ClimateFlex, Highland Slate and others. $2.50 per square on Presidential Shake TL, Grand Manor, Belmont, Carriage House. Accessories on top, WinterGuard $4 per roll. Paid on a reloadable Visa. <span class="tag v">Verified</span></td>
+        <td class="yes">Yes, today, no certification needed</td>
+      </tr>
+      <tr>
+        <td><b>Malarkey</b></td>
+        <td>Certified Pro, Certified Premium. (Emerald Pro and Emerald Premium are the older names for the same two levels.)</td>
+        <td>Certified Pro: in person training with a Malarkey rep plus a Pro level test. Certified Premium: Pro training, Premium training, and a work inspection by Malarkey's technical team. <span class="tag v">Verified</span></td>
+        <td class="no">No co-op dollars, no rebate rate and no marketing fund appear anywhere on Malarkey's program page. Benefits are warranty eligibility, co-branded collateral, Find a Contractor listing, "rewards for installations" (unquantified) and partner discounts. <span class="tag v">Verified</span></td>
+        <td class="no">No money here</td>
+      </tr>
+      <tr>
+        <td><b>IKO</b></td>
+        <td>ROOFPRO: Advantage, Select, Craftsman Premier.</td>
+        <td>Advantage: "No minimum qualifications," but the rebate itself requires a minimum of 500 squares per calendar year and a signed agreement. Select: 1,200+ squares a year, at least 50% of residential shingles from IKO, two online courses. Craftsman Premier: 5,000+ squares, 70% share. <span class="tag v">Verified</span></td>
+        <td class="yes">Advantage: $1.50 per square rebate on Dynasty, Dynasty Cool Colors Plus, Nordic, Armourshake, Royal Estate and Crowne Slate. <b>Actual marketing funds start at Select</b>, described as funds for branded shirts, truck wraps and radio spots, plus 0.25% on squares and 3% on accessories. <span class="tag v">Verified</span></td>
+        <td class="yes">Advantage yes. Select is the stretch</td>
+      </tr>
+      <tr>
+        <td><b>Atlas</b></td>
+        <td>Atlas PRO+ with Gold, Platinum and Diamond reward levels. Signature Select is the product system, not a certification.</td>
+        <td>"It's FREE and easy to become an Atlas Pro right now." A free Atlas Pro account is the entry. <span class="tag v">Verified</span></td>
+        <td class="no">No cash co-op. "Atlas Bucks" earned on installs, redeemable in the Atlas PROShop for drones, Apple products, EagleView reports, Modernize appointments, home show tents and banners, and co-branded yard signs. Gold, Platinum and Diamond get unlimited free selling folders. Earning rate not published. <span class="tag n">Not published</span></td>
+        <td class="no">Free to join, but no mailer dollars</td>
+      </tr>
+      <tr>
+        <td><b>TAMKO</b></td>
+        <td>The TAMKO Edge, four levels. Entry is Register, then two Apply levels, then Invite Only.</td>
+        <td>Annual fee by level: none, $250, $1,000, $2,500. <span class="tag v">Verified</span> The mapping of level names (Gold, Platinum, Diamond) to those fee columns did not extract cleanly from TAMKO's brochure, so treat the name-to-fee pairing as unconfirmed. <span class="tag n">Not published</span></td>
+        <td>Cash back rewards starting at 0.5%, 2%, 3% and 4% by level. "The TAMKO Edge Store Funds" at the three paid levels. Lead Generation listed as a benefit at the three paid levels. <span class="tag v">Verified</span></td>
+        <td class="no">You pay to enter. Not for a shop under 1% ad spend</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="srcline"><b>Sources for the table, in order:</b><br>
+    <a class="src" href="https://www.owenscorning.com/en-us/roofing/rewards-program" target="_blank" rel="noopener">https://www.owenscorning.com/en-us/roofing/rewards-program</a><br>
+    <a class="src" href="https://www.gaf.com/en-us/document-library/documents/brochures-&amp;-literature/partner-programs-residential-program-guidelines.pdf" target="_blank" rel="noopener">https://www.gaf.com/en-us/document-library/documents/brochures-&amp;-literature/partner-programs-residential-program-guidelines.pdf</a><br>
+    <a class="src" href="https://www.abcsupply.com/wp-content/uploads/2026/03/GAF-Rewards-Sell-Sheet-2026.pdf" target="_blank" rel="noopener">https://www.abcsupply.com/wp-content/uploads/2026/03/GAF-Rewards-Sell-Sheet-2026.pdf</a><br>
+    <a class="src" href="https://www.abcsupply.com/wp-content/uploads/2026/03/2026-CCB-Roofing-Siding-US-EN-v2-1.pdf" target="_blank" rel="noopener">https://www.abcsupply.com/wp-content/uploads/2026/03/2026-CCB-Roofing-Siding-US-EN-v2-1.pdf</a><br>
+    <a class="src" href="https://www.malarkeyroofing.com/professionals/certified-contractor-program/" target="_blank" rel="noopener">https://www.malarkeyroofing.com/professionals/certified-contractor-program/</a><br>
+    <a class="src" href="https://www.iko.com/na/roofpro-benefits/" target="_blank" rel="noopener">https://www.iko.com/na/roofpro-benefits/</a><br>
+    <a class="src" href="https://www.abcsupply.com/wp-content/uploads/2026/03/MR8L113_IKO_ROOFPRO_AdvantageBrochure_US_EN_v5_final_update_012518.pdf" target="_blank" rel="noopener">https://www.abcsupply.com/wp-content/uploads/2026/03/MR8L113_IKO_ROOFPRO_AdvantageBrochure_US_EN_v5_final_update_012518.pdf</a><br>
+    <a class="src" href="https://www.atlasroofing.com/atlas-pro" target="_blank" rel="noopener">https://www.atlasroofing.com/atlas-pro</a><br>
+    <a class="src" href="https://www.abcsupply.com/wp-content/uploads/2026/03/the-tamko-edge-contractor-program-brochure.pdf" target="_blank" rel="noopener">https://www.abcsupply.com/wp-content/uploads/2026/03/the-tamko-edge-contractor-program-brochure.pdf</a>
+  </p>
+
+  <div class="card stop">
+    <h3>The one requirement that rules a door out: GAF Master Elite <span class="tag v">Verified</span></h3>
+    <p>GAF's 2026 Residential Program Guidelines, last updated 3/2/2026, set the annual Master Elite renewal minimums at <b>1,000 Rewards Squares (shingles only), 500 Warranty Squares under Silver and Golden Pledge, and 10 Learning Credits.</b></p>
+    <p>At roughly $1.19M of revenue, Top Tier's whole annual production is in the neighborhood of 1,000 squares. So Master Elite would require putting essentially <b>every square they install</b> through GAF, and registering half of it under enhanced warranties. That is not a marketing decision, it is a supply chain decision, and it is a bad trade for a shop that wants vendor flexibility.</p>
+    <p><b>The good news in the same document:</b> GAF Certified has no volume bar at all. The published eligibility is state license where required, $1,000,000 liability insurance, and workers compensation insurance. Top Tier already clears all three with license BC807923. GAF Certified is free and reachable. It just does not come with co-op money, because GAF has none.</p>
+    <p class="srcline"><b>Source:</b> <a class="src" href="https://www.gaf.com/en-us/document-library/documents/brochures-&amp;-literature/partner-programs-residential-program-guidelines.pdf" target="_blank" rel="noopener">https://www.gaf.com/en-us/document-library/documents/brochures-&amp;-literature/partner-programs-residential-program-guidelines.pdf</a></p>
+  </div>
+
+  <div class="card warn">
+    <h3>CertainTeed's credentials, separate from the rebate <span class="tag s">Secondary on currency</span></h3>
+    <p>CertainTeed's Contractor Cash Back rebate above is open to anyone. Its <b>credentials</b> are a separate ladder and they carry a hard dollar benefit called Roofer's Rewards.</p>
+    <ul>
+      <li><b>ShingleMaster:</b> "$2,000 of FREE SureStart PLUS extended warranties every year." Earned by employing one Shingle Quality Specialist plus a Master Shingle Applicator qualified crew (one job supervisor and at least two installers), or by completing a ShingleMaster Credential Course and employing at least one Master Shingle Applicator.</li>
+      <li><b>SELECT ShingleMaster:</b> "$4,000 of FREE SureStart PLUS extended warranties every year." Requires the company to have been in business at least five years, <b>or</b> to have been a ShingleMaster for at least one year, <b>or</b> to have prior industry experience CertainTeed considers comparable. Plus all job supervisors and 50% of the shingle install workforce as Master Shingle Applicators, one Shingle Quality Specialist, the owner passing a Business Fiscal Responsibility exam, and proof of workers compensation and liability insurance.</li>
+    </ul>
+    <p><b>Why the "or" matters:</b> the five year bar is not the only path. One year as a ShingleMaster gets there too, which turns a five year wait into roughly a one year sequence. Neither level is described as carrying co-op advertising dollars, only "marketing and sales support."</p>
+    <p><b>Currency flag:</b> this brochure is the 2022 Contractor's Edge edition, hosted by a distributor rather than by CertainTeed. The credential structure has been stable for years, but the dollar figures should be reconfirmed with the CertainTeed territory manager before anyone quotes them.</p>
+    <p class="srcline"><b>Source:</b> <a class="src" href="https://richards-supply.com/wp-content/uploads/2022/07/ROOFING-CERTAINTEED-CONTRACTOR-PROGRAM-2022.pdf" target="_blank" rel="noopener">https://richards-supply.com/wp-content/uploads/2022/07/ROOFING-CERTAINTEED-CONTRACTOR-PROGRAM-2022.pdf</a></p>
+  </div>
+</section>
+
+<section>
+  <h2>3. The distributors, which is where a shop this size actually gets paid</h2>
+  <p>Manufacturer programs are built for volume. Distributor programs are built for the counter. Two things make distributors the better door here: they run the direct mail themselves, and they file the manufacturer rebate paperwork so a two person office does not have to.</p>
+
+  <div class="card good">
+    <h3><span class="rank">A</span>ABC Supply, Rogers, Minnesota <span class="tag v">Verified</span></h3>
+    <p><b>Branch:</b> 22000 Industrial Blvd STE 100, Rogers MN. Open 7 a.m. to 4 p.m. Monday through Friday and, seasonally, 8 a.m. to 12 p.m. Saturday. That is roughly nine miles from Albertville.</p>
+    <h4>Target Mail and Storm Postcards, the direct mail program</h4>
+    <p>This is the closest thing in the whole search to the campaign Top Tier is already planning, run as a turnkey program:</p>
+    <ul>
+      <li>Postcards are <b>6 inches by 9 inches</b>, full color both sides, <b>14 stock designs</b>, plus more product specific versions online.</li>
+      <li>Targeting, in ABC's own words: <i>"The ABC Target Mail &amp; Storm program sends personally addressed postcards to owners of single-family homes that are at least 10 years old."</i> Targeting by household income or home value is available for an additional charge. Target a zip code or a radius around a specific job address.</li>
+      <li>ABC's stated purpose for the ten year filter: <i>"Don't waste your marketing dollars mailing to apartment renters, owners of brand-new homes under warranty or homes outside your service area."</i></li>
+      <li><b>They hand back the list:</b> <i>"We'll provide you with a list of the names and addresses of the homeowners who received your postcard."</i> That closes the loop into the CRM.</li>
+      <li><b>List only option:</b> if Top Tier prefers to mail it themselves, the Target List program rents names for one time use. <b>Minimum order is 300 names</b>, delivered by email as an Excel file, labels on request.</li>
+      <li>Phone numbers can be included with the list, but only after registering with the National Do Not Call Registry and filing that registration with the program administrator.</li>
+      <li>Separate 4 inch by 6 inch storm postcards mail First Class within three business days of final proof approval. Three versions: two hail, one ice storm.</li>
+      <li>Administered for ABC Supply by The Weinstein Organization, phone 312-214-2915, email support@abcsupplyfreedomprograms.com, ordering at ABCSupplyFreedomPrograms.com.</li>
+    </ul>
+    <p><b>Pricing is not published anywhere.</b> <span class="tag n">Not published</span> No per piece cost, no minimum mail quantity for the postcard program, and no discount for ABC account holders appears in the brochure or on the site.</p>
+    <h4>Manufacturer Rewards, the paperwork problem solved</h4>
+    <p>ABC's own words: <i>"Our automated process calculates rewards on every qualifying material purchase, no more paperwork. Our team submits rewards receipts to the manufacturers on your behalf, eliminating the hassle for you."</i> The manufacturers ABC files for include CertainTeed Contractor Cash Back, GAF Rewards, IKO ROOFPRO Advantage, Atlas Pro Plus, TAMKO Edge and the Owens Corning Roofing Contractor Network.</p>
+    <div class="ask">
+      <p><b>What to ask ABC Supply:</b> the per piece cost of a Target Mail drop at the quantity Top Tier has in mind, whether there is a minimum mail quantity, whether an ABC account changes the price, and which manufacturer rewards ABC is already auto-filing on Top Tier's account today.</p>
+    </div>
+    <p class="srcline"><b>Sources:</b><br>
+      <a class="src" href="https://www.abcsupply.com/contractor-center/freedom-programs/" target="_blank" rel="noopener">https://www.abcsupply.com/contractor-center/freedom-programs/</a><br>
+      <a class="src" href="https://www.abcsupply.com/wp-content/themes/abcsupply/pdf/freedom-programs/targeted-mail-brochure.pdf" target="_blank" rel="noopener">https://www.abcsupply.com/wp-content/themes/abcsupply/pdf/freedom-programs/targeted-mail-brochure.pdf</a><br>
+      <a class="src" href="https://www.abcsupply.com/contractor-center/manufacturer-rewards-support/" target="_blank" rel="noopener">https://www.abcsupply.com/contractor-center/manufacturer-rewards-support/</a><br>
+      <a class="src" href="https://www.abcsupply.com/location/rogers-MN-55374-2163/" target="_blank" rel="noopener">https://www.abcsupply.com/location/rogers-MN-55374-2163/</a><br>
+      <a class="src" href="https://www.abcsupply.com/media-center/press-release/abc-supply-co-inc-opens-three-new-locations-2/" target="_blank" rel="noopener">https://www.abcsupply.com/media-center/press-release/abc-supply-co-inc-opens-three-new-locations-2/</a>
+    </p>
+  </div>
+
+  <div class="card good">
+    <h3><span class="rank">B</span>SRS Distribution, Medina, Minnesota <span class="tag v">Verified</span></h3>
+    <p><b>Branch:</b> SRS Building Products, 610 Hamel Road, Medina MN 55340, phone 763-401-8440, branch manager Jake Raether. Medina is roughly fifteen miles from Albertville, so this is a real second counter, not a drive across town.</p>
+    <p>SRS's second metro location, SRS Building Products Minneapolis, is at 2050 Main St, Centerville MN 55038, phone 612-378-6006, which is on the wrong side of the metro for Albertville.</p>
+    <h4>Supplier Promotions and Roof Hub</h4>
+    <p>SRS's own words: <i>"Take the manual work out of filing your rebates and getting promotions. Let SRS submit your purchase data for you through Roof Hub."</i> And: <i>"Sign up for a Roof Hub account, enroll in any supplier promotion and we will send the supplier your purchase data (per the promotion details) on your behalf."</i></p>
+    <p>So SRS solves the same paperwork problem ABC does. What SRS does <b>not</b> publish is a direct mail program equivalent to ABC's Target Mail. <span class="tag n">Not published</span> No co-op advertising fund, no marketing fund and no advertising rebate appears on any public SRS page found in this search.</p>
+    <div class="ask">
+      <p><b>What to ask SRS:</b> which supplier promotions are live in this territory right now, whether SRS offers any co-branded mailer or marketing support beyond rebate filing, and whether SRS will match or beat ABC on the same shingle at the same volume.</p>
+    </div>
+    <p class="srcline"><b>Sources:</b><br>
+      <a class="src" href="https://www.srsdistribution.com/en/markets/our-brands/srs-building-products/srs-building-products---medina/" target="_blank" rel="noopener">https://www.srsdistribution.com/en/markets/our-brands/srs-building-products/srs-building-products---medina/</a><br>
+      <a class="src" href="https://www.srsdistribution.com/en/markets/our-brands/srs-building-products/srs-building-products---minneapolis/" target="_blank" rel="noopener">https://www.srsdistribution.com/en/markets/our-brands/srs-building-products/srs-building-products---minneapolis/</a><br>
+      <a class="src" href="https://www.srsdistribution.com/en/resources/supplier-promotions/" target="_blank" rel="noopener">https://www.srsdistribution.com/en/resources/supplier-promotions/</a>
+    </p>
+  </div>
+
+  <div class="card warn">
+    <h3><span class="rank">C</span>Beacon Building Products, now QXO <span class="tag s">Secondary</span></h3>
+    <p>QXO completed its acquisition of Beacon Roofing Supply in April 2025 in a transaction valued around $11 billion, making QXO the largest publicly traded distributor of roofing and complementary building products in the United States. Branch pages now live on both locations.becn.com and locations.qxo.com.</p>
+    <p><b>Minnesota presence found:</b> Plymouth (commercial roofing), St Paul (residential roofing) and Rochester. <b>No branch was found in Rogers, Albertville, Maple Grove or anywhere in the northwest metro.</b> Plymouth is the nearest, and it is listed as a commercial location. For a residential re-roofer in Albertville that is a materially worse counter than ABC in Rogers or SRS in Medina.</p>
+    <p><b>Beacon PRO+ rebates, secondary and not read first hand:</b> published summaries describe rebates accrued on the pre-tax value of orders invoiced through the Beacon PRO+ platform with no minimum order, paid as a Visa e-card, restricted to orders the contractor places through PRO+ desktop or mobile, and excluding orders placed by branch staff. <b>The mid-acquisition rebranding to QXO makes every one of those terms suspect.</b> Do not quote them.</p>
+    <p class="srcline"><b>Sources:</b><br>
+      <a class="src" href="https://locations.qxo.com/MN/Plymouth/Plymouth-MN-55441/693" target="_blank" rel="noopener">https://locations.qxo.com/MN/Plymouth/Plymouth-MN-55441/693</a><br>
+      <a class="src" href="https://locations.becn.com/mn/st-paul/st-paul-mn-55117/694" target="_blank" rel="noopener">https://locations.becn.com/mn/st-paul/st-paul-mn-55117/694</a><br>
+      <a class="src" href="https://www.businesswire.com/news/home/20250429541973/en/QXO-Completes-Acquisition-of-Beacon-Roofing-Supply" target="_blank" rel="noopener">https://www.businesswire.com/news/home/20250429541973/en/QXO-Completes-Acquisition-of-Beacon-Roofing-Supply</a><br>
+      <a class="src" href="https://go.becn.com/CT2023IG" target="_blank" rel="noopener">https://go.becn.com/CT2023IG</a>
+    </p>
+  </div>
+
+  <div class="card flat">
+    <h3>What was looked for and not found: a strong independent Minnesota distributor</h3>
+    <p>Searches for a locally owned or regional Minnesota roofing distributor with its own contractor rebate or marketing program returned nothing usable. What came back was contractors, not distributors. The upper Midwest independents that once served this market (Wilson Wholesale and Century Building Products) were consolidated by SRS into a Midwest Roofing Supply division. <b>The honest answer is that this market is served by the three nationals, and ABC has the nearest branch.</b></p>
+    <p class="srcline"><b>Source:</b> <a class="src" href="https://blog.srsdistribution.com/news/news-article-srs-acquisition-corporation-announces-the-consolidation-of-its-upper-midwest-branches-into-the-newly-created-division-of-midwest-roofing-supply" target="_blank" rel="noopener">https://blog.srsdistribution.com/news/news-article-srs-acquisition-corporation-announces-the-consolidation-of-its-upper-midwest-branches-into-the-newly-created-division-of-midwest-roofing-supply</a></p>
+  </div>
+</section>
+
+<section>
+  <h2>4. What Top Tier could realistically get, ranked</h2>
+  <p>Ranked by how likely the door is to actually open for a two year old, roughly $1.2M residential re-roofer with subcontracted crews and under 1% of revenue in advertising. Sequence, not a menu. All five are worth doing.</p>
+
+  <div class="card good">
+    <h3><span class="rank">1</span>CertainTeed Contractor Cash Back</h3>
+    <p><b>Why it opens:</b> it is the only program found with <b>no tier, no certification, no volume floor and no annual fee.</b> The published condition is simply that the program is for siding and roofing remodeling and retrofit contractors. Top Tier qualifies today.</p>
+    <p><b>What it pays:</b> $1.50 per square on the mainstream Landmark lines, $2.50 per square on the premium lines, plus accessories including $4 per roll of WinterGuard, which matters in Minnesota where ice and water shield is on every job. Paid on a reloadable Visa.</p>
+    <p><b>First move:</b> register at <a class="src" href="https://www.certainteed.com/contractorcashback" target="_blank" rel="noopener">https://www.certainteed.com/contractorcashback</a> to get a Contractor ID. Then either submit invoices directly or enroll with ABC or SRS so the distributor submits them.</p>
+    <p><b>Two conditions that cost money if missed:</b> invoices must be received with the redemption form <b>within 90 days of purchase date</b> or they are rejected. And newly registered contractors may submit invoices dated up to <b>90 days prior to enrollment</b>, so registering now captures the last quarter of buying rather than starting from zero.</p>
+    <p><b>What to ask:</b> nothing. This one is self service.</p>
+  </div>
+
+  <div class="card good">
+    <h3><span class="rank">2</span>ABC Supply Rogers: Target Mail plus automatic rebate filing</h3>
+    <p><b>Why it opens:</b> nine miles away, and the program is built for exactly this campaign. Single family, owner occupied, homes ten years and older, inside a chosen zip or radius, with the recipient list handed back afterward. That last part is what turns a mailer into a trackable lead source instead of a hope.</p>
+    <p><b>What it costs:</b> not published. That is the honest state of it.</p>
+    <p><b>First move:</b> ask the Rogers branch for a Target Mail quote at the drop size Top Tier is planning, and ask them to confirm which manufacturer rewards they are already auto-filing on the account. Ordering runs through <a class="src" href="https://www.abcsupplyfreedomprograms.com/" target="_blank" rel="noopener">https://www.abcsupplyfreedomprograms.com/</a>.</p>
+    <p><b>The list only alternative:</b> if Top Tier would rather control the creative and the drop, the Target List program rents names at a 300 name minimum in an Excel file. That is a cheap way to test a route before committing to a full postcard run.</p>
+  </div>
+
+  <div class="card good">
+    <h3><span class="rank">3</span>Owens Corning Preferred, with the ask reframed</h3>
+    <p><b>Why it opens now and did not before:</b> the two year in business bar, which is the most consistently reported Preferred requirement, was cleared in May 2026. Top Tier already displays Owens Corning marks and already has a relationship with Matt. This is the shortest distance between where they are and a tier they were previously ineligible for.</p>
+    <p><b>What it gets:</b> Local Marketing Advantage, a complimentary custom graphic design resource that explicitly covers direct mail, plus the exclusive authority to offer an Owens Corning extended warranty, which is a closing tool on every estimate. Whether Preferred changes the promo fund earning rate is not published.</p>
+    <p><b>First move:</b> go back to Matt with the four questions in section 1. The change in the ask is the whole point: not "do you have co-op," but "what does a Preferred nomination take in this territory, and what is our promo fund balance."</p>
+    <p><b>The one thing to check before saying yes:</b> the reported 50% Owens Corning product share commitment at Preferred. If that number is real, it constrains sourcing across half the book, and it needs weighing against the CertainTeed and IKO rebates above, which pay per square regardless of tier. Get the number from Matt, not from the internet.</p>
+  </div>
+
+  <div class="card warn">
+    <h3><span class="rank">4</span>IKO ROOFPRO, Advantage now and Select as the stretch</h3>
+    <p><b>Why Advantage opens:</b> no minimum qualifications to join, and the $1.50 per square rebate requires 500 squares a year of architectural, performance or designer shingles plus a signed agreement. At roughly 1,000 squares of annual production, Top Tier clears 500 comfortably even splitting volume with another brand.</p>
+    <p><b>Why Select is the stretch worth naming:</b> Select is the <b>only tier found in this entire search that calls its money a marketing fund</b>, described as funds for branded shirts, truck wraps and radio spots, on top of 0.25% on squares and 3% on accessories. The bar is 1,200 squares a year and at least 50% of residential shingles from IKO, plus two online courses. That is above current volume but not far above, and it is the closest genuine marketing fund to this company's size.</p>
+    <p><b>First move:</b> ask the IKO territory sales representative for the Advantage agreement, and ask what the Select marketing fund is actually worth in dollars per year at 1,200 squares. That number is not published anywhere.</p>
+    <p><b>The tension to be aware of:</b> IKO Select at 50% share and Owens Corning Preferred at a reported 50% share cannot both be satisfied. One brand share commitment fits in a book this size, not two.</p>
+  </div>
+
+  <div class="card flat">
+    <h3><span class="rank">5</span>GAF Certified, free, and worth having for a reason that is not money</h3>
+    <p><b>Why it opens:</b> GAF's published eligibility for Certified is state license where required, $1,000,000 liability insurance and workers compensation insurance. Top Tier clears all three. There is no volume bar and no fee.</p>
+    <p><b>What it does not get:</b> co-op money, which GAF does not have. Rewards points at 1.0% back, and per GAF's own mandated disclosure, "discounts on marketing tools." Discounts, not dollars.</p>
+    <p><b>What it does get:</b> the badge, and per GAF's own advertising rules the permitted claim that "Only 7% of roofers in North America are invited to become GAF Certified Contractors." On a mailer, a second manufacturer credential next to the Owens Corning mark is credibility that costs nothing.</p>
+    <p><b>What to skip:</b> Master Elite. The 1,000 Rewards Square annual renewal is effectively their whole production.</p>
+    <p><b>One compliance note that applies to every badge on every mailer:</b> GAF requires the disclosure that certified contractors are not employees or agents of GAF and may receive benefits including loyalty points and marketing tool discounts. Malarkey, TAMKO and Owens Corning carry equivalent independent contractor disclaimers. Whoever lays out the mailer needs the current disclosure text from each brand whose mark appears on it.</p>
+  </div>
+
+  <div class="card stop">
+    <h3>Ruled out for this company, and why</h3>
+    <ul>
+      <li><b>Malarkey.</b> No co-op, no rebate rate, no marketing fund published anywhere. Certification requires in person training and, for Premium, a Malarkey inspection of completed work. Effort with no money attached.</li>
+      <li><b>TAMKO Edge paid tiers.</b> The cash back rate only gets interesting at the levels that charge $250, $1,000 or $2,500 a year. Paying an annual fee to unlock a rebate is the wrong shape for a company spending under $12,000 a year on all advertising.</li>
+      <li><b>Atlas.</b> Free to join and harmless, but the reward is Atlas Bucks redeemable in a merchandise shop, and the earning rate is not published. Yard signs and folders, not mailer dollars.</li>
+      <li><b>GAF Master Elite.</b> See above. The renewal minimum is the whole shop.</li>
+      <li><b>Beacon and QXO.</b> No northwest metro branch, and the rebate terms are in flux post acquisition.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>What could not be confirmed</h2>
+  <div class="card warn">
+    <ul>
+      <li><b>Owens Corning promo fund earning rate.</b> OC confirms promo funds exist and are transferable to a bank account. No percentage, no cap and no per square rate is published. Rep question.</li>
+      <li><b>Owens Corning tier requirements.</b> The two year, three year, 50% and 80% share figures are secondary throughout, repeated by contractors and distributors, never stated on an Owens Corning page. Rep question.</li>
+      <li><b>ABC Target Mail pricing and minimums.</b> Nothing published. Branch question.</li>
+      <li><b>Atlas Bucks earning rate.</b> Nothing published.</li>
+      <li><b>TAMKO tier names.</b> The fee and cash back columns extracted cleanly from TAMKO's own brochure, but the level names above them did not, so the pairing of Gold, Platinum and Diamond to $250, $1,000 and $2,500 is unconfirmed.</li>
+      <li><b>Whether any manufacturer requires creative pre-approval before a mailer runs.</b> No program document found states a pre-approval step for advertising. GAF's guidelines instead impose <b>content rules</b>: mandatory disclosure text, mandatory hashtags on social posts, and a fixed list of permitted claims. That is a compliance requirement, not an approval gate. If Owens Corning's Local Marketing Advantage designs the piece, OC approval is implicit in the design service.</li>
+      <li><b>CertainTeed Roofer's Rewards dollar figures.</b> From a 2022 brochure hosted by a distributor. Reconfirm before quoting.</li>
+      <li><b>A regional Minnesota independent distributor with its own program.</b> Searched, not found. The upper Midwest independents were consolidated into SRS.</li>
+    </ul>
+  </div>
+</section>
+
+
+
+</main>
+
+<footer>
+  <p><b>Top Tier Roofing and Remodeling</b>. Prepared by Dale Linn. Built 2026-08-31.</p>
+  <p>Program terms change without notice and several of the numbers above are not published by the manufacturer at all. Every claim on this page carries its verification label and its source link. A statement from a territory manager or branch outranks anything on this page.</p>
+</footer>
+
+</div>
+
+
+</body>
+</html>

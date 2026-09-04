@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Tier: what happens each day to Thursday 10 September</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #F5F7F8; color: #1F2124; font-family: 'Trebuchet MS', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 980px; margin: 0 auto;
+         padding: 0 22px 72px; }
+.top { background: #003C55; color: #fff; margin: 0 -22px 30px; padding: 34px 22px 28px; }
+.top .inner { max-width: 980px; margin: 0 auto; }
+.kicker { text-transform: uppercase; letter-spacing: .13em; font-size: 11.5px;
+           font-weight: bold; color: #9FC3D4; margin: 0 0 10px; }
+h1 { margin: 0 0 12px; font-size: 30px; line-height: 1.2; font-weight: bold; }
+.stand { margin: 0; max-width: 62ch; color: #DCE8EE; font-size: 15.5px; }
+.rule { height: 4px; background: #EC1F25; margin: 20px 0 0; width: 88px; }
+
+h2 { font-size: 21px; margin: 44px 0 6px; color: #003C55; }
+h2 .num { color: #EC1F25; }
+.sub { margin: 0 0 18px; color: #4A4E52; max-width: 74ch; }
+
+/* ---- day cards ---- */
+.day { background: #FFFFFF; border: 1px solid #DFE3E6; border-left: 5px solid #003C55;
+        border-radius: 5px; margin: 0 0 14px; padding: 18px 22px; }
+.day.done { background: #EDEFF1; border-color: #D5D9DC; border-left-color: #A8AFB4;
+             color: #5A6167; }
+.day.rest { background: #F5F7F8; border-style: dashed; border-left-color: #B9C0C5; }
+.day.last { border-left-color: #EC1F25; }
+.dayhead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px;
+            margin: 0 0 10px; }
+.dayname { font-size: 19px; font-weight: bold; color: #003C55; }
+.day.done .dayname, .day.rest .dayname { color: #5A6167; }
+.day.last .dayname { color: #EC1F25; }
+.meet { font-size: 11.5px; text-transform: uppercase; letter-spacing: .1em;
+         font-weight: bold; color: #fff; background: #EC1F25; border-radius: 3px;
+         padding: 3px 9px; }
+.headline { font-size: 17px; line-height: 1.45; margin: 0 0 12px; max-width: 72ch; }
+.four { display: flex; flex-wrap: wrap; gap: 10px 40px; }
+.slot { min-width: 220px; }
+.slotlab { text-transform: uppercase; letter-spacing: .1em; font-size: 10.5px;
+            font-weight: bold; color: #7A8288; margin: 0 0 3px; }
+.slotval { margin: 0; font-size: 15px; }
+.slotval b { color: #003C55; }
+.lands li { margin: 0 0 2px; }
+ul.lands { margin: 0; padding: 0 0 0 17px; }
+.none { color: #858D93; }
+
+/* ---- syllabus steps ---- */
+.stepgrid { margin: 12px 0 0; border-top: 1px solid #DFE3E6; }
+.step { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 12px 0;
+         border-bottom: 1px solid #DFE3E6; }
+.badge { flex: 0 0 auto; align-self: flex-start; font-size: 10.5px; font-weight: bold;
+          letter-spacing: .08em; text-transform: uppercase; padding: 4px 9px;
+          border-radius: 3px; background: #003C55; color: #fff; white-space: nowrap; }
+.badge.guy { background: #003C55; }
+.badge.keith { background: #2E6E52; }
+.badge.dale { background: #6B7378; }
+.badge.both { background: #EC1F25; }
+.badge.out { background: #8A5A12; }
+.stepbody { flex: 1 1 480px; min-width: 300px; }
+.stepbody p { margin: 0 0 5px; }
+.why { font-size: 14.5px; color: #4A4E52; }
+.tag { display: inline-block; font-size: 10.5px; letter-spacing: .07em;
+        color: #7A8288; border: 1px solid #DFE3E6; border-radius: 3px;
+        padding: 2px 7px; margin: 3px 0 0; }
+
+/* ---- ten cards ---- */
+.ten { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.card { background: #FFFFFF; border: 1px solid #DFE3E6; border-radius: 5px;
+         padding: 18px 22px; border-top: 4px solid #003C55; }
+.card h3 { margin: 0 0 2px; font-size: 18px; color: #003C55; }
+.code { font-size: 12px; letter-spacing: .09em; color: #7A8288; margin: 0 0 10px; }
+.card dl { margin: 0; }
+.card dt { text-transform: uppercase; letter-spacing: .1em; font-size: 10.5px;
+            font-weight: bold; color: #7A8288; margin: 11px 0 3px; }
+.card dd { margin: 0; }
+.landsline { font-weight: bold; color: #EC1F25; }
+
+/* ---- tables ---- */
+table { width: 100%; border-collapse: collapse; background: #FFFFFF;
+         border: 1px solid #DFE3E6; font-size: 14.5px; }
+th { background: #003C55; color: #fff; text-align: left; padding: 9px 12px;
+      font-size: 11.5px; text-transform: uppercase; letter-spacing: .09em; }
+td { padding: 10px 12px; border-top: 1px solid #DFE3E6; vertical-align: top; }
+tbody tr:nth-child(even) td { background: #FAFBFC; }
+.scroll { overflow-x: auto; }
+
+.note { background: #FFFFFF; border: 1px solid #DFE3E6; border-left: 5px solid #EC1F25;
+         border-radius: 5px; padding: 16px 20px; margin: 0 0 18px; }
+.note p { margin: 0 0 8px; } .note p:last-child { margin: 0; }
+.note strong { color: #003C55; }
+
+footer { margin: 56px 0 0; padding: 20px 0 0; border-top: 2px solid #003C55;
+          font-size: 13px; color: #4A4E52; }
+footer .name { color: #003C55; font-weight: bold; }
+
+@media print {
+  body { background: #fff; font-size: 11.5pt; }
+  .day, .card, table, .note { break-inside: avoid; }
+  .top { background: #fff; color: #1F2124; }
+  .top .kicker { color: #EC1F25; } .top .stand { color: #4A4E52; }
+}
+@media (max-width: 640px) {
+  h1 { font-size: 24px; } .slot { min-width: 100%; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><div class="inner">
+<p class="kicker">Top Tier Roofing and Remodeling</p>
+<h1>What happens each day, to Thursday 10 September</h1>
+<p class="stand">One line a day, from today to the last day of the engagement. Every piece of work behind these lines is set out in the companion document.</p>
+<div class="rule"></div>
+</div></div>
+<div class="day done">
+  <div class="dayhead">
+    <span class="dayname">Monday 31 August</span>
+  </div>
+  <p class="headline">Already done. Every request that has to come from outside went out, and the week&#x27;s build started.</p>
+  <div class="four">
+    <div class="slot">
+      <p class="slotlab">Who is up</p>
+      <p class="slotval"><b>Nobody, it is behind us</b></p>
+    </div>
+    <div class="slot">
+      <p class="slotlab">What lands</p>
+      <p class="slotval none">Nothing outstanding.</p>
+    </div>
+  </div>
+</div>
+<div class="day">
+  <div class="dayhead">
+    <span class="dayname">Tuesday 1 September</span><span class="meet">Meeting at one o&#x27;clock</span>
+  </div>
+  <p class="headline">Our meeting at one o&#x27;clock, and every request that has to come from outside goes out today.</p>
+  <div class="four">
+    <div class="slot">
+      <p class="slotlab">Who is up</p>
+      <p class="slotval"><b>Guy and Keith</b></p>
+    </div>
+    <div class="slot">
+      <p class="slotlab">What lands</p>
+      <p class="slotval none">None.</p>
+    </div>
+  </div>
+</div>
+<div class="day">
+  <div class="dayhead">
+    <span class="dayname">Wednesday 2 September</span><span class="meet">Review meeting</span>
+  </div>
+  <p class="headline">Our review meeting, and the CRM settings go in with Guy at the keyboard.</p>
+  <div class="four">
+    <div class="slot">
+      <p class="slotlab">Who is up</p>
+      <p class="slotval"><b>Guy</b></p>
+    </div>
+    <div class="slot">
+      <p class="slotlab">What lands</p>
+      <p class="slotval none">None.</p>
+    </div>
+  </div>
+</div>
+<div class="day">
+  <div class="dayhead">
+    <span class="dayname">Thursday 3 September</span>
+  </div>
+  <p class="headline">A clear build day with no meetings, and the bucket and folder order goes in so production starts before the holiday weekend.</p>
+  <div class="four">
+    <div class="slot">
+      <p class="slotlab">Who is up</p>
+      <p class="slotval"><b>Guy</b></p>
+    </div>
+    <div class="slot">
+      <p class="slotlab">What lands</p>
+      <p class="slotval none">None.</p>
+    </div>
+  </div>
+</div>
+<div class="day">
+  <div class="dayhead">
+    <span class="dayname">Friday 4 September</span>
+  </div>
+  <p class="headline">A short day, the last day anything can reach us from outside, and the postcard review closes.</p>
+  <div class="four">
+    <div class="slot">
+      <p class="slotlab">Who is up</p>
+      <p class="slotval"><b>Guy</b></p>
+    </div>
+    <div class="slot">
+      <p class="slotlab">What lands</p>
+      <p class="slotval none">None.</p>
+    </div>
+  </div>
+</div>
+<div class="day rest">
+  <div class="dayhead">
+    <span class="dayname">Saturday and Sunday 5 and 6 September</span>
+  </div>
+  <p class="headline">Nobody is working, here or there.</p>
+  <div class="four">
+    <div class="slot">
+      <p class="slotlab">Who is up</p>
+      <p class="slotval"><b>Nobody</b></p>
+    </div>
+    <div class="slot">
+      <p class="slotlab">What lands</p>
+      <p class="slotval none">None.</p>
+    </div>
+  </div>
+</div>
+<div class="day">
+  <div class="dayhead">
+    <span class="dayname">Monday 7 September</span>
+  </div>
+  <p class="headline">We work Labor Day. Guy and I assemble the folder from what arrived by Friday, and the cash flow model moves into your hands.</p>
+  <div class="four">
+    <div class="slot">
+      <p class="slotlab">Who is up</p>
+      <p class="slotval"><b>Guy</b></p>
+    </div>
+    <div class="slot">
+      <p class="slotlab">What lands</p>
+      <ul class="lands"><li>The cash flow model, in your hands. Training concludes and you run it every week from here.</li></ul>
+    </div>
+  </div>
+</div>
+<div class="day">
+  <div class="dayhead">
+    <span class="dayname">Tuesday 8 September</span><span class="meet">Meeting at one o&#x27;clock</span>
+  </div>
+  <p class="headline">Our meeting at one o&#x27;clock, and Guy runs it.</p>
+  <div class="four">
+    <div class="slot">
+      <p class="slotlab">Who is up</p>
+      <p class="slotval"><b>Guy and Keith</b></p>
+    </div>
+    <div class="slot">
+      <p class="slotlab">What lands</p>
+      <ul class="lands"><li>How we run the weekly meetings</li><li>The numbers we watch</li><li>How the work flows</li><li>The sales pipeline</li></ul>
+    </div>
+  </div>
+</div>
+<div class="day">
+  <div class="dayhead">
+    <span class="dayname">Wednesday 9 September</span><span class="meet">Review meeting</span>
+  </div>
+  <p class="headline">Our review meeting, and three more pieces are confirmed working.</p>
+  <div class="four">
+    <div class="slot">
+      <p class="slotlab">Who is up</p>
+      <p class="slotval"><b>Guy</b></p>
+    </div>
+    <div class="slot">
+      <p class="slotlab">What lands</p>
+      <ul class="lands"><li>Your software</li><li>How a sales visit runs</li><li>The mailer</li></ul>
+    </div>
+  </div>
+</div>
+<div class="day last">
+  <div class="dayhead">
+    <span class="dayname">Thursday 10 September</span>
+  </div>
+  <p class="headline">The last day of the engagement: the final status on all ten, the summary sheet reissued, and the hand-off.</p>
+  <div class="four">
+    <div class="slot">
+      <p class="slotlab">Who is up</p>
+      <p class="slotval"><b>Guy and Keith</b></p>
+    </div>
+    <div class="slot">
+      <p class="slotlab">What lands</p>
+      <ul class="lands"><li>Getting reviews</li><li>Your website and everything online</li><li>All ten written up and handed over</li></ul>
+    </div>
+  </div>
+</div>
+<div class="note">
+<p><strong>All ten land by Thursday 10 September.</strong> Every piece of work behind
+these ten days, who does it, what it waits on and what it unlocks, is set out day by day
+in the companion document,
+<a href="syllabus_260901.html"><em>The work behind each day</em></a>.</p>
+</div>
+<footer>
+<p>Top Tier Roofing and Remodeling, LLC. Commenced 24 August 2026.
+Last day Thursday 10 September 2026.</p>
+<p class="name">Dale Linn</p>
+</footer>
+</div>
+</body>
+</html>
