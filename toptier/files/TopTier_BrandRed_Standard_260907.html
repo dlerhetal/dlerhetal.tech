@@ -1,0 +1,117 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brand red: what is wrong and what we would change</title>
+<style>
+:root{--red:#ED1C24;--ink:#222;--muted:#666;--rule:#dcdcdc;--wash:#f6f7f8;--warn:#8a5a00}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Trebuchet MS",'Segoe UI',Tahoma,sans-serif;color:var(--ink);
+  background:#eef1f3;font-size:16px;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px 70px}
+header{background:#1F2124;color:#fff;padding:30px 0 26px;margin-bottom:26px}
+header h1{margin:0;font-size:28px;font-weight:700}
+header p{margin:6px 0 0;color:#c8ced2;font-size:15px}
+.card{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:24px 26px;margin:0 0 20px}
+h2{font-size:21px;margin:0 0 12px}
+h3{font-size:16px;margin:22px 0 8px}
+p{margin:0 0 12px}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14.5px}
+th,td{border:1px solid var(--rule);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--wash);font-weight:700}
+.sw{display:inline-block;width:15px;height:15px;border:1px solid #999;vertical-align:-2px;
+  margin-right:6px;border-radius:2px}
+code,.mono{font-family:Consolas,Menlo,monospace;font-size:13.5px}
+.note{background:var(--wash);border-left:4px solid var(--red);padding:12px 14px;margin:14px 0}
+.warn{background:#fff8e6;border-left:4px solid var(--warn)}
+.big{font-size:34px;font-weight:700;line-height:1}
+.q{margin:20px 0 0;padding-top:16px;border-top:2px solid var(--red)}
+label{display:block;font-weight:700;margin:0 0 6px;font-size:15px}
+textarea{width:100%;min-height:74px;font-family:inherit;font-size:15px;padding:10px;
+  border:1px solid #c4ccd1;border-radius:6px;resize:vertical}
+button{background:var(--red);color:#fff;border:0;border-radius:6px;padding:14px 26px;
+  font-family:inherit;font-weight:700;font-size:16px;cursor:pointer}
+button.alt{background:#555}
+.ok{color:#1a7a34;font-weight:700}
+</style></head><body>
+<header><div class="wrap">
+  <h1>The Top Tier red</h1>
+  <p>Four reds are in circulation. This says which one is right, how we know,
+     and exactly what would change. <b>Nothing has been changed yet.</b></p>
+</div></header>
+<div class="wrap">
+
+<div class="card">
+  <h2>1. The canon is settled, and not by opinion</h2>
+  <p>There is a <b>vector PDF</b> of the compliant advertising lockup &mdash; the logo with the
+  phone number and licence number &mdash; in the engagement files. Vector artwork stores the colour
+  the designer typed rather than whatever a photograph of it came out as. Its colour instruction is:</p>
+  <p class="big" style="color:#ED1C24">CMYK&nbsp; 0 &nbsp;/&nbsp; 100 &nbsp;/&nbsp; 100 &nbsp;/&nbsp; 0</p>
+  <p>Solid process red: no cyan, full magenta, full yellow, no black. Converted to a screen value
+  that is <b class="mono">#ED1C24</b>. That is the canon, and every other red in circulation is
+  drift off it or a value somebody typed.</p>
+  <table>
+    <thead><tr><th>Value</th><th>Where it lives</th><th>What it is</th></tr></thead>
+    <tbody>
+      <tr><td><span class="sw" style="background:#ED1C24"></span><b class="mono">#ED1C24</b></td>
+        <td>The vector lockup, and the 600 dpi master rendered from it</td>
+        <td class="ok">CANON</td></tr>
+      <tr><td><span class="sw" style="background:#ED1B24"></span><span class="mono">#ED1B24</span></td>
+        <td>The mailer, business cards, review cards, locator maps</td>
+        <td>One unit of green off. Comes from a JPEG copy of the logo &mdash; that shift is what
+        lossy compression does</td></tr>
+      <tr><td><span class="sw" style="background:#EC1F25"></span><span class="mono">#EC1F25</span></td>
+        <td>The website, and everything we built to match the website</td>
+        <td>Matches no artwork anywhere. Somebody typed it into the site</td></tr>
+      <tr><td><span class="sw" style="background:#ED1D26"></span><span class="mono">#ED1D26</span></td>
+        <td>The logo image the website serves</td>
+        <td>WEBP compression drift</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><b>The error has a source, and it is one of our own files.</b>
+  <span class="mono">assets/brand_toptier_260831.md</span> records the primary red as
+  <span class="mono">#EC1F25</span> and says &ldquo;Matches the logo.&rdquo; It does not match the
+  logo. Every deliverable built after 31 August copied that value in good faith. <b>Fix this file
+  first or the sweep undoes itself.</b></div>
+  <div class="note warn"><b>For anything printed, do not send a hex code at all.</b> Give the printer
+  <b>CMYK 0/100/100/0</b>. That is the artwork&rsquo;s own instruction, it is exact, and it removes
+  the conversion guesswork that created this mess.</div>
+</div>
+
+<div class="card">
+  <h2>2. How widespread it is</h2>
+  <table>
+    <thead><tr><th>Bucket</th><th>Files</th><th>Occurrences</th><th>Change?</th></tr></thead>
+    <tbody>
+      <tr><td><b>Live</b> &mdash; will be produced again, or in front of a customer now</td>
+        <td>26</td><td><b>135</b></td><td class="ok">YES</td></tr>
+      <tr><td><b>Dead</b> &mdash; one-off proofs and superseded artwork</td>
+        <td>57</td><td>171</td><td>Only if regenerated</td></tr>
+      <tr><td><b>Frozen</b> &mdash; logs, backups, research, archive</td>
+        <td>14</td><td>52</td><td><b>NEVER</b></td></tr>
+    </tbody>
+  </table>
+  <div class="note warn"><b>The frozen bucket is not laziness, it is integrity.</b> It holds
+  <span class="mono">DONE.md</span>, the WordPress backups taken before we edited the live site,
+  the research notes and the archive. Those are records of what things <i>were</i>. Editing a
+  backup so it matches today&rsquo;s brand makes it a false record and destroys the only undo this
+  project has &mdash; there is no version control here.</div>
+</div>
+
+<div class="card">
+  <h2>3. Where the wrong red still is</h2>
+  <p>Everything above is a file we hold. These are surfaces that carry the red and cannot be
+  audited by searching, so somebody has to look:</p>
+  <table>
+    <thead><tr><th>Surface</th><th>Who can check it</th></tr></thead>
+    <tbody>
+      <tr><td>The website</td><td>Currently <span class="mono">#EC1F25</span>. Needs FabGen, or
+        whoever gets the administrator login</td></tr>
+      <tr><td>The mailer card in Canva</td><td>Dale. Same visit as the phone number correction</td></tr>
+      <tr><td>Business cards, yard signs, vehicle lettering already produced</td><td>Guy. If they
+        are already printed this is sunk and not worth reprinting &mdash; it only matters for the
+        next order</td></tr>
+      <tr><td>Google Business Profile, Facebook, vendor portals</td><td>Guy</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div></body></html>
