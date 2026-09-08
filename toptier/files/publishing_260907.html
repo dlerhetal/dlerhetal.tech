@@ -98,6 +98,10 @@
            padding:13px 16px; margin:14px 0}
   .fillrow label{display:block; font-weight:700; color:var(--blue); margin-bottom:6px; font-size:17.5px}
   .fillrow .hint{font-size:15.5px; color:var(--mute); margin-top:5px}
+  .pickout{background:#fff; border:1px solid #e6dcae; border-radius:6px; padding:11px 14px;
+           font-size:17px; color:var(--mute)}
+  .pickout.set{color:var(--ink); border-color:#b7d3bf; background:#f4faf6}
+  .pickout b{color:var(--blue)}
   .slot{background:#fff6d6; border-bottom:2px solid var(--gold); padding:1px 7px;
         font-weight:700; border-radius:3px}
   .slot.empty{background:#f0f2f5; border-bottom-color:#c3ccd8; color:#8894a4;
@@ -785,9 +789,20 @@ Report the draft preview address first and stop there.</pre>
     for this purpose than anything in the 615, because you shot it knowing somebody would look at it.</p>
 
     <div class="fillrow">
-      <label for="photoCount">How many new photographs do you have to work with?</label>
-      <input class="fill" type="text" id="photoCount" placeholder="roughly how many you have collected">
-      <div class="hint">Rough is fine. It sets how much of the next screen applies.</div>
+      <label>Point at the folder they are in</label>
+      <p style="margin:0 0 10px">
+        <button class="btn s" type="button" id="pickBtn">Choose the folder</button>
+        <input type="file" id="pickInput" webkitdirectory directory multiple hidden>
+      </p>
+      <div id="pickOut" class="pickout">No folder chosen yet.</div>
+      <div class="hint" style="margin-bottom:10px">Nothing is uploaded and nothing leaves this
+      computer. The page only counts what is in the folder. The folder name is what gets handed to your
+      Claude.</div>
+
+      <label for="folderPath">The full path, if you happen to know it</label>
+      <input class="fill" type="text" id="folderPath" placeholder="fills in with the folder name when you choose one">
+      <div class="hint">Whatever is in this box is what goes into the instructions on the next two
+      screens.</div>
     </div>
 
     <button class="broke jumpto" data-go="13">This step did not work</button>
@@ -868,7 +883,7 @@ Report the draft preview address first and stop there.</pre>
       <div class="askhead"><b>PASTE INTO YOUR CLAUDE</b><button class="btn sm" data-copy="p9">Copy</button></div>
       <pre id="p9">I have a folder of photographs of our own roofing jobs that I want to put on https://toptiermn.com. Top Tier Roofing and Remodeling, Albertville, Minnesota. WordPress on Elementor Cloud. Use the WP_SITE, WP_USERNAME and WP_APP_PASSWORD in my environment file. My account is an administrator.
 
-The folder is here: [PASTE THE FOLDER PATH]
+The folder is <span class="slot empty" data-slot="folderPath">no folder chosen yet</span>, and it holds <span class="slot empty" data-slot="imageCount">an unknown number of</span> image files. If that is a folder name rather than a full path, find it on this machine and tell me where it is before you start.
 
 Work through them and do this:
 
@@ -936,7 +951,7 @@ Separately: the website media library already contains six drone stills of our o
 
     <div class="ask">
       <div class="askhead"><b>PASTE INTO YOUR CLAUDE</b><button class="btn sm" data-copy="p10">Copy</button></div>
-      <pre id="p10">Now put the approved photographs on https://toptiermn.com. WordPress on Elementor Cloud with the Elementor Pro page builder. Use the WP_SITE, WP_USERNAME and WP_APP_PASSWORD in my environment file. My account is an administrator.
+      <pre id="p10">Now put the approved photographs on https://toptiermn.com. They came from <span class="slot empty" data-slot="folderPath">the folder we went through</span>. WordPress on Elementor Cloud with the Elementor Pro page builder. Use the WP_SITE, WP_USERNAME and WP_APP_PASSWORD in my environment file. My account is an administrator.
 
 1. Upload each approved photograph with the file name and the alternative text we agreed. Resize anything you flagged as too large first, and tell me the before and after file sizes.
 2. Tell me, page by page, exactly which stock photographs are currently live on the homepage and the services page, with their file names and where they sit on the page. I want to see that list before anything is swapped.
@@ -1009,7 +1024,8 @@ Report step 2 first and stop there.</pre>
         <tr><td>The four old addresses forward to</td><td><span class="slot empty" data-slot="redirTarget">not set</span></td></tr>
         <tr><td>The question the first post answers</td><td><span class="slot empty" data-slot="postSubject">not set</span></td></tr>
         <tr><td>The published post</td><td><span class="slot empty" data-slot="postUrl">not set</span></td></tr>
-        <tr><td>New photographs collected</td><td><span class="slot empty" data-slot="photoCount">not set</span></td></tr>
+        <tr><td>The photograph folder</td><td><span class="slot empty" data-slot="folderPath">not set</span></td></tr>
+        <tr><td>Files in it, and images among them</td><td><span class="slot empty" data-slot="folderSummary">not set</span></td></tr>
       </tbody>
     </table>
     <p style="font-size:16px;color:#5a6675">Everything you type on this page is remembered in this
@@ -1110,6 +1126,61 @@ Report step 2 first and stop there.</pre>
   paint();
   go(0);
 
+  // ---- folder picker ------------------------------------------------------
+  var IMG = /\.(jpe?g|png|gif|webp|heic|heif|tiff?|bmp|avif)$/i;
+  var pickBtn = document.getElementById("pickBtn");
+  var pickInput = document.getElementById("pickInput");
+  var pickOut = document.getElementById("pickOut");
+  var pathBox = document.getElementById("folderPath");
+
+  function humanSize(n){
+    if(n >= 1073741824) return (n/1073741824).toFixed(1)+" GB";
+    if(n >= 1048576) return (n/1048576).toFixed(0)+" MB";
+    if(n >= 1024) return (n/1024).toFixed(0)+" KB";
+    return n+" bytes";
+  }
+
+  function showPick(){
+    if(!pickOut) return;
+    if(store.folderName){
+      pickOut.className = "pickout set";
+      pickOut.textContent = "";
+      var nm = document.createElement("b"); nm.textContent = store.folderName;
+      pickOut.appendChild(nm);
+      pickOut.appendChild(document.createTextNode(". "+store.folderSummary+", "+store.folderSize+" in total."));
+    } else {
+      pickOut.className = "pickout";
+      pickOut.textContent = "No folder chosen yet.";
+    }
+  }
+
+  if(pickBtn && pickInput){
+    pickBtn.addEventListener("click", function(){ pickInput.click(); });
+    pickInput.addEventListener("change", function(){
+      var files = [].slice.call(pickInput.files || []);
+      if(!files.length) return;
+      var rel = files[0].webkitRelativePath || "";
+      var name = rel ? rel.split("/")[0] : "the chosen folder";
+      var images = files.filter(function(f){ return IMG.test(f.name); });
+      var bytes = 0;
+      files.forEach(function(f){ bytes += (f.size || 0); });
+
+      store.folderName = name;
+      store.fileCount = String(files.length);
+      store.imageCount = String(images.length);
+      store.folderSize = humanSize(bytes);
+      store.folderSummary = files.length+" files, "+images.length+" of them images";
+      if(!pathBox.value.trim()){
+        pathBox.value = name;
+        store.folderPath = name;
+      }
+      try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){}
+      showPick();
+      paint();
+    });
+  }
+  showPick();
+
   // ---- clipboard ----------------------------------------------------------
   function flash(el, ok, msg){
     if(!el) return;
@@ -1156,7 +1227,11 @@ Report step 2 first and stop there.</pre>
         redirectTarget: store.redirTarget || "",
         postSubject: store.postSubject || "",
         postUrl: store.postUrl || "",
-        photoCount: store.photoCount || ""
+        folderName: store.folderName || "",
+        folderPath: store.folderPath || "",
+        fileCount: store.fileCount || "",
+        imageCount: store.imageCount || "",
+        folderSize: store.folderSize || ""
       }
     };
   }
