@@ -1,0 +1,29 @@
+# Added 2026-09-08. THIS IS A PUBLIC GitHub Pages REPOSITORY.
+# Anything committed here is published to the open internet.
+#
+# These directories are local agent/working scratch that has accumulated in the
+# repo root across engagements. They are NOT site content and must never be
+# committed - several carry other clients' material, and client separation is a
+# locked house rule. A single `git add -A` would publish all of it.
+
+_agent_outbox/
+context/
+output/
+work/
+
+# local env, keys and secrets
+.env
+*.env
+*.key
+*.pem
+
+# editor and OS noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# pre-change backups should never ship
+*.backup-*
+*.bak
+archive/
