@@ -60,9 +60,7 @@ tr{break-inside:avoid;page-break-inside:avoid}
 .pre h3{margin-top:0}
 .write{border:1px dashed #9aa7b8;border-radius:6px;background:#fcfdfe;padding:8px 12px;margin:8px 0;
  break-inside:avoid;page-break-inside:avoid}
-.write .lbl{font-size:16px;font-weight:600;color:var(--blue);margin-bottom:2px}
-.sp{height:44px}
-.sp.two{height:88px}
+.write .lbl{display:block;font-size:16px;font-weight:600;color:var(--blue);margin-bottom:2px}
 .yes{color:#14611f;font-weight:700}
 .no{color:var(--red);font-weight:700}
 .foot{padding:16px 32px 0;color:var(--mut);font-size:14px;
@@ -85,17 +83,10 @@ tr{break-inside:avoid;page-break-inside:avoid}
 #tbmsg{margin-top:10px;font-weight:600}
 
 
-.assign{display:flex;gap:22px;flex-wrap:wrap;margin:14px 0 2px;
- break-inside:avoid;page-break-inside:avoid}
-.ac{flex:1 1 240px;display:flex;align-items:flex-end;gap:8px}
-.ac .lbl{font-size:15px;font-weight:700;color:var(--blue);white-space:nowrap}
-.ac .line{flex:1;border-bottom:1px solid #9aa7b8;height:22px}
 .runhd{display:none}
 @media print{
  .runhd{display:block;font-size:8.5pt;color:#5b6472;border-bottom:1px solid #c9d2de;
   padding-bottom:3px;margin-bottom:8px}
- .assign .lbl{font-size:10pt}
- .assign .line{height:20pt}
 }
 
 @page{size:letter portrait;margin:.5in}
@@ -116,10 +107,31 @@ tr{break-inside:avoid;page-break-inside:avoid}
  .pf,.note{font-size:11pt}
  table{font-size:10.5pt}
  code{font-size:10pt}
- .sp{height:40pt}
- .sp.two{height:80pt}
  .tb{display:none}
  a{text-decoration:none;color:inherit}
+}
+
+/* --- editable fields, added 2026-09-08 --- */
+textarea.ttfld{display:block;width:100%;box-sizing:border-box;
+ font:17px/1.45 Calibri,"Segoe UI",system-ui,sans-serif;color:#141414;background:#fff;
+ border:1px solid #c9d2de;border-radius:4px;padding:7px 9px;margin:4px 0 2px;
+ resize:vertical;overflow:hidden}
+textarea.ttfld:focus{outline:2px solid #1A3C6E;outline-offset:1px}
+.ttbar{background:#f3f6fa;border:1px solid #c9d2de;border-radius:8px;
+ padding:16px 20px;margin:24px 32px 8px}
+.ttbar h3{margin:0 0 6px;color:#1A3C6E;font-size:19px}
+.ttbar p{margin:0 0 10px;font-size:16px;color:#5b6472}
+.ttbar button{font:17px Calibri,"Segoe UI",sans-serif;font-weight:700;padding:9px 18px;
+ margin:0 8px 0 0;border:0;border-radius:5px;background:#1A3C6E;color:#fff;cursor:pointer}
+.ttbar button.ttalt{background:#fff;color:#1A3C6E;border:2px solid #1A3C6E}
+.ttmsg{display:inline-block;margin-left:6px;font-weight:600;font-size:16px;color:#14611f}
+@media print{
+ textarea.ttfld{border:0!important;border-bottom:1px solid #6b7684!important;
+  border-radius:0!important;background:transparent!important;box-shadow:none!important;
+  outline:0!important;padding:0 0 2px!important;margin:4px 0 6px!important;
+  resize:none!important;color:#141414!important;
+  -webkit-appearance:none;appearance:none;overflow:hidden}
+ .ttbar{display:none!important}
 }
 </style></head><body>
 <div class="sheet">
@@ -145,7 +157,7 @@ Outside software cannot add these; they are created in your account, by you.</li
 settings, not calculations. While they are on, every margin the screen shows you is the default
 looking back at you.</li>
 </ul>
-<div class="write"><div class="lbl">The lead sources that actually occur here. Write the real list.</div><div class="sp two"></div></div>
+<div class="write"><label class="lbl" for="f1">The lead sources that actually occur here. Write the real list.</label><textarea class="ttfld" id="f1" rows="4" data-q="The lead sources that actually occur here. Write the real list."></textarea></div>
 </div>
 
 <div class="note">
@@ -180,11 +192,7 @@ is why the moment matters more than the field.
     system, and the only one on this page that is <b>completely unrecoverable</b>. A cost can be found
     on a bank statement a year later. A completion date can be reconstructed from a photo. Where a
     lead came from exists only in the head of the person who took the call, and only for about a day.</div>
-    <div class="assign">
-      <div class="ac"><span class="lbl">Who owns this here</span><span class="line"></span></div>
-      <div class="ac"><span class="lbl">Starting when</span><span class="line"></span></div>
-    </div>
-    <div class="write"><div class="lbl">What this looks like in our shop, and what will get in the way.</div><div class="sp two"></div></div>
+    <div class="write"><label class="lbl" for="f2">What this looks like in our shop, and what will get in the way.</label><textarea class="ttfld" id="f2" rows="4" data-q="What this looks like in our shop, and what will get in the way."></textarea></div>
   </div>
 </div>
 
@@ -206,11 +214,7 @@ is why the moment matters more than the field.
     that produces a number the customer wants to hear. Once a season of real completion dates exists,
     the answer to "how long will this take" stops being an estimate and becomes something the system
     can back up.</div>
-    <div class="assign">
-      <div class="ac"><span class="lbl">Who owns this here</span><span class="line"></span></div>
-      <div class="ac"><span class="lbl">Starting when</span><span class="line"></span></div>
-    </div>
-    <div class="write"><div class="lbl">What this looks like in our shop, and what will get in the way.</div><div class="sp two"></div></div>
+    <div class="write"><label class="lbl" for="f3">What this looks like in our shop, and what will get in the way.</label><textarea class="ttfld" id="f3" rows="4" data-q="What this looks like in our shop, and what will get in the way."></textarea></div>
   </div>
 </div>
 
@@ -235,11 +239,7 @@ is why the moment matters more than the field.
     <div class="pf"><span class="tag inf">INFERENCE</span>This is the habit that gives the production
     side of the business a reason to open the software at all. It is also the one that makes every
     other number on this page mean something, because margin is where all of it lands.</div>
-    <div class="assign">
-      <div class="ac"><span class="lbl">Who owns this here</span><span class="line"></span></div>
-      <div class="ac"><span class="lbl">Starting when</span><span class="line"></span></div>
-    </div>
-    <div class="write"><div class="lbl">What this looks like in our shop, and what will get in the way.</div><div class="sp two"></div></div>
+    <div class="write"><label class="lbl" for="f4">What this looks like in our shop, and what will get in the way.</label><textarea class="ttfld" id="f4" rows="4" data-q="What this looks like in our shop, and what will get in the way."></textarea></div>
   </div>
 </div>
 
@@ -264,11 +264,7 @@ is why the moment matters more than the field.
     reconstructed backwards out of material orders. That works well enough to answer a question once,
     but it is not something anyone can pull on a Monday morning, and it does not exist at all for a
     job that has not been ordered yet.</div>
-    <div class="assign">
-      <div class="ac"><span class="lbl">Who owns this here</span><span class="line"></span></div>
-      <div class="ac"><span class="lbl">Starting when</span><span class="line"></span></div>
-    </div>
-    <div class="write"><div class="lbl">What this looks like in our shop, and what will get in the way.</div><div class="sp two"></div></div>
+    <div class="write"><label class="lbl" for="f5">What this looks like in our shop, and what will get in the way.</label><textarea class="ttfld" id="f5" rows="4" data-q="What this looks like in our shop, and what will get in the way."></textarea></div>
   </div>
 </div>
 
@@ -288,11 +284,7 @@ is why the moment matters more than the field.
     and belongs on the job as one. The contract is what a customer signed. Keeping the two in separate
     places is what lets you look at the receivable list and know what it means, which matters most in
     the week you actually need to know.</div>
-    <div class="assign">
-      <div class="ac"><span class="lbl">Who owns this here</span><span class="line"></span></div>
-      <div class="ac"><span class="lbl">Starting when</span><span class="line"></span></div>
-    </div>
-    <div class="write"><div class="lbl">What this looks like in our shop, and what will get in the way.</div><div class="sp two"></div></div>
+    <div class="write"><label class="lbl" for="f6">What this looks like in our shop, and what will get in the way.</label><textarea class="ttfld" id="f6" rows="4" data-q="What this looks like in our shop, and what will get in the way."></textarea></div>
   </div>
 </div>
 
@@ -358,7 +350,7 @@ are there, the habits are holding. If one is blank, you know which moment slippe
 holding the file, without anybody having to run anything.
 </div>
 
-<div class="write"><div class="lbl">Anything about these six moments that does not match how work actually moves through here.</div><div class="sp two"></div></div>
+<div class="write"><label class="lbl" for="f7">Anything about these six moments that does not match how work actually moves through here.</label><textarea class="ttfld" id="f7" rows="4" data-q="Anything about these six moments that does not match how work actually moves through here."></textarea></div>
 
 <div class="runhd">Running Contractors Cloud So You Can Trust It &middot; Top Tier Roofing &amp; Remodeling &middot; 2026-08-27</div>
 <h2 class="newpage">What you can trust today, and what you cannot yet</h2>
@@ -408,5 +400,118 @@ Figures marked VERIFIED are computed from Top Tier's own CRM records and bank st
 marked INFERENCE are reasoned from those figures and are labeled as such.
 </div>
 
+<div class="tb">
+<h2>Something here is wrong or missing</h2>
+<label for="sec">Which section</label>
+<select id="sec">
+  <option>What you get out of this</option>
+  <option>Two things have to exist first</option>
+  <option>Discipline 1: lead source</option>
+  <option>Discipline 2: close the job when it closes</option>
+  <option>Discipline 3: costs land on the job</option>
+  <option>Discipline 4: squares on every job</option>
+  <option>Discipline 5: contract value</option>
+  <option>Who fills what, and when</option>
+  <option>What you can trust today</option>
+</select>
+<label for="what">What is wrong, or what the client said when they read it</label>
+<textarea id="what"></textarea>
+<button id="send">Send to Claude</button>
+<button id="copy" class="alt">Copy instead</button>
+<div id="tbmsg"></div>
+</div>
+
+
+<div class="ttbar">
+  <h3>Your answers</h3>
+  <p>Everything typed on this page is saved in this browser, so it is still here when you come back. Use Copy all answers to take it with you.</p>
+  <button type="button" id="ttcopy">Copy all answers</button>
+  <button type="button" id="ttclear" class="ttalt">Clear all</button>
+  <span class="ttmsg" id="ttmsg"></span>
+</div>
 </div><!-- /sheet -->
+
+<script>
+(function(){
+ function payload(){
+  return {form:"TopTier-GuideFeedback-CRMTraining",submittedAt:new Date().toISOString(),
+   answers:{section:document.getElementById('sec').value,
+            what:document.getElementById('what').value}};
+ }
+ var msg=document.getElementById('tbmsg');
+ document.getElementById('send').onclick=function(){
+  msg.style.color='#5b6472';msg.textContent='Sending...';
+  fetch('http://127.0.0.1:8788/submit',{method:'POST',
+   headers:{'Content-Type':'application/json'},body:JSON.stringify(payload())})
+  .then(function(r){if(!r.ok)throw 0;msg.style.color='#14611f';msg.textContent='Sent.';})
+  .catch(function(){msg.style.color='#8a1c1c';
+   msg.textContent='Receiver not reachable. Use Copy instead and paste it into chat.';});
+ };
+ document.getElementById('copy').onclick=function(){
+  navigator.clipboard.writeText(JSON.stringify(payload(),null,2)).then(function(){
+   msg.style.color='#14611f';msg.textContent='Copied. Paste it into chat.';});
+ };
+})();
+</script>
+
+
+<script>
+/* editable fields: persistence, auto-grow, copy, clear. Added 2026-09-08. */
+(function(){
+ var NS='ttf:crm_training_260827:';
+ function flds(){return Array.prototype.slice.call(document.querySelectorAll('textarea.ttfld'));}
+ function grow(t){try{t.style.height='auto';t.style.height=(t.scrollHeight+2)+'px';}catch(e){}}
+ function save(t){try{localStorage.setItem(NS+t.id,t.value);}catch(e){}}
+ flds().forEach(function(t){
+  try{var v=localStorage.getItem(NS+t.id);if(v!==null&&v!==undefined)t.value=v;}catch(e){}
+  grow(t);
+  t.addEventListener('input',function(){save(t);grow(t);});
+ });
+ window.addEventListener('beforeprint',function(){flds().forEach(grow);});
+ function gather(){
+  var out=[],any=false;
+  flds().forEach(function(t){
+   var v=(t.value||'').replace(/\s+$/,'');
+   if(!v)return;
+   any=true;
+   out.push((t.getAttribute('data-q')||'Answer')+'\n'+v);
+  });
+  if(!any)return null;
+  return (document.title||'')+'\n'+new Date().toLocaleString()+'\n\n'+out.join('\n\n')+'\n';
+ }
+ function toClipboard(text,done){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+   navigator.clipboard.writeText(text).then(function(){done(true);},function(){done(fallback(text));});
+   return;
+  }
+  done(fallback(text));
+ }
+ function fallback(text){
+  try{
+   var ta=document.createElement('textarea');
+   ta.value=text;ta.setAttribute('readonly','');
+   ta.style.position='fixed';ta.style.left='-9999px';
+   document.body.appendChild(ta);ta.select();
+   var ok=document.execCommand('copy');
+   document.body.removeChild(ta);return ok;
+  }catch(e){return false;}
+ }
+ var msg=document.getElementById('ttmsg');
+ function say(text,good){if(!msg)return;msg.textContent=text;msg.style.color=good?'#14611f':'#8a1c1c';}
+ var cb=document.getElementById('ttcopy');
+ if(cb)cb.onclick=function(){
+  var t=gather();
+  if(!t){say('Nothing filled in yet.',false);return;}
+  toClipboard(t,function(ok){
+   say(ok?'Copied. Paste it into an email or a document.':'Copy was blocked by the browser. Select the text in the boxes and copy it by hand.',ok);
+  });
+ };
+ var xb=document.getElementById('ttclear');
+ if(xb)xb.onclick=function(){
+  if(!window.confirm('Clear every answer on this page? This cannot be undone.'))return;
+  flds().forEach(function(t){t.value='';try{localStorage.removeItem(NS+t.id);}catch(e){}grow(t);});
+  say('All answers cleared.',true);
+ };
+})();
+</script>
 </body></html>

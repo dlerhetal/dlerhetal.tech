@@ -1,593 +1,645 @@
-<title>Vendor Portal Worklist</title>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor Portals: what actually happened</title>
 <style>
-:root{--red:#EC1F25;--navy:#003C55;--body:#606060;}
 *{box-sizing:border-box}
-body{font-family:"Trebuchet MS", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;color:var(--body);background:#f4f6f8;margin:0;
-     font-size:17px;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.wrap{max-width:1180px;margin:0 auto;padding:0 20px 70px}
-header{background:var(--navy);color:#fff;padding:26px 20px 22px;margin-bottom:0}
-header .inner{max-width:1180px;margin:0 auto}
-header h1{margin:0 0 6px;font-size:31px;color:#fff;letter-spacing:.2px}
-header p{margin:0;color:#cfe0e8;font-size:16px;max-width:820px}
-.rule{height:6px;background:var(--red)}
-h2{color:var(--navy);font-size:24px;margin:34px 0 4px;border-bottom:2px solid #dfe5ea;padding-bottom:6px}
-h3{color:var(--navy);font-size:19px;margin:22px 0 6px}
-a{color:var(--red)}
-.sub{margin:0 0 14px;font-size:15px}
-.tiles{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0 6px}
-.tile{flex:1 1 150px;background:#fff;border:1px solid #dfe5ea;border-top:4px solid var(--red);
-      padding:12px 14px;border-radius:3px}
-.tile b{display:block;font-size:29px;color:var(--navy);line-height:1.1}
-.tile span{font-size:13.5px}
-.band{background:#fff;border:1px solid #dfe5ea;border-radius:3px;margin:16px 0;overflow:hidden}
-.band>.hd{background:#eef3f6;border-bottom:1px solid #dfe5ea;padding:12px 16px}
-.band>.hd b{color:var(--navy);font-size:19px}
-.band>.hd .n{background:var(--red);color:#fff;border-radius:11px;padding:1px 10px;
-             font-size:13px;margin-left:8px;vertical-align:2px}
-.band>.hd p{margin:5px 0 0;font-size:14.5px}
-.firm{border-top:1px solid #eef1f4;padding:16px 16px 18px}
-.firm:first-of-type{border-top:none}
-.firm .top{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline}
-.firm .nm{font-size:20px;color:var(--navy);font-weight:bold}
-.firm .loc{font-size:14px}
-.pill{display:inline-block;font-size:12.5px;padding:2px 9px;border-radius:11px;
-      background:#eef3f6;color:var(--navy);border:1px solid #d6e0e6}
-.pill.plat{background:#fdeced;border-color:#f6c4c6;color:#8f1216}
-.pill.cost{background:#fff6da;border-color:#f0dda0;color:#6b5406}
-.go{display:inline-block;margin:9px 0 4px;padding:9px 14px;background:var(--red);color:#fff;
-    text-decoration:none;border-radius:3px;font-size:15px;word-break:break-all}
-.go:hover{background:#c2161b}
-.urlline{font-size:12.5px;word-break:break-all;margin:2px 0 8px}
-table.cr{border-collapse:collapse;margin:10px 0 4px;font-size:14px;width:100%}
-table.cr th{background:var(--navy);color:#fff;text-align:left;padding:6px 8px;font-weight:normal;font-size:13px}
-table.cr td{border:1px solid #e3e8ec;padding:6px 8px;vertical-align:top}
-.c{font-weight:bold;font-size:13.5px}
-.c.yes{color:#0d7a2e}
-.c.no{color:#8a8f94}
-.c.unk{color:#b06a00}
-.f{margin:9px 0 0;font-size:15px}
-.f b{color:var(--navy)}
-ul.ex{margin:5px 0 0 20px;padding:0;font-size:15px}
-ul.ex li{margin:2px 0}
-.gate{background:#fdeced;border-left:4px solid var(--red);padding:9px 12px;margin:10px 0 0;font-size:15px}
-.src{font-size:12.5px;margin-top:9px;word-break:break-all}
-.chk{float:right;font-size:14px;color:var(--navy)}
-.chk input{width:17px;height:17px;vertical-align:-3px;margin-right:5px}
-.lev{background:#fff;border:1px solid #dfe5ea;border-left:5px solid var(--red);
-     border-radius:3px;padding:16px 18px;margin:14px 0}
-.lev h3{margin-top:0}
-table.plat{border-collapse:collapse;width:100%;font-size:15px;margin-top:8px}
-table.plat th{background:var(--navy);color:#fff;text-align:left;padding:8px;font-weight:normal}
-table.plat td{border:1px solid #e3e8ec;padding:8px;vertical-align:top}
-table.nf{border-collapse:collapse;width:100%;font-size:14.5px;margin-top:8px}
-table.nf th{background:var(--navy);color:#fff;text-align:left;padding:7px;font-weight:normal}
-table.nf td{border:1px solid #e3e8ec;padding:6px 8px}
-table.nf tr:nth-child(even) td{background:#fafbfc}
-.six{background:#fff;border:1px solid #dfe5ea;border-radius:3px;padding:14px 18px;margin:14px 0}
-.six ol{margin:6px 0 0 22px;padding:0}
-.six li{margin:4px 0;font-size:16px}
-.warn{background:#fff6da;border-left:5px solid #e8c200;padding:12px 15px;margin:14px 0;font-size:15.5px}
-form.tb{background:#fff;border:1px solid #dfe5ea;border-top:5px solid var(--navy);
-        border-radius:3px;padding:16px 18px;margin:24px 0 0}
-form.tb label{display:block;font-weight:bold;color:var(--navy);margin:12px 0 4px;font-size:15px}
-form.tb textarea,form.tb input,form.tb select{width:100%;font-family:inherit;font-size:15px;
-        padding:8px;border:1px solid #cfd7dd;border-radius:3px;color:var(--body)}
-form.tb textarea{min-height:78px}
-button{font-family:inherit;font-size:15px;padding:9px 16px;border-radius:3px;border:none;
-       cursor:pointer;margin:12px 8px 0 0}
-button.p{background:var(--red);color:#fff}
-button.s{background:#fff;color:var(--navy);border:1px solid #b9c6ce}
-#st{margin-top:10px;font-size:14.5px}
-footer{margin-top:34px;font-size:13px;color:#8a9095;border-top:1px solid #dfe5ea;padding-top:12px}
-@media print{body{background:#fff;font-size:11pt} .wrap{max-width:none;padding:0}
-  form.tb,.chk{display:none} .band,.firm,.lev{break-inside:avoid;page-break-inside:avoid}
-  thead{display:table-header-group} @page{size:letter portrait;margin:.5in}}
+body{margin:0;background:#eef1f5;color:#1c2430;
+ font-family:Calibri,'Segoe UI',system-ui,Arial,sans-serif;font-size:19px;line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding:0 18px 120px}
+header{background:#1A3C6E;color:#fff;padding:26px 18px 22px}
+header .in{max-width:1000px;margin:0 auto}
+header h1{margin:0 0 4px;font-size:31px;letter-spacing:.2px}
+header .kick{margin:0 0 14px;color:#FFCD00;font-weight:700;font-size:17px;
+ text-transform:uppercase;letter-spacing:1.2px}
+header p{margin:0 0 10px;font-size:19px;color:#dbe4f0;max-width:76ch}
+.bar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:3px solid #FFCD00;
+ padding:12px 18px;box-shadow:0 2px 8px rgba(0,0,0,.10)}
+.bar .in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.count{font-weight:700;font-size:20px;color:#1A3C6E;white-space:nowrap}
+.track{flex:1 1 220px;height:14px;background:#dfe5ee;border-radius:8px;overflow:hidden;min-width:160px}
+.fill{height:100%;width:0;background:#1A3C6E;transition:width .25s}
+.saved{font-size:15px;color:#5a6676}
+.firm{background:#fff;border:1px solid #ccd5e2;border-left:7px solid #1A3C6E;
+ border-radius:7px;padding:18px 20px 20px;margin:18px 0;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.firm.done{border-left-color:#1f7a3d;background:#fbfdfb}
+.hd{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap}
+.nm{font-size:24px;font-weight:700;color:#1A3C6E}
+.loc{font-size:16px;color:#5a6676}
+.route{margin:8px 0 2px;font-size:16px;color:#3c4757}
+.urlbox{display:block;margin:10px 0 12px;padding:11px 13px;background:#f3f6fa;
+ border:1px solid #ccd5e2;border-radius:5px;font-family:Consolas,monospace;font-size:15px;
+ color:#12447f;text-decoration:none;word-break:break-all}
+.urlbox:hover{background:#e6eef8;border-color:#1A3C6E}
+.gate{background:#fffbe8;border-left:5px solid #FFCD00;padding:10px 13px;margin:0 0 16px;font-size:17px}
+.q{margin:16px 0 6px;font-weight:700;font-size:18px;color:#1A3C6E}
+.opts label{display:block;padding:5px 4px;font-size:18px;cursor:pointer;border-radius:4px}
+.opts label:hover{background:#f1f5fa}
+.opts input{margin-right:9px;transform:scale(1.25)}
+.docs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px}
+.docs label{display:block;padding:6px 4px;font-size:17px;cursor:pointer;border-radius:4px}
+.docs label:hover{background:#f1f5fa}
+.docs input{margin-right:9px;transform:scale(1.2)}
+.docs label.nolab{grid-column:1/-1;border-top:1px dashed #ccd5e2;margin-top:4px;padding-top:9px}
+textarea{width:100%;min-height:96px;font:inherit;font-size:17px;padding:10px;
+ border:1px solid #9fb0c6;border-radius:5px;resize:vertical}
+input[type=text],input[type=date]{font:inherit;font-size:17px;padding:9px 10px;
+ border:1px solid #9fb0c6;border-radius:5px;max-width:100%}
+input[type=text]{width:100%}
+.otherwrap{margin:6px 0 0 30px;display:none}
+.otherwrap.on{display:block}
+.foot{background:#fff;border:1px solid #ccd5e2;border-top:6px solid #1A3C6E;border-radius:7px;
+ padding:20px;margin:26px 0 0}
+button{font:inherit;font-size:18px;font-weight:700;padding:12px 20px;border-radius:6px;
+ border:2px solid #1A3C6E;background:#1A3C6E;color:#fff;cursor:pointer;margin:6px 8px 6px 0}
+button.alt{background:#fff;color:#1A3C6E}
+button:hover{opacity:.9}
+#status{margin-top:14px;font-size:18px;padding:13px 15px;border-radius:6px;display:none}
+#status.on{display:block}
+#status.ok{background:#e8f6ec;border:1px solid #1f7a3d;color:#14532b}
+#status.bad{background:#fdecec;border:1px solid #b3261e;color:#7a1a15}
+#status.busy{background:#f3f6fa;border:1px solid #9fb0c6;color:#33445c}
+#status .sh{display:block;margin-bottom:4px;font-size:19px;font-weight:700}
+.note{font-size:16px;color:#5a6676;margin:10px 0 0}
+h2{color:#1A3C6E;font-size:23px;margin:30px 0 4px;border-bottom:3px solid #FFCD00;padding-bottom:5px}
+@media (max-width:640px){
+ body{font-size:18px}
+ .wrap{padding:0 10px 110px}
+ header h1{font-size:25px}
+ .firm{padding:14px 13px 16px;border-left-width:6px}
+ .nm{font-size:21px}
+ .docs{grid-template-columns:1fr}
+ button{width:100%;margin:6px 0}
+ .bar{padding:9px 12px}
+ .bar .in{gap:10px;flex-wrap:nowrap}
+ .count{font-size:17px}
+ .saved{display:none}
+ .track{min-width:70px}
+}
+</style></head><body>
+<header><div class="in"><p class="kick">Property management vendor portals</p><h1>What actually happened</h1><p>These are the eleven property management companies that run a vendor portal, out of the sixty five on the list. You already worked through them. This page is where that gets written down, so the record lives somewhere other than memory.</p><p>Start at the top and work down. Anything you do not remember, leave blank. Everything you type is saved in this browser as you go, so you can close it and come back.</p></div></header>
+<div class="bar"><div class="in"><span class="count" id="count">0 of 11 recorded</span><span class="track"><span class="fill" id="fill"></span></span><span class="saved" id="saved"></span></div></div>
+<div class="wrap">
+<h2>The eleven</h2>
+<div class="firm" id="f_associa" data-firm="associa">
+<div class="hd"><span class="nm">Associa Minnesota</span><span class="loc">Brooklyn Park &nbsp;|&nbsp; 763-225-6400</span></div>
+<p class="route">Associa national partner intake, then Associa Vendor Access after approval</p>
+<a class="urlbox" href="https://www.associaonline.com/partner-with-us" target="_blank" rel="noopener">https://www.associaonline.com/partner-with-us</a>
+<div class="gate"><b>What we knew going in:</b> None published. Associa reviews the intake and responds.</div>
+<div class="q">What happened</div>
+<div class="opts">
+<label><input type="radio" name="associa_outcome" value="notyet"> Did not get to this one</label>
+<label><input type="radio" name="associa_outcome" value="unreachable"> Could not reach it. The link was dead, the page would not load, or there was no way in</label>
+<label><input type="radio" name="associa_outcome" value="blocked"> Reached it, but blocked at a gate. They want something first</label>
+<label><input type="radio" name="associa_outcome" value="applied"> Registered or applied. Waiting to hear back</label>
+<label><input type="radio" name="associa_outcome" value="approved"> Registered and approved. We are in</label>
+<label><input type="radio" name="associa_outcome" value="uploaded"> Documents uploaded</label>
+<label><input type="radio" name="associa_outcome" value="listed"> Already a listed vendor here</label>
+<label><input type="radio" name="associa_outcome" value="called"> Called or emailed instead, because there is no online form</label>
+<label><input type="radio" name="associa_outcome" value="other"> Something else</label>
+</div>
+<div class="otherwrap" id="ow_associa"><input type="text" name="associa_otherText" placeholder=""></div>
+<div class="q">Which documents went in</div>
+<div class="docs">
+<label><input type="checkbox" name="associa_doc_acord" value="1"> ACORD certificate of insurance</label>
+<label><input type="checkbox" name="associa_doc_umbrella" value="1"> $2,000,000 umbrella confirmation</label>
+<label><input type="checkbox" name="associa_doc_waiver" value="1"> Waiver of subrogation endorsement</label>
+<label><input type="checkbox" name="associa_doc_wc" value="1"> Workers compensation certificate</label>
+<label><input type="checkbox" name="associa_doc_w9" value="1"> Signed W-9</label>
+<label><input type="checkbox" name="associa_doc_license" value="1"> Minnesota license BC807923</label>
+<label class="nolab"><input type="checkbox" name="associa_doc_none" value="1"> Nothing uploaded yet</label>
+</div>
+<div class="q">Result. What came back</div>
+<textarea name="associa_result" placeholder=""></textarea>
+<div class="q">Date this took place</div>
+<input type="date" name="associa_date">
+</div>
+<div class="firm" id="f_assocone" data-firm="assocone">
+<div class="hd"><span class="nm">Association One</span><span class="loc">Bloomington &nbsp;|&nbsp; (833) 737-8663</span></div>
+<p class="route">Form on their own site</p>
+<a class="urlbox" href="https://associationone.com/become-a-vendor/" target="_blank" rel="noopener">https://associationone.com/become-a-vendor/</a>
+<div class="gate"><b>What we knew going in:</b> None published. They contact the applicant to confirm status and review the qualification standards.</div>
+<div class="q">What happened</div>
+<div class="opts">
+<label><input type="radio" name="assocone_outcome" value="notyet"> Did not get to this one</label>
+<label><input type="radio" name="assocone_outcome" value="unreachable"> Could not reach it. The link was dead, the page would not load, or there was no way in</label>
+<label><input type="radio" name="assocone_outcome" value="blocked"> Reached it, but blocked at a gate. They want something first</label>
+<label><input type="radio" name="assocone_outcome" value="applied"> Registered or applied. Waiting to hear back</label>
+<label><input type="radio" name="assocone_outcome" value="approved"> Registered and approved. We are in</label>
+<label><input type="radio" name="assocone_outcome" value="uploaded"> Documents uploaded</label>
+<label><input type="radio" name="assocone_outcome" value="listed"> Already a listed vendor here</label>
+<label><input type="radio" name="assocone_outcome" value="called"> Called or emailed instead, because there is no online form</label>
+<label><input type="radio" name="assocone_outcome" value="other"> Something else</label>
+</div>
+<div class="otherwrap" id="ow_assocone"><input type="text" name="assocone_otherText" placeholder=""></div>
+<div class="q">Which documents went in</div>
+<div class="docs">
+<label><input type="checkbox" name="assocone_doc_acord" value="1"> ACORD certificate of insurance</label>
+<label><input type="checkbox" name="assocone_doc_umbrella" value="1"> $2,000,000 umbrella confirmation</label>
+<label><input type="checkbox" name="assocone_doc_waiver" value="1"> Waiver of subrogation endorsement</label>
+<label><input type="checkbox" name="assocone_doc_wc" value="1"> Workers compensation certificate</label>
+<label><input type="checkbox" name="assocone_doc_w9" value="1"> Signed W-9</label>
+<label><input type="checkbox" name="assocone_doc_license" value="1"> Minnesota license BC807923</label>
+<label class="nolab"><input type="checkbox" name="assocone_doc_none" value="1"> Nothing uploaded yet</label>
+</div>
+<div class="q">Result. What came back</div>
+<textarea name="assocone_result" placeholder=""></textarea>
+<div class="q">Date this took place</div>
+<input type="date" name="assocone_date">
+</div>
+<div class="firm" id="f_omega" data-firm="omega">
+<div class="hd"><span class="nm">Omega Property Management</span><span class="loc">Maple Grove &nbsp;|&nbsp; 763-449-9100</span></div>
+<p class="route">Inquiry form on their own site, VIVE certification referenced</p>
+<a class="urlbox" href="https://www.omega-mgt.com/vendors" target="_blank" rel="noopener">https://www.omega-mgt.com/vendors</a>
+<div class="gate"><b>What we knew going in:</b> They review the inquiry first and then invite accepted companies to become certified vendors, so this is a two step route.</div>
+<div class="q">What happened</div>
+<div class="opts">
+<label><input type="radio" name="omega_outcome" value="notyet"> Did not get to this one</label>
+<label><input type="radio" name="omega_outcome" value="unreachable"> Could not reach it. The link was dead, the page would not load, or there was no way in</label>
+<label><input type="radio" name="omega_outcome" value="blocked"> Reached it, but blocked at a gate. They want something first</label>
+<label><input type="radio" name="omega_outcome" value="applied"> Registered or applied. Waiting to hear back</label>
+<label><input type="radio" name="omega_outcome" value="approved"> Registered and approved. We are in</label>
+<label><input type="radio" name="omega_outcome" value="uploaded"> Documents uploaded</label>
+<label><input type="radio" name="omega_outcome" value="listed"> Already a listed vendor here</label>
+<label><input type="radio" name="omega_outcome" value="called"> Called or emailed instead, because there is no online form</label>
+<label><input type="radio" name="omega_outcome" value="other"> Something else</label>
+</div>
+<div class="otherwrap" id="ow_omega"><input type="text" name="omega_otherText" placeholder=""></div>
+<div class="q">Which documents went in</div>
+<div class="docs">
+<label><input type="checkbox" name="omega_doc_acord" value="1"> ACORD certificate of insurance</label>
+<label><input type="checkbox" name="omega_doc_umbrella" value="1"> $2,000,000 umbrella confirmation</label>
+<label><input type="checkbox" name="omega_doc_waiver" value="1"> Waiver of subrogation endorsement</label>
+<label><input type="checkbox" name="omega_doc_wc" value="1"> Workers compensation certificate</label>
+<label><input type="checkbox" name="omega_doc_w9" value="1"> Signed W-9</label>
+<label><input type="checkbox" name="omega_doc_license" value="1"> Minnesota license BC807923</label>
+<label class="nolab"><input type="checkbox" name="omega_doc_none" value="1"> Nothing uploaded yet</label>
+</div>
+<div class="q">Result. What came back</div>
+<textarea name="omega_result" placeholder=""></textarea>
+<div class="q">Date this took place</div>
+<input type="date" name="omega_date">
+</div>
+<div class="firm" id="f_rpmviking" data-firm="rpmviking">
+<div class="hd"><span class="nm">Real Property Management Viking</span><span class="loc">Hopkins &nbsp;|&nbsp; (612) 915-0100</span></div>
+<p class="route">Formsite application, then AppFolio after approval</p>
+<a class="urlbox" href="https://fs3.formsite.com/QVURBc/nuuqzamr6h/index" target="_blank" rel="noopener">https://fs3.formsite.com/QVURBc/nuuqzamr6h/index</a>
+<div class="gate"><b>What we knew going in:</b> No gate on new vendors. The insurance limits are the bar: general liability $1,000,000, automobile $1,000,000, and a $2,000,000 umbrella named specifically for roofing and siding.</div>
+<div class="q">What happened</div>
+<div class="opts">
+<label><input type="radio" name="rpmviking_outcome" value="notyet"> Did not get to this one</label>
+<label><input type="radio" name="rpmviking_outcome" value="unreachable"> Could not reach it. The link was dead, the page would not load, or there was no way in</label>
+<label><input type="radio" name="rpmviking_outcome" value="blocked"> Reached it, but blocked at a gate. They want something first</label>
+<label><input type="radio" name="rpmviking_outcome" value="applied"> Registered or applied. Waiting to hear back</label>
+<label><input type="radio" name="rpmviking_outcome" value="approved"> Registered and approved. We are in</label>
+<label><input type="radio" name="rpmviking_outcome" value="uploaded"> Documents uploaded</label>
+<label><input type="radio" name="rpmviking_outcome" value="listed"> Already a listed vendor here</label>
+<label><input type="radio" name="rpmviking_outcome" value="called"> Called or emailed instead, because there is no online form</label>
+<label><input type="radio" name="rpmviking_outcome" value="other"> Something else</label>
+</div>
+<div class="otherwrap" id="ow_rpmviking"><input type="text" name="rpmviking_otherText" placeholder=""></div>
+<div class="q">Which documents went in</div>
+<div class="docs">
+<label><input type="checkbox" name="rpmviking_doc_acord" value="1"> ACORD certificate of insurance</label>
+<label><input type="checkbox" name="rpmviking_doc_umbrella" value="1"> $2,000,000 umbrella confirmation</label>
+<label><input type="checkbox" name="rpmviking_doc_waiver" value="1"> Waiver of subrogation endorsement</label>
+<label><input type="checkbox" name="rpmviking_doc_wc" value="1"> Workers compensation certificate</label>
+<label><input type="checkbox" name="rpmviking_doc_w9" value="1"> Signed W-9</label>
+<label><input type="checkbox" name="rpmviking_doc_license" value="1"> Minnesota license BC807923</label>
+<label class="nolab"><input type="checkbox" name="rpmviking_doc_none" value="1"> Nothing uploaded yet</label>
+</div>
+<div class="q">Result. What came back</div>
+<textarea name="rpmviking_result" placeholder=""></textarea>
+<div class="q">Date this took place</div>
+<input type="date" name="rpmviking_date">
+</div>
+<div class="firm" id="f_thiestalle" data-firm="thiestalle">
+<div class="hd"><span class="nm">Thies &amp; Talle Management</span><span class="loc">Chanhassen &nbsp;|&nbsp; (952) 949-2200</span></div>
+<p class="route">Intake message form on their own site</p>
+<a class="urlbox" href="https://www.thiestalle.com/vendors.html" target="_blank" rel="noopener">https://www.thiestalle.com/vendors.html</a>
+<div class="gate"><b>What we knew going in:</b> None published, but they weigh past performance at renewal. Their page asks vendors not to solicit by phone, email or walk in, so this one is portal only.</div>
+<div class="q">What happened</div>
+<div class="opts">
+<label><input type="radio" name="thiestalle_outcome" value="notyet"> Did not get to this one</label>
+<label><input type="radio" name="thiestalle_outcome" value="unreachable"> Could not reach it. The link was dead, the page would not load, or there was no way in</label>
+<label><input type="radio" name="thiestalle_outcome" value="blocked"> Reached it, but blocked at a gate. They want something first</label>
+<label><input type="radio" name="thiestalle_outcome" value="applied"> Registered or applied. Waiting to hear back</label>
+<label><input type="radio" name="thiestalle_outcome" value="approved"> Registered and approved. We are in</label>
+<label><input type="radio" name="thiestalle_outcome" value="uploaded"> Documents uploaded</label>
+<label><input type="radio" name="thiestalle_outcome" value="listed"> Already a listed vendor here</label>
+<label><input type="radio" name="thiestalle_outcome" value="called"> Called or emailed instead, because there is no online form</label>
+<label><input type="radio" name="thiestalle_outcome" value="other"> Something else</label>
+</div>
+<div class="otherwrap" id="ow_thiestalle"><input type="text" name="thiestalle_otherText" placeholder=""></div>
+<div class="q">Which documents went in</div>
+<div class="docs">
+<label><input type="checkbox" name="thiestalle_doc_acord" value="1"> ACORD certificate of insurance</label>
+<label><input type="checkbox" name="thiestalle_doc_umbrella" value="1"> $2,000,000 umbrella confirmation</label>
+<label><input type="checkbox" name="thiestalle_doc_waiver" value="1"> Waiver of subrogation endorsement</label>
+<label><input type="checkbox" name="thiestalle_doc_wc" value="1"> Workers compensation certificate</label>
+<label><input type="checkbox" name="thiestalle_doc_w9" value="1"> Signed W-9</label>
+<label><input type="checkbox" name="thiestalle_doc_license" value="1"> Minnesota license BC807923</label>
+<label class="nolab"><input type="checkbox" name="thiestalle_doc_none" value="1"> Nothing uploaded yet</label>
+</div>
+<div class="q">Result. What came back</div>
+<textarea name="thiestalle_result" placeholder=""></textarea>
+<div class="q">Date this took place</div>
+<input type="date" name="thiestalle_date">
+</div>
+<div class="firm" id="f_gassen" data-firm="gassen">
+<div class="hd"><span class="nm">Gassen Company</span><span class="loc">Eden Prairie &nbsp;|&nbsp; (952) 922-5575</span></div>
+<p class="route">Application document, returned by email to vendorservices@gassen.com</p>
+<a class="urlbox" href="https://www.gassen.com/services/vendor-registration-vive" target="_blank" rel="noopener">https://www.gassen.com/services/vendor-registration-vive</a>
+<div class="gate"><b>What we knew going in:</b> Two hard gates, and they are stated on the page. First, the applicant must already have worked with a property manager at one of Gassen's current clients and have good feedback from that manager. Second, the company must have been in business over one year. They also say they may decline if the service category is already full.</div>
+<div class="q">What happened</div>
+<div class="opts">
+<label><input type="radio" name="gassen_outcome" value="notyet"> Did not get to this one</label>
+<label><input type="radio" name="gassen_outcome" value="unreachable"> Could not reach it. The link was dead, the page would not load, or there was no way in</label>
+<label><input type="radio" name="gassen_outcome" value="blocked"> Reached it, but blocked at a gate. They want something first</label>
+<label><input type="radio" name="gassen_outcome" value="applied"> Registered or applied. Waiting to hear back</label>
+<label><input type="radio" name="gassen_outcome" value="approved"> Registered and approved. We are in</label>
+<label><input type="radio" name="gassen_outcome" value="uploaded"> Documents uploaded</label>
+<label><input type="radio" name="gassen_outcome" value="listed"> Already a listed vendor here</label>
+<label><input type="radio" name="gassen_outcome" value="called"> Called or emailed instead, because there is no online form</label>
+<label><input type="radio" name="gassen_outcome" value="other"> Something else</label>
+</div>
+<div class="otherwrap" id="ow_gassen"><input type="text" name="gassen_otherText" placeholder=""></div>
+<div class="q">Which documents went in</div>
+<div class="docs">
+<label><input type="checkbox" name="gassen_doc_acord" value="1"> ACORD certificate of insurance</label>
+<label><input type="checkbox" name="gassen_doc_umbrella" value="1"> $2,000,000 umbrella confirmation</label>
+<label><input type="checkbox" name="gassen_doc_waiver" value="1"> Waiver of subrogation endorsement</label>
+<label><input type="checkbox" name="gassen_doc_wc" value="1"> Workers compensation certificate</label>
+<label><input type="checkbox" name="gassen_doc_w9" value="1"> Signed W-9</label>
+<label><input type="checkbox" name="gassen_doc_license" value="1"> Minnesota license BC807923</label>
+<label class="nolab"><input type="checkbox" name="gassen_doc_none" value="1"> Nothing uploaded yet</label>
+</div>
+<div class="q">Result. What came back</div>
+<textarea name="gassen_result" placeholder=""></textarea>
+<div class="q">Date this took place</div>
+<input type="date" name="gassen_date">
+</div>
+<div class="firm" id="f_renterswh" data-firm="renterswh">
+<div class="hd"><span class="nm">Renters Warehouse - St. Cloud</span><span class="loc">St. Cloud &nbsp;|&nbsp; (320) 251-7368</span></div>
+<p class="route">National maintenance vendor request form</p>
+<a class="urlbox" href="https://www.renterswarehouse.com/maintenance-vendor-request-form" target="_blank" rel="noopener">https://www.renterswarehouse.com/maintenance-vendor-request-form</a>
+<div class="gate"><b>What we knew going in:</b> None published. The form asks for a general price list up front.</div>
+<div class="q">What happened</div>
+<div class="opts">
+<label><input type="radio" name="renterswh_outcome" value="notyet"> Did not get to this one</label>
+<label><input type="radio" name="renterswh_outcome" value="unreachable"> Could not reach it. The link was dead, the page would not load, or there was no way in</label>
+<label><input type="radio" name="renterswh_outcome" value="blocked"> Reached it, but blocked at a gate. They want something first</label>
+<label><input type="radio" name="renterswh_outcome" value="applied"> Registered or applied. Waiting to hear back</label>
+<label><input type="radio" name="renterswh_outcome" value="approved"> Registered and approved. We are in</label>
+<label><input type="radio" name="renterswh_outcome" value="uploaded"> Documents uploaded</label>
+<label><input type="radio" name="renterswh_outcome" value="listed"> Already a listed vendor here</label>
+<label><input type="radio" name="renterswh_outcome" value="called"> Called or emailed instead, because there is no online form</label>
+<label><input type="radio" name="renterswh_outcome" value="other"> Something else</label>
+</div>
+<div class="otherwrap" id="ow_renterswh"><input type="text" name="renterswh_otherText" placeholder=""></div>
+<div class="q">Which documents went in</div>
+<div class="docs">
+<label><input type="checkbox" name="renterswh_doc_acord" value="1"> ACORD certificate of insurance</label>
+<label><input type="checkbox" name="renterswh_doc_umbrella" value="1"> $2,000,000 umbrella confirmation</label>
+<label><input type="checkbox" name="renterswh_doc_waiver" value="1"> Waiver of subrogation endorsement</label>
+<label><input type="checkbox" name="renterswh_doc_wc" value="1"> Workers compensation certificate</label>
+<label><input type="checkbox" name="renterswh_doc_w9" value="1"> Signed W-9</label>
+<label><input type="checkbox" name="renterswh_doc_license" value="1"> Minnesota license BC807923</label>
+<label class="nolab"><input type="checkbox" name="renterswh_doc_none" value="1"> Nothing uploaded yet</label>
+</div>
+<div class="q">Result. What came back</div>
+<textarea name="renterswh_result" placeholder=""></textarea>
+<div class="q">Date this took place</div>
+<input type="date" name="renterswh_date">
+</div>
+<div class="firm" id="f_firstservice" data-firm="firstservice">
+<div class="hd"><span class="nm">FirstService Residential Minnesota</span><span class="loc">Bloomington &nbsp;|&nbsp; (952) 277-2700</span></div>
+<p class="route">VIVE, Vendor Information Verification Experts. $199 per year, paid to VIVE</p>
+<a class="urlbox" href="https://app.getvived.com/vendor-signup/37ebec9d-4fb3-4fc8-b233-9339429ffd11/company/159/complianceType/default/home" target="_blank" rel="noopener">https://app.getvived.com/vendor-signup/37ebec9d-4fb3-4fc8-b233-9339429ffd11/company/159/complianceType/default/home</a>
+<div class="gate"><b>What we knew going in:</b> Registration with VIVE is required to keep or start a relationship with FirstService Residential Minnesota. VIVE support is 844 476 8038.</div>
+<div class="q">What happened</div>
+<div class="opts">
+<label><input type="radio" name="firstservice_outcome" value="notyet"> Did not get to this one</label>
+<label><input type="radio" name="firstservice_outcome" value="unreachable"> Could not reach it. The link was dead, the page would not load, or there was no way in</label>
+<label><input type="radio" name="firstservice_outcome" value="blocked"> Reached it, but blocked at a gate. They want something first</label>
+<label><input type="radio" name="firstservice_outcome" value="applied"> Registered or applied. Waiting to hear back</label>
+<label><input type="radio" name="firstservice_outcome" value="approved"> Registered and approved. We are in</label>
+<label><input type="radio" name="firstservice_outcome" value="uploaded"> Documents uploaded</label>
+<label><input type="radio" name="firstservice_outcome" value="listed"> Already a listed vendor here</label>
+<label><input type="radio" name="firstservice_outcome" value="called"> Called or emailed instead, because there is no online form</label>
+<label><input type="radio" name="firstservice_outcome" value="other"> Something else</label>
+</div>
+<div class="otherwrap" id="ow_firstservice"><input type="text" name="firstservice_otherText" placeholder=""></div>
+<div class="q">Which documents went in</div>
+<div class="docs">
+<label><input type="checkbox" name="firstservice_doc_acord" value="1"> ACORD certificate of insurance</label>
+<label><input type="checkbox" name="firstservice_doc_umbrella" value="1"> $2,000,000 umbrella confirmation</label>
+<label><input type="checkbox" name="firstservice_doc_waiver" value="1"> Waiver of subrogation endorsement</label>
+<label><input type="checkbox" name="firstservice_doc_wc" value="1"> Workers compensation certificate</label>
+<label><input type="checkbox" name="firstservice_doc_w9" value="1"> Signed W-9</label>
+<label><input type="checkbox" name="firstservice_doc_license" value="1"> Minnesota license BC807923</label>
+<label class="nolab"><input type="checkbox" name="firstservice_doc_none" value="1"> Nothing uploaded yet</label>
+</div>
+<div class="q">Result. What came back</div>
+<textarea name="firstservice_result" placeholder=""></textarea>
+<div class="q">Date this took place</div>
+<input type="date" name="firstservice_date">
+</div>
+<div class="firm" id="f_hoaliving" data-firm="hoaliving">
+<div class="hd"><span class="nm">HOALiving Minnesota</span><span class="loc">Arden Hills &nbsp;|&nbsp; (612) 234-6464</span></div>
+<p class="route">VendorSmart. Cost not published by HOALiving</p>
+<a class="urlbox" href="https://vendorsmart.com/vs/#/vendor-onboarding?role=2&amp;composition=54126&amp;relation=3" target="_blank" rel="noopener">https://vendorsmart.com/vs/#/vendor-onboarding?role=2&amp;composition=54126&amp;relation=3</a>
+<div class="gate"><b>What we knew going in:</b> None published. VendorSmart support is 954 329 1406.</div>
+<div class="q">What happened</div>
+<div class="opts">
+<label><input type="radio" name="hoaliving_outcome" value="notyet"> Did not get to this one</label>
+<label><input type="radio" name="hoaliving_outcome" value="unreachable"> Could not reach it. The link was dead, the page would not load, or there was no way in</label>
+<label><input type="radio" name="hoaliving_outcome" value="blocked"> Reached it, but blocked at a gate. They want something first</label>
+<label><input type="radio" name="hoaliving_outcome" value="applied"> Registered or applied. Waiting to hear back</label>
+<label><input type="radio" name="hoaliving_outcome" value="approved"> Registered and approved. We are in</label>
+<label><input type="radio" name="hoaliving_outcome" value="uploaded"> Documents uploaded</label>
+<label><input type="radio" name="hoaliving_outcome" value="listed"> Already a listed vendor here</label>
+<label><input type="radio" name="hoaliving_outcome" value="called"> Called or emailed instead, because there is no online form</label>
+<label><input type="radio" name="hoaliving_outcome" value="other"> Something else</label>
+</div>
+<div class="otherwrap" id="ow_hoaliving"><input type="text" name="hoaliving_otherText" placeholder=""></div>
+<div class="q">Which documents went in</div>
+<div class="docs">
+<label><input type="checkbox" name="hoaliving_doc_acord" value="1"> ACORD certificate of insurance</label>
+<label><input type="checkbox" name="hoaliving_doc_umbrella" value="1"> $2,000,000 umbrella confirmation</label>
+<label><input type="checkbox" name="hoaliving_doc_waiver" value="1"> Waiver of subrogation endorsement</label>
+<label><input type="checkbox" name="hoaliving_doc_wc" value="1"> Workers compensation certificate</label>
+<label><input type="checkbox" name="hoaliving_doc_w9" value="1"> Signed W-9</label>
+<label><input type="checkbox" name="hoaliving_doc_license" value="1"> Minnesota license BC807923</label>
+<label class="nolab"><input type="checkbox" name="hoaliving_doc_none" value="1"> Nothing uploaded yet</label>
+</div>
+<div class="q">Result. What came back</div>
+<textarea name="hoaliving_result" placeholder=""></textarea>
+<div class="q">Date this took place</div>
+<input type="date" name="hoaliving_date">
+</div>
+<div class="firm" id="f_sentry" data-firm="sentry">
+<div class="hd"><span class="nm">Sentry Management (Minneapolis/Golden Valley office)</span><span class="loc">Golden Valley &nbsp;|&nbsp; 763-593-9770</span></div>
+<p class="route">VendorSmart, the same platform HOALiving uses, so one profile serves both</p>
+<a class="urlbox" href="https://vendorsmart.com/vs/#/vendor-onboarding?role=2&amp;composition=64172&amp;relation=3" target="_blank" rel="noopener">https://vendorsmart.com/vs/#/vendor-onboarding?role=2&amp;composition=64172&amp;relation=3</a>
+<div class="gate"><b>What we knew going in:</b> Sentry calls the Vendor Compliance Program required for any vendor working with their associations.</div>
+<div class="q">What happened</div>
+<div class="opts">
+<label><input type="radio" name="sentry_outcome" value="notyet"> Did not get to this one</label>
+<label><input type="radio" name="sentry_outcome" value="unreachable"> Could not reach it. The link was dead, the page would not load, or there was no way in</label>
+<label><input type="radio" name="sentry_outcome" value="blocked"> Reached it, but blocked at a gate. They want something first</label>
+<label><input type="radio" name="sentry_outcome" value="applied"> Registered or applied. Waiting to hear back</label>
+<label><input type="radio" name="sentry_outcome" value="approved"> Registered and approved. We are in</label>
+<label><input type="radio" name="sentry_outcome" value="uploaded"> Documents uploaded</label>
+<label><input type="radio" name="sentry_outcome" value="listed"> Already a listed vendor here</label>
+<label><input type="radio" name="sentry_outcome" value="called"> Called or emailed instead, because there is no online form</label>
+<label><input type="radio" name="sentry_outcome" value="other"> Something else</label>
+</div>
+<div class="otherwrap" id="ow_sentry"><input type="text" name="sentry_otherText" placeholder=""></div>
+<div class="q">Which documents went in</div>
+<div class="docs">
+<label><input type="checkbox" name="sentry_doc_acord" value="1"> ACORD certificate of insurance</label>
+<label><input type="checkbox" name="sentry_doc_umbrella" value="1"> $2,000,000 umbrella confirmation</label>
+<label><input type="checkbox" name="sentry_doc_waiver" value="1"> Waiver of subrogation endorsement</label>
+<label><input type="checkbox" name="sentry_doc_wc" value="1"> Workers compensation certificate</label>
+<label><input type="checkbox" name="sentry_doc_w9" value="1"> Signed W-9</label>
+<label><input type="checkbox" name="sentry_doc_license" value="1"> Minnesota license BC807923</label>
+<label class="nolab"><input type="checkbox" name="sentry_doc_none" value="1"> Nothing uploaded yet</label>
+</div>
+<div class="q">Result. What came back</div>
+<textarea name="sentry_result" placeholder=""></textarea>
+<div class="q">Date this took place</div>
+<input type="date" name="sentry_date">
+</div>
+<div class="firm" id="f_sharper" data-firm="sharper">
+<div class="hd"><span class="nm">Sharper Management</span><span class="loc">Eden Prairie &nbsp;|&nbsp; (952) 224-4777</span></div>
+<p class="route">Public vendor directory, no application form published</p>
+<a class="urlbox" href="https://sharpermanagement.com/preferred-vendors/" target="_blank" rel="noopener">https://sharpermanagement.com/preferred-vendors/</a>
+<div class="gate"><b>What we knew going in:</b> Unknown. There is no published route in. This one is a phone call to (952) 224-4777 or clientcare@sharpermanagement.com, and the ask is to be listed under EXTERIOR CONSTRUCTION.</div>
+<div class="q">What happened</div>
+<div class="opts">
+<label><input type="radio" name="sharper_outcome" value="notyet"> Did not get to this one</label>
+<label><input type="radio" name="sharper_outcome" value="unreachable"> Could not reach it. The link was dead, the page would not load, or there was no way in</label>
+<label><input type="radio" name="sharper_outcome" value="blocked"> Reached it, but blocked at a gate. They want something first</label>
+<label><input type="radio" name="sharper_outcome" value="applied"> Registered or applied. Waiting to hear back</label>
+<label><input type="radio" name="sharper_outcome" value="approved"> Registered and approved. We are in</label>
+<label><input type="radio" name="sharper_outcome" value="uploaded"> Documents uploaded</label>
+<label><input type="radio" name="sharper_outcome" value="listed"> Already a listed vendor here</label>
+<label><input type="radio" name="sharper_outcome" value="called"> Called or emailed instead, because there is no online form</label>
+<label><input type="radio" name="sharper_outcome" value="other"> Something else</label>
+</div>
+<div class="otherwrap" id="ow_sharper"><input type="text" name="sharper_otherText" placeholder=""></div>
+<div class="q">Which documents went in</div>
+<div class="docs">
+<label><input type="checkbox" name="sharper_doc_acord" value="1"> ACORD certificate of insurance</label>
+<label><input type="checkbox" name="sharper_doc_umbrella" value="1"> $2,000,000 umbrella confirmation</label>
+<label><input type="checkbox" name="sharper_doc_waiver" value="1"> Waiver of subrogation endorsement</label>
+<label><input type="checkbox" name="sharper_doc_wc" value="1"> Workers compensation certificate</label>
+<label><input type="checkbox" name="sharper_doc_w9" value="1"> Signed W-9</label>
+<label><input type="checkbox" name="sharper_doc_license" value="1"> Minnesota license BC807923</label>
+<label class="nolab"><input type="checkbox" name="sharper_doc_none" value="1"> Nothing uploaded yet</label>
+</div>
+<div class="q">Result. What came back</div>
+<textarea name="sharper_result" placeholder=""></textarea>
+<div class="q">Date this took place</div>
+<input type="date" name="sharper_date">
+</div>
+<div class="foot">
+<h2 style="margin-top:0">Send it back</h2>
+<p>Send when you are done, or partway through. Sending does not clear anything, and you can send again later.</p>
+<button id="send">Send this record</button><button class="alt" id="copy">Copy everything</button><button class="alt" id="dl">Download a copy</button><button class="alt" id="clear">Clear this page</button>
+<div id="status"></div>
+<p class="note">If sending does not work, Copy everything puts the whole record on the clipboard as plain text, and Download saves it as a file. Both work with no internet connection.</p>
+</div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var KEY="toptier_vendor_portal_record_260908";
+  var FORM="TopTier-VendorPortalRecord";
+  var RECEIVER="http://127.0.0.1:8788/submit";
+  var FIRMS=[{"id": "associa", "name": "Associa Minnesota", "loc": "Brooklyn Park", "url": "https://www.associaonline.com/partner-with-us"}, {"id": "assocone", "name": "Association One", "loc": "Bloomington", "url": "https://associationone.com/become-a-vendor/"}, {"id": "omega", "name": "Omega Property Management", "loc": "Maple Grove", "url": "https://www.omega-mgt.com/vendors"}, {"id": "rpmviking", "name": "Real Property Management Viking", "loc": "Hopkins", "url": "https://fs3.formsite.com/QVURBc/nuuqzamr6h/index"}, {"id": "thiestalle", "name": "Thies & Talle Management", "loc": "Chanhassen", "url": "https://www.thiestalle.com/vendors.html"}, {"id": "gassen", "name": "Gassen Company", "loc": "Eden Prairie", "url": "https://www.gassen.com/services/vendor-registration-vive"}, {"id": "renterswh", "name": "Renters Warehouse - St. Cloud", "loc": "St. Cloud", "url": "https://www.renterswarehouse.com/maintenance-vendor-request-form"}, {"id": "firstservice", "name": "FirstService Residential Minnesota", "loc": "Bloomington", "url": "https://app.getvived.com/vendor-signup/37ebec9d-4fb3-4fc8-b233-9339429ffd11/company/159/complianceType/default/home"}, {"id": "hoaliving", "name": "HOALiving Minnesota", "loc": "Arden Hills", "url": "https://vendorsmart.com/vs/#/vendor-onboarding?role=2&composition=54126&relation=3"}, {"id": "sentry", "name": "Sentry Management (Minneapolis/Golden Valley office)", "loc": "Golden Valley", "url": "https://vendorsmart.com/vs/#/vendor-onboarding?role=2&composition=64172&relation=3"}, {"id": "sharper", "name": "Sharper Management", "loc": "Eden Prairie", "url": "https://sharpermanagement.com/preferred-vendors/"}];
+  var OUTCOMES=[["notyet", "Did not get to this one"], ["unreachable", "Could not reach it. The link was dead, the page would not load, or there was no way in"], ["blocked", "Reached it, but blocked at a gate. They want something first"], ["applied", "Registered or applied. Waiting to hear back"], ["approved", "Registered and approved. We are in"], ["uploaded", "Documents uploaded"], ["listed", "Already a listed vendor here"], ["called", "Called or emailed instead, because there is no online form"], ["other", "Something else"]];
+  var DOCS=[["acord", "ACORD certificate of insurance"], ["umbrella", "$2,000,000 umbrella confirmation"], ["waiver", "Waiver of subrogation endorsement"], ["wc", "Workers compensation certificate"], ["w9", "Signed W-9"], ["license", "Minnesota license BC807923"], ["none", "Nothing uploaded yet"]];
 
-</style>
-<header>
-<meta name="robots" content="noindex, nofollow"><div class="inner">
-<h1>Vendor Portal Worklist</h1>
-<p>Top Tier Roofing and Remodeling. Every property management company on the commercial list, checked for a vendor registration route, sorted so the ones you can finish today come first. Built 1 September 2026.</p>
-</div></header><div class="rule"></div><div class="wrap">
-<div class="tiles">
-<div class="tile"><b>65</b><span>property management companies checked</span></div>
-<div class="tile"><b>10</b><span>with a real registration route</span></div>
-<div class="tile"><b>7</b><span>run their own form</span></div>
-<div class="tile"><b>3</b><span>run on a shared platform</span></div>
-<div class="tile"><b>4</b><span>whose requirement list is behind a login</span></div>
-<div class="tile"><b>54</b><span>with no route found at all</span></div>
-</div>
-<p class="sub">Of the 54 with no route found, 9 have no working website at all, so there was nothing to check online. 1 company publishes a vendor directory but no form, which makes it a phone call with a specific ask.</p>
-<div class="six"><h3 style="margin-top:0">The folder you are working from</h3>
-<ol>
-<li>ACORD certificate of insurance</li>
-<li>$2,000,000 umbrella confirmation</li>
-<li>Waiver of subrogation endorsement</li>
-<li>Workers compensation certificate</li>
-<li>Signed W-9</li>
-<li>Minnesota license BC807923</li>
-</ol>
-<p class="f">Everything below is scored against those six. Where a portal asks for something that is not on this list, it is called out under <b>Also wants</b>.</p></div>
-<div class="warn"><b>The $2,000,000 umbrella question, answered.</b> Only one company on this entire list publishes a hard umbrella requirement: Real Property Management Viking, whose vendor manual requires a $2,000,000 umbrella and names roofing and siding as the trades it applies to. Gassen publishes full limits and does not ask for an umbrella at all. Every other requirement list is either silent on dollar figures or sits behind a platform login, so no honest claim can be made about them. The practical read: carry the $2,000,000 and nothing on this list is closed off. Confirm the number on the certificate before the first upload, because it is the slowest thing to fix.</div>
-<h2>Register once, reach many</h2>
-<p class="sub">This is the highest value part of the page. Two platforms sit underneath four of the companies below, and one profile on a platform serves every company that uses it.</p>
-<div class="lev">
-<table class="plat"><thead><tr><th>Platform</th><th>Companies on this list that use it</th><th>Cost</th><th>What it buys</th></tr></thead><tbody>
-<tr><td><b>VIVE</b><br><span style="font-size:13px">Vendor Information Verification Experts<br>844 476 8038</span></td><td>FirstService Residential Minnesota, which states the listing reaches over 500 associations. Omega Property Management references VIVE certification on its own vendor page, so ask Omega whether one VIVE record covers both.</td><td>$199 per year, paid to VIVE</td><td>One document set instead of one per property, a listing in up to ten service categories, and visibility to every FirstService Residential manager.</td></tr>
-<tr><td><b>VendorSmart</b><br><span style="font-size:13px">954 329 1406<br>support@vendorsmart.com</span></td><td>Sentry Management and HOALiving Minnesota. Both run their whole vendor compliance program on it, and Sentry calls the program required.</td><td>Not published. HOALiving vendors report a figure near $150 a year, which has no primary source. Ask VendorSmart directly.</td><td>Documents submitted once a year rather than once per association, a searchable directory read by community managers, and real time notification of new jobs in the area with bidding inside the platform.</td></tr>
-</tbody></table>
-<p class="f"><b>The order that saves the most work.</b> Do VendorSmart first, because one profile clears Sentry and HOALiving together and the bid notification feed starts working immediately. Then VIVE, which is the single largest reach on the list. Both will ask for the same documents, so have all six ready before starting either.</p>
-<p class="f">A word on what these platforms are not: <b>AppFolio, Buildium, Rent Manager, Propertyware, RentCafe and RealPage are back office software</b>, not vendor directories. Many companies below run on one of them, and a login page on their site is for residents and owners. Being in one of those systems is something a company does to you after it hires you. It is never a way in.</p>
-</div>
-<h2>Work these top down</h2>
-<p class="sub">The check boxes are a convenience for the session and live in this browser only. They are not a record. Write the real record down somewhere that survives.</p>
-<div class="band"><div class="hd">
-<b>Open now, and the six documents are the whole ask</b><span class="n">5</span>
-<p>Start here. Nothing in this band asks for anything Top Tier will not have in the folder.</p></div>
-<div class="firm">
-<label class="chk"><input type="checkbox" data-k="Associa Minnesota"> done</label>
-<div class="top">
-<span class="nm">Associa Minnesota</span>
-<span class="loc">Brooklyn Park &nbsp;|&nbsp; 763-225-6400</span>
-</div>
-<div style="margin:6px 0 2px"><span class="pill">Own portal</span> <span class="pill plat">Associa national partner intake, then Associa Vendor Access after approval</span> <span class="pill cost">None published</span></div>
-<a class="go" href="https://www.associaonline.com/partner-with-us" target="_blank" rel="noopener">Open the registration page</a>
-<div class="urlline"><a href="https://www.associaonline.com/partner-with-us" target="_blank" rel="noopener">https://www.associaonline.com/partner-with-us</a></div>
-<table class="cr"><thead><tr>
-<th>ACORD certificate of insurance</th>
-<th>$2,000,000 umbrella confirmation</th>
-<th>Waiver of subrogation endorsement</th>
-<th>Workers compensation certificate</th>
-<th>Signed W-9</th>
-<th>Minnesota license BC807923</th>
-</tr></thead><tbody><tr>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-</tr></tbody></table>
-<p class="f"><b>Limits and wording:</b> Nothing published at the intake stage. Insurance and risk documents are handled inside Vendor Access later.</p>
-<p class="f"><b>Also wants, beyond the six:</b></p><ul class="ex">
-<li>Organization name, services offered and a contact, and nothing more at this stage</li>
-</ul>
-<div class="gate"><b>Gate:</b> None published. Associa reviews the intake and responds.</div>
-<p class="f"><b>What can be seen:</b> The intake form is public. The document requirements sit inside Vendor Access, after approval, behind a login.</p>
-<p class="f"><b>Worth knowing:</b> Associa is the largest community association manager in North America and this intake is national rather than branch level, so one form reaches the Associa Minnesota book. Vendor Access support is access@associaonline.com and 1 844 652 8819.</p>
-<p class="f"><b>Confidence:</b> High that this is the front door. Nothing can be said about the document list, because it is behind the approved vendor login.</p>
-<p class="src">Source: <a href="https://access.associawebsites.com/vendor" target="_blank" rel="noopener">https://access.associawebsites.com/vendor</a></p>
-</div>
-<div class="firm">
-<label class="chk"><input type="checkbox" data-k="Association One"> done</label>
-<div class="top">
-<span class="nm">Association One</span>
-<span class="loc">Bloomington &nbsp;|&nbsp; (833) 737-8663</span>
-</div>
-<div style="margin:6px 0 2px"><span class="pill">Own portal</span> <span class="pill plat">Form on their own site</span> <span class="pill cost">Free</span></div>
-<a class="go" href="https://associationone.com/become-a-vendor/" target="_blank" rel="noopener">Open the registration page</a>
-<div class="urlline"><a href="https://associationone.com/become-a-vendor/" target="_blank" rel="noopener">https://associationone.com/become-a-vendor/</a></div>
-<table class="cr"><thead><tr>
-<th>ACORD certificate of insurance</th>
-<th>$2,000,000 umbrella confirmation</th>
-<th>Waiver of subrogation endorsement</th>
-<th>Workers compensation certificate</th>
-<th>Signed W-9</th>
-<th>Minnesota license BC807923</th>
-</tr></thead><tbody><tr>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-</tr></tbody></table>
-<p class="f"><b>Limits and wording:</b> No insurance limits are published at the application stage.</p>
-<p class="f"><b>Also wants, beyond the six:</b></p><ul class="ex">
-<li>Industry and the specific skills offered</li>
-<li>Certifications held</li>
-<li>References</li>
-</ul>
-<div class="gate"><b>Gate:</b> None published. They contact the applicant to confirm status and review the qualification standards.</div>
-<p class="f"><b>What can be seen:</b> Fully published. The form fields are on the page.</p>
-<p class="f"><b>Worth knowing:</b> Short form, about five minutes. Offices in Bloomington MN and Lake Forest IL, so approval is not Minnesota only. They hold their own Minnesota building contractor license BC785640, which means the person reading the certificate knows what they are looking at.</p>
-<p class="f"><b>Confidence:</b> High on the form, low on the documents. The form asks for certifications and references but does not publish an insurance requirement, which almost certainly arrives after they make contact.</p>
-<p class="src">Source: <a href="https://associationone.com/become-a-vendor/" target="_blank" rel="noopener">https://associationone.com/become-a-vendor/</a></p>
-</div>
-<div class="firm">
-<label class="chk"><input type="checkbox" data-k="Omega Property Management"> done</label>
-<div class="top">
-<span class="nm">Omega Property Management</span>
-<span class="loc">Maple Grove &nbsp;|&nbsp; 763-449-9100</span>
-</div>
-<div style="margin:6px 0 2px"><span class="pill">Own portal</span> <span class="pill plat">Inquiry form on their own site, VIVE certification referenced</span> <span class="pill cost">Free to inquire. If the certification step is VIVE, expect the VIVE annual fee.</span></div>
-<a class="go" href="https://www.omega-mgt.com/vendors" target="_blank" rel="noopener">Open the registration page</a>
-<div class="urlline"><a href="https://www.omega-mgt.com/vendors" target="_blank" rel="noopener">https://www.omega-mgt.com/vendors</a></div>
-<table class="cr"><thead><tr>
-<th>ACORD certificate of insurance</th>
-<th>$2,000,000 umbrella confirmation</th>
-<th>Waiver of subrogation endorsement</th>
-<th>Workers compensation certificate</th>
-<th>Signed W-9</th>
-<th>Minnesota license BC807923</th>
-</tr></thead><tbody><tr>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-</tr></tbody></table>
-<p class="f"><b>Limits and wording:</b> No dollar limits published. The page names the W-9 and a certificate of insurance.</p>
-<div class="gate"><b>Gate:</b> They review the inquiry first and then invite accepted companies to become certified vendors, so this is a two step route.</div>
-<p class="f"><b>What can be seen:</b> The inquiry is public. What the certification step asks for after acceptance is not published.</p>
-<p class="f"><b>Worth knowing:</b> The page title reads New Vendor Inquiry, VIVE, Omega Property Management, so Omega appears to sit on the same VIVE rail as FirstService Residential. If Top Tier registers with VIVE for FirstService first, ask Omega whether that existing VIVE record satisfies them. Their office is in Maple Grove, about 12 minutes from Albertville.</p>
-<p class="f"><b>Confidence:</b> High on the inquiry, low on the certification step, which is not described anywhere public.</p>
-<p class="src">Source: <a href="https://www.omega-mgt.com/vendors" target="_blank" rel="noopener">https://www.omega-mgt.com/vendors</a></p>
-</div>
-<div class="firm">
-<label class="chk"><input type="checkbox" data-k="Real Property Management Viking"> done</label>
-<div class="top">
-<span class="nm">Real Property Management Viking</span>
-<span class="loc">Hopkins &nbsp;|&nbsp; (612) 915-0100</span>
-</div>
-<div style="margin:6px 0 2px"><span class="pill">Own portal</span> <span class="pill plat">Formsite application, then AppFolio after approval</span> <span class="pill cost">Free</span></div>
-<a class="go" href="https://fs3.formsite.com/QVURBc/nuuqzamr6h/index" target="_blank" rel="noopener">Open the registration page</a>
-<div class="urlline"><a href="https://fs3.formsite.com/QVURBc/nuuqzamr6h/index" target="_blank" rel="noopener">https://fs3.formsite.com/QVURBc/nuuqzamr6h/index</a></div>
-<table class="cr"><thead><tr>
-<th>ACORD certificate of insurance</th>
-<th>$2,000,000 umbrella confirmation</th>
-<th>Waiver of subrogation endorsement</th>
-<th>Workers compensation certificate</th>
-<th>Signed W-9</th>
-<th>Minnesota license BC807923</th>
-</tr></thead><tbody><tr>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-</tr></tbody></table>
-<p class="f"><b>Limits and wording:</b> General liability $1,000,000. Automobile liability $1,000,000. Umbrella $2,000,000, required specifically for structural, roofing and siding, plumbing or electrical work. Workers compensation per statute, and a single person company must show the owner exemption.</p>
-<p class="f"><b>Also wants, beyond the six:</b></p><ul class="ex">
-<li>State trade license numbers</li>
-<li>Rate sheet or price list</li>
-<li>EPA or lead certification if applicable</li>
-<li>ACORD certificate must name the certificate holder exactly as they state it</li>
-<li>Original workers compensation endorsement, plus an endorsement for every renewal</li>
-<li>Notify them if the insurance carrier changes</li>
-</ul>
-<div class="gate"><b>Gate:</b> No gate on new vendors. The insurance limits are the bar.</div>
-<p class="f"><b>What can be seen:</b> Fully published. The application form and a vendor manual are both public.</p>
-<p class="f"><b>Worth knowing:</b> The most fully documented requirement set on the whole list, and the only one that names roofing and siding by trade for the $2,000,000 umbrella. Treat these limits as the bar to clear everywhere else. Certificate holder in the current manual reads XPACE, LLC doing business as Real Property Management Viking, 1213 Mainstreet, Hopkins MN 55343. An earlier record of ours carried 33 10th Ave S Ste 100, Hopkins. Read the holder address off the form on the day and use that one. Payment is on the 10th of the month and then weekly on Thursdays. They issue a 1099 over $2,000.</p>
-<p class="f"><b>Confidence:</b> High. Requirements read directly from the published vendor manual, version 6.2, dated February 2026.</p>
-<p class="src">Source: <a href="https://www.rpmviking.com/vendor-resource-page" target="_blank" rel="noopener">https://www.rpmviking.com/vendor-resource-page</a></p>
-</div>
-<div class="firm">
-<label class="chk"><input type="checkbox" data-k="Thies &amp; Talle Management"> done</label>
-<div class="top">
-<span class="nm">Thies &amp; Talle Management</span>
-<span class="loc">Chanhassen &nbsp;|&nbsp; (952) 949-2200</span>
-</div>
-<div style="margin:6px 0 2px"><span class="pill">Own portal</span> <span class="pill plat">Intake message form on their own site</span> <span class="pill cost">Free</span></div>
-<a class="go" href="https://www.thiestalle.com/vendors.html" target="_blank" rel="noopener">Open the registration page</a>
-<div class="urlline"><a href="https://www.thiestalle.com/vendors.html" target="_blank" rel="noopener">https://www.thiestalle.com/vendors.html</a></div>
-<table class="cr"><thead><tr>
-<th>ACORD certificate of insurance</th>
-<th>$2,000,000 umbrella confirmation</th>
-<th>Waiver of subrogation endorsement</th>
-<th>Workers compensation certificate</th>
-<th>Signed W-9</th>
-<th>Minnesota license BC807923</th>
-</tr></thead><tbody><tr>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-</tr></tbody></table>
-<p class="f"><b>Limits and wording:</b> Certificate of insurance showing general liability for all subcontractors, and workers compensation for any subcontractor who has employees. No dollar limits are published.</p>
-<p class="f"><b>Also wants, beyond the six:</b></p><ul class="ex">
-<li>Business ownership type</li>
-<li>Federal Tax ID number</li>
-</ul>
-<div class="gate"><b>Gate:</b> None published, but they weigh past performance at renewal.</div>
-<p class="f"><b>What can be seen:</b> Fully published. The requirement text is on the page.</p>
-<p class="f"><b>Worth knowing:</b> Their properties run off a shared vendor and service provider list, and they say contracts are sometimes regional and sometimes companywide. One approval, many buildings. The page also asks vendors not to solicit by phone, email or walk in, so this one is portal only. Do not call them.</p>
-<p class="f"><b>Confidence:</b> High on what the page states. It does not publish dollar limits or name ACORD.</p>
-<p class="src">Source: <a href="https://www.thiestalle.com/vendors.html" target="_blank" rel="noopener">https://www.thiestalle.com/vendors.html</a></p>
-</div>
-</div>
-<div class="band"><div class="hd">
-<b>Open now, but it wants something extra before it will take you</b><span class="n">2</span>
-<p>Still worth doing today, but read the extra column before opening the form.</p></div>
-<div class="firm">
-<label class="chk"><input type="checkbox" data-k="Gassen Company"> done</label>
-<div class="top">
-<span class="nm">Gassen Company</span>
-<span class="loc">Eden Prairie &nbsp;|&nbsp; (952) 922-5575</span>
-</div>
-<div style="margin:6px 0 2px"><span class="pill">Own portal</span> <span class="pill plat">Application document, returned by email</span> <span class="pill cost">Free</span></div>
-<a class="go" href="https://www.gassen.com/services/vendor-registration-vive" target="_blank" rel="noopener">Open the registration page</a>
-<div class="urlline"><a href="https://www.gassen.com/services/vendor-registration-vive" target="_blank" rel="noopener">https://www.gassen.com/services/vendor-registration-vive</a></div>
-<table class="cr"><thead><tr>
-<th>ACORD certificate of insurance</th>
-<th>$2,000,000 umbrella confirmation</th>
-<th>Waiver of subrogation endorsement</th>
-<th>Workers compensation certificate</th>
-<th>Signed W-9</th>
-<th>Minnesota license BC807923</th>
-</tr></thead><tbody><tr>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c no" title="This portal publishes its list and this is not on it">Not asked</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-</tr></tbody></table>
-<p class="f"><b>Limits and wording:</b> General liability written on an occurrence form: $1,000,000 per occurrence, $1,000,000 personal and advertising injury, $100,000 damage to rented premises, $5,000 medical expenses, $2,000,000 general aggregate, $2,000,000 products and completed operations aggregate. Automobile liability $1,000,000. Workers compensation $500,000 each accident, $500,000 by disease each person, $500,000 by disease policy limit, and that policy must carry a waiver of subrogation endorsement. No umbrella policy is asked for.</p>
-<p class="f"><b>Also wants, beyond the six:</b></p><ul class="ex">
-<li>Federal Tax ID number</li>
-<li>A 24 hour emergency contact with cell phone</li>
-<li>Three business references with phone numbers</li>
-<li>Years in business, and the counties served</li>
-<li>A short written proposal, one page, on what the company does better</li>
-<li>Signed Vendor Service Agreement</li>
-<li>Signed Terms and Conditions page</li>
-<li>Additional insured endorsement on ISO forms CG 20 10 04 13 and CG 20 37 04 13, naming Gassen and the specific property, primary and non contributory</li>
-<li>The general liability policy must not exclude work on multi unit housing, and must be worded to cover your work or your operations. They state that the phrase ongoing operations is not acceptable</li>
-</ul>
-<div class="gate"><b>Gate:</b> Two hard gates, and they are stated on the page. First, the applicant must already have worked with a property manager at one of Gassen&#x27;s current clients and have good feedback from that manager. Second, the company must have been in business over one year. They also say they may decline if the service category is already full.</div>
-<p class="f"><b>What can be seen:</b> Fully published. The nine page application, the insurance example, the vendor service agreement and the terms are all in one public document.</p>
-<p class="f"><b>Worth knowing:</b> New this sweep, and it was not on the earlier list. The page slug says VIVE but the live page text never mentions VIVE, so treat this as a document application, not a platform. Completed application plus certificates plus the W-9 go to vendorservices@gassen.com. The page asks applicants not to follow up while the review panel meets. Worth knowing before the call: Gassen runs its own construction arm, Gassen Construction and Maintenance, which lists roofs among its services.</p>
-<p class="f"><b>Confidence:</b> High. Read from the application document linked off their own vendor page.</p>
-<p class="src">Source: <a href="https://www.gassen.com/_files/ugd/41e7e2_5179646ee58444b69af3ba62bdb28c2c.pdf" target="_blank" rel="noopener">https://www.gassen.com/_files/ugd/41e7e2_5179646ee58444b69af3ba62bdb28c2c.pdf</a></p>
-</div>
-<div class="firm">
-<label class="chk"><input type="checkbox" data-k="Renters Warehouse - St. Cloud"> done</label>
-<div class="top">
-<span class="nm">Renters Warehouse - St. Cloud</span>
-<span class="loc">St. Cloud &nbsp;|&nbsp; (320) 251-7368</span>
-</div>
-<div style="margin:6px 0 2px"><span class="pill">Own portal</span> <span class="pill plat">National maintenance vendor request form</span> <span class="pill cost">Free</span></div>
-<a class="go" href="https://www.renterswarehouse.com/maintenance-vendor-request-form" target="_blank" rel="noopener">Open the registration page</a>
-<div class="urlline"><a href="https://www.renterswarehouse.com/maintenance-vendor-request-form" target="_blank" rel="noopener">https://www.renterswarehouse.com/maintenance-vendor-request-form</a></div>
-<table class="cr"><thead><tr>
-<th>ACORD certificate of insurance</th>
-<th>$2,000,000 umbrella confirmation</th>
-<th>Waiver of subrogation endorsement</th>
-<th>Workers compensation certificate</th>
-<th>Signed W-9</th>
-<th>Minnesota license BC807923</th>
-</tr></thead><tbody><tr>
-<td><span class="c no" title="This portal publishes its list and this is not on it">Not asked</span></td>
-<td><span class="c no" title="This portal publishes its list and this is not on it">Not asked</span></td>
-<td><span class="c no" title="This portal publishes its list and this is not on it">Not asked</span></td>
-<td><span class="c no" title="This portal publishes its list and this is not on it">Not asked</span></td>
-<td><span class="c no" title="This portal publishes its list and this is not on it">Not asked</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-</tr></tbody></table>
-<p class="f"><b>Limits and wording:</b> No insurance certificate is demanded on the form itself, which is unusual and worth a question.</p>
-<p class="f"><b>Also wants, beyond the six:</b></p><ul class="ex">
-<li>Markets serviced and services offered</li>
-<li>Years in business</li>
-<li>Estimate turnaround time and capacity</li>
-<li>On call and after hours process, and the fees charged for it</li>
-<li>Upload: a general price list</li>
-<li>Upload: business license and any other applicable licensing</li>
-</ul>
-<div class="gate"><b>Gate:</b> None published.</div>
-<p class="f"><b>What can be seen:</b> Fully published. Every field is on the form.</p>
-<p class="f"><b>Worth knowing:</b> This is the national form, not the St. Cloud branch. Renters Warehouse is single family rental rather than association work, so the roofs are smaller. Note that the form asks for a standard price list up front, so decide what goes on that sheet before starting.</p>
-<p class="f"><b>Confidence:</b> High. Read straight off the live form.</p>
-<p class="src">Source: <a href="https://www.renterswarehouse.com/maintenance-vendor-request-form" target="_blank" rel="noopener">https://www.renterswarehouse.com/maintenance-vendor-request-form</a></p>
-</div>
-</div>
-<div class="band"><div class="hd">
-<b>Registration is real, but the requirement list sits behind the platform</b><span class="n">3</span>
-<p>One registration in this band can cover a lot of buildings. Ask the platform for the dollar limits before paying anything.</p></div>
-<div class="firm">
-<label class="chk"><input type="checkbox" data-k="FirstService Residential Minnesota"> done</label>
-<div class="top">
-<span class="nm">FirstService Residential Minnesota</span>
-<span class="loc">Bloomington &nbsp;|&nbsp; (952) 277-2700</span>
-</div>
-<div style="margin:6px 0 2px"><span class="pill">Shared platform</span> <span class="pill plat">VIVE, Vendor Information Verification Experts</span> <span class="pill cost">$199 per year, paid to VIVE</span></div>
-<a class="go" href="https://app.getvived.com/vendor-signup/37ebec9d-4fb3-4fc8-b233-9339429ffd11/company/159/complianceType/default/home" target="_blank" rel="noopener">Open the registration page</a>
-<div class="urlline"><a href="https://app.getvived.com/vendor-signup/37ebec9d-4fb3-4fc8-b233-9339429ffd11/company/159/complianceType/default/home" target="_blank" rel="noopener">https://app.getvived.com/vendor-signup/37ebec9d-4fb3-4fc8-b233-9339429ffd11/company/159/complianceType/default/home</a></div>
-<table class="cr"><thead><tr>
-<th>ACORD certificate of insurance</th>
-<th>$2,000,000 umbrella confirmation</th>
-<th>Waiver of subrogation endorsement</th>
-<th>Workers compensation certificate</th>
-<th>Signed W-9</th>
-<th>Minnesota license BC807923</th>
-</tr></thead><tbody><tr>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-</tr></tbody></table>
-<p class="f"><b>Limits and wording:</b> Not published. VIVE states the categories only: corporate information, trade information, trade license or certificate, insurance information, completion of a vendor agreement, and the annual fee.</p>
-<p class="f"><b>Also wants, beyond the six:</b></p><ul class="ex">
-<li>Signed Vendor Verification Agreement</li>
-<li>Annual fee of $199, paid directly to VIVE, not to FirstService Residential</li>
-<li>Listing in up to ten service categories at no extra charge</li>
-</ul>
-<div class="gate"><b>Gate:</b> Registration with VIVE is required to keep or start a relationship with FirstService Residential Minnesota.</div>
-<p class="f"><b>What can be seen:</b> Requirement categories are published. The actual form, and the dollar limits inside it, sit behind the VIVE application and could not be read without starting a registration.</p>
-<p class="f"><b>Worth knowing:</b> The single largest reach on this list. FirstService Residential Minnesota states the VIVE listing puts a company in front of all their managers and key personnel, covering over 500 associations, and that it removes the need to resubmit the same paperwork property by property. They say registration takes about 15 minutes. VIVE support is 844 476 8038 and support@getvived.com. Ask them the limits before paying.</p>
-<p class="f"><b>Confidence:</b> High on the route, the fee and the categories, all published by FirstService Residential Minnesota. The dollar limits are unknown and would need the registration to be started, or a call to VIVE.</p>
-<p class="src">Source: <a href="https://www.fsresidential.com/minnesota/news-events/vendor-certification-program/" target="_blank" rel="noopener">https://www.fsresidential.com/minnesota/news-events/vendor-certification-program/</a></p>
-</div>
-<div class="firm">
-<label class="chk"><input type="checkbox" data-k="HOALiving Minnesota"> done</label>
-<div class="top">
-<span class="nm">HOALiving Minnesota</span>
-<span class="loc">Arden Hills &nbsp;|&nbsp; (612) 234-6464</span>
-</div>
-<div style="margin:6px 0 2px"><span class="pill">Shared platform</span> <span class="pill plat">VendorSmart</span> <span class="pill cost">Not published by HOALiving. A figure near $150 per year circulates in vendor forum posts and has no primary source, so treat it as unconfirmed and ask VendorSmart.</span></div>
-<a class="go" href="https://vendorsmart.com/vs/#/vendor-onboarding?role=2&amp;composition=54126&amp;relation=3" target="_blank" rel="noopener">Open the registration page</a>
-<div class="urlline"><a href="https://vendorsmart.com/vs/#/vendor-onboarding?role=2&amp;composition=54126&amp;relation=3" target="_blank" rel="noopener">https://vendorsmart.com/vs/#/vendor-onboarding?role=2&amp;composition=54126&amp;relation=3</a></div>
-<table class="cr"><thead><tr>
-<th>ACORD certificate of insurance</th>
-<th>$2,000,000 umbrella confirmation</th>
-<th>Waiver of subrogation endorsement</th>
-<th>Workers compensation certificate</th>
-<th>Signed W-9</th>
-<th>Minnesota license BC807923</th>
-</tr></thead><tbody><tr>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-</tr></tbody></table>
-<p class="f"><b>Limits and wording:</b> Not published. They name certificates of liability insurance and workers compensation, held current by the VendorSmart support team.</p>
-<p class="f"><b>Also wants, beyond the six:</b></p><ul class="ex">
-<li>Documents are submitted once per year rather than once per association</li>
-</ul>
-<div class="gate"><b>Gate:</b> None published.</div>
-<p class="f"><b>What can be seen:</b> Document categories published. The form is behind the VendorSmart application.</p>
-<p class="f"><b>Worth knowing:</b> HOALiving states the compliance documents become visible to HOALiving managers and to community managers elsewhere, plus every association on VendorSmart. Vendors are notified in real time about new jobs in their area and bid inside the platform. That bid feed is worth more here than the directory listing.</p>
-<p class="f"><b>Confidence:</b> High on the route. The cost figure is unconfirmed and is labeled as such.</p>
-<p class="src">Source: <a href="https://www.hoaliving.com/vendorsmart-vendor-verification/" target="_blank" rel="noopener">https://www.hoaliving.com/vendorsmart-vendor-verification/</a></p>
-</div>
-<div class="firm">
-<label class="chk"><input type="checkbox" data-k="Sentry Management (Minneapolis/Golden Valley office)"> done</label>
-<div class="top">
-<span class="nm">Sentry Management (Minneapolis/Golden Valley office)</span>
-<span class="loc">Golden Valley &nbsp;|&nbsp; 763-593-9770</span>
-</div>
-<div style="margin:6px 0 2px"><span class="pill">Shared platform</span> <span class="pill plat">VendorSmart</span> <span class="pill cost">Not published for the required program. The optional Preferred Vendor Program is priced by tier and the tiers are not published.</span></div>
-<a class="go" href="https://vendorsmart.com/vs/#/vendor-onboarding?role=2&amp;composition=64172&amp;relation=3" target="_blank" rel="noopener">Open the registration page</a>
-<div class="urlline"><a href="https://vendorsmart.com/vs/#/vendor-onboarding?role=2&amp;composition=64172&amp;relation=3" target="_blank" rel="noopener">https://vendorsmart.com/vs/#/vendor-onboarding?role=2&amp;composition=64172&amp;relation=3</a></div>
-<table class="cr"><thead><tr>
-<th>ACORD certificate of insurance</th>
-<th>$2,000,000 umbrella confirmation</th>
-<th>Waiver of subrogation endorsement</th>
-<th>Workers compensation certificate</th>
-<th>Signed W-9</th>
-<th>Minnesota license BC807923</th>
-</tr></thead><tbody><tr>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-<td><span class="c yes" title="The source says this portal asks for it">Yes</span></td>
-</tr></tbody></table>
-<p class="f"><b>Limits and wording:</b> Not published as dollar figures. Sentry states the certificate of insurance must be supplied by the insurance agent and must name Sentry Management, Inc. and the active associations as certificate holder and additional insured.</p>
-<p class="f"><b>Also wants, beyond the six:</b></p><ul class="ex">
-<li>The states and counties served</li>
-<li>Business or trade licenses uploaded</li>
-<li>An optional paid Preferred Vendor Program with tiered pricing, which buys directory placement and early bidding notifications. Pricing is not published</li>
-</ul>
-<div class="gate"><b>Gate:</b> Sentry calls the Vendor Compliance Program required for any vendor working with their associations.</div>
-<p class="f"><b>What can be seen:</b> The document categories are published on two Sentry pages. The onboarding form itself sits behind the VendorSmart application.</p>
-<p class="f"><b>Worth knowing:</b> Important detail that makes this cheap: this is the same platform HOALiving uses, so one VendorSmart profile and one set of documents serves both. VendorSmart support is 954 329 1406 and support@vendorsmart.com. The buttons on Sentry&#x27;s own vendor page do not link anywhere, which is why the link here comes from the VendorSmart landing page instead.</p>
-<p class="f"><b>Confidence:</b> High. The registration link was read off Sentry&#x27;s own VendorSmart landing page at sentry.vendorsmart.com. This resolves a URL that an earlier sweep left blank.</p>
-<p class="src">Source: <a href="https://www.sentrymgt.com/vendor-resources/" target="_blank" rel="noopener">https://www.sentrymgt.com/vendor-resources/</a></p>
-</div>
-</div>
-<div class="band"><div class="hd">
-<b>No form published. This one is a phone call</b><span class="n">1</span>
-<p>A directory exists and there is a named category for roofing, so the call has a specific ask attached.</p></div>
-<div class="firm">
-<label class="chk"><input type="checkbox" data-k="Sharper Management"> done</label>
-<div class="top">
-<span class="nm">Sharper Management</span>
-<span class="loc">Eden Prairie &nbsp;|&nbsp; (952) 224-4777</span>
-</div>
-<div style="margin:6px 0 2px"><span class="pill">Email or phone only</span> <span class="pill plat">Public vendor directory, no application form published</span> <span class="pill cost">Not published</span></div>
-<a class="go" href="https://sharpermanagement.com/preferred-vendors/" target="_blank" rel="noopener">Open the registration page</a>
-<div class="urlline"><a href="https://sharpermanagement.com/preferred-vendors/" target="_blank" rel="noopener">https://sharpermanagement.com/preferred-vendors/</a></div>
-<table class="cr"><thead><tr>
-<th>ACORD certificate of insurance</th>
-<th>$2,000,000 umbrella confirmation</th>
-<th>Waiver of subrogation endorsement</th>
-<th>Workers compensation certificate</th>
-<th>Signed W-9</th>
-<th>Minnesota license BC807923</th>
-</tr></thead><tbody><tr>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-<td><span class="c unk" title="The requirement list is not published or sits behind a login">Not stated</span></td>
-</tr></tbody></table>
-<p class="f"><b>Limits and wording:</b> Nothing published for applicants. Their board facing guidance asks boards to confirm a current certificate of insurance and to check license status with the Minnesota Department of Labor and Industry, which is a fair guide to what they will want.</p>
-<div class="gate"><b>Gate:</b> Unknown. There is no published route in.</div>
-<p class="f"><b>What can be seen:</b> There is no application form anywhere on the site. The directory itself is public.</p>
-<p class="f"><b>Worth knowing:</b> Their public directory has an EXTERIOR CONSTRUCTION category, which is where a roofer belongs, so the ask is specific: how does a company get listed under Exterior Construction. Call (952) 224-4777 or write clientcare@sharpermanagement.com. Offices in Eden Prairie, Woodbury and Maple Grove. They announced the acquisition of the Gaughan Companies HOA division in July 2026, so their book is larger than it looks.</p>
-<p class="f"><b>Confidence:</b> High that no application form is published. Every page on their sitemap with a vendor or contractor slug was fetched and read, and all of them are board facing articles or the directory itself.</p>
-<p class="src">Source: <a href="https://sharpermanagement.com/preferred-vendors/" target="_blank" rel="noopener">https://sharpermanagement.com/preferred-vendors/</a></p>
-</div>
-</div>
-<h2>No vendor route found</h2>
-<p class="sub">54 companies. For each one with a website, the home page was fetched, every vendor shaped link on it was followed, 36 candidate vendor addresses were fetched on the domain, and every vendor shaped address in the published sitemap was fetched and read. None of them carries a vendor registration page. That is not a failure to look. It means the way in is a person, so these are calls, not uploads. Ask for whoever handles maintenance contracts and ask what they need on file.</p>
-<table class="nf"><thead><tr><th>Company</th><th>City</th><th>Phone</th><th>Website</th><th>Back office software they run on</th></tr></thead><tbody>
-<tr><td><b>10K Realty and Property Management</b></td><td>Blaine</td><td>(763) 377-2616</td><td><a href="https://www.10krealtypm.com/" target="_blank" rel="noopener">https://www.10krealtypm.com/</a></td><td>AppFolio</td></tr>
-<tr><td><b>A.W. Properties LLC</b></td><td>Jordan</td><td>(612) 749-7667</td><td><a href="https://awpropertiesllc.com/" target="_blank" rel="noopener">https://awpropertiesllc.com/</a></td><td>AppFolio</td></tr>
-<tr><td><b>Acuity Group</b></td><td>Elk River</td><td>763-633-3535</td><td><a href="https://www.acgproperty.com/" target="_blank" rel="noopener">https://www.acgproperty.com/</a></td><td>AppFolio</td></tr>
-<tr><td><b>Advantage Townhome Management</b></td><td>White Bear Lake</td><td>651-429-2223</td><td><a href="https://advtm.com/" target="_blank" rel="noopener">https://advtm.com/</a></td><td></td></tr>
-<tr><td><b>Albee Property Management LLC</b></td><td>Waconia</td><td>952-529-8456</td><td><a href="https://albeepm.managebuilding.com/Resident/public/home" target="_blank" rel="noopener">https://albeepm.managebuilding.com/Resident/public/home</a></td><td>RealPage, Buildium</td></tr>
-<tr><td><b>Associated Property Services (APS Minnesota)</b></td><td>Shakopee</td><td>(952) 233-2155</td><td><a href="https://www.apsminnesota.com/" target="_blank" rel="noopener">https://www.apsminnesota.com/</a></td><td>AppFolio</td></tr>
-<tr><td><b>Bailey Enterprises Inc</b></td><td>St Paul</td><td>651-224-5482</td><td><a href="https://www.baileyenterprisesmn.com/" target="_blank" rel="noopener">https://www.baileyenterprisesmn.com/</a></td><td></td></tr>
-<tr><td><b>Brick Property Management, LLC</b></td><td>Sauk Rapids</td><td>320-293-5025</td><td><a href="https://www.brickpropertymgmtmn.com/" target="_blank" rel="noopener">https://www.brickpropertymgmtmn.com/</a></td><td>AppFolio</td></tr>
-<tr><td><b>Building Maintenance Management Inc</b></td><td>Golden Valley</td><td>763-541-4886</td><td><a href="https://www.buildingmaintenancemanagement.com/" target="_blank" rel="noopener">https://www.buildingmaintenancemanagement.com/</a></td><td></td></tr>
-<tr><td><b>Bullseye Property Management &amp; Realty</b></td><td>Big Lake</td><td>(763) 295-6566</td><td><a href="https://www.bpm-mn.com/" target="_blank" rel="noopener">https://www.bpm-mn.com/</a></td><td>Buildium</td></tr>
-<tr><td><b>Cedar Row Property Management, LLC</b></td><td>St. Cloud</td><td>(320) 298-1148</td><td><a href="https://www.cedarrowrentals.com/" target="_blank" rel="noopener">https://www.cedarrowrentals.com/</a></td><td>AppFolio</td></tr>
-<tr><td><b>Cloud Properties</b></td><td>St. Cloud</td><td>612-380-7777</td><td><a href="https://www.stcloudpropertiesmn.com/" target="_blank" rel="noopener">https://www.stcloudpropertiesmn.com/</a></td><td></td></tr>
-<tr><td><b>Compass Management Group Inc</b></td><td>Plymouth</td><td>(612) 888-4710</td><td><a href="https://www.compassmanagement.com/" target="_blank" rel="noopener">https://www.compassmanagement.com/</a></td><td></td></tr>
-<tr><td><b>Dreamteam Property Management</b></td><td>North Branch</td><td>612-445-5770</td><td><a href="https://www.dreamteampm.com/" target="_blank" rel="noopener">https://www.dreamteampm.com/</a></td><td>AppFolio</td></tr>
-<tr><td><b>Equity Management Inc</b></td><td>Elk River</td><td>(612) 817-7553</td><td><span style="color:#a4a9ad">no working website</span></td><td></td></tr>
-<tr><td><b>Essence Property Management</b></td><td>St. Cloud</td><td>(320) 255-9910</td><td><a href="https://www.essenceproperties.com/" target="_blank" rel="noopener">https://www.essenceproperties.com/</a></td><td></td></tr>
-<tr><td><b>Excel Property Management Inc</b></td><td>St. Cloud</td><td>(320) 251-6005</td><td><span style="color:#a4a9ad">no working website</span></td><td></td></tr>
-<tr><td><b>Exclusive Property Management Inc</b></td><td>Woodbury</td><td>651-888-4860</td><td><a href="https://exclusivepropertymanagementinc.com" target="_blank" rel="noopener">https://exclusivepropertymanagementinc.com</a></td><td></td></tr>
-<tr><td><b>Freedom Rental Property Management LLC</b></td><td>Maple Grove</td><td>763-445-9774</td><td><a href="https://freedomrentalpropertymanagement.com/" target="_blank" rel="noopener">https://freedomrentalpropertymanagement.com/</a></td><td>AppFolio</td></tr>
-<tr><td><b>GC Real Estate Partners (SVN GC Real Estate)</b></td><td>St. Cloud</td><td>(320) 253-0003</td><td><a href="https://gcremn.com/" target="_blank" rel="noopener">https://gcremn.com/</a></td><td>AppFolio</td></tr>
-<tr><td><b>Genesis Property Management LLC</b></td><td>Brooklyn Park</td><td>763-424-0300</td><td><a href="https://www.genesismn.com/" target="_blank" rel="noopener">https://www.genesismn.com/</a></td><td></td></tr>
-<tr><td><b>Hometown Management</b></td><td>Rockford</td><td>(763) 477-3672</td><td><a href="https://hometownmanagement.com/" target="_blank" rel="noopener">https://hometownmanagement.com/</a></td><td></td></tr>
-<tr><td><b>Hornig Companies Inc</b></td><td>St. Louis Park</td><td>(612) 874-4400</td><td><a href="https://www.hornigcompanies.com/" target="_blank" rel="noopener">https://www.hornigcompanies.com/</a></td><td>AppFolio</td></tr>
-<tr><td><b>INH Property Management Inc.</b></td><td>Waite Park</td><td>(320) 252-2000</td><td><a href="https://www.inhproperties.com/" target="_blank" rel="noopener">https://www.inhproperties.com/</a></td><td>Yardi RentCafe</td></tr>
-<tr><td><b>JLS Property Management &amp; Executive Realty (Central MN Properties)</b></td><td>St. Cloud</td><td>(320) 259-0859</td><td><a href="https://centralminnesotaproperties.com/" target="_blank" rel="noopener">https://centralminnesotaproperties.com/</a></td><td>Rent Manager</td></tr>
-<tr><td><b>JM Property Management, LLC</b></td><td>Waite Park</td><td>(320) 267-3815</td><td><a href="http://homesofstcloud.com/" target="_blank" rel="noopener">http://homesofstcloud.com/</a></td><td></td></tr>
-<tr><td><b>Jenco Property Maintenance Inc</b></td><td>Delano</td><td>(612) 991-8419</td><td><a href="https://www.jencopm.com/" target="_blank" rel="noopener">https://www.jencopm.com/</a></td><td></td></tr>
-<tr><td><b>Kleinman Property Management</b></td><td>Fridley</td><td>763-572-9400</td><td><a href="https://www.kleinmanpropertymanagement.com/" target="_blank" rel="noopener">https://www.kleinmanpropertymanagement.com/</a></td><td>Rent Manager</td></tr>
-<tr><td><b>Lohn/Paulno Property Management LLC</b></td><td>Champlin</td><td>(763) 331-0177</td><td><a href="https://www.robpaulno.com" target="_blank" rel="noopener">https://www.robpaulno.com</a></td><td></td></tr>
-<tr><td><b>Management Properties Services</b></td><td>Belle Plaine</td><td>(952) 873-3333</td><td><span style="color:#a4a9ad">no working website</span></td><td></td></tr>
-<tr><td><b>MaxCel Management, Inc.</b></td><td>St. Cloud</td><td>320-656-4118</td><td><a href="https://www.maxcelmanagement.com/" target="_blank" rel="noopener">https://www.maxcelmanagement.com/</a></td><td></td></tr>
-<tr><td><b>McDonald Property Management</b></td><td>St. Cloud</td><td>(320) 251-1925</td><td><a href="http://www.mpmstudenthousing.com/" target="_blank" rel="noopener">http://www.mpmstudenthousing.com/</a></td><td></td></tr>
-<tr><td><b>Meraki Property Management &amp; Consulting LLC</b></td><td>Minnetonka</td><td>952-392-8805</td><td><a href="https://www.merakipropertymanagement.com/" target="_blank" rel="noopener">https://www.merakipropertymanagement.com/</a></td><td></td></tr>
-<tr><td><b>Mid Continent Management Corporation</b></td><td>St Paul</td><td>651-291-0111</td><td><a href="https://www.midcontinentmgmt.com/" target="_blank" rel="noopener">https://www.midcontinentmgmt.com/</a></td><td>Rent Manager</td></tr>
-<tr><td><b>Northern Management, Inc.</b></td><td>St. Cloud</td><td>320-267-4881</td><td><a href="https://www.northernmanagement.com/" target="_blank" rel="noopener">https://www.northernmanagement.com/</a></td><td>AppFolio</td></tr>
-<tr><td><b>Premier Property Management LLC (formerly/dba Johnson Properties)</b></td><td>St. Cloud</td><td>(320) 229-1919</td><td><a href="https://www.premierrentalsearch.com/" target="_blank" rel="noopener">https://www.premierrentalsearch.com/</a></td><td>AppFolio</td></tr>
-<tr><td><b>Property Maintenance &amp; Management Partners LLC</b></td><td>Little Canada</td><td>651-487-3708</td><td><a href="https://www.mypmmp.com/" target="_blank" rel="noopener">https://www.mypmmp.com/</a></td><td></td></tr>
-<tr><td><b>R &amp; K Property Management, Inc.</b></td><td>Sartell</td><td>(320) 240-0500</td><td><span style="color:#a4a9ad">no working website</span></td><td></td></tr>
-<tr><td><b>R P Management Inc</b></td><td>Roseville</td><td>(612) 379-7890</td><td><a href="http://www.minneapolispropertymanagement.net/" target="_blank" rel="noopener">http://www.minneapolispropertymanagement.net/</a></td><td>Propertyware</td></tr>
-<tr><td><b>REI Real Estate &amp; Property Management</b></td><td>Bloomington</td><td>(952) 469-5880</td><td><a href="https://www.reipropertymanagement.com/" target="_blank" rel="noopener">https://www.reipropertymanagement.com/</a></td><td></td></tr>
-<tr><td><b>RIC Property Management</b></td><td>Cambridge</td><td>763-689-0349</td><td><a href="https://www.ricproperty.com/" target="_blank" rel="noopener">https://www.ricproperty.com/</a></td><td>Rent Manager</td></tr>
-<tr><td><b>Realife Management Services (Village Cooperative of Hutchinson)</b></td><td>Hutchinson</td><td>(320) 234-7761</td><td><a href="http://realifemanagement.com/pages/our_locations/village_cooperative_of_hutchinson.php" target="_blank" rel="noopener">http://realifemanagement.com/pages/our_locations/village_cooperative_of_hutchinson.php</a></td><td></td></tr>
-<tr><td><b>Roseville Properties Management Co</b></td><td>Roseville</td><td>651-633-6312</td><td><a href="http://www.roseprop.com/" target="_blank" rel="noopener">http://www.roseprop.com/</a></td><td></td></tr>
-<tr><td><b>RowCal</b></td><td>Champlin</td><td>(651) 233-1307</td><td><a href="https://www.rowcal.com/locations/minnesota/" target="_blank" rel="noopener">https://www.rowcal.com/locations/minnesota/</a></td><td></td></tr>
-<tr><td><b>ShipRock Management, Inc.</b></td><td>St. Cloud</td><td>320-253-4598</td><td><a href="https://shiprockmanagement.com/" target="_blank" rel="noopener">https://shiprockmanagement.com/</a></td><td>Rent Manager</td></tr>
-<tr><td><b>T &amp; T Property Management</b></td><td>Anoka</td><td>763-421-7578</td><td><a href="https://www.anokaapartments.com/" target="_blank" rel="noopener">https://www.anokaapartments.com/</a></td><td>AppFolio</td></tr>
-<tr><td><b>Tenant Kings Property Management</b></td><td>St. Louis Park</td><td>612-662-5800</td><td><a href="https://www.tenantkings.com/" target="_blank" rel="noopener">https://www.tenantkings.com/</a></td><td>Buildium</td></tr>
-<tr><td><b>Thian Sky Property Management</b></td><td>Elk River</td><td>(763) 213-3586</td><td><span style="color:#a4a9ad">no working website</span></td><td></td></tr>
-<tr><td><b>Torborg Builders / Torborg Management</b></td><td>St. Cloud</td><td>(320) 203-7771</td><td><a href="https://torborgbuilders.com/" target="_blank" rel="noopener">https://torborgbuilders.com/</a></td><td></td></tr>
-<tr><td><b>Vadnais Associates LLC</b></td><td>Little Canada</td><td>(612) 325-5945</td><td><span style="color:#a4a9ad">no working website</span></td><td></td></tr>
-<tr><td><b>Verde Real Estate Group (Verde Property Management)</b></td><td>Minnetonka</td><td>612-600-8888</td><td><a href="https://www.verde-realestate.com/" target="_blank" rel="noopener">https://www.verde-realestate.com/</a></td><td>Buildium</td></tr>
-<tr><td><b>Wayzata Bay Management</b></td><td>Wayzata</td><td>952-404-4000</td><td><span style="color:#a4a9ad">no working website</span></td><td></td></tr>
-<tr><td><b>White Management (div. of White Companies Inc.)</b></td><td>Hutchinson</td><td>320-587-4000</td><td><a href="http://www.whitemanagement.co/" target="_blank" rel="noopener">http://www.whitemanagement.co/</a></td><td>AppFolio</td></tr>
-<tr><td><b>Wiley Properties</b></td><td>Osseo</td><td>763-425-2315</td><td><a href="https://www.wileyproperties.com/" target="_blank" rel="noopener">https://www.wileyproperties.com/</a></td><td></td></tr>
-</tbody></table>
+  var fields=[].slice.call(document.querySelectorAll(
+    "input[type=radio],input[type=checkbox],input[type=text],input[type=date],textarea"));
 
-<footer>Built 1 September 2026 from a live sweep of all 65 companies. Every address on this page was fetched and read before it was written down. Where a requirement list could not be read, the page says so rather than guessing. Prepared by Dale Linn.</footer>
-</div>
+  function store(o){ try{ localStorage.setItem(KEY,JSON.stringify(o)); return true; }
+                     catch(e){ return false; } }
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }
+                   catch(e){ return {}; } }
+
+  function collect(){
+    var o={};
+    fields.forEach(function(el){
+      if(el.type==="radio"){ if(el.checked) o[el.name]=el.value; }
+      else if(el.type==="checkbox"){ if(el.checked) o[el.name]=true; }
+      else if(el.value!=="") o[el.name]=el.value;
+    });
+    return o;
+  }
+
+  function restore(){
+    var s=load();
+    fields.forEach(function(el){
+      if(!(el.name in s)) return;
+      if(el.type==="radio"){ if(s[el.name]===el.value) el.checked=true; }
+      else if(el.type==="checkbox"){ el.checked=!!s[el.name]; }
+      else el.value=s[el.name];
+    });
+  }
+
+  var saved=document.getElementById("saved");
+  function save(){
+    var ok=store(collect());
+    saved.textContent = ok ? "Saved in this browser" : "This browser is not saving. Copy or download before you close it.";
+    saved.style.color = ok ? "#5a6676" : "#b3261e";
+  }
+
+  function refresh(){
+    var n=0;
+    FIRMS.forEach(function(f){
+      var picked=document.querySelector('input[name="'+f.id+'_outcome"]:checked');
+      var card=document.getElementById("f_"+f.id);
+      if(picked){ n++; card.classList.add("done"); } else { card.classList.remove("done"); }
+      var ow=document.getElementById("ow_"+f.id);
+      if(picked && picked.value==="other") ow.classList.add("on"); else ow.classList.remove("on");
+    });
+    document.getElementById("count").textContent=n+" of "+FIRMS.length+" recorded";
+    document.getElementById("fill").style.width=(n/FIRMS.length*100)+"%";
+    return n;
+  }
+
+  fields.forEach(function(el){
+    el.addEventListener("input",function(){ save(); refresh(); });
+    el.addEventListener("change",function(){ save(); refresh(); });
+  });
+
+  restore(); refresh(); save();
+
+  function labelFor(list,val){
+    for(var i=0;i<list.length;i++) if(list[i][0]===val) return list[i][1];
+    return val;
+  }
+
+  function asText(){
+    var a=collect(), L=[];
+    L.push("VENDOR PORTAL RECORD");
+    L.push("Written "+new Date().toString());
+    L.push("");
+    FIRMS.forEach(function(f){
+      L.push("=== "+f.name+" ("+f.loc+") ===");
+      L.push("Portal: "+f.url);
+      var out=a[f.id+"_outcome"];
+      L.push("What happened: "+(out?labelFor(OUTCOMES,out):"(not recorded)"));
+      if(out==="other" && a[f.id+"_otherText"]) L.push("  Detail: "+a[f.id+"_otherText"]);
+      var got=[];
+      DOCS.forEach(function(d){ if(a[f.id+"_doc_"+d[0]]) got.push(d[1]); });
+      L.push("Documents: "+(got.length?got.join("; "):"(not recorded)"));
+      L.push("Result: "+(a[f.id+"_result"]||"(blank)"));
+      L.push("Date: "+(a[f.id+"_date"]||"(blank)"));
+      L.push("");
+    });
+    return L.join("\n");
+  }
+
+  function payload(){
+    return {form:FORM, submittedAt:new Date().toISOString(),
+            answers:collect(), text:asText()};
+  }
+
+  var st=document.getElementById("status");
+  function say(kind,head,body){
+    st.className="on "+kind;
+    st.innerHTML='<span class="sh">'+head+"</span>"+(body||"");
+  }
+
+  function recorded(){
+    var n=0;
+    FIRMS.forEach(function(f){
+      if(document.querySelector('input[name="'+f.id+'_outcome"]:checked')) n++; });
+    return n;
+  }
+
+  function fallback(why){
+    say("bad","Not sent. "+why,
+      "Nothing was lost. Your answers are still on this page and saved in this browser. "
+      + "Use <b>Copy everything</b> to put the whole record on the clipboard, or "
+      + "<b>Download a copy</b> to save it as a file, and send that instead.");
+  }
+
+  document.getElementById("send").addEventListener("click",function(){
+    if(location.protocol==="https:" && RECEIVER.indexOf("http://")===0){
+      fallback("This page is loaded over a secure connection, and the address it sends to is not. The browser blocks that.");
+      return;
+    }
+    say("busy","Sending...","");
+    var done=false;
+    var timer=setTimeout(function(){
+      if(done) return; done=true;
+      fallback("It took too long and gave up.");
+    },8000);
+    fetch(RECEIVER,{method:"POST",headers:{"Content-Type":"application/json"},
+                    body:JSON.stringify(payload())})
+      .then(function(r){
+        if(done) return; done=true; clearTimeout(timer);
+        if(r.ok){
+          say("ok","Sent. "+recorded()+" of "+FIRMS.length+" firms recorded.",
+              "The record arrived. You can keep adding to this page and send again.");
+        } else {
+          fallback("The other end answered with an error ("+r.status+").");
+        }
+      })
+      .catch(function(){
+        if(done) return; done=true; clearTimeout(timer);
+        fallback("Nothing answered at the other end.");
+      });
+  });
+
+  document.getElementById("copy").addEventListener("click",function(){
+    var txt=asText();
+    function manual(){
+      var t=document.createElement("textarea");
+      t.value=txt; t.style.position="fixed"; t.style.left="-9999px";
+      document.body.appendChild(t); t.select();
+      var ok=false;
+      try{ ok=document.execCommand("copy"); }catch(e){ ok=false; }
+      document.body.removeChild(t);
+      if(ok) say("ok","Copied.","The whole record is on the clipboard. Paste it wherever you like.");
+      else   say("bad","This browser would not let the page copy for you.",
+                 "Use <b>Download a copy</b> instead.");
+    }
+    if(window.isSecureContext && navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(function(){
+        say("ok","Copied.","The whole record is on the clipboard. Paste it wherever you like.");
+      }).catch(manual);
+    } else { manual(); }
+  });
+
+  document.getElementById("dl").addEventListener("click",function(){
+    try{
+      var b=new Blob([asText()],{type:"text/plain;charset=utf-8"});
+      var u=URL.createObjectURL(b);
+      var a=document.createElement("a");
+      a.href=u; a.download="vendor-portal-record.txt";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(u); },1500);
+      say("ok","Downloaded.","Saved as vendor-portal-record.txt in your downloads folder.");
+    }catch(e){
+      say("bad","The download did not start.","Use <b>Copy everything</b> instead.");
+    }
+  });
+
+  document.getElementById("clear").addEventListener("click",function(){
+    if(!confirm("This erases everything typed on this page. Are you sure?")) return;
+    fields.forEach(function(el){
+      if(el.type==="radio"||el.type==="checkbox") el.checked=false; else el.value="";
+    });
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    refresh(); save();
+    say("busy","Page cleared.","");
+  });
+})();
+</script>
+</body></html>

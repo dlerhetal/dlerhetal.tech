@@ -148,6 +148,22 @@
     color:var(--ink);
   }
   textarea{min-height:82px;resize:vertical}
+  .quote textarea.say{
+    min-height:0;
+    font-size:20.5px;
+    line-height:1.5;
+    color:#101a26;
+    background:#fff;
+    overflow:hidden;
+  }
+  .quote textarea.say:focus{outline:2px solid var(--gold);outline-offset:1px}
+  .linkline{
+    font-size:19px;
+    font-weight:700;
+    color:var(--blue);
+    word-break:break-all;
+    margin:0;
+  }
   .hint{font-size:16px;color:var(--muted);margin:4px 0 0}
   .status{margin-top:12px;font-size:17px;font-weight:700;min-height:24px}
   .status.good{color:var(--okline)}
@@ -155,17 +171,15 @@
   .status.err{color:var(--stopline)}
 
   .qrbox{
-    width:150px;height:150px;
-    border:3px dashed var(--blue);
+    width:172px;height:172px;
+    border:2px solid var(--blue);
     border-radius:6px;
     display:flex;align-items:center;justify-content:center;
-    text-align:center;
-    font-size:15px;
-    color:var(--muted);
-    font-weight:700;
-    padding:10px;
+    padding:8px;
     background:#fff;
+    flex:0 0 auto;
   }
+  .qrbox img{width:100%;height:100%;display:block}
   .cardproof{
     border:2px solid var(--blue);
     border-radius:6px;
@@ -203,7 +217,7 @@
 
 <header class="top">
   <div class="inner">
-    <p class="kick">Top Tier Roofing and Remodeling &nbsp;/&nbsp; Google Reviews &nbsp;/&nbsp; August 31, 2026</p>
+    <p class="kick">Top Tier Roofing and Remodeling &nbsp;/&nbsp; Google Reviews &nbsp;/&nbsp; Updated September 8, 2026</p>
     <h1>The Review Ask, Rewritten</h1>
     <p class="sub">Google changed what a business is allowed to ask a customer to write. The wording below is
       current and safe to send today. Anything on file that lists things to ask a customer to mention is
@@ -261,17 +275,15 @@
       penalty is or how it is detected. Treat that as a reason to stay clean rather than a reason to gamble.</p>
   </div>
 
-  <h2>2. The four asks, ready to send</h2>
-  <p>Same rule behind all four: <strong>name the company, name nothing else.</strong> Every one of these
+  <h2>2. The asks, ready to send</h2>
+  <p>Same rule behind all of them: <strong>name the company, name nothing else.</strong> Every one of these
     invites the customer to write whatever they actually remember, which is both compliant and, as it turns
     out, what a stranger reading the profile finds credible.</p>
 
   <h3>A. Text message</h3>
   <div class="quote">
-    <p class="lbl">Text</p>
-    <p class="say" id="c1">Thanks again for trusting us with your home. If you have a minute, would you tell
-      us about your experience with Top Tier on Google? It helps a small local crew more than anything.
-      <span class="field">[review link]</span></p>
+    <p class="lbl">Text, edit it if you want</p>
+    <textarea class="say autogrow" id="c1" data-link="1" rows="4">Thanks again for trusting us with your home. If you have a minute, would you tell us about your experience with Top Tier on Google? It helps a small local crew more than anything. https://search.google.com/local/writereview?placeid=ChIJH27P5281BYIR_ohrsm8Qfek</textarea>
     <div class="btnrow noprint">
       <button class="ghost copybtn" data-src="c1">Copy this text</button>
     </div>
@@ -282,22 +294,23 @@
 
   <h3>B. Email</h3>
   <div class="quote">
-    <p class="lbl">Subject line</p>
-    <p class="say" id="c2">A quick favor from Top Tier</p>
+    <p class="lbl">Subject line, edit it if you want</p>
+    <textarea class="say autogrow" id="c2" rows="1">A quick favor from Top Tier</textarea>
     <div class="btnrow noprint">
       <button class="ghost copybtn" data-src="c2">Copy subject</button>
     </div>
   </div>
   <div class="quote">
-    <p class="lbl">Body</p>
-    <p class="say" id="c3">Thanks for having us out. We are a small crew and most of our work comes from
-      people who took the time to say something about us publicly.<br><br>
-      If you are willing, would you tell us about your experience with Top Tier on Google? Whatever you
-      write is up to you, good or bad, and it takes about a minute.<br><br>
-      Here is the link: <span class="field">[review link]</span><br><br>
-      Thanks either way.<br>
-      Top Tier Roofing and Remodeling<br>
-      (612) 205-5503</p>
+    <p class="lbl">Body, edit it if you want</p>
+    <textarea class="say autogrow" id="c3" data-link="1" rows="12">Thanks for having us out. We are a small crew and most of our work comes from people who took the time to say something about us publicly.
+
+If you are willing, would you tell us about your experience with Top Tier on Google? Whatever you write is up to you, good or bad, and it takes about a minute.
+
+Here is the link: https://search.google.com/local/writereview?placeid=ChIJH27P5281BYIR_ohrsm8Qfek
+
+Thanks either way.
+Top Tier Roofing and Remodeling
+(612) 205-5503</textarea>
     <div class="btnrow noprint">
       <button class="ghost copybtn" data-src="c3">Copy body</button>
     </div>
@@ -307,23 +320,15 @@
     that is not, and it also costs you nothing, because an unhappy customer usually just does not answer.</p>
 
   <h3>C. Out loud, at the job</h3>
-  <div class="quote">
-    <p class="lbl">Spoken</p>
-    <p class="say" id="c4">If we did what we said we would do, would you say so on Google? Whatever you want
-      to write. It is the only place people who do not know us can check.</p>
-    <div class="btnrow noprint">
-      <button class="ghost copybtn" data-src="c4">Copy this line</button>
-    </div>
+  <div class="card gold">
+    <p style="margin-bottom:0"><strong>One caution, straight from the policy.</strong> Google bans pressuring
+      somebody to leave a review "while on the premises," so asking in person is fine and always has been.
+      Handing the customer a phone and standing there while they type is the part that crosses the line.</p>
   </div>
-  <p><strong>Why it is worded this way:</strong> "whatever you want to write" is the compliance clause,
-    spoken. "If we did what we said we would do" invites a no, and an ask that can be declined is not
-    pressure. One caution from the policy text itself: the ban on pressuring somebody "while on the
-    premises" means the ask is fine, but handing a customer a phone and waiting is not the same as asking.</p>
 
   <h3>D. Printed leave behind or card</h3>
   <div class="cardproof">
-    <div class="qrbox">QR CODE<br>goes here<br><span style="font-weight:400">(generate it from your
-      review link)</span></div>
+    <div class="qrbox"><img id="qrimg" src="data:image/png;base64,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" alt="QR code that opens the Top Tier Google review form"></div>
     <div class="txt">
       <p style="font-size:22px;font-weight:700;color:var(--blue);margin-top:0">Tell us about your experience
         with Top Tier.</p>
@@ -387,38 +392,58 @@
     </tbody>
   </table>
 
-  <h2>4. Writing your own, so you never have to ask us again</h2>
-  <div class="card gold">
-    <p>Take any review ask you are about to send and run it through this:</p>
-    <ol>
-      <li><strong>Delete every proper noun except your own company name.</strong> No person, no town, no
-        product, no brand.</li>
-      <li><strong>Delete every number.</strong> No star counts, no ratings, no "top rated."</li>
-      <li><strong>Delete every word that describes the work.</strong> Roof, siding, gutters, storm, insurance.
-        If it survives without them, it is clean.</li>
-      <li><strong>Check it works for an unhappy customer.</strong> If you would not want this exact message
-        going to somebody who was annoyed with you, it is gating.</li>
-      <li><strong>Check nothing is offered.</strong> No discount, no entry, no thank you gift.</li>
-    </ol>
-    <p style="margin-bottom:0">What is left is a sentence that asks for a review and requests nothing.
-      That is the entire method, and it is why all four asks above are so plain.</p>
+  <h2>4. Your review link</h2>
+  <div class="card">
+    <p>This is your Google review link. It is verified, it opens the review form for Top Tier Roofing and
+      Remodeling, and it is already sitting inside every ask above, so the copy buttons produce working
+      text exactly as they stand.</p>
+    <div class="quote">
+      <p class="lbl">Your review link</p>
+      <p class="say linkline" id="revlinkText">https://search.google.com/local/writereview?placeid=ChIJH27P5281BYIR_ohrsm8Qfek</p>
+      <div class="btnrow noprint">
+        <button class="ghost copybtn" data-src="revlinkText">Copy the link</button>
+      </div>
+    </div>
+    <label for="revlink">Optional. If you would rather use a different address, a shortened one for
+      instance, paste it here and the asks above will switch to it.</label>
+    <input type="text" id="revlink" placeholder="leave this blank to use the link above">
+    <p class="hint">Currently in use: <strong id="revEcho">the link above</strong></p>
   </div>
 
-  <h2>5. Your review link</h2>
-  <div class="card">
-    <p>Every ask above has a <span class="field">[review link]</span> placeholder in it. <strong>We do not
-      have your link and we are not going to guess at a web address</strong>, because a plausible wrong link
-      is worse than a blank one. Google generates a short link for you inside your Business Profile, under
-      the option to ask for reviews. Pull it once, paste it below, and it fills into the copy buttons on
-      this page.</p>
-    <label for="revlink">Your Google review link, pasted from the Business Profile dashboard</label>
-    <input type="text" id="revlink" placeholder="paste your review link here">
-    <p class="hint">Currently set to: <strong id="revEcho">not set yet, the placeholder will stay in the
-      copied text</strong></p>
+  <h2 class="noprint">5. Talk back</h2>
+  <div class="card noprint">
+    <p>This is the return path. Answer what you can and leave the rest blank.</p>
+
+    <label for="q1">What wording is going out to the past customers right now? Paste it in, exactly as sent.</label>
+    <textarea id="q1" placeholder="Paste the actual message. If several versions went out, paste them all."></textarea>
+
+    <label for="q2">Has anything already gone out that asked the customer to mention a name, the work, a town, or a star rating?</label>
+    <select id="q2">
+      <option value="">Not answered</option>
+      <option value="no">No, nothing like that went out</option>
+      <option value="yes">Yes, and it is still going out</option>
+      <option value="yes_stopped">Yes, but we stopped it</option>
+      <option value="unsure">Not sure, need to check</option>
+    </select>
+
+    <label for="q3">Roughly how many of the past customer asks have already been sent?</label>
+    <input type="text" id="q3" placeholder="a number, or an estimate, or 'none yet'">
+
+    <label for="q4">Your Google review link, if you have pulled it</label>
+    <input type="text" id="q4" placeholder="paste it here too so it reaches us">
+
+    <label for="q5">Anything else about the review push</label>
+    <textarea id="q5" placeholder="Questions, objections, anything that does not fit above."></textarea>
+
+    <div class="btnrow">
+      <button class="gold" id="btnSend">Send this to Dale</button>
+      <button class="ghost" id="btnCopy">Copy instead</button>
+    </div>
+    <div class="status" id="status"></div>
   </div>
 
   <footer class="foot">
-    <p>Top Tier Roofing and Remodeling. Prepared August 31, 2026. Policy language quoted verbatim from Google
+    <p>Top Tier Roofing and Remodeling. Prepared August 31, 2026, updated September 8, 2026. Policy language quoted verbatim from Google
       support article 7400114, retrieved August 31, 2026. This page covers Google's review policies only and
       is not legal advice.</p>
   </footer>
@@ -428,27 +453,54 @@
 <script>
 (function(){
   "use strict";
-  var PLACEHOLDER = "[review link]";
+  var ENDPOINT = "http://127.0.0.1:8788/submit";
+  var REVIEW_URL = "https://search.google.com/local/writereview?placeid=ChIJH27P5281BYIR_ohrsm8Qfek";
+  var lastLink = REVIEW_URL;
 
   function el(id){ return document.getElementById(id); }
   function val(id){ var n = el(id); return n ? String(n.value || "").trim() : ""; }
+  function stamp(){
+    var d = new Date();
+    function p(n){ return (n < 10 ? "0" : "") + n; }
+    return p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds());
+  }
+  function setStatus(msg, cls){
+    var s = el("status");
+    s.className = "status " + (cls || "");
+    s.textContent = msg;
+  }
 
-  /* ---------- review link fill ---------- */
+  /* ---------- auto sizing text boxes ---------- */
+  function autosize(t){
+    t.style.height = "auto";
+    t.style.height = (t.scrollHeight + 4) + "px";
+  }
+  var grows = document.querySelectorAll("textarea.autogrow");
+  for (var g = 0; g < grows.length; g++){
+    (function(t){
+      autosize(t);
+      t.addEventListener("input", function(){ autosize(t); });
+    })(grows[g]);
+  }
+  window.addEventListener("load", function(){
+    for (var k = 0; k < grows.length; k++){ autosize(grows[k]); }
+  });
+
+  /* ---------- review link ---------- */
   function currentLink(){
     var v = val("revlink");
-    return v ? v : PLACEHOLDER;
+    return v ? v : REVIEW_URL;
   }
   el("revlink").addEventListener("input", function(){
-    var v = val("revlink");
-    el("revEcho").textContent = v
-      ? v + " (the copy buttons will now use this)"
-      : "not set yet, the placeholder will stay in the copied text";
-    var fields = document.querySelectorAll(".field");
-    for (var i = 0; i < fields.length; i++){
-      if (fields[i].textContent.indexOf("review link") !== -1 || fields[i].dataset.filled === "1"){
-        fields[i].dataset.filled = "1";
-        fields[i].textContent = v ? v : PLACEHOLDER;
+    var v = currentLink();
+    el("revEcho").textContent = val("revlink") ? v : "the link above";
+    if (v !== lastLink){
+      var areas = document.querySelectorAll("textarea[data-link]");
+      for (var i = 0; i < areas.length; i++){
+        areas[i].value = areas[i].value.split(lastLink).join(v);
+        autosize(areas[i]);
       }
+      lastLink = v;
     }
   });
 
@@ -459,7 +511,13 @@
     t = t.replace(/[ \t]+\n/g, "\n");
     t = t.replace(/[ \t]{2,}/g, " ");
     t = t.replace(/\n{3,}/g, "\n\n");
-    return t.trim().split(PLACEHOLDER).join(currentLink());
+    return t.trim();
+  }
+  function srcText(node){
+    if (node.tagName === "TEXTAREA" || node.tagName === "INPUT"){
+      return String(node.value || "").trim();
+    }
+    return plain(node);
   }
   function toClipboard(text, done, fail){
     if (navigator.clipboard && navigator.clipboard.writeText){
@@ -486,7 +544,7 @@
         var src = el(b.getAttribute("data-src"));
         if (!src){ return; }
         var original = b.textContent;
-        toClipboard(plain(src), function(){
+        toClipboard(srcText(src), function(){
           b.textContent = "Copied";
           setTimeout(function(){ b.textContent = original; }, 1800);
         }, function(){
@@ -497,6 +555,56 @@
     })(btns[i]);
   }
 
+  /* ---------- talk back ---------- */
+  function payload(){
+    var sel = el("q2");
+    return {
+      form: "TopTier-ReviewAsk-260831",
+      submittedAt: new Date().toISOString(),
+      answers: {
+        currentWordingInUse: val("q1"),
+        askedForSpecificContent: sel.value,
+        askedForSpecificContentLabel: sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : "",
+        sendsAlreadyOut: val("q3"),
+        googleReviewLink: val("q4") || currentLink(),
+        anythingElse: val("q5")
+      }
+    };
+  }
+  function isEmpty(p){
+    var a = p.answers;
+    return !a.currentWordingInUse && !a.askedForSpecificContent && !a.sendsAlreadyOut &&
+           !a.googleReviewLink && !a.anythingElse;
+  }
+  el("btnSend").addEventListener("click", function(){
+    var p = payload();
+    if (isEmpty(p)){
+      setStatus("Nothing sent. Every field is blank, so there is nothing to report.", "err");
+      return;
+    }
+    setStatus("Queued at " + stamp() + ". Queued is not sent.", "warn");
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(p)
+    }).then(function(res){
+      if (res.ok){
+        setStatus("Sent at " + stamp() + ". The receiver accepted it.", "good");
+      } else {
+        setStatus("Not sent. The receiver answered " + res.status + ". Use Copy instead and paste it to Dale.", "err");
+      }
+    }).catch(function(){
+      setStatus("Not sent. The receiver did not answer, so it is probably not running. Use Copy instead and paste it to Dale.", "err");
+    });
+  });
+  el("btnCopy").addEventListener("click", function(){
+    var txt = JSON.stringify(payload(), null, 2);
+    toClipboard(txt, function(){
+      setStatus("Copied to the clipboard at " + stamp() + ". Nothing was sent. Paste it into the chat.", "warn");
+    }, function(){
+      setStatus("Could not reach the clipboard. Copy this by hand: " + txt, "err");
+    });
+  });
 })();
 </script>
 </body>
