@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Running Contractors Cloud So You Can Trust It</title>
 <style>
@@ -441,8 +442,7 @@ marked INFERENCE are reasoned from those figures and are labeled as such.
  var msg=document.getElementById('tbmsg');
  document.getElementById('send').onclick=function(){
   msg.style.color='#5b6472';msg.textContent='Sending...';
-  fetch('http://127.0.0.1:8788/submit',{method:'POST',
-   headers:{'Content-Type':'application/json'},body:JSON.stringify(payload())})
+  TTPOST(JSON.stringify(payload()))
   .then(function(r){if(!r.ok)throw 0;msg.style.color='#14611f';msg.textContent='Sent.';})
   .catch(function(){msg.style.color='#8a1c1c';
    msg.textContent='Receiver not reachable. Use Copy instead and paste it into chat.';});
@@ -512,6 +512,45 @@ marked INFERENCE are reasoned from those figures and are labeled as such.
   flds().forEach(function(t){t.value='';try{localStorage.removeItem(NS+t.id);}catch(e){}grow(t);});
   say('All answers cleared.',true);
  };
+})();
+</script>
+
+<script id="tt-endpoint-shim">
+/* The Top Tier form return path. Injected at publish time by
+   work/hubpub/endpoint_stamp_260908.py. Do not hand edit this in a
+   published file; edit the stamper and re-run it. */
+(function(){
+  "use strict";
+  var TT_ENDPOINT  = "https://script.google.com/macros/s/AKfycbw4EMVKAGn3E5ZbqdApH-_9hfD8rMYU0lC47BZkkpjj3IUrZTxQOyULFR48-P2jHq6YiA/exec";
+  var TT_TIMEOUT_MS = 15000;
+
+  /* This is a SIMPLE cross origin request on purpose: POST, a plain string
+     body, and no custom headers at all. Adding a Content-Type header turns it
+     into a preflighted request, and an Apps Script web app cannot answer the
+     OPTIONS preflight, so every send would fail in the browser. */
+  window.TTPOST = function(bodyString){
+    var ctl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    var timer = setTimeout(function(){ if (ctl) { ctl.abort(); } }, TT_TIMEOUT_MS);
+    var opts = { method: "POST", body: String(bodyString), redirect: "follow" };
+    if (ctl) { opts.signal = ctl.signal; }
+
+    return fetch(TT_ENDPOINT, opts).then(function(res){
+      clearTimeout(timer);
+      if (!res.ok) { return { ok: false, status: res.status }; }
+      return res.text().then(function(t){
+        var body = null;
+        try { body = JSON.parse(t); } catch (e) { body = null; }
+        /* Success ONLY on a confirmed 2xx whose body says so. An unreadable or
+           unexpected body is reported as a failure, because a send we cannot
+           prove is exactly the defect this page is being fixed for. */
+        if (body && body.ok === true) { return { ok: true, status: res.status, body: body }; }
+        return { ok: false, status: res.status, body: body };
+      });
+    }).catch(function(err){
+      clearTimeout(timer);
+      throw err;  /* network, CORS or timeout: the page's own catch shows the fallback */
+    });
+  };
 })();
 </script>
 </body></html>

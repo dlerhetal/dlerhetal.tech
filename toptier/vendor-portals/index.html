@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vendor Portals: what actually happened</title>
 <style>
@@ -457,7 +458,7 @@ h2{color:#1A3C6E;font-size:23px;margin:30px 0 4px;border-bottom:3px solid #FFCD0
   "use strict";
   var KEY="toptier_vendor_portal_record_260908";
   var FORM="TopTier-VendorPortalRecord";
-  var RECEIVER="http://127.0.0.1:8788/submit";
+  var RECEIVER="https://script.google.com/macros/s/AKfycbw4EMVKAGn3E5ZbqdApH-_9hfD8rMYU0lC47BZkkpjj3IUrZTxQOyULFR48-P2jHq6YiA/exec";
   var FIRMS=[{"id": "associa", "name": "Associa Minnesota", "loc": "Brooklyn Park", "url": "https://www.associaonline.com/partner-with-us"}, {"id": "assocone", "name": "Association One", "loc": "Bloomington", "url": "https://associationone.com/become-a-vendor/"}, {"id": "omega", "name": "Omega Property Management", "loc": "Maple Grove", "url": "https://www.omega-mgt.com/vendors"}, {"id": "rpmviking", "name": "Real Property Management Viking", "loc": "Hopkins", "url": "https://fs3.formsite.com/QVURBc/nuuqzamr6h/index"}, {"id": "thiestalle", "name": "Thies & Talle Management", "loc": "Chanhassen", "url": "https://www.thiestalle.com/vendors.html"}, {"id": "gassen", "name": "Gassen Company", "loc": "Eden Prairie", "url": "https://www.gassen.com/services/vendor-registration-vive"}, {"id": "renterswh", "name": "Renters Warehouse - St. Cloud", "loc": "St. Cloud", "url": "https://www.renterswarehouse.com/maintenance-vendor-request-form"}, {"id": "firstservice", "name": "FirstService Residential Minnesota", "loc": "Bloomington", "url": "https://app.getvived.com/vendor-signup/37ebec9d-4fb3-4fc8-b233-9339429ffd11/company/159/complianceType/default/home"}, {"id": "hoaliving", "name": "HOALiving Minnesota", "loc": "Arden Hills", "url": "https://vendorsmart.com/vs/#/vendor-onboarding?role=2&composition=54126&relation=3"}, {"id": "sentry", "name": "Sentry Management (Minneapolis/Golden Valley office)", "loc": "Golden Valley", "url": "https://vendorsmart.com/vs/#/vendor-onboarding?role=2&composition=64172&relation=3"}, {"id": "sharper", "name": "Sharper Management", "loc": "Eden Prairie", "url": "https://sharpermanagement.com/preferred-vendors/"}];
   var OUTCOMES=[["notyet", "Did not get to this one"], ["unreachable", "Could not reach it. The link was dead, the page would not load, or there was no way in"], ["blocked", "Reached it, but blocked at a gate. They want something first"], ["applied", "Registered or applied. Waiting to hear back"], ["approved", "Registered and approved. We are in"], ["uploaded", "Documents uploaded"], ["listed", "Already a listed vendor here"], ["called", "Called or emailed instead, because there is no online form"], ["other", "Something else"]];
   var DOCS=[["acord", "ACORD certificate of insurance"], ["umbrella", "$2,000,000 umbrella confirmation"], ["waiver", "Waiver of subrogation endorsement"], ["wc", "Workers compensation certificate"], ["w9", "Signed W-9"], ["license", "Minnesota license BC807923"], ["none", "Nothing uploaded yet"]];
@@ -580,8 +581,7 @@ h2{color:#1A3C6E;font-size:23px;margin:30px 0 4px;border-bottom:3px solid #FFCD0
       if(done) return; done=true;
       fallback("It took too long and gave up.");
     },8000);
-    fetch(RECEIVER,{method:"POST",headers:{"Content-Type":"application/json"},
-                    body:JSON.stringify(payload())})
+    TTPOST(JSON.stringify(payload()))
       .then(function(r){
         if(done) return; done=true; clearTimeout(timer);
         if(r.ok){
@@ -640,6 +640,45 @@ h2{color:#1A3C6E;font-size:23px;margin:30px 0 4px;border-bottom:3px solid #FFCD0
     refresh(); save();
     say("busy","Page cleared.","");
   });
+})();
+</script>
+
+<script id="tt-endpoint-shim">
+/* The Top Tier form return path. Injected at publish time by
+   work/hubpub/endpoint_stamp_260908.py. Do not hand edit this in a
+   published file; edit the stamper and re-run it. */
+(function(){
+  "use strict";
+  var TT_ENDPOINT  = "https://script.google.com/macros/s/AKfycbw4EMVKAGn3E5ZbqdApH-_9hfD8rMYU0lC47BZkkpjj3IUrZTxQOyULFR48-P2jHq6YiA/exec";
+  var TT_TIMEOUT_MS = 15000;
+
+  /* This is a SIMPLE cross origin request on purpose: POST, a plain string
+     body, and no custom headers at all. Adding a Content-Type header turns it
+     into a preflighted request, and an Apps Script web app cannot answer the
+     OPTIONS preflight, so every send would fail in the browser. */
+  window.TTPOST = function(bodyString){
+    var ctl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    var timer = setTimeout(function(){ if (ctl) { ctl.abort(); } }, TT_TIMEOUT_MS);
+    var opts = { method: "POST", body: String(bodyString), redirect: "follow" };
+    if (ctl) { opts.signal = ctl.signal; }
+
+    return fetch(TT_ENDPOINT, opts).then(function(res){
+      clearTimeout(timer);
+      if (!res.ok) { return { ok: false, status: res.status }; }
+      return res.text().then(function(t){
+        var body = null;
+        try { body = JSON.parse(t); } catch (e) { body = null; }
+        /* Success ONLY on a confirmed 2xx whose body says so. An unreadable or
+           unexpected body is reported as a failure, because a send we cannot
+           prove is exactly the defect this page is being fixed for. */
+        if (body && body.ok === true) { return { ok: true, status: res.status, body: body }; }
+        return { ok: false, status: res.status, body: body };
+      });
+    }).catch(function(err){
+      clearTimeout(timer);
+      throw err;  /* network, CORS or timeout: the page's own catch shows the fallback */
+    });
+  };
 })();
 </script>
 </body></html>
