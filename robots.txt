@@ -1,0 +1,36 @@
+# robots.txt for dlerhetal.tech
+# Added 2026-09-08.
+#
+# This origin serves several consulting client namespaces alongside public,
+# deliberately findable material. Client work is not for search engines.
+#
+# NOTE ON WHAT THIS DOES AND DOES NOT DO: robots.txt is a request, not access
+# control. Every file below stays publicly fetchable by anyone holding the URL.
+# GitHub Pages has no authentication. Treat this as hygiene, not security.
+
+User-agent: *
+
+# --- Client engagement namespaces: disallowed ---
+# Consulting client material. Nothing links to these from the public site;
+# they are handed to the client by direct URL.
+Disallow: /aaron/
+Disallow: /anthem/
+Disallow: /countertops/
+Disallow: /qfm/
+Disallow: /schmidt/
+Disallow: /toptier/
+Disallow: /united-auto-body/
+
+# Retired client material that is still served from this origin.
+Disallow: /archive/
+
+# --- Everything else is deliberately public and stays crawlable ---
+# /                        the site index
+# /tutorials/  /setup/     published how-to material
+# /proctor/                study tool, linked from the index
+# /eaa/                    volunteer chapter proposal, meant to be found
+# /the-game/  /thegame/    published demonstration board
+# /forward-deployed-decade/ published proposal
+# /brand/                  favicons and manifest the public pages load
+# /legal/                  EULA and privacy policy, must stay publicly reachable
+# /qbo-app/  /qbo-callback/ application landing and OAuth return
