@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Website Walk</title>
+<style>
+  :root{
+    --blue:#1A3C6E; --gold:#FFCD00; --ink:#16202e; --mute:#5a6675;
+    --line:#d8dee7; --bg:#eef1f5; --ok:#1d7a44; --warn:#b3261e; --paper:#fff;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%}
+  body{
+    font-family:Calibri,"Segoe UI",system-ui,sans-serif;
+    font-size:19px; line-height:1.55; color:var(--ink); background:var(--bg);
+    overflow:hidden;
+  }
+  .shell{display:flex; flex-direction:column; height:100%}
+
+  header{background:var(--blue); color:#fff; padding:14px 26px; flex:0 0 auto}
+  header h1{margin:0; font-size:23px; letter-spacing:.2px}
+  header .sub{font-size:15px; opacity:.85; margin-top:2px}
+
+  .rail{display:flex; gap:0; background:#fff; border-bottom:1px solid var(--line);
+        flex:0 0 auto; overflow-x:auto}
+  .rail button{
+    appearance:none; border:0; background:transparent; font:inherit; font-size:14.5px;
+    padding:11px 15px; cursor:pointer; color:var(--mute); white-space:nowrap;
+    border-bottom:3px solid transparent;
+  }
+  .rail button:hover{background:#f4f7fb; color:var(--blue)}
+  .rail button.on{color:var(--blue); font-weight:700; border-bottom-color:var(--gold)}
+  .rail button .n{
+    display:inline-block; min-width:21px; height:21px; line-height:21px; text-align:center;
+    border-radius:50%; background:#e6ebf2; color:var(--blue); font-size:12.5px;
+    font-weight:700; margin-right:7px;
+  }
+  .rail button.on .n{background:var(--gold); color:#3a2c00}
+
+  .scroll{flex:1 1 auto; overflow-y:auto; padding:26px}
+  .wrap{max-width:1000px; margin:0 auto}
+
+  .screen{display:none}
+  .screen.on{display:block}
+
+  .card{background:var(--paper); border:1px solid var(--line); border-radius:8px;
+        padding:24px 26px; margin-bottom:18px}
+  .card > h2{margin:0 0 4px; font-size:25px; color:var(--blue)}
+  .card > .lede{color:var(--mute); margin:0 0 18px; font-size:17.5px}
+
+  h3{font-size:19.5px; color:var(--blue); margin:24px 0 8px}
+  h3:first-of-type{margin-top:6px}
+  p{margin:0 0 12px}
+  ul,ol{margin:0 0 12px; padding-left:24px}
+  li{margin-bottom:7px}
+
+  .prereq{background:#fffaf0; border:2px solid var(--gold); border-radius:8px;
+          padding:20px 24px; margin-bottom:18px}
+  .prereq h2{margin:0 0 10px; font-size:21px; color:#7a5c00}
+  .prereq ul{margin-bottom:0}
+
+  .stop{background:#fdf2f1; border:2px solid var(--warn); border-radius:8px;
+        padding:18px 22px; margin:18px 0}
+  .stop h3{color:var(--warn); margin:0 0 8px}
+
+  .note{background:#f4f7fb; border-left:4px solid var(--blue); padding:13px 17px;
+        margin:14px 0; font-size:17.5px}
+  .good{background:#f2f9f5; border-left:4px solid var(--ok); padding:13px 17px; margin:14px 0}
+
+  /* a step only a person can do */
+  .human{background:#fff6e0; border:3px solid #C99E00; border-radius:8px;
+         padding:18px 22px; margin:18px 0}
+  .human .tagline{display:inline-block; background:#C99E00; color:#241a00; font-weight:700;
+         font-size:14.5px; letter-spacing:.6px; text-transform:uppercase;
+         border-radius:4px; padding:3px 10px; margin-bottom:9px}
+  .human h3{margin:0 0 8px; color:#7a5c00}
+  .human .why{font-size:16.5px; color:#6b5300; margin:10px 0 0}
+
+  /* an instruction Guy hands to his Claude */
+  .ask{border:2px solid var(--blue); border-radius:8px; margin:16px 0; background:#fff}
+  .ask .head{background:var(--blue); color:#fff; padding:9px 16px; font-weight:700; font-size:16.5px;
+        border-radius:5px 5px 0 0; display:flex; justify-content:space-between; align-items:center;
+        gap:12px; flex-wrap:wrap}
+  .ask .body{padding:14px 18px; font-size:17.5px}
+  .ask .body p{margin:0 0 10px}
+  .ask .body p:last-child{margin-bottom:0}
+  .ask .foot{padding:0 18px 14px}
+  .ask .kicker{font-size:16px; color:var(--mute); margin:0 0 10px}
+
+  table{border-collapse:collapse; width:100%; margin:12px 0 16px; font-size:17px}
+  th,td{border:1px solid var(--line); padding:8px 11px; text-align:left; vertical-align:top}
+  th{background:var(--blue); color:#fff; font-weight:600}
+  tbody tr:nth-child(even){background:#f7f9fc}
+  td.num,th.num{text-align:right; font-variant-numeric:tabular-nums}
+
+  a{color:#12508f}
+  a.urlbox{display:block; background:#f4f7fb; border:1px solid var(--line); border-radius:5px;
+           padding:9px 13px; font-family:Consolas,monospace; font-size:15.5px;
+           text-decoration:none; margin:8px 0; word-break:break-all}
+  a.urlbox:hover{background:#e8eff8; border-color:var(--blue)}
+
+  .fill{display:inline-block; border:2px dashed #b9c4d2; background:#fffdf3;
+        border-radius:5px; padding:3px 9px; font:inherit; font-size:17.5px; min-width:190px}
+  .fill:focus{outline:none; border-style:solid; border-color:var(--blue); background:#fff}
+  .fillrow{margin:10px 0}
+  .fillrow label{display:block; font-weight:700; color:var(--blue); font-size:16.5px; margin-bottom:4px}
+  .slot{background:#fff6d6; border-bottom:2px solid var(--gold); padding:1px 7px;
+        font-weight:700; border-radius:3px}
+  .slot.empty{background:#f0f2f5; border-bottom-color:#c3ccd8; color:#8894a4;
+              font-weight:400; font-style:italic}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+
+  .stat{background:#f7f9fc; border:1px solid var(--line); border-radius:7px; padding:14px 16px}
+  .stat .big{font-size:29px; font-weight:700; color:var(--blue); line-height:1.1}
+  .stat .lbl{font-size:15.5px; color:var(--mute); margin-top:3px}
+
+  label.q{display:block; font-weight:700; margin:18px 0 6px; color:var(--blue)}
+  textarea{width:100%; font:inherit; font-size:17.5px; padding:11px 13px;
+           border:1px solid #b9c4d2; border-radius:6px; min-height:78px; resize:vertical}
+  select,input[type=text]{font:inherit; font-size:17.5px; padding:8px 11px;
+           border:1px solid #b9c4d2; border-radius:6px}
+  textarea:focus,select:focus,input:focus{outline:2px solid var(--gold); outline-offset:1px}
+
+  .btn{appearance:none; border:0; border-radius:6px; font:inherit; font-weight:700;
+       font-size:17.5px; padding:12px 22px; cursor:pointer}
+  .btn.p{background:var(--blue); color:#fff}
+  .btn.p:hover{background:#14304f}
+  .btn.s{background:#fff; color:var(--blue); border:2px solid var(--blue); padding:10px 20px}
+  .btn.s:hover{background:#f2f6fb}
+  .btn.sm{font-size:15.5px; padding:7px 14px}
+  .btn.g{background:var(--gold); color:#3a2c00}
+  .btn.g:hover{background:#e8bb00}
+  .btn:disabled{opacity:.45; cursor:not-allowed}
+
+  .broke{float:right; font-size:15.5px}
+  .nav{display:flex; justify-content:space-between; gap:12px; padding:4px 0 30px}
+  .status{font-size:16px; margin-top:10px; min-height:22px}
+  .status.ok{color:var(--ok); font-weight:700}
+  .status.bad{color:var(--warn); font-weight:700}
+
+  @media print{
+    body{overflow:visible; background:#fff; font-size:11pt}
+    .rail,.nav,header,.broke{display:none}
+    .scroll{overflow:visible; padding:0}
+    .screen{display:block !important; page-break-after:always}
+    .card{border:0; padding:0 0 12pt}
+    .ask,.human,.prereq{break-inside:avoid; page-break-inside:avoid}
+  }
+  body{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<header>
+  <h1>The Website Walk</h1>
+  <div class="sub">Everything still open on toptiermn.com, in the order worth doing it, done with your Claude</div>
+</header>
+
+<nav class="rail" id="rail"></nav>
+
+<div class="scroll" id="scroll">
+<div class="wrap">
+
+<!-- ============ 0 : Start here ============ -->
+<section class="screen on" data-t="Start here">
+  <div class="prereq">
+    <h2>Before you start</h2>
+    <ul>
+      <li><b>Which machine:</b> the computer you run Claude Code on, with your shared workspace open.
+        This is not a phone job.</li>
+      <li><b>Your Claude session open,</b> in the folder you and Dale share, so anything it writes is
+        on the record for both sides.</li>
+      <li><b>Your WordPress administrator login</b> for
+        <a href="https://toptiermn.com/wp-admin/" target="_blank" rel="noopener">https://toptiermn.com/wp-admin/</a>,
+        and an application password created under your own account so your Claude can save changes
+        without you pasting anything into a browser. The tab called Your keys sets that up.</li>
+      <li><b>What this walk does not cover.</b> The Google Business Profile is a separate walk, because
+        no Claude can sign into that console. It is
+        <a href="profile_map_pack_260907.html">the profile wizard</a>. Retiring the four leftover blog
+        posts and writing new ones is
+        <a href="publishing_260907.html">the publishing wizard</a>, which is being built next.</li>
+      <li><b>How long:</b> the first three steps are under an hour of mostly waiting on your Claude.
+        The town and service pages are a half day of real writing, and they are the part that still
+        earns in a year.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>What this walk is</h2>
+    <p class="lede">A short list of things that are wrong on the website, and the exact words to hand
+      your Claude for each one.</p>
+
+    <p>Every item here was checked against the live site on 7 September 2026, not taken from an older
+    note. Where a step is something a machine can do, you get the instruction to paste and a copy
+    button. Where a step genuinely needs a person signed into a console, it is in a gold box that says
+    so and says why.</p>
+
+    <div class="grid2">
+      <div class="stat"><div class="big">15 Sep</div><div class="lbl">first day a postcard can land in a mailbox</div></div>
+      <div class="stat"><div class="big">5</div><div class="lbl">towns the mail is going to, with no page on the site about any of them</div></div>
+      <div class="stat"><div class="big">0</div><div class="lbl">times siding, gutters, storm or hail appear on the homepage</div></div>
+      <div class="stat"><div class="big">11</div><div class="lbl">pages on the whole site today, one of them covering every service</div></div>
+    </div>
+
+    <h3>The one real deadline, and it is the only one on this page</h3>
+    <p>Drop 1 of the mailer was released on 7 September through Vistaprint's mailing service. The
+    in-home window is <b>15 to 22 September 2026</b>, and the mail is addressed to households in
+    Albertville, St Michael, Otsego, Monticello and Buffalo. A homeowner who reads the card and then
+    searches their own town plus the word roofing finds nothing on this site about their town, because
+    all five of those addresses currently return page not found. That is why the town pages sit at the
+    end of this walk with a date on them rather than a vague sense of urgency.</p>
+
+    <div class="note"><b>How the order was chosen.</b> The sitemap line, the footer and the services list are minutes each and clear
+    the ground. The town pages are the half day. If you only have an hour, do the first three and book
+    the half day separately, before the fifteenth.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1 : Already done ============ -->
+<section class="screen" data-t="Already done">
+  <div class="card">
+    <h2>Already fixed, so nobody walks it twice</h2>
+    <p class="lede">All of this was checked against the live site and is genuinely done. It is here so
+      you can recognize it and move past it.</p>
+
+    <table>
+      <thead><tr><th style="width:46%">Item</th><th>State on 7 September</th></tr></thead>
+      <tbody>
+        <tr><td>The phone number can be tapped to call</td><td>Tap to call links present</td></tr>
+        <tr><td>A quote form on the homepage</td><td>Form present</td></tr>
+        <tr><td>The license number on the site</td><td>BC807923 present, in the footer of every page</td></tr>
+        <tr><td>Business information for search engines</td><td>Roofing contractor markup present, with hours and the profile link</td></tr>
+        <tr><td>The site named two different towns</td><td>Albertville throughout</td></tr>
+        <tr><td>The sitemap itself</td><td>Returns properly</td></tr>
+        <tr><td>The Facebook link pointed at the wrong profile</td><td>Correct profile, site wide</td></tr>
+        <tr><td>Leftover content from the original site build</td><td>Gone site wide</td></tr>
+        <tr><td>A privacy policy</td><td>Live and linked in the footer. It was assumed missing and it is not</td></tr>
+      </tbody>
+    </table>
+
+    <div class="good"><b>Nothing on this screen is work.</b> If somebody hands you an older audit that
+    lists any of these as open, it is the older audit that is wrong.</div>
+  </div>
+</section>
+
+<!-- ============ 2 : Your keys ============ -->
+<section class="screen" data-t="Your keys">
+  <div class="card">
+    <h2>Getting your Claude the keys</h2>
+    <p class="lede">One time setup, about five minutes, and then your Claude can save changes to the
+      site instead of you clicking through a builder.
+      <a href="#" class="broke" data-step="Your keys">This step broke</a></p>
+
+    <div class="human">
+      <div class="tagline">A person has to do this one</div>
+      <h3>Create an application password for your account</h3>
+      <p>An application password is a long code that lets a program sign in as you without ever
+      holding your real password, and you can revoke it at any time without changing anything else.</p>
+      <ol>
+        <li>Go to
+          <a href="https://toptiermn.com/wp-admin/profile.php" target="_blank" rel="noopener">https://toptiermn.com/wp-admin/profile.php</a>
+          and sign in.</li>
+        <li>Scroll to <b>Application Passwords</b>.</li>
+        <li>Name it something you will recognize later, for example <b>claude</b>, and add it.</li>
+        <li>WordPress shows you six blocks of four characters. <b>It shows them once.</b></li>
+        <li>Paste it straight into your own environment file where your Claude reads its settings, as
+          <b>WP_APP_PASSWORD</b>, alongside <b>WP_SITE</b> set to
+          <a href="https://toptiermn.com" target="_blank" rel="noopener">https://toptiermn.com</a>
+          and <b>WP_USERNAME</b> set to your WordPress username below.</li>
+      </ol>
+      <p class="why"><b>Why a machine cannot do it:</b> the code is generated inside a console you are
+      signed into and displayed exactly once. Nothing can read it off that screen for you.
+      <b>Never paste that code into this page, into a chat message, or into any file that gets shared.</b>
+      It belongs in your environment file and nowhere else.</p>
+      <div class="fillrow">
+        <label for="wpuser">Your WordPress username (not your email address)</label>
+        <input class="fill" type="text" id="wpuser" style="min-width:340px" value="toptiertroofingremodeling">
+      </div>
+    </div>
+
+    <h3>Then have your Claude prove the keys work</h3>
+    <p class="kicker">This is the pattern for the whole walk: you set something up, then you ask your
+    Claude to prove it rather than squinting at a screen yourself.</p>
+
+    <div class="ask">
+      <div class="head"><span>Paste this into your Claude</span>
+        <button class="btn g copy" style="font-size:15.5px;padding:7px 14px" data-src="ask_keys" data-status="st_keys">Copy</button></div>
+      <div class="body" id="ask_keys">
+        <p>I look after the website toptiermn.com. It is WordPress, hosted on Elementor Cloud, and the
+        SEO plugin is Rank Math. My environment file has WP_SITE, WP_USERNAME and WP_APP_PASSWORD in
+        it, which are an application password for my own WordPress account
+        (<span class="slot" data-slot="wpuser">your username</span>).</p>
+        <p>Using the WordPress REST API with that application password, fetch
+        /wp-json/wp/v2/users/me?context=edit and tell me plainly: which role my account has, and
+        whether it can edit pages I did not create. If the request is refused, show me the exact
+        status code and message rather than summarizing it.</p>
+        <p>Then fetch /wp-json/wp/v2/pages?per_page=100&amp;_fields=id,slug,title,link and give me the
+        list of pages with their ids, so we have a map before we change anything. Do not change
+        anything yet.</p>
+      </div>
+      <div class="foot"><div class="status" id="st_keys"></div></div>
+    </div>
+
+    <div class="note">The site has six administrator accounts on it today. Reviewing who still needs
+    access is worth an afternoon at some point, separately from this walk.</div>
+
+    <div class="good"><b>What success looks like:</b> it reports role administrator, and comes back
+    with a list of about eleven pages including home, services, faq, about, our team, for contractors,
+    blog, privacy, quote, media room and roof record. Your account holds administrator, so it can reach
+    every one of them.</div>
+  </div>
+</section>
+
+<!-- ============ 3 : The sitemap line ============ -->
+<section class="screen" data-t="The sitemap line">
+  <div class="card">
+    <h2>The sitemap line in the robots file</h2>
+    <p class="lede">Five minutes, and it may already be right. Settle it before you spend any time on
+      it.
+      <a href="#" class="broke" data-step="The sitemap line">This step broke</a></p>
+
+    <p>The robots file is the first thing a search engine reads on any website. It is supposed to end
+    with a line pointing at the sitemap, which is the index of every page you have. The walk list read
+    that line as missing.</p>
+
+    <div class="note"><b>Read this before you do anything.</b> When this wizard was built, on
+    7 September 2026, the live file was fetched again with a cache buster and it <b>did</b> carry the
+    line <b>Sitemap: https://toptiermn.com/sitemap_index.xml</b> at the end. So either it was fixed in
+    between, or the earlier read caught a cached copy. Either way this is a ten second check rather
+    than a job, and the check is the first half of the instruction below.</div>
+
+    <div class="ask">
+      <div class="head"><span>Paste this into your Claude</span>
+        <button class="btn g copy" style="font-size:15.5px;padding:7px 14px" data-src="ask_robots" data-status="st_robots">Copy</button></div>
+      <div class="body" id="ask_robots">
+        <p>Website: toptiermn.com, WordPress on Elementor Cloud, SEO plugin Rank Math. There is a
+        Cloudflare CDN in front of the site, so add a random query string to every fetch or you will
+        read a cached copy and draw the wrong conclusion.</p>
+        <p>Fetch https://toptiermn.com/robots.txt with a cache busting query string and paste the whole
+        file back to me. Tell me whether it contains a line beginning with Sitemap:.</p>
+        <p>If that line is present, stop. There is nothing to do and I want to hear that plainly.</p>
+        <p>If it is absent, the line to add is exactly: Sitemap: https://toptiermn.com/sitemap_index.xml
+        The robots file on this site is generated by Rank Math, not stored as a file, so try the REST
+        API first with the application password in my environment file. If Rank Math refuses the write,
+        say so with the status code and stop rather than trying alternatives, because it then becomes a
+        two minute edit for me in the admin screen at Rank Math, General Settings, Edit robots.txt.</p>
+        <p>After any change, re-fetch the file cache busted and paste it back so I can see the line is
+        actually live.</p>
+      </div>
+      <div class="foot"><div class="status" id="st_robots"></div></div>
+    </div>
+
+    <div class="good"><b>What success looks like:</b> the last line of the file reads
+    Sitemap: https://toptiermn.com/sitemap_index.xml, and
+    <a href="https://toptiermn.com/sitemap_index.xml" target="_blank" rel="noopener">https://toptiermn.com/sitemap_index.xml</a>
+    opens in a browser. The sitemap itself was checked and works.</div>
+  </div>
+</section>
+
+<!-- ============ 4 : The footer ============ -->
+<section class="screen" data-t="The footer">
+  <div class="card">
+    <h2>The footer, four small things in one place</h2>
+    <p class="lede">All four sit in the same part of the site, so they are one sitting.
+      <a href="#" class="broke" data-step="The footer">This step broke</a></p>
+
+    <table>
+      <thead><tr><th style="width:34%">What</th><th>Why it matters</th></tr></thead>
+      <tbody>
+        <tr><td><b>The footer menu leaves out Services</b></td>
+          <td>It lists Home, About, For Contractors and Privacy. The last thing a visitor sees points at
+            a page for recruiting contractors rather than at what the company sells. Services, Our Team
+            and FAQ are all missing.</td></tr>
+        <tr><td><b>The footer menu is in the page twice</b></td>
+          <td>The same links appear in the markup twice over. It may be a phone and desktop pair, or it
+            may be a genuine duplicate. Deleting the wrong one breaks the menu on one kind of device.</td></tr>
+        <tr><td><b>A Google map is embedded in the footer of every page</b></td>
+          <td>Every single pageview loads a third party map. It slows every page, and a map in a footer
+            has never been shown to bring anybody in. The address in text is what matters and it is
+            already there.</td></tr>
+        <tr><td><b>Four leftover blog posts about shower doors</b></td>
+          <td>On the list, but not this walk. See below.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="stop">
+      <h3>Diagnose before you delete</h3>
+      <p>The duplicate menu is the one place on this walk where acting first can break something a
+      visitor sees. A page builder normally emits a desktop menu and a phone menu as two separate
+      blocks, and only one of them is visible at a time. Delete the wrong one and the menu vanishes on
+      phones, which is where most roofing traffic is, and nobody notices on a desktop.</p>
+      <p><b>So the first instruction below only looks. It changes nothing.</b> Run it, read what comes
+      back, then run the second one.</p>
+    </div>
+
+    <h3>First, the diagnosis</h3>
+    <div class="ask">
+      <div class="head"><span>Paste this into your Claude, step one of two</span>
+        <button class="btn g copy" style="font-size:15.5px;padding:7px 14px" data-src="ask_foot1" data-status="st_foot1">Copy</button></div>
+      <div class="body" id="ask_foot1">
+        <p>Website: toptiermn.com, WordPress on Elementor Cloud, page builder is Elementor, and my
+        environment file has an application password for my WordPress account. There is a Cloudflare
+        CDN in front of the site, so cache bust every fetch.</p>
+        <p>This is a look only task. Change nothing, save nothing.</p>
+        <p>The footer is the same on every page. I need to know three things before I touch it.</p>
+        <p>One. Where does the footer actually live: an Elementor saved template or footer part, a theme
+        template, or something else? Give me the object type and id, and how you would edit it through
+        the REST API.</p>
+        <p>Two. The footer menu links appear more than once in the page markup. Work out whether the two
+        copies are a desktop and mobile pair, one hidden by a CSS rule or a responsive setting at a
+        given breakpoint, or whether they are a genuine duplicate of the same visible block. Show me the
+        evidence you used, not just the conclusion, because deleting the wrong one takes the menu off
+        phones and I will not see it on my laptop.</p>
+        <p>Three. Find the Google Maps iframe in the footer and tell me which element or widget holds it,
+        and whether the text address and the phone number sit in a different element that would survive
+        removing it.</p>
+        <p>Report back and wait. Do not make any change until I say go.</p>
+      </div>
+      <div class="foot"><div class="status" id="st_foot1"></div></div>
+    </div>
+
+    <div class="fillrow">
+      <label for="footerdiag">What the diagnosis came back with (paste the short version here, it gets sent back to Dale with any feedback)</label>
+      <textarea id="footerdiag" placeholder="For example: footer is Elementor template id 1234. The two menus are a desktop and mobile pair, mobile one hidden above 768 pixels. Map is its own widget, address is separate."></textarea>
+    </div>
+
+    <h3>Then, the changes</h3>
+    <p class="kicker">Run this one only after the report above makes sense to you.</p>
+    <div class="ask">
+      <div class="head"><span>Paste this into your Claude, step two of two</span>
+        <button class="btn g copy" style="font-size:15.5px;padding:7px 14px" data-src="ask_foot2" data-status="st_foot2">Copy</button></div>
+      <div class="body" id="ask_foot2">
+        <p>Same site, toptiermn.com, WordPress on Elementor Cloud. Now make the footer changes, one at a
+        time, saving and verifying each before starting the next.</p>
+        <p>Change one. The footer menu currently lists Home, About, For Contractors and Privacy. Add
+        Services, Our Team and FAQ, pointing at https://toptiermn.com/services/,
+        https://toptiermn.com/our-team/ and https://toptiermn.com/faq/. Keep the existing four. If the
+        footer menu turns out to be a WordPress menu rather than links typed into the builder, edit the
+        menu itself so both copies pick the change up.</p>
+        <p>Change two. Remove the Google Maps iframe from the footer, and only that. Leave the text
+        address, the phone number and the license number exactly as they are.</p>
+        <p>Change three, and only if your diagnosis proved the two menu blocks are a genuine duplicate
+        rather than a desktop and mobile pair. If it proved they are a pair, leave both alone and tell
+        me that is what you are doing.</p>
+        <p>This site sits behind Elementor's CDN, so after each save clear the builder cache with a
+        DELETE to /wp-json/elementor/v1/cache, then fetch the public homepage with a cache busting query
+        string and prove the change from the live HTML rather than from what the API returned.</p>
+        <p>Prove all of it this way: the homepage HTML contains links to /services/, /our-team/ and
+        /faq/ in the footer, and contains zero occurrences of google.com/maps/embed. Paste the counts.</p>
+        <p>Before your first save, tell me what you are backing up and where, so this is reversible.</p>
+      </div>
+      <div class="foot"><div class="status" id="st_foot2"></div></div>
+    </div>
+
+    <div class="note"><b>The four shower door posts are not this walk.</b> They are real, they are still
+    published, and they are left over from the original site build. Retiring them properly, and
+    replacing them with a post worth reading, is
+    <a href="publishing_260907.html">the publishing wizard</a>, which is the next one being built in this
+    set. Doing it here would mean doing it twice.</div>
+  </div>
+</section>
+
+<!-- ============ 5 : The services ============ -->
+<section class="screen" data-t="The services">
+  <div class="card">
+    <h2>Half the work the company does is invisible</h2>
+    <p class="lede">Checked on the live homepage on 7 September: siding, gutter, storm and hail each
+      appear zero times.
+      <a href="#" class="broke" data-step="The services">This step broke</a></p>
+
+    <p>There is one page covering every service. Somebody searching for gutters, or for storm damage,
+    has nothing on this site to find, and a search engine has nothing to file the company under. The
+    services page itself does mention siding and storm, so the words exist somewhere. They are simply
+    not where a visitor or a search engine lands first.</p>
+
+    <div class="stop">
+      <h3>The words that are not allowed, and this is not a style preference</h3>
+      <p>Minnesota law is specific about how a roofing contractor may talk about insurance. A
+      contractor may <b>inspect</b>, <b>document</b>, <b>measure</b>, <b>repair</b> and <b>replace</b>.
+      A contractor may not <b>file</b>, <b>handle</b>, <b>negotiate</b>, <b>advocate</b> or promise to
+      <b>ensure</b> or get something <b>covered</b>, and may not offer to pay or waive a deductible.
+      Those are claim handling, which needs a license this company does not hold, and the penalty runs
+      to $10,000 per violation. Every piece of advertising also has to carry the license number,
+      BC807923.</p>
+      <p>The instruction below carries those rules, so anything your Claude writes stays inside them.
+      Keep them in any wording you write yourself.</p>
+    </div>
+
+    <div class="ask">
+      <div class="head"><span>Paste this into your Claude</span>
+        <button class="btn g copy" style="font-size:15.5px;padding:7px 14px" data-src="ask_svc" data-status="st_svc">Copy</button></div>
+      <div class="body" id="ask_svc">
+        <p>Website: toptiermn.com, a roofing and remodeling company in Albertville, Minnesota.
+        WordPress on Elementor Cloud, Rank Math for SEO, application password in my environment file,
+        Cloudflare CDN in front so cache bust every fetch.</p>
+        <p>The problem: the homepage never mentions siding, gutters, storm damage or hail damage. I
+        checked. Each of those words appears zero times. We do all of that work. One page,
+        https://toptiermn.com/services/, covers everything, and that is the only place any of it is
+        named.</p>
+        <p>What I want. First read the current homepage and the services page and tell me how the
+        existing services section is built, so we extend what is there instead of bolting something new
+        on. Then add the missing work to the homepage: roof replacement and repair, siding, gutters, and
+        storm and hail damage, each with a short heading and two or three plain sentences, and each
+        linking to the services page. Match the voice already on the site.</p>
+        <p>Hard rules for the wording, these are legal, not stylistic. Minnesota statute 325E.66 bars a
+        roofing contractor from interpreting an insurance policy, from advising on coverage, and from
+        advertising that it will pay or waive a deductible. Statute 72B.02 bars advertising as a public
+        adjuster. So: use inspect, document, measure, repair and replace. Never use file, handle,
+        negotiate, advocate, ensure or covered about insurance. Never say or imply that insurers drop
+        homeowners over roof age, which is not true in Minnesota. Say nothing about what a policy will
+        or will not pay. The license number BC807923 must remain visible on the page, which today it is,
+        in the footer.</p>
+        <p>Method: write it, save it, clear the builder cache with a DELETE to
+        /wp-json/elementor/v1/cache, then fetch the public homepage cache busted and count the words
+        siding, gutter, storm and hail in the live HTML. Paste the counts back. Tell me what you backed
+        up and where before the first save.</p>
+        <p>Show me the proposed wording before you save it.</p>
+      </div>
+      <div class="foot"><div class="status" id="st_svc"></div></div>
+    </div>
+
+    <div class="good"><b>What success looks like:</b> those four words go from zero to a real count on
+    the live homepage, each one links through to the services page, and nothing on the page says
+    anything about what an insurance policy will pay.</div>
+  </div>
+</section>
+
+<!-- ============ 6 : The towns ============ -->
+<section class="screen" data-t="The towns" data-gate="t_alb,t_stm,t_ots,t_mon,t_buf">
+  <div class="card">
+    <h2>A page for each town, and this one has a date on it</h2>
+    <p class="lede">Albertville, St Michael, Otsego, Monticello and Buffalo all return page not found
+      today. All five were checked on 7 September.
+      <a href="#" class="broke" data-step="The towns">This step broke</a></p>
+
+    <p>The mail is in homes from <b>15 September 2026</b>, in those five towns. A homeowner who reads
+    the card and searches their town plus roofing finds nothing about their town on this site. This is
+    the half day of real writing on the walk, and it is the only item here that would still be earning
+    a year from now.</p>
+
+    <h3>The part your Claude cannot do, and it is a small part</h3>
+    <p class="kicker">A town page that only repeats the town name is the same page every roofer has.
+    What makes it worth reading is one true local thing, and that lives in your head, not in any file.
+    A neighborhood you have worked, a landmark, a subdivision, the year of a storm that came through,
+    the kind of roofs on those streets. One line each is enough. These fill themselves into the
+    instruction below.</p>
+
+    <div class="fillrow"><label for="t_alb">Albertville, one true local detail</label>
+      <input class="fill" type="text" id="t_alb" style="min-width:100%" placeholder="for example: the streets off County Road 37, and what those roofs are"></div>
+    <div class="fillrow"><label for="t_stm">St Michael, one true local detail</label>
+      <input class="fill" type="text" id="t_stm" style="min-width:100%" placeholder=""></div>
+    <div class="fillrow"><label for="t_ots">Otsego, one true local detail</label>
+      <input class="fill" type="text" id="t_ots" style="min-width:100%" placeholder=""></div>
+    <div class="fillrow"><label for="t_mon">Monticello, one true local detail</label>
+      <input class="fill" type="text" id="t_mon" style="min-width:100%" placeholder=""></div>
+    <div class="fillrow"><label for="t_buf">Buffalo, one true local detail</label>
+      <input class="fill" type="text" id="t_buf" style="min-width:100%" placeholder=""></div>
+    <div class="status" id="gateMsg"></div>
+
+    <div class="ask">
+      <div class="head"><span>Paste this into your Claude</span>
+        <button class="btn g copy" style="font-size:15.5px;padding:7px 14px" data-src="ask_town" data-status="st_town">Copy</button></div>
+      <div class="body" id="ask_town">
+        <p>Website: toptiermn.com. Top Tier Roofing and Remodeling, LLC, 11440 County Road 37 NE,
+        Albertville, MN 55301, phone 612-205-5503, Minnesota license BC807923. WordPress on Elementor
+        Cloud, Rank Math for SEO, application password in my environment file, Cloudflare CDN in front
+        so cache bust every fetch.</p>
+        <p>Build five new pages, one for each town we work: Albertville, St Michael, Otsego, Monticello
+        and Buffalo. Right now none of these exist and the obvious addresses return page not found.</p>
+        <p>Before you build, read an existing page and tell me the slug pattern and the page template
+        the site already uses, then propose the five addresses and wait for me to approve them. Do not
+        guess at a pattern the site does not use.</p>
+        <p>Each page needs: a heading naming the town and the work, a short honest description of the
+        work we do there, the services named in plain words a homeowner would use (roof replacement,
+        roof repair, siding, gutters, storm and hail damage), the address, the phone number as a link
+        that dials, the license number BC807923, and a way to ask for a quote that matches the one on
+        the homepage. No stock photographs of houses that are not ours.</p>
+        <p>The local detail for each town, in my own words, use these and do not invent others:</p>
+        <p>Albertville: <span class="slot" data-slot="t_alb">not filled in yet</span></p>
+        <p>St Michael: <span class="slot" data-slot="t_stm">not filled in yet</span></p>
+        <p>Otsego: <span class="slot" data-slot="t_ots">not filled in yet</span></p>
+        <p>Monticello: <span class="slot" data-slot="t_mon">not filled in yet</span></p>
+        <p>Buffalo: <span class="slot" data-slot="t_buf">not filled in yet</span></p>
+        <p>Hard rules for the wording, these are legal, not stylistic. Minnesota statute 325E.66 bars a
+        roofing contractor from interpreting an insurance policy, from advising on coverage, and from
+        advertising that it will pay or waive a deductible. Statute 72B.02 bars advertising as a public
+        adjuster. Use inspect, document, measure, repair and replace. Never use file, handle, negotiate,
+        advocate, ensure or covered about insurance. Never suggest insurers drop homeowners over roof
+        age. Statute 326B.87 requires the license number BC807923 on advertising, so it goes on every
+        one of these pages.</p>
+        <p>Do not write the same page five times with the town name swapped. A search engine treats that
+        as one page and a reader can smell it.</p>
+        <p>Method: build one page first, show it to me, and only build the other four once I approve it.
+        After saving, clear the builder cache with a DELETE to /wp-json/elementor/v1/cache, fetch each
+        new address cache busted, and confirm it returns 200 with the town name in the page title. Then
+        add all five to the sitemap if Rank Math has not picked them up, and paste me the five live
+        addresses.</p>
+        <p>There is a deadline and it is real: postcards land in these five towns starting 15 September
+        2026.</p>
+      </div>
+      <div class="foot"><div class="status" id="st_town"></div></div>
+    </div>
+
+    <div class="fillrow">
+      <label for="t_urls">The five live addresses once they exist (paste them here, they travel back with any feedback)</label>
+      <textarea id="t_urls" placeholder="One per line, exactly as your Claude reports them."></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7 : Prove it landed ============ -->
+<section class="screen" data-t="Prove it landed">
+  <div class="card">
+    <h2>Prove it landed</h2>
+    <p class="lede">One instruction that checks every change on this walk at once, against the live
+      site rather than against anybody's word for it.
+      <a href="#" class="broke" data-step="Prove it landed">This step broke</a></p>
+
+    <p>Two things make a website change look done when it is not. The builder saves a change that the
+    visitor never sees, because a cached copy is being served in front of it. And a report says done
+    when what it means is saved. This step settles both, and it costs one paste.</p>
+
+    <div class="ask">
+      <div class="head"><span>Paste this into your Claude</span>
+        <button class="btn g copy" style="font-size:15.5px;padding:7px 14px" data-src="ask_proof" data-status="st_proof">Copy</button></div>
+      <div class="body" id="ask_proof">
+        <p>Website: toptiermn.com, behind a Cloudflare CDN, so add a random query string to every fetch.
+        Fetch the live public pages, not the API, and build me a table with one row per check, each row
+        saying pass or fail and showing the evidence you actually got.</p>
+        <p>One. https://toptiermn.com/robots.txt contains a line beginning with Sitemap:.</p>
+        <p>Two. The homepage footer links to /services/, /our-team/ and /faq/.</p>
+        <p>Three. The homepage HTML contains zero occurrences of google.com/maps/embed.</p>
+        <p>Four. The homepage footer still contains the license number BC807923, the phone number and the
+        street address.</p>
+        <p>Five. The homepage contains the words siding, gutter, storm and hail, with a count for each.</p>
+        <p>Six. Each of the five town pages returns 200 and has the town name in its title tag.</p>
+        <p>Seven. https://toptiermn.com/sitemap_index.xml returns 200 and the page sitemap under it
+        lists the five new town pages.</p>
+        <p>Eight. The footer menu still renders on a narrow screen. Check the markup and any responsive
+        rules rather than assuming, and if you cannot prove it from the HTML, say so plainly instead of
+        marking it pass.</p>
+        <p>Anything that fails, tell me what to do about it in one line. Do not fix anything in this
+        pass.</p>
+      </div>
+      <div class="foot"><div class="status" id="st_proof"></div></div>
+    </div>
+
+    <div class="good"><b>Then you are done with the website walk.</b> The Google Business Profile is the
+    other half of what a postcard recipient finds, and it is
+    <a href="profile_map_pack_260907.html">a separate walk</a>, because that console needs a person
+    signed in and no Claude can do it for you.</div>
+
+    <div class="note"><b>Keep this page.</b> The instructions on it are reusable. The next time the
+    site needs a change, the shape is the same every time: say what the site is, say what to change,
+    give the rule it must not break, clear the cache, then prove it from the live page.</div>
+  </div>
+</section>
+
+<!-- ============ 8 : Something wrong? ============ -->
+<section class="screen" data-t="Something wrong?">
+  <div class="card">
+    <h2>Something on this page wrong, unclear, or broken?</h2>
+    <p class="lede">Say so here and it comes straight back to be fixed.</p>
+
+    <label class="q" for="fstep">Which step</label>
+    <select id="fstep">
+      <option value="">Pick one</option>
+      <option>Start here</option>
+      <option>Already done</option>
+      <option>Your keys</option>
+      <option>The sitemap line</option>
+      <option>The footer</option>
+      <option>The services</option>
+      <option>The towns</option>
+      <option>Prove it landed</option>
+      <option>Something else</option>
+    </select>
+
+    <label class="q" for="fwhat">What happened, or what is wrong</label>
+    <textarea id="fwhat" placeholder="What you expected, what you got, and what the screen or your Claude said."></textarea>
+
+    <label class="q" for="fleft">What is still open on the website after this walk</label>
+    <textarea id="fleft">Anything your Claude refused or could not prove, and anything on the site that bothers you that is not on this page at all.</textarea>
+
+    <div style="display:flex; gap:12px; margin-top:20px; flex-wrap:wrap">
+      <button class="btn p" id="btnSend">Send this back</button>
+      <button class="btn s" id="btnCopy">Copy instead</button>
+    </div>
+    <div class="status" id="stForm"></div>
+  </div>
+</section>
+
+<div class="nav">
+  <button class="btn s" id="prev">Back</button>
+  <button class="btn p" id="next">Next</button>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var RECEIVER = "http://127.0.0.1:8788/submit";
+  var KEY = "toptier_websitewalk_260907";
+  var screens = [].slice.call(document.querySelectorAll(".screen"));
+  var rail = document.getElementById("rail");
+  var scroll = document.getElementById("scroll");
+  var cur = 0;
+
+  screens.forEach(function(s,i){
+    var b = document.createElement("button");
+    b.innerHTML = '<span class="n">'+(i+1)+'</span>'+s.dataset.t;
+    b.addEventListener("click", function(){ go(i); });
+    rail.appendChild(b);
+  });
+  var tabs = [].slice.call(rail.children);
+
+  function go(i){
+    if(i<0 || i>=screens.length) return;
+    cur = i;
+    screens.forEach(function(s,j){ s.classList.toggle("on", j===i); });
+    tabs.forEach(function(t,j){ t.classList.toggle("on", j===i); });
+    document.getElementById("prev").style.visibility = i===0 ? "hidden" : "visible";
+    document.getElementById("next").style.visibility = i===screens.length-1 ? "hidden" : "visible";
+    scroll.scrollTop = 0;
+    if(tabs[i].scrollIntoView) tabs[i].scrollIntoView({block:"nearest", inline:"center"});
+    gate();
+  }
+  document.getElementById("prev").addEventListener("click", function(){ go(cur-1); });
+  document.getElementById("next").addEventListener("click", function(){ go(cur+1); });
+
+  // ---- persisted values, and every mention fills itself in -----------------
+  var store = {};
+  try { store = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch(e){ store = {}; }
+
+  [].slice.call(document.querySelectorAll(".slot")).forEach(function(el){
+    el.dataset.ph = el.textContent;
+  });
+
+  function paint(){
+    [].slice.call(document.querySelectorAll(".slot")).forEach(function(el){
+      var k = el.dataset.slot, v = store[k];
+      if(v && String(v).trim()){ el.textContent = v; el.classList.remove("empty"); }
+      else { el.textContent = el.dataset.ph; el.classList.add("empty"); }
+    });
+  }
+
+  [].slice.call(document.querySelectorAll("input.fill, input[type=text], textarea, select"))
+    .forEach(function(el){
+      if(el.id && store[el.id] !== undefined && store[el.id] !== "") el.value = store[el.id];
+      el.addEventListener("input", function(){
+        if(el.id) store[el.id] = el.value;
+        try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){}
+        paint(); gate();
+      });
+    });
+
+  // ---- the one gate: the town instruction is not a specification until at
+  // ---- least one town carries a true local detail only Guy can supply.
+  function gate(){
+    var g = screens[cur] && screens[cur].dataset.gate;
+    var nx = document.getElementById("next");
+    var msg = document.getElementById("gateMsg");
+    if(!g){ nx.disabled = false; if(msg) msg.textContent=""; return; }
+    var ok = g.split(",").some(function(k){ return store[k] && String(store[k]).trim().length > 3; });
+    nx.disabled = !ok;
+    if(msg) msg.textContent = ok ? "" :
+      "Fill in at least one town detail above. Your Claude cannot invent a true local detail, and a page without one reads like every other roofer's.";
+  }
+
+  // ---- clipboard ----------------------------------------------------------
+  function copyText(txt, statusEl, msg){
+    function done(ok){
+      statusEl.textContent = ok ? (msg || "Copied.") : "Could not copy. Select it by hand.";
+      statusEl.className = "status " + (ok ? "ok" : "bad");
+      setTimeout(function(){ statusEl.textContent=""; statusEl.className="status"; }, 4000);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(function(){done(true);}, function(){done(false);});
+    } else {
+      var ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta);
+      ta.select(); var ok=false; try{ ok=document.execCommand("copy"); }catch(e){}
+      document.body.removeChild(ta); done(ok);
+    }
+  }
+
+  // every copy button carries data-src, the id of the block it copies
+  [].slice.call(document.querySelectorAll("button.copy")).forEach(function(b){
+    b.addEventListener("click", function(){
+      var src = document.getElementById(b.dataset.src);
+      var st = document.getElementById(b.dataset.status);
+      copyText(src.innerText.replace(/ /g," ").trim(), st, "Copied. Paste it into your Claude.");
+    });
+  });
+
+  // "this step broke" links jump to the form and preselect the step
+  [].slice.call(document.querySelectorAll("a.broke")).forEach(function(a){
+    a.addEventListener("click", function(e){
+      e.preventDefault();
+      var sel = document.getElementById("fstep");
+      if(sel) sel.value = a.dataset.step;
+      store.fstep = a.dataset.step;
+      try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e2){}
+      go(screens.length-1);
+    });
+  });
+
+  // ---- receiver -----------------------------------------------------------
+  function payload(){
+    return {
+      form: "TopTier-GuideFeedback-WebsiteWalk",
+      submittedAt: new Date().toISOString(),
+      answers: {
+        step: val("fstep"),
+        whatHappened: val("fwhat"),
+        whatIsLeft: val("fleft"),
+        wpUser: val("wpuser"),
+        footerDiagnosis: val("footerdiag"),
+        townAlbertville: val("t_alb"),
+        townStMichael: val("t_stm"),
+        townOtsego: val("t_ots"),
+        townMonticello: val("t_mon"),
+        townBuffalo: val("t_buf"),
+        townPageUrls: val("t_urls")
+      }
+    };
+  }
+  function val(id){ var e = document.getElementById(id); return e ? e.value : ""; }
+
+  function post(p, statusEl, okMsg){
+    statusEl.textContent = "Sending..."; statusEl.className = "status";
+    fetch(RECEIVER, {
+      method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(p)
+    }).then(function(r){
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      statusEl.textContent = okMsg; statusEl.className = "status ok";
+    }).catch(function(){
+      statusEl.textContent = "The receiver is not answering. Use Copy instead and paste it into chat.";
+      statusEl.className = "status bad";
+    });
+  }
+
+  document.getElementById("btnSend").addEventListener("click", function(){
+    post(payload(), document.getElementById("stForm"), "Sent. It will be picked up in chat.");
+  });
+  document.getElementById("btnCopy").addEventListener("click", function(){
+    copyText(JSON.stringify(payload(), null, 2), document.getElementById("stForm"),
+             "Copied. Paste it into chat.");
+  });
+
+  paint(); go(0);
+})();
+</script>
+</div>
+</body>
+</html>

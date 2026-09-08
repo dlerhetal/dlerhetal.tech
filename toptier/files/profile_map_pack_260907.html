@@ -1,0 +1,1108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Profile and the Map Pack</title>
+<style>
+  :root{
+    --blue:#1A3C6E; --gold:#FFCD00; --ink:#16202e; --mute:#5a6675;
+    --line:#d8dee7; --bg:#eef1f5; --ok:#1d7a44; --warn:#b3261e; --paper:#fff;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%}
+  body{
+    font-family:Calibri,"Segoe UI",system-ui,sans-serif;
+    font-size:19px; line-height:1.55; color:var(--ink); background:var(--bg);
+    overflow:hidden;
+  }
+  .shell{display:flex; flex-direction:column; height:100%}
+
+  header{background:var(--blue); color:#fff; padding:14px 26px; flex:0 0 auto}
+  header h1{margin:0; font-size:23px; letter-spacing:.2px}
+  header .sub{font-size:15px; opacity:.85; margin-top:2px}
+
+  .rail{display:flex; gap:0; background:#fff; border-bottom:1px solid var(--line);
+        flex:0 0 auto; overflow-x:auto}
+  .rail button{
+    appearance:none; border:0; background:transparent; font:inherit; font-size:14.5px;
+    padding:11px 15px; cursor:pointer; color:var(--mute); white-space:nowrap;
+    border-bottom:3px solid transparent;
+  }
+  .rail button:hover{background:#f4f7fb; color:var(--blue)}
+  .rail button.on{color:var(--blue); font-weight:700; border-bottom-color:var(--gold)}
+  .rail button .n{
+    display:inline-block; min-width:21px; height:21px; line-height:21px; text-align:center;
+    border-radius:50%; background:#e6ebf2; color:var(--blue); font-size:12.5px;
+    font-weight:700; margin-right:7px;
+  }
+  .rail button.on .n{background:var(--gold); color:#3a2c00}
+
+  .scroll{flex:1 1 auto; overflow-y:auto; padding:26px}
+  .wrap{max-width:1000px; margin:0 auto}
+
+  .screen{display:none}
+  .screen.on{display:block}
+
+  .card{background:var(--paper); border:1px solid var(--line); border-radius:8px;
+        padding:24px 26px; margin-bottom:18px}
+  .card > h2{margin:0 0 4px; font-size:25px; color:var(--blue)}
+  .card > .lede{color:var(--mute); margin:0 0 18px; font-size:17.5px}
+
+  h3{font-size:19.5px; color:var(--blue); margin:24px 0 8px}
+  h3:first-of-type{margin-top:6px}
+  p{margin:0 0 12px}
+  ul,ol{margin:0 0 12px; padding-left:24px}
+  li{margin-bottom:7px}
+
+  .prereq{background:#fffaf0; border:2px solid var(--gold); border-radius:8px;
+          padding:20px 24px; margin-bottom:18px}
+  .prereq h2{margin:0 0 10px; font-size:21px; color:#7a5c00}
+  .prereq ul{margin-bottom:0}
+
+  .manual{background:#eef3fa; border:2px solid var(--blue); border-radius:8px;
+          padding:20px 24px; margin-bottom:18px}
+  .manual h2{margin:0 0 8px; font-size:21px; color:var(--blue)}
+
+  .stop{background:#fdf2f1; border:2px solid var(--warn); border-radius:8px;
+        padding:18px 22px; margin:18px 0}
+  .stop h2,.stop h3{color:var(--warn); margin:0 0 8px}
+  .stop ol{margin-bottom:0}
+  .stop a.jump{color:var(--warn); font-weight:700}
+
+  .note{background:#f4f7fb; border-left:4px solid var(--blue); padding:13px 17px;
+        margin:14px 0; font-size:17.5px}
+  .good{background:#f2f9f5; border-left:4px solid var(--ok); padding:13px 17px; margin:14px 0}
+  .warnbox{background:#fdf2f1; border-left:4px solid var(--warn); padding:13px 17px; margin:14px 0}
+
+  blockquote{margin:12px 0; padding:11px 17px; background:#f7f9fc;
+             border-left:5px solid var(--gold); font-size:17.5px}
+
+  table{border-collapse:collapse; width:100%; margin:12px 0 16px; font-size:17px}
+  th,td{border:1px solid var(--line); padding:8px 11px; text-align:left; vertical-align:top}
+  th{background:var(--blue); color:#fff; font-weight:600}
+  tbody tr:nth-child(even){background:#f7f9fc}
+
+  a{color:#12508f}
+  a.urlbox{display:block; background:#f4f7fb; border:1px solid var(--line); border-radius:5px;
+           padding:9px 13px; font-family:Consolas,monospace; font-size:15.5px;
+           text-decoration:none; margin:8px 0; word-break:break-all}
+  a.urlbox:hover{background:#e8eff8; border-color:var(--blue)}
+
+  .fill{display:inline-block; border:2px dashed #b9c4d2; background:#fffdf3;
+        border-radius:5px; padding:5px 10px; font:inherit; font-size:17.5px; min-width:260px}
+  .fill:focus{outline:none; border-style:solid; border-color:var(--blue); background:#fff}
+  .fillrow{margin:12px 0}
+  .fillrow label{display:block; font-weight:700; color:var(--blue); margin-bottom:5px; font-size:17.5px}
+  .fillrow .hint{font-size:15.5px; color:var(--mute); margin-top:4px}
+  .slot{background:#fff6d6; border-bottom:2px solid var(--gold); padding:1px 7px;
+        font-weight:700; border-radius:3px}
+  .slot.empty{background:#f0f2f5; border-bottom-color:#c3ccd8; color:#8894a4;
+              font-weight:400; font-style:italic}
+
+  .ev{display:inline-block; font-size:14px; font-weight:700; border-radius:4px;
+      padding:1px 7px; vertical-align:1px; background:#eceff3; color:#4a5568}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+
+  .success{background:#f2f9f5; border:1px solid #bfe0cc; border-radius:7px; padding:14px 16px; margin:14px 0}
+  .failure{background:#fdf2f1; border:1px solid #eecac7; border-radius:7px; padding:14px 16px; margin:14px 0}
+  .success b{color:var(--ok)} .failure b{color:var(--warn)}
+
+  label.q{display:block; font-weight:700; margin:18px 0 6px; color:var(--blue)}
+  textarea{width:100%; font:inherit; font-size:17.5px; padding:11px 13px;
+           border:1px solid #b9c4d2; border-radius:6px; min-height:96px; resize:vertical}
+  select,input[type=text]{font:inherit; font-size:17.5px; padding:8px 11px;
+           border:1px solid #b9c4d2; border-radius:6px}
+  textarea:focus,select:focus,input:focus{outline:2px solid var(--gold); outline-offset:1px}
+
+  .btn{appearance:none; border:0; border-radius:6px; font:inherit; font-weight:700;
+       font-size:17.5px; padding:12px 22px; cursor:pointer}
+  .btn.p{background:var(--blue); color:#fff}
+  .btn.p:hover{background:#14304f}
+  .btn.s{background:#fff; color:var(--blue); border:2px solid var(--blue); padding:10px 20px}
+  .btn.s:hover{background:#f2f6fb}
+
+  .broke{display:inline-block; margin:14px 0 0; font-size:16px; font-weight:700;
+         color:var(--warn); cursor:pointer; background:#fdf2f1; border:1px solid #eecac7;
+         border-radius:5px; padding:6px 12px; text-decoration:none}
+  .broke:hover{background:#fae6e4}
+
+  .nav{display:flex; justify-content:space-between; gap:12px; padding:4px 0 30px}
+  .status{font-size:16px; margin-top:10px; min-height:22px}
+  .status.ok{color:var(--ok); font-weight:700}
+  .status.bad{color:var(--warn); font-weight:700}
+
+  footer.pg{margin-top:10px; padding-top:14px; border-top:2px solid var(--line);
+            color:var(--mute); font-size:15.5px}
+
+  @media print{
+    body{overflow:visible; background:#fff; font-size:11pt}
+    .rail,.nav,header,.broke{display:none}
+    .scroll{overflow:visible; padding:0}
+    .screen{display:block !important; page-break-after:always}
+    .card{border:1px solid #ccc; padding:10pt 12pt}
+    .card,.prereq,.stop,.note,.good,.warnbox,blockquote,table{break-inside:avoid}
+  }
+  body{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<header>
+  <h1>The Profile and the Map Pack</h1>
+  <div class="sub">Top Tier Roofing &amp; Remodeling, LLC &middot; a hands-on walk through the Google Business Profile</div>
+</header>
+
+<nav class="rail" id="rail"></nav>
+
+<div class="scroll" id="scroll">
+<div class="wrap">
+
+<!-- ============ 0: START HERE ============ -->
+<section class="screen on" data-t="Start here">
+
+  <div class="manual">
+    <h2>This one is manual, and that is deliberate</h2>
+    <p>Most of the work on this engagement can be built, checked or fixed without anybody sitting at a
+    keyboard clicking through screens. <b>This one cannot.</b> The Google Business Profile console only
+    opens for a human who is signed in to the Google account that owns the listing. There is no way to
+    hand that off, no shared login to borrow, and nothing that can sit in that chair on your behalf.</p>
+    <p style="margin:0"><b>So this guide is written differently from the others.</b> It is literal:
+    go here, click that, this is what the screen should say, this is what it looks like when it went
+    wrong. Every value you discover along the way gets typed into a box on this page, and every later
+    step fills itself in from what you typed.</p>
+  </div>
+
+  <div class="prereq">
+    <h2>Before you start</h2>
+    <ul>
+      <li><b>Who does this:</b> one person, Guy, at a computer. Not a phone job. The profile can be
+      edited from a phone but the categories and services screens are much easier on a full screen.</li>
+      <li><b>What you must have:</b> a browser, and you must already be <b>signed in to the Google
+      account that owns the Top Tier listing</b>. Not any Google account. The one with ownership.</li>
+      <li><b>If you are not the owner of the listing, this stops here.</b> If the screens below show
+      you nothing to edit, or show somebody else's business, then the listing is owned by another
+      Google account, most likely one held by a past or present marketing vendor. Nothing further on
+      this page can be done until whoever holds that account either transfers ownership to you or
+      makes your account a manager. That is a phone call to a person, not a setting. Step 1 tells you
+      exactly what that screen looks like so you can tell the difference.</li>
+      <li><b>How long:</b> about 15 minutes to read. About 30 to 45 minutes of clicking if the profile
+      is already yours, spread over the seven steps. The photographs step is open ended, and the two
+      extra listings at the end are about 15 minutes each.</li>
+      <li><b>Nothing here costs money.</b> Every item in this guide is free.</li>
+    </ul>
+  </div>
+
+  <div class="stop">
+    <h2>Three things not to press, and where each one bites</h2>
+    <p>The forbidden button is usually the first one anybody naturally presses. These are the three on
+    this page. Read them now, before you are in the console with the mouse moving.</p>
+    <ol>
+      <li><b>Do not add a town or a service word to the business name.</b> Not "Top Tier Roofing
+      Albertville", not "Top Tier Roofing and Siding". Google's rule is that unnecessary words in the
+      name can get the whole profile suspended, and the profile is what feeds the map pack. The name
+      box is the easiest field on the screen to type in, which is exactly the problem.
+      <a class="jump" data-go="5" href="#">Go to the name step</a></li>
+      <li><b>Do not delete a category to make room.</b> Categories are additive. If a category is
+      wrong, the fix is to change the primary and add the right additional ones. Deleting the wrong
+      one silently removes the searches you were being shown for, and nothing on screen tells you what
+      you lost. <a class="jump" data-go="2" href="#">Go to the categories step</a></li>
+      <li><b>Do not put a phone number in a profile post.</b> Google calls it phone stuffing and it is
+      explicitly prohibited. The post gets a "Call now" button that uses the verified number anyway.
+      This bites hardest the week the mail lands, because a phone number is exactly what you want to
+      type. <a class="jump" data-go="6" href="#">Go to the posts step</a></li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>Why this is worth an afternoon</h2>
+    <p class="lede">The map pack is the three businesses Google shows above the ordinary results when
+    somebody searches for a roofer near them. It is the most valuable free space in local search.</p>
+
+    <p>Google names exactly three things that decide who appears there: <b>relevance</b>, meaning how
+    well the profile matches what was searched, <b>distance</b> from the searcher, and
+    <b>prominence</b>, which is largely reviews. <span class="ev">[vendor]</span> Distance you cannot
+    change. Reviews are a separate piece of work already under way. <b>Relevance is what this page is
+    about, and it is the part nobody looks at.</b></p>
+
+    <blockquote>"There's no way to request or pay for a better local ranking on Google."
+    <br><span style="font-size:15.5px;color:#5a6675">Google Business Profile Help, local ranking</span></blockquote>
+
+    <h3>There is one hard date attached to this</h3>
+    <p><b>Drop 1 of the direct mail campaign was released on 7 September 2026 and lands in homes
+    between 15 and 22 September 2026</b>, in Albertville, St Michael, Otsego, Monticello and Buffalo.
+    A person who gets a postcard and is mildly curious looks the company up before they call. What
+    they find is the profile and the map pack. That is the only deadline on this page.</p>
+
+    <h3>What this guide covers, in the order worth doing it</h3>
+    <table>
+      <thead><tr><th style="width:26%">Step</th><th>Why it is in this position</th></tr></thead>
+      <tbody>
+        <tr><td><b>1. Get into the profile</b></td><td>Everything else depends on it, and it is also
+          the step that can stop the whole job if the listing is owned elsewhere.</td></tr>
+        <tr><td><b>2. Categories</b></td><td>The strongest ranking signal the profile has, and the one
+          field no searcher ever sees.</td></tr>
+        <tr><td><b>3. The services list</b></td><td>The only other profile field Google documents as
+          affecting what a business gets shown for.</td></tr>
+        <tr><td><b>4. Name, address, phone</b></td><td>Three places have to agree, character for
+          character. This is a checking job, not a typing job.</td></tr>
+        <tr><td><b>5. The name itself</b></td><td>Two minutes, and it protects everything above it
+          from being switched off.</td></tr>
+        <tr><td><b>6. Posts</b></td><td>The thing to do the week the mail lands, and the place where
+          two rules bite hardest.</td></tr>
+        <tr><td><b>7. Photographs</b></td><td>The cheapest credibility available, and most competitors
+          neglect it.</td></tr>
+        <tr><td><b>8. Bing and Apple</b></td><td>Two more free listings. Apple Maps is what every
+          iPhone opens.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <a class="broke" data-go="9" data-step="Start here" href="#">This step broke</a>
+
+  <footer class="pg">
+    Top Tier Roofing &amp; Remodeling, LLC &middot; 11440 County Road 37 NE, Albertville, MN 55301
+    &middot; 612-205-5503 &middot; MN License BC807923
+  </footer>
+</section>
+
+<!-- ============ 1: GET IN ============ -->
+<section class="screen" data-t="1. Get into the profile">
+  <div class="card">
+    <h2>Step 1. Get into the profile, and prove it is the right one</h2>
+    <p class="lede">Two minutes. The point of this step is not to change anything. It is to find out
+    whether you can.</p>
+
+    <h3>Do this</h3>
+    <ol>
+      <li>Open a browser and go to the Business Profile manager:
+        <a class="urlbox" href="https://business.google.com/" target="_blank" rel="noopener">https://business.google.com/</a></li>
+      <li>Look at the top right corner of the screen. There is a circle with a letter or a photograph
+      in it. That is the Google account you are signed in as. Click it and read the email address.</li>
+      <li>Type that email address in here so the rest of this page knows which account did the work:
+        <div class="fillrow">
+          <label for="gAccount">The Google account you are signed in as</label>
+          <input class="fill" type="text" id="gAccount" placeholder="name@example.com">
+          <div class="hint">If you are signed in as more than one account, this is the one showing at
+          the top of the account list when the profile appears.</div>
+        </div></li>
+      <li>You should now see Top Tier listed. Open it.</li>
+    </ol>
+
+    <div class="success"><b>What success looks like.</b> The business appears with editable buttons
+    across the top of it: Edit profile, Read reviews, Messages, Photos, and so on. You can click Edit
+    profile and the fields are live, not grayed out.</div>
+
+    <div class="failure"><b>What failure looks like, and what each kind means.</b>
+      <ul style="margin-bottom:0">
+        <li><b>"Add your business to Google" and nothing else.</b> This account does not own or manage
+        the listing. It exists, because it shows on the public map, so it belongs to somebody else's
+        Google account.</li>
+        <li><b>You can see the business but every field is grayed out.</b> You have a limited role, not
+        ownership. Whoever is the primary owner has to promote your account.</li>
+        <li><b>"This business is already claimed" with a partly hidden email address.</b> That partial
+        address is the clue to who holds it. Google offers a "Request access" button on that screen,
+        which sends a message to the current owner and starts a waiting period.</li>
+      </ul>
+    </div>
+
+    <div class="warnbox"><b>If any of those three appear, this job stops here and becomes a
+    conversation with another person.</b> Note which one you saw in the box below and send it back
+    using the last screen of this guide. Every remaining step on this page needs an account that can
+    edit, and there is no way around that.</div>
+
+    <div class="fillrow">
+      <label for="accessState">What you actually saw on the screen</label>
+      <input class="fill" type="text" id="accessState" placeholder="For example: fully editable, or grayed out, or already claimed">
+    </div>
+
+    <h3>Prove it is the right listing</h3>
+    <p>Before you change anything, confirm the profile you are editing is the one the public actually
+    sees. This address opens the live listing as a searcher sees it:</p>
+    <a class="urlbox" href="https://maps.google.com/?cid=16824621854846847230" target="_blank" rel="noopener">https://maps.google.com/?cid=16824621854846847230</a>
+    <p>Open that in a second tab and keep it. Through the rest of this guide it is how you check that
+    an edit actually took, because the console shows you what you typed and this shows you what the
+    world got. Edits usually appear here within minutes, though some go through a review first.
+    <span class="ev">[unconfirmed]</span></p>
+
+    <div class="note"><b>Write nothing down on paper anywhere in this guide.</b> Every value you find
+    has a box on the screen next to where you find it, and this page remembers what you type between
+    sessions on the same computer.</div>
+
+    <a class="broke" data-go="9" data-step="1. Get into the profile" href="#">This step broke</a>
+  </div>
+</section>
+
+<!-- ============ 2: CATEGORIES ============ -->
+<section class="screen" data-t="2. Categories">
+  <div class="card">
+    <h2>Step 2. Categories, primary and additional</h2>
+    <p class="lede">This is the field nobody sees but Google. A searcher never sees it. It is the
+    strongest ranking signal the profile has, and a wrong primary category loses the map pack quietly,
+    with nothing on screen to tell you.</p>
+
+    <h3>What primary and additional actually do</h3>
+    <table>
+      <thead><tr><th style="width:22%">Field</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><b>Primary category</b></td>
+          <td>You get exactly one. It is the single strongest statement the profile makes about what
+          this business is, and it carries far more weight than any of the others. When somebody
+          searches for a roofer, this is the field that decides whether Top Tier is even in the pool
+          of candidates before distance and reviews sort them.</td></tr>
+        <tr><td><b>Additional categories</b></td>
+          <td>You get several. Each one adds another kind of search the profile can be considered for.
+          They are worth much less than the primary one individually, but they are how the other
+          things the company does become findable at all. There is no cost to a correct additional
+          category and no benefit to a stretched one.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note"><b>The rule that governs both.</b> Google's guidelines say plainly:
+    <blockquote style="margin-bottom:0">"Do not use categories solely as keywords or to describe
+    attributes of your business."</blockquote>
+    <div style="font-size:15.5px;color:#5a6675;margin-top:6px">Google Business Profile guidelines,
+    article 3038177</div>
+    In practice that means a category is picked because it is a thing the company does, from Google's
+    fixed list. It is not a place to put words you want to rank for.</div>
+
+    <h3>Do this. Record before you change.</h3>
+    <ol>
+      <li>In the profile, click <b>Edit profile</b>.</li>
+      <li>On the <b>About</b> tab, find <b>Business category</b>. It shows the primary category first,
+      then any additional ones underneath it.</li>
+      <li><b>Read what is there now and type it into these boxes before you touch anything.</b> If a
+      change turns out to be wrong, this is the only record of what it used to be.
+        <div class="fillrow">
+          <label for="catPrimary">The primary category as it reads today</label>
+          <input class="fill" type="text" id="catPrimary" placeholder="Exactly as shown on screen">
+        </div>
+        <div class="fillrow">
+          <label for="catAdditional">Every additional category as it reads today</label>
+          <input class="fill" type="text" id="catAdditional" style="min-width:520px" placeholder="Separate them with commas">
+        </div>
+      </li>
+      <li>Now decide whether the primary is right. The test is simple and it is not a marketing
+      question: <b>when a stranger with a problem searches, what is the one word they use for the
+      business that solves it?</b> The primary category should be that. You know your customers and
+      you know what they call you. The field is a dropdown with a fixed list, so type the first few
+      letters and take the closest genuine match.</li>
+      <li>Then look at the additional categories against the work the company actually sells. Roofing,
+      siding, gutters, and storm and hail work are all real lines of business here, and each one has
+      customers who search for it by its own name. Anything the company genuinely does and gets paid
+      for is a candidate. Anything it does not do is not.</li>
+      <li>Click <b>Save</b>.</li>
+    </ol>
+
+    <div class="warnbox"><b>The landmine on this screen.</b> Do not delete a category to make room for
+    a new one. Additional categories are additive, and there is room for several. Deleting one removes
+    the searches the profile was being considered for, and nothing on screen reports what was lost. If
+    something is wrong, change the primary and add what is missing. Only remove a category that
+    describes work the company does not do.</div>
+
+    <div class="success"><b>What success looks like.</b> The About tab shows one primary category and
+    a short list of additional ones, every one of them a real line of business, and none of them
+    containing a town name.</div>
+
+    <div class="failure"><b>What failure looks like.</b> The save button grays out and nothing
+    happens, which usually means the account has a view-only role. Or the category you want is not in
+    the list at all, which means Google does not have one for it. There is no way to add your own, and
+    the correct move is to take the closest real match rather than a stretched one.</div>
+
+    <div class="fillrow">
+      <label for="catAfter">What the categories say after you finished</label>
+      <input class="fill" type="text" id="catAfter" style="min-width:520px" placeholder="Primary first, then the additional ones">
+    </div>
+
+    <a class="broke" data-go="9" data-step="2. Categories" href="#">This step broke</a>
+  </div>
+</section>
+
+<!-- ============ 3: SERVICES ============ -->
+<section class="screen" data-t="3. The services list">
+  <div class="card">
+    <h2>Step 3. The services list</h2>
+    <p class="lede">After the town pages on the website, this is the highest value item on the whole
+    walk list. It is the only other profile field Google documents as affecting what a business gets
+    shown for, and most contractors leave it half filled in.</p>
+
+    <blockquote>"When local customers search Google for an offering you provide, that service may be
+    highlighted on your profile."
+    <br><span style="font-size:15.5px;color:#5a6675">Google Business Profile Help, services, article 9455399</span></blockquote>
+
+    <p>That sentence is the whole reason this step exists. Google makes no equivalent statement about
+    the description, the products, or the posts. Effort spent rewriting the description is effort
+    spent on a field with no documented effect. Effort spent here is not.</p>
+
+    <h3>Do this</h3>
+    <ol>
+      <li>In <b>Edit profile</b>, open the <b>Services</b> tab.</li>
+      <li>Google offers a list of suggested services attached to your categories. Turn on every one
+      that Top Tier genuinely does. This is the fast part and it is worth doing first, because these
+      are the names Google already recognizes.</li>
+      <li>Then add custom services for anything real that the suggested list missed. There is an
+      <b>Add custom service</b> option at the bottom of the list.</li>
+      <li>Name each one <b>the way a customer would say it out loud</b>, not the way the trade says
+      it. The person searching is a homeowner with a problem, not a roofer.</li>
+      <li>Cover all four lines of business, not just the first one. Roofing, siding, gutters, and
+      storm and hail work each have their own customers searching their own words.</li>
+      <li>Click <b>Save</b>.</li>
+    </ol>
+
+    <div class="warnbox"><b>What may not go in a custom service name.</b> Google's own wording:
+    <blockquote style="margin-bottom:0">"Avoid including profanity, gibberish, personal information,
+    prices, or phone numbers in custom service names."</blockquote>
+    <div style="font-size:15.5px;color:#5a6675;margin-top:6px">Google Business Profile Help, article 9455399</div>
+    So no prices in a service name, and no phone number. A price belongs on the website where it can
+    carry its own conditions.</div>
+
+    <div class="note"><b>Do not stuff it.</b> A services list is not a keyword box. Fifty entries that
+    are variations of the same four things reads as manipulation, and it is the same instinct the
+    category rule already forbids. Every service you offer, named once, in plain words. That is the
+    whole target.</div>
+
+    <div class="success"><b>What success looks like.</b> The Services tab lists every line of work the
+    company sells, in words a homeowner would use, and somebody who does not work here could read the
+    list and correctly describe what the business does.</div>
+
+    <div class="failure"><b>What failure looks like.</b> A custom service is rejected on save. The
+    usual cause is a price, a phone number or a web address inside the name. Take it out and save
+    again.</div>
+
+    <div class="fillrow">
+      <label for="svcCount">How many services are on the list when you have finished</label>
+      <input class="fill" type="text" id="svcCount" placeholder="A number">
+    </div>
+    <div class="fillrow">
+      <label for="svcMissing">Anything you wanted to add and Google would not accept</label>
+      <input class="fill" type="text" id="svcMissing" style="min-width:520px" placeholder="Leave blank if there was none">
+    </div>
+
+    <a class="broke" data-go="9" data-step="3. The services list" href="#">This step broke</a>
+  </div>
+</section>
+
+<!-- ============ 4: NAP ============ -->
+<section class="screen" data-t="4. Name, address, phone">
+  <div class="card">
+    <h2>Step 4. Name, address and phone, in four places</h2>
+    <p class="lede">This is a checking job, not a typing job. Four sources have to agree, and three of
+    them already disagree. Most of what follows is already filled in from records held on file, so your
+    part is confirming rather than typing.</p>
+
+    <h3>The four places</h3>
+    <table>
+      <thead><tr><th style="width:30%">Source</th><th>Why it counts</th></tr></thead>
+      <tbody>
+        <tr><td><b>The Google Business Profile</b></td>
+          <td>What feeds the map pack, and what a person sees after they get a postcard and search the
+          name.</td></tr>
+        <tr><td><b>The website, what a person reads</b></td>
+          <td>The footer. Where a search engine goes to confirm the profile is telling the truth.</td></tr>
+        <tr><td><b>The website, what a machine reads</b></td>
+          <td>Every page also carries a hidden block of business information written for search
+          engines. Nobody sees it, and it does not have to agree with the footer above it. On this
+          site it does not.</td></tr>
+        <tr><td><b>The Minnesota Secretary of State record</b></td>
+          <td>The filed legal name. It is the one source that cannot be edited casually, so when they
+          disagree, this is the one that anchors the argument.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>The facts that are already settled</h3>
+    <div class="good">
+      <p style="margin-bottom:8px"><b>The address is 11440 County Road 37 NE, Albertville, MN 55301.</b>
+      That is the office and it is the only address. There is an older address on some historic
+      paperwork. It is closed, it is settled, and it is not a question. If the profile shows anything
+      else, the profile is what changes.</p>
+      <p style="margin:0"><b>The phone is 612-205-5503</b> and <b>the license number is BC807923.</b>
+      Minnesota law requires the license number on every piece of advertising, so it belongs in the
+      profile description and on the website whether or not it affects ranking.</p>
+    </div>
+
+    <h3>The name is the genuinely open question</h3>
+    <p>Three spellings of the company name are in use across those four sources, and all three are
+    real:</p>
+    <table>
+      <thead><tr><th style="width:44%">Spelling</th><th>Where it comes from</th></tr></thead>
+      <tbody>
+        <tr><td><b>Top Tier Roofing and Remodeling LLC</b></td>
+          <td>The spelling on the Secretary of State filing, with the word "and" written out.</td></tr>
+        <tr><td><b>Top Tier Roofing &amp; Remodeling, LLC</b></td>
+          <td>The way the company writes itself, with an ampersand and a comma.</td></tr>
+        <tr><td><b>Top Tier Roofing LLC</b></td>
+          <td>What the website's hidden business information block gives as the legal name, on every
+          page. The same block gives the display name as "Top Tier Roofing &amp; Remodeling", so the
+          site disagrees with itself in two fields sitting next to each other.</td></tr>
+      </tbody>
+    </table>
+    <p><b>This guide is not going to tell you which one is right.</b> That is a decision about your own
+    company, and it needs all four sources in front of you before anybody makes it. The last screen of
+    this guide asks you the question directly.</p>
+
+    <div class="note"><b>The hidden block on the website is a separate fix and it is not this
+    guide.</b> It is handled in the website walk wizard:
+    <a href="website_walk_wizard_260907.html" target="_blank" rel="noopener">website_walk_wizard_260907.html</a>.
+    Do not try to change it from here. What matters on this screen is that the name you settle on is
+    the name that ends up in all four places.</div>
+
+    <h3>Do this. Two lookups and one confirmation.</h3>
+
+    <p><b>First, the profile.</b> In <b>Edit profile</b>, the <b>About</b> tab, the top field is
+    <b>Business name</b>. Copy it exactly as it reads, punctuation and all.</p>
+    <div class="fillrow">
+      <label for="napGoogle">The name exactly as the Google Business Profile shows it</label>
+      <input class="fill" type="text" id="napGoogle" style="min-width:520px" placeholder="Character for character, including any comma or ampersand">
+    </div>
+
+    <p><b>Second, the website footer.</b> Open the site in another tab and read the footer at the
+    bottom of the page, which is where the legal name and license normally sit.</p>
+    <div class="fillrow">
+      <label for="napWeb">The name exactly as the website footer shows it</label>
+      <input class="fill" type="text" id="napWeb" style="min-width:520px" placeholder="Character for character">
+    </div>
+
+    <p><b>Third, the Secretary of State. This one is already on file, so there is nothing to type.</b>
+    The filing was pulled from the state portal in a browser session and recorded on
+    <b>22 to 23 August 2026</b>. Here is what it said that day:</p>
+
+    <table>
+      <thead><tr><th style="width:34%">Field on the filing</th><th>What it said</th></tr></thead>
+      <tbody>
+        <tr><td><b>Name</b></td><td><b>Top Tier Roofing and Remodeling LLC</b></td></tr>
+        <tr><td>File number</td><td>1474415300035</td></tr>
+        <tr><td>Business type</td><td>Limited Liability Company (Domestic), MN Statute 322C</td></tr>
+        <tr><td>Filing date</td><td>5/15/2024</td></tr>
+        <tr><td><b>Status</b></td><td><b>Active / In Good Standing</b></td></tr>
+        <tr><td>Renewal due</td><td>12/31/2026</td></tr>
+        <tr><td>Registered agent</td><td>Guy Richard Saxby</td></tr>
+        <tr><td>Registered office</td><td>11440 County Road 37 NE, Albertville, MN 55301</td></tr>
+        <tr><td>Principal executive office</td><td>11440 County Road 37 NE, Albertville, MN 55301</td></tr>
+      </tbody>
+    </table>
+
+    <p><b>Your job here is to confirm it still reads that way, not to copy it out.</b> Records change,
+    and that capture is dated. The filing itself opens here:</p>
+    <a class="urlbox" href="https://mblsportal.sos.mn.gov/Business/SearchDetails?filingGuid=57473848-da12-ef11-9081-00155d01c440" target="_blank" rel="noopener">https://mblsportal.sos.mn.gov/Business/SearchDetails?filingGuid=57473848-da12-ef11-9081-00155d01c440</a>
+    <p>If that deep link no longer opens, the general Minnesota business search is here and you can
+    find the company by name:</p>
+    <a class="urlbox" id="sosLink" href="https://mblsportal.sos.mn.gov/Business/Search" target="_blank" rel="noopener">https://mblsportal.sos.mn.gov/Business/Search</a>
+    <div class="fillrow">
+      <label for="sosUrl">If the search has moved, the address that works</label>
+      <input class="fill" type="text" id="sosUrl" style="min-width:520px" placeholder="Leave blank if the link above worked">
+    </div>
+
+    <div class="fillrow">
+      <label for="sosConfirm">Does the filing still read the way the table above says</label>
+      <select id="sosConfirm">
+        <option value="">Not checked yet</option>
+        <option>Confirmed, everything matches the table</option>
+        <option>Something has changed, see the box below</option>
+        <option>Could not open the record</option>
+      </select>
+      <div class="hint">One reason this is worth two minutes: the renewal is due 12/31/2026. A filing
+      that lapses stops reading Active, and that is a thing worth catching here rather than later.</div>
+    </div>
+    <div class="fillrow">
+      <label for="sosCorrections">Anything that has changed, or anything the record says that the table does not</label>
+      <input class="fill" type="text" id="sosCorrections" style="min-width:520px" placeholder="Leave blank if nothing changed">
+    </div>
+
+    <h3>Now compare, with all four in front of you</h3>
+    <div class="card" style="background:#f7f9fc;margin-bottom:0">
+      <p style="margin-bottom:6px"><b>Google says:</b> <span class="slot empty" data-slot="napGoogle">not filled in yet</span></p>
+      <p style="margin-bottom:6px"><b>The website footer says:</b> <span class="slot empty" data-slot="napWeb">not filled in yet</span></p>
+      <p style="margin-bottom:6px"><b>The website's hidden block says:</b> Top Tier Roofing LLC</p>
+      <p style="margin-bottom:6px"><b>The state record says:</b> Top Tier Roofing and Remodeling LLC</p>
+      <p style="margin:0"><b>The address on the state record:</b> 11440 County Road 37 NE, Albertville, MN 55301</p>
+    </div>
+
+    <div class="note" style="margin-top:16px"><b>What "matching" means to a machine.</b> Same name,
+    same address, same phone, everywhere, character for character. A search engine comparing two
+    listings is not reading for meaning. It is comparing strings. This is what the word "consistent"
+    actually means in this context, and it is the only reason the punctuation matters at all.</div>
+
+    <div class="warnbox"><b>Before changing the name anywhere, read the next step.</b> The name field
+    carries a suspension risk that the address and phone fields do not, so it gets a step of its own.</div>
+
+    <div class="success"><b>What success looks like.</b> Four strings that read the same, and an
+    address that reads 11440 County Road 37 NE, Albertville, MN 55301 in all of them. Today it is four
+    strings and three of them differ, so the honest version of success on this screen is that the
+    disagreement is now visible and the decision is on the table.</div>
+
+    <div class="failure"><b>What failure looks like.</b> The deep link opens a different filing, or the
+    portal will not load at all. Mark it "Could not open the record" above and say so on the last
+    screen. Do not guess at what the filing says.</div>
+
+    <a class="broke" data-go="9" data-step="4. Name, address, phone" href="#">This step broke</a>
+  </div>
+</section>
+
+<!-- ============ 5: THE NAME ============ -->
+<section class="screen" data-t="5. The name itself">
+  <div class="card">
+    <h2>Step 5. The business name, and the suspension risk</h2>
+    <p class="lede">Two minutes, and it protects everything in the four steps above it.</p>
+
+    <div class="stop">
+      <h3>Google's own words</h3>
+      <blockquote style="margin-bottom:8px">"Including unnecessary information in your business name
+      isn't permitted, and could result in the <b>suspension</b> of your Business Profile."</blockquote>
+      <div style="font-size:15.5px">Google Business Profile guidelines, article 3038177. Google's own
+      published example of a banned name is "Auto Service Experts".</div>
+    </div>
+
+    <p>That example matters, because it is exactly the same shape as adding a service word or a town
+    to a real name. The industry habit of writing "Top Tier Roofing Albertville" into the name box is
+    not a clever edge. It is the specific thing the rule names, and the penalty is not a ranking
+    demotion. It is the loss of the profile that feeds the map pack.</p>
+
+    <div class="good"><b>The real name is safe.</b> The company's actual name, whichever of the two
+    spellings you settled on in the previous step, is by definition permitted. It is the real world
+    name of the business. The upside of adding an extra word is small and undocumented. The downside
+    is losing everything.</div>
+
+    <h3>Do this</h3>
+    <ol>
+      <li>In <b>Edit profile</b>, <b>About</b> tab, look at the <b>Business name</b> field.</li>
+      <li>Check there is <b>no town name</b> in it. No Albertville, no St Michael, none of the five
+      towns the mail is going to.</li>
+      <li>Check there is <b>no service word</b> in it beyond what is genuinely part of the company
+      name. No added "Siding", no added "Storm Damage", no added "Contractors".</li>
+      <li>Check there is no slogan, no phone number and no web address in it.</li>
+      <li>If it is clean, change nothing and move on. If it is not, remove the extra words and
+      save.</li>
+    </ol>
+
+    <div class="note"><b>If you have to correct it, expect a delay.</b> A change to the business name
+    often goes into a review queue rather than taking effect immediately, and the profile can show
+    "pending" for a while. That is normal and it is not a sign anything is wrong.
+    <span class="ev">[unconfirmed]</span></div>
+
+    <div class="fillrow">
+      <label for="nameState">Was the name clean, or did it need correcting</label>
+      <input class="fill" type="text" id="nameState" style="min-width:520px" placeholder="Clean, or what you removed">
+    </div>
+
+    <a class="broke" data-go="9" data-step="5. The name itself" href="#">This step broke</a>
+  </div>
+</section>
+
+<!-- ============ 6: POSTS ============ -->
+<section class="screen" data-t="6. Posts">
+  <div class="card">
+    <h2>Step 6. A post, and what the thing is actually called</h2>
+    <p class="lede">The place on the profile where you add a photograph, a piece of news, or something
+    like a note about a finished job.</p>
+
+    <h3>The name of the thing</h3>
+    <p><b>It is called a Post.</b> That is the word Google uses in its own help documentation and in
+    its policies. <b>In the current console the button is labeled "Add update"</b>, and the section is
+    called Updates. Same feature, two names, and the mismatch is why it is hard to find when somebody
+    tells you to "post something".</p>
+    <p><b>If you cannot find that exact wording, you are not in the wrong place.</b> Depending on
+    which account you are signed in as and whether you are in the console, in search results or on a
+    phone, the button reads <b>"Add update"</b> or <b>"Create post"</b>. Both open the same thing.
+    <span class="ev">[unconfirmed]</span></p>
+
+    <div class="note"><b>Where it lives.</b> Open the profile and look at the row of buttons across the
+    top: Edit profile, Read reviews, Messages, Photos, and among them <b>Add update</b>. That is the
+    one. From a phone the same feature sits under a Promote or Updates heading. If the row of buttons
+    is not visible you are on the public view of the listing rather than the console, which means going
+    back to <a class="jump" data-go="1" href="#">step 1</a>.</div>
+
+    <div class="stop">
+      <h3>Two rules that bite here, and one that follows you everywhere</h3>
+
+      <p><b>1. Never put a phone number in a post.</b> Google calls it phone stuffing:</p>
+      <blockquote>"To avoid the risk of abuse, we do not allow your post content to include a phone
+      number. Instead, you can attach a 'Call now' button to your post."
+      <br><span style="font-size:15.5px;color:#5a6675">Google Business Profile Help, posts, article 7213077</span></blockquote>
+      <p>The Call now button uses the verified number on the profile anyway, so nothing is lost. This
+      is the single most likely mistake the week the mail lands, because the postcard has a phone
+      number on it and the instinct is to make the post match the card.</p>
+
+      <p><b>2. Never post your own question and then answer it.</b> Answering a real customer's
+      question is a proper feature of the profile and it is worth doing every time one appears.
+      Seeding your own falls under Google's fake engagement rule, which covers content posted from
+      multiple accounts by or at the request of one person. <b>Frequently asked questions belong on
+      the website instead</b>, where they are entirely yours and carry no risk at all.</p>
+
+      <p style="margin-bottom:0"><b>3. You may not ask for specific content in a review.</b> This one
+      is not about posts, it is about every conversation the company has with a customer, and it is
+      the one most likely to be violated by accident because it is standard advice everywhere else.
+      Google prohibits a merchant asking a customer to include specific content in a review: naming a
+      staff member, naming a service, or naming a town. That went live on 16 February 2026. <b>It bans
+      the ask, not the review.</b> A customer who writes "Guy came out and did a great job" of their
+      own accord has broken nothing, and the review is fine. Asking them to write it is the
+      violation. So the ask is simply an ask for an honest review, with no shopping list attached.</p>
+    </div>
+
+    <h3>Do this</h3>
+    <ol>
+      <li>Click <b>Add update</b>.</li>
+      <li>Write two or three plain sentences about something real. A finished job, a service now
+      running, a seasonal note. It does not need to be clever and it does not need to sell.</li>
+      <li>Attach a photograph if you have one for it.</li>
+      <li><b>Attach the Call now button</b> rather than typing the number.</li>
+      <li>Post it.</li>
+    </ol>
+
+    <h3>The cadence, which matters more than any single post</h3>
+    <p>A profile that posted once and stopped looks abandoned to a person reading it, which is the
+    audience that counts here. Google documents no ranking effect from posts at all, so the reason to
+    keep posting is the human one: somebody who just got a postcard is deciding whether this company
+    still exists.</p>
+    <div class="good"><b>The one post that is worth planning.</b> Put a post up the week the cards
+    land, between 15 and 22 September 2026, saying the same thing the card says. Somebody who got the
+    card and searched the name then finds a profile that matches what is in their hand. No phone
+    number in the text. The Call now button carries it.</div>
+
+    <div class="success"><b>What success looks like.</b> The update appears on the public listing, and
+    there is a Call now button on it that dials the right number.</div>
+
+    <div class="failure"><b>What failure looks like.</b> The post is rejected or quietly disappears.
+    The most common cause by a wide margin is a phone number somewhere in the text, including one
+    written out in words or inside an image caption.</div>
+
+    <a class="broke" data-go="9" data-step="6. Posts" href="#">This step broke</a>
+  </div>
+</section>
+
+<!-- ============ 7: PHOTOS ============ -->
+<section class="screen" data-t="7. Photographs">
+  <div class="card">
+    <h2>Step 7. Photographs</h2>
+    <p class="lede">Real jobs, recent dates. The cheapest credibility available, and most competitors
+    neglect it.</p>
+
+    <p>A profile with four stock photographs from three years ago and a profile with thirty real
+    roofs from this season cost the same to run. The second one answers the only question the person
+    holding a postcard is actually asking, which is whether these people do this work and whether they
+    still do it now.</p>
+
+    <div class="note"><b>You are already collecting these.</b> Job photographs are being captured
+    already, so this step is not about starting something new. It is about the last few clicks that
+    move them from where they sit to where a customer sees them.
+    <b>Getting those same photographs onto the website is a separate job and it is not this
+    guide.</b> This step is the profile only.</div>
+
+    <h3>Do this</h3>
+    <ol>
+      <li>From the profile, click <b>Photos</b>.</li>
+      <li>Add photographs of finished work. Exteriors, whole roofs, and the house they are on.</li>
+      <li>Add them in batches over time rather than fifty at once. A profile that gains a few
+      photographs every month reads as a working company. One that gained everything on a single day
+      two years ago reads as a company that stopped.</li>
+      <li>Make sure the logo and a cover photograph are set, because those are the two the listing
+      shows first.</li>
+    </ol>
+
+    <div class="warnbox"><b>The only real trap here.</b> Do not put a phone number, a price or a
+    web address into a photograph caption. The same rules that govern posts reach the text attached to
+    an image.</div>
+
+    <div class="success"><b>What success looks like.</b> The Photos tab shows recent work with recent
+    dates, and somebody scrolling it would conclude the company is busy.</div>
+
+    <div class="failure"><b>What failure looks like.</b> An upload fails or an image is removed. Very
+    large files and screenshots of other websites are the usual causes.</div>
+
+    <div class="fillrow">
+      <label for="photoCount">How many photographs are on the profile when you have finished</label>
+      <input class="fill" type="text" id="photoCount" placeholder="A number">
+    </div>
+
+    <a class="broke" data-go="9" data-step="7. Photographs" href="#">This step broke</a>
+  </div>
+</section>
+
+<!-- ============ 8: BING AND APPLE ============ -->
+<section class="screen" data-t="8. Bing and Apple">
+  <div class="card">
+    <h2>Step 8. The other two listings, Bing and Apple</h2>
+    <p class="lede">Neither of these will ever match Google for volume. Both are free, both take about
+    fifteen minutes, and both are claimed once and then left alone.</p>
+
+    <h3>Why they are worth the half hour</h3>
+    <ul>
+      <li><b>Apple Maps is what an iPhone opens.</b> A person who taps an address on an iPhone is not
+      in Google Maps unless they went there deliberately. Whatever Apple holds about the business is
+      what they see.</li>
+      <li><b>Bing feeds more than Bing.</b> Bing's index is what sits behind Copilot's local answers,
+      so an unclaimed Bing listing is a wrong answer waiting to be given by an assistant that a
+      growing number of people ask instead of searching. <span class="ev">[unconfirmed]</span></li>
+    </ul>
+
+    <div class="note"><b>Use exactly the same name, address and phone you settled on in
+    <a class="jump" data-go="4" href="#">step 4</a>.</b> The entire value of claiming a second and
+    third listing is that they agree with the first one. Two listings that disagree are worse than one
+    listing on its own.
+    <div style="margin-top:8px">The strings to reuse:
+      <br>Name: <span class="slot empty" data-slot="napGoogle">step 4 not filled in yet</span>
+      <br>Address: 11440 County Road 37 NE, Albertville, MN 55301
+      <br>Phone: 612-205-5503</div></div>
+
+    <h3>Bing Places</h3>
+    <a class="urlbox" href="https://www.bingplaces.com/" target="_blank" rel="noopener">https://www.bingplaces.com/</a>
+    <p>That address redirects to Microsoft's current business page:</p>
+    <a class="urlbox" href="https://www.bing.com/forbusiness/" target="_blank" rel="noopener">https://www.bing.com/forbusiness/</a>
+    <p><b>Bing Places is free.</b> <span class="ev">[vendor]</span> You will need a Microsoft account,
+    which is separate from the Google one. Claiming works the same way as Google: find the listing,
+    claim it, and verify it by a code Microsoft sends.</p>
+    <div class="warnbox"><b>One claim you will read everywhere and should not rely on.</b> A great many
+    marketing articles say Bing Places imports a Google Business Profile in one click. <b>No Microsoft
+    page confirms it.</b> <span class="ev">[unconfirmed]</span> If the option is there when you get to
+    the screen, take it. Do not plan the fifteen minutes around it existing.</div>
+    <div class="fillrow">
+      <label for="bingState">What happened with Bing</label>
+      <input class="fill" type="text" id="bingState" style="min-width:520px" placeholder="Claimed, waiting on verification, or already claimed by somebody">
+    </div>
+
+    <h3>Apple</h3>
+    <a class="urlbox" href="https://businessconnect.apple.com/" target="_blank" rel="noopener">https://businessconnect.apple.com/</a>
+    <p>As of 7 September 2026 that address redirects to Apple's business site:</p>
+    <a class="urlbox" href="https://business.apple.com/" target="_blank" rel="noopener">https://business.apple.com/</a>
+    <p>The Maps listing sits under the Grow heading on that page. You will need an Apple ID.</p>
+    <div class="warnbox"><b>Honest status on the price.</b> Apple Business Connect was free
+    historically, but Apple's current page states no price and the old address now redirects, so the
+    place listing appears to have been folded into a larger product. <b>Treat the price as unknown
+    until you see it in the account.</b> <span class="ev">[unconfirmed]</span> If a charge appears at
+    any point, stop and say so rather than agreeing to it, because nothing else in this guide costs
+    anything.</div>
+    <div class="fillrow">
+      <label for="appleState">What happened with Apple, including anything it said about price</label>
+      <input class="fill" type="text" id="appleState" style="min-width:520px" placeholder="What the screen said">
+    </div>
+
+    <div class="success"><b>What success looks like.</b> Two more listings showing the same name,
+    address and phone as Google, each of them in an account the company controls rather than a
+    vendor.</div>
+
+    <div class="failure"><b>What failure looks like.</b> Either listing is already claimed by somebody
+    else. That is the same problem as step 1 and the same answer: it becomes a request to whoever
+    holds it, not a setting you can change.</div>
+
+    <a class="broke" data-go="9" data-step="8. Bing and Apple" href="#">This step broke</a>
+  </div>
+</section>
+
+<!-- ============ 9: TALK BACK ============ -->
+<section class="screen" data-t="Something wrong?">
+  <div class="card">
+    <h2>Something on this page wrong, unclear, or broken?</h2>
+    <p class="lede">Say so here and it comes straight back to be fixed. This is also where to report a
+    screen that did not look the way this guide said it would, because that usually means Google
+    changed the console rather than that you did something wrong.</p>
+
+    <label class="q" for="fstep">Which step</label>
+    <select id="fstep">
+      <option value="">Pick one</option>
+      <option>Start here</option>
+      <option>1. Get into the profile</option>
+      <option>2. Categories</option>
+      <option>3. The services list</option>
+      <option>4. Name, address, phone</option>
+      <option>5. The name itself</option>
+      <option>6. Posts</option>
+      <option>7. Photographs</option>
+      <option>8. Bing and Apple</option>
+      <option>Something else</option>
+    </select>
+
+    <label class="q" for="fwhat">What happened, or what is wrong</label>
+    <textarea id="fwhat" placeholder="What you expected, what the screen actually said, and what you did next."></textarea>
+
+    <label class="q" for="fname">The name question, if you have settled it</label>
+    <textarea id="fname">Three spellings are in use across four sources: "Top Tier Roofing and Remodeling LLC" on the state filing, "Top Tier Roofing &amp; Remodeling, LLC" the way the company writes itself, and "Top Tier Roofing LLC" in the website's hidden business information block. Step 4 has the comparison. Which one should everything be changed to match?</textarea>
+
+    <label class="q" for="fblocked">Anything that stopped you, or that needs somebody else</label>
+    <textarea id="fblocked" placeholder="For example, the listing is owned by another account, or a screen would not save."></textarea>
+
+    <div style="display:flex; gap:12px; margin-top:20px; flex-wrap:wrap">
+      <button class="btn p" id="btnSend">Send this back</button>
+      <button class="btn s" id="btnCopy">Copy instead</button>
+    </div>
+    <div class="status" id="stForm"></div>
+
+    <div class="note" style="margin-top:20px"><b>Everything you typed on the way through comes back
+    with this.</b> The account you signed in as, the categories before and after, the two name
+    lookups, whether the state filing still reads the same, and what happened with Bing and Apple. You do not need to retype any
+    of it here.</div>
+  </div>
+
+  <footer class="pg">
+    Top Tier Roofing &amp; Remodeling, LLC &middot; 11440 County Road 37 NE, Albertville, MN 55301
+    &middot; 612-205-5503 &middot; MN License BC807923<br>
+    Every quoted rule on this page retrieved from the platform's own documentation on 7 September 2026.
+  </footer>
+</section>
+
+<div class="nav">
+  <button class="btn s" id="prev">Back</button>
+  <button class="btn p" id="next">Next</button>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var RECEIVER = "http://127.0.0.1:8788/submit";
+  var FORM = "TopTier-GuideFeedback-ProfileMapPack";
+  var KEY = "toptier_profilemappack_260907";
+
+  var screens = [].slice.call(document.querySelectorAll(".screen"));
+  var rail = document.getElementById("rail");
+  var scroll = document.getElementById("scroll");
+  var cur = 0;
+
+  screens.forEach(function(s,i){
+    var b = document.createElement("button");
+    b.innerHTML = '<span class="n">'+(i+1)+'</span>'+s.dataset.t;
+    b.addEventListener("click", function(){ go(i); });
+    rail.appendChild(b);
+  });
+  var tabs = [].slice.call(rail.children);
+
+  function go(i){
+    if(i<0 || i>=screens.length) return;
+    cur = i;
+    screens.forEach(function(s,j){ s.classList.toggle("on", j===i); });
+    tabs.forEach(function(t,j){ t.classList.toggle("on", j===i); });
+    document.getElementById("prev").style.visibility = i===0 ? "hidden" : "visible";
+    document.getElementById("next").style.visibility = i===screens.length-1 ? "hidden" : "visible";
+    scroll.scrollTop = 0;
+    if(tabs[i] && tabs[i].scrollIntoView) tabs[i].scrollIntoView({block:"nearest", inline:"center"});
+  }
+  document.getElementById("prev").addEventListener("click", function(){ go(cur-1); });
+  document.getElementById("next").addEventListener("click", function(){ go(cur+1); });
+
+  // landmine anchors and the "this step broke" links
+  [].slice.call(document.querySelectorAll("[data-go]")).forEach(function(a){
+    a.addEventListener("click", function(e){
+      e.preventDefault();
+      var target = parseInt(a.dataset.go, 10);
+      go(target);
+      if(a.dataset.step){
+        var sel = document.getElementById("fstep");
+        if(sel){
+          for(var k=0;k<sel.options.length;k++){
+            if(sel.options[k].text === a.dataset.step){ sel.selectedIndex = k; break; }
+          }
+          store.fstep = sel.value;
+          save();
+        }
+      }
+    });
+  });
+
+  // ---- persisted values, and every mention fills itself in -----------------
+  var store = {};
+  try { store = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch(e){ store = {}; }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} }
+
+  var slots = [].slice.call(document.querySelectorAll(".slot"));
+  slots.forEach(function(el){ el.dataset.ph = el.textContent; });
+
+  function paint(){
+    slots.forEach(function(el){
+      var v = store[el.dataset.slot];
+      if(v && String(v).trim()){ el.textContent = v; el.classList.remove("empty"); }
+      else { el.textContent = el.dataset.ph; el.classList.add("empty"); }
+    });
+    // the Secretary of State link follows a pasted address if one is given
+    var u = (store.sosUrl || "").trim();
+    var a = document.getElementById("sosLink");
+    if(a && u && /^https?:\/\//i.test(u)){ a.href = u; a.textContent = u; }
+  }
+
+  [].slice.call(document.querySelectorAll("input[type=text], textarea, select"))
+    .forEach(function(el){
+      if(!el.id) return;
+      if(store[el.id] !== undefined && store[el.id] !== "") el.value = store[el.id];
+      var ev = (el.tagName === "SELECT") ? "change" : "input";
+      el.addEventListener(ev, function(){
+        store[el.id] = el.value;
+        save();
+        paint();
+      });
+    });
+  paint();
+  go(0);
+
+  // ---- clipboard ----------------------------------------------------------
+  function copyText(txt, statusEl, msg){
+    function done(ok){
+      statusEl.textContent = ok ? (msg || "Copied.") : "Could not copy. Select it by hand.";
+      statusEl.className = "status " + (ok ? "ok" : "bad");
+      setTimeout(function(){ statusEl.textContent=""; statusEl.className="status"; }, 5000);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(function(){done(true);}, function(){done(false);});
+    } else {
+      var ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta);
+      ta.select(); var ok=false; try{ ok=document.execCommand("copy"); }catch(e){}
+      document.body.removeChild(ta); done(ok);
+    }
+  }
+
+  function v(id){ var el=document.getElementById(id); return el ? el.value : ""; }
+
+  function payload(){
+    return {
+      form: FORM,
+      submittedAt: new Date().toISOString(),
+      answers: {
+        step: v("fstep"),
+        whatHappened: v("fwhat"),
+        nameQuestion: v("fname"),
+        blockedBy: v("fblocked"),
+        googleAccount: v("gAccount"),
+        accessState: v("accessState"),
+        categoriesBefore: v("catPrimary") + " | additional: " + v("catAdditional"),
+        categoriesAfter: v("catAfter"),
+        servicesCount: v("svcCount"),
+        servicesRejected: v("svcMissing"),
+        nameOnGoogle: v("napGoogle"),
+        nameOnWebsite: v("napWeb"),
+        stateRecordStillReadsTheSame: v("sosConfirm"),
+        stateRecordCorrections: v("sosCorrections"),
+        stateSearchUrlUsed: v("sosUrl"),
+        nameCleanOrCorrected: v("nameState"),
+        photoCount: v("photoCount"),
+        bing: v("bingState"),
+        apple: v("appleState")
+      }
+    };
+  }
+
+  function post(p, statusEl, okMsg){
+    statusEl.textContent = "Sending..."; statusEl.className = "status";
+    fetch(RECEIVER, {
+      method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(p)
+    }).then(function(r){
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      statusEl.textContent = okMsg; statusEl.className = "status ok";
+    }).catch(function(){
+      statusEl.textContent = "The receiver is not answering. Use Copy instead, and paste it into the chat.";
+      statusEl.className = "status bad";
+    });
+  }
+
+  document.getElementById("btnSend").addEventListener("click", function(){
+    post(payload(), document.getElementById("stForm"), "Sent. It will be picked up and answered.");
+  });
+  document.getElementById("btnCopy").addEventListener("click", function(){
+    copyText(JSON.stringify(payload(), null, 2),
+             document.getElementById("stForm"), "Copied. Paste it into the chat.");
+  });
+})();
+</script>
+</body>
+</html>

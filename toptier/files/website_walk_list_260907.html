@@ -57,8 +57,12 @@ footer{margin-top:44px;padding-top:18px;border-top:2px solid var(--rule);color:v
 
 <div class="card">
   <p style="margin:0"><b>This replaces the earlier audit.</b> Of the seven problems on that list,
-  <b>five are fixed and verified live.</b> Two are still open, and four more have been found since.
+  <b>six are now fixed and verified live.</b> One is still open, and four more have been found since.
   This is the current list, not a re-issue of the old one.</p>
+  <p style="margin:10px 0 0"><b>Corrected at 8:40 PM on 7 September 2026.</b> The robots file item was
+  listed as open earlier the same day. It is not open. The file was fetched again, live, and it ends
+  with the sitemap line. It has moved to the already fixed table at the end of this page. Nothing else
+  on this page changed.</p>
 </div>
 
 <h2><span class="num">1</span>Still open from the original audit</h2>
@@ -80,13 +84,6 @@ footer{margin-top:44px;padding-top:18px;border-top:2px solid var(--rule);color:v
         <b>&ldquo;page not found&rdquo;</b>. These are the towns the mail is going to. A postcard
         recipient who searches the town plus roofing finds no page about their town.</td>
       <td>Half a day</td>
-    </tr>
-    <tr>
-      <td><b>The robots file no longer names the sitemap</b></td>
-      <td>The sitemap itself is now working &mdash; <code>/sitemap_index.xml</code> returns properly.
-        But the robots file, which is the first thing a search engine reads, no longer points at it.
-        One line.</td>
-      <td>5 minutes</td>
     </tr>
   </tbody>
 </table>
@@ -170,8 +167,18 @@ directly. The reasoning behind each of these is in the keywords and free channel
       <td>Roofing contractor markup present, with hours and profile link</td></tr>
     <tr><td>The site named two different towns</td><td class="done">Fixed</td>
       <td>Albertville throughout</td></tr>
-    <tr><td>The sitemap itself</td><td class="done">Fixed</td>
-      <td>Returns properly &mdash; only the robots line remains, in section 1</td></tr>
+    <tr>
+      <td>The sitemap itself</td>
+      <td>Fixed</td>
+      <td>Returns properly</td>
+    </tr>
+    <tr>
+      <td>The robots file naming the sitemap</td>
+      <td>Fixed</td>
+      <td><b>Re-checked live on 7 September 2026 at 8:40 PM.</b> <code>robots.txt</code> ends with
+        <code>Sitemap: https://toptiermn.com/sitemap_index.xml</code>. This page listed it as open
+        earlier the same day; that reading was wrong or was taken from a cached copy. Nothing to do.</td>
+    </tr>
     <tr><td>The Facebook link pointed at the wrong profile</td><td class="done">Fixed</td>
       <td>Correct profile, site-wide</td></tr>
     <tr><td>Leftover content from the original site build</td><td class="done">Fixed</td>
@@ -182,8 +189,7 @@ directly. The reasoning behind each of these is in the keywords and free channel
 </table>
 </div>
 
-<div class="note good"><b>Where to start if there is only an hour.</b> The robots line, then the four
-footer items, then the services list on the profile. That is under an hour and it is everything on
+<div class="note good"><b>Where to start if there is only an hour.</b> The four footer items, then the services list on the profile. That is under an hour and it is everything on
 this page except the writing. <b>Then book the half day for the town and service pages</b>, because
 the mail lands before that gets easier.</div>
 
