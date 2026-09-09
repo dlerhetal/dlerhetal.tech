@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Publishing on the Website</title>
 <style>
@@ -229,12 +229,12 @@ body > .shell > header{padding-right:126px}
       <li><b>A blog post that promises to handle an insurance claim is a licensing problem, not a
       writing problem.</b> There are two lists of verbs and the difference is worth up to $10,000 per
       violation in Minnesota. Read them before you publish anything.
-      <button class="broke jumpto" data-go="6">Go to step 7, the two verb lists</button></li>
+      <button class="broke jumpto" data-go="5">Go to step 6, the two verb lists</button></li>
 
       <li><b>Asking for a review that mentions a person, a service or a town breaks a Google rule</b>
       that went live 16 February 2026. It bans the <i>ask</i>, not the review. This bites if a post
       ends with a request for reviews, which is the most natural way in the world to end one.
-      <button class="broke jumpto" data-go="6">Same step 7</button></li>
+      <button class="broke jumpto" data-go="5">Same step 6</button></li>
     </ol>
   </div>
 
@@ -274,7 +274,7 @@ body > .shell > header{padding-right:126px}
     doubt, hand it to your Claude first.</div>
   </div>
 
-  <button class="broke jumpto" data-go="13">This step did not work</button>
+  <button class="broke jumpto" data-go="12">This step did not work</button>
 </section>
 
 <!-- ============ 1 ============ -->
@@ -348,7 +348,7 @@ Success looks like: a count, and a list of post titles with their addresses.</pr
     If the credential is rejected instead, that is a real answer too: go back to the profile screen,
     revoke the one you made, and make another. Getting a fresh one costs ten seconds.</div>
 
-    <button class="broke jumpto" data-go="13">This step did not work</button>
+    <button class="broke jumpto" data-go="12">This step did not work</button>
   </div>
 </section>
 
@@ -403,7 +403,7 @@ Success looks like: a count, and a list of post titles with their addresses.</pr
     four pages on your blog are about a product you do not sell, in the same weeks that several
     thousand postcards send people to look you up.</p>
 
-    <button class="broke jumpto" data-go="13">This step did not work</button>
+    <button class="broke jumpto" data-go="12">This step did not work</button>
   </div>
 </section>
 
@@ -471,75 +471,11 @@ Report it as a plain list, one line per finding, with the count of internal link
       <div class="hint">Whatever you put here is used in the instruction on the next screen, so it is worth setting now.</div>
     </div>
 
-    <button class="broke jumpto" data-go="13">This step did not work</button>
-  </div>
-</section>
+    <div class="note"><b>The retirement and the redirects are being handled directly, so there is no
+    step for them here.</b> The four leftover posts come down and their addresses are forwarded without
+    you doing anything. The next screen is what a post is actually for.</div>
 
-<!-- ============ 4 ============ -->
-<section class="screen" data-t="Retire and forward">
-  <div class="card">
-    <h2>Retire them, forwarding first</h2>
-    <p class="lede">Forwarding on, then posts out, then check the forwarding actually catches. In that order.</p>
-
-    <p>Your site already has the tool for this, installed and running: the <b>Redirection</b> plugin.
-    You give it an old address and a new one, and from then on anyone who asks for the old address is
-    sent to the new one. Done as a permanent redirect, search engines are also told the move is
-    permanent, so they update their index instead of holding on to a dead page. It appears in the
-    WordPress menu under Tools, as Redirection.</p>
-
-    <p>You found <span class="slot empty" data-slot="inbound">no number entered yet</span> internal
-    links on the last screen, and the destination is
-    <span class="slot empty" data-slot="redirTarget">no destination chosen yet</span>.</p>
-
-    <div class="ask">
-      <div class="askhead"><b>PASTE INTO YOUR CLAUDE</b><button class="btn sm" data-copy="p3">Copy</button></div>
-      <pre id="p3">Our website is https://toptiermn.com, WordPress on Elementor Cloud. The SEO plugin is Rank Math and the Redirection plugin (version 5.9.0) is installed and active for redirects. Use the WP_SITE, WP_USERNAME and WP_APP_PASSWORD in my environment file. My account is an administrator.
-
-Retire four old blog posts. Do the steps in this exact order and stop and tell me if any step does not do what it should.
-
-STEP A. Set up the forwarding first, before anything is removed. Create a permanent redirect, a 301, for each of these four source addresses, all pointing to the same destination:
-
-  source: https://toptiermn.com/remodeling/small-bathroom-solutions-maximizing-space-with-glass-shower-screens/
-  source: https://toptiermn.com/remodeling/6-timeless-shower-glass-styles-for-all-bathrooms/
-  source: https://toptiermn.com/remodeling/how-to-clean-and-maintain-glass-shower-screens/
-  source: https://toptiermn.com/remodeling/top-trends-in-glass-shower-screen-designs/
-
-  destination for all four: [PASTE THE DESTINATION FROM THE WIZARD HERE]
-
-Create them in the Redirection plugin, and make them permanent 301 redirects, not temporary ones. Tell me how you created them and confirm all four are listed as enabled before you go on.
-
-STEP B. Only once all four redirects exist and you have confirmed they exist, move the four posts to the trash. Trash, not permanent deletion. Go by the address, not by the title, because two of the titles do not match their slugs. Do not touch any other post or page.
-
-STEP C. Then check the forwarding actually works. Request each of the four old addresses and report the HTTP status you get back and where it ends up. I am expecting a 301 that lands on the destination.
-
-STEP D. Tell me what is now on https://toptiermn.com/blog/ and whether the blog page renders correctly with no posts on it, or whether it shows an error or an empty state that looks broken.
-
-Report each step as done or not done, with the actual status codes from step C. Do not report success on a step you did not verify.</pre>
-    </div>
-
-    <div class="note"><b>Trash, not permanent delete.</b> Trashed posts sit in the trash for thirty days
-    and can be put back with one click. There is no reason to destroy them on the same day you retire
-    them, and if something turns out to have depended on one of them you will find out inside that
-    window.</div>
-
-    <div class="good"><b>What success looks like.</b> Four redirects listed back to you, four posts in
-    the trash, and four status codes from step C that say 301 and name the destination. If step C comes
-    back with anything else, the redirects are not catching and the posts should come back out of the
-    trash until they do.</div>
-
-    <div class="note"><b>What failure looks like.</b> A status of 404 on any of the four means somebody
-    is right now hitting a dead page on your site. A status of 200 on the old address means the post is
-    still live and only the redirect is wrong, which is harmless. A chain of redirects, one leading to
-    another, means the destination itself is being forwarded somewhere, and that should be sorted before
-    you leave it.</div>
-
-    <h3>The blog page itself</h3>
-    <p>With all four gone the blog is empty until the next screen puts something on it. An empty blog
-    page is not worse than four shower door posts, but it is not good either, so the write-a-post work
-    starts the same day. If step D says the blog page renders as an error rather than as an empty list,
-    that is worth telling me about on the last screen.</p>
-
-    <button class="broke jumpto" data-go="13">This step did not work</button>
+    <button class="broke jumpto" data-go="12">This step did not work</button>
   </div>
 </section>
 
@@ -594,7 +530,7 @@ Report each step as done or not done, with the actual status codes from step C. 
       <li><b>It does not use words you do not use.</b> If you would not say "utilize" or "solutions" or "seamless" out loud on a driveway, they do not belong in something published under your name.</li>
     </ul>
 
-    <button class="broke jumpto" data-go="13">This step did not work</button>
+    <button class="broke jumpto" data-go="12">This step did not work</button>
   </div>
 </section>
 
@@ -657,7 +593,7 @@ Report each step as done or not done, with the actual status codes from step C. 
 Confirm you have these and will apply them without being reminded.</pre>
     </div>
 
-    <button class="broke jumpto" data-go="13">This step did not work</button>
+    <button class="broke jumpto" data-go="12">This step did not work</button>
   </div>
 </section>
 
@@ -668,7 +604,7 @@ Confirm you have these and will apply them without being reminded.</pre>
     <p class="lede">Your Claude writes it. You are the one who knows whether it is true.</p>
 
     <p>The question you picked is:
-    <span class="slot empty" data-slot="postSubject">no question chosen yet, go back to step 6</span>.</p>
+    <span class="slot empty" data-slot="postSubject">no question chosen yet, go back to step 5</span>.</p>
 
     <p>The mistake to avoid is asking for a blog post and accepting the first thing that comes back. It
     will be competent, generic and unmistakably machine written, because you gave it nothing that only
@@ -730,7 +666,7 @@ Then show me the full post again with the changes in place, and tell me the word
     customer. If reading it out loud makes you wince, it is not finished, and the fix is another round
     of the third prompt, not a different topic.</div>
 
-    <button class="broke jumpto" data-go="13">This step did not work</button>
+    <button class="broke jumpto" data-go="12">This step did not work</button>
   </div>
 </section>
 
@@ -775,7 +711,7 @@ Report the draft preview address first and stop there.</pre>
     address that loads, answering a question a customer actually asked. The four shower door pages
     forward to somewhere useful. That is the whole of jobs one and two.</div>
 
-    <button class="broke jumpto" data-go="13">This step did not work</button>
+    <button class="broke jumpto" data-go="12">This step did not work</button>
   </div>
 </section>
 
@@ -827,7 +763,7 @@ Report the draft preview address first and stop there.</pre>
       screens.</div>
     </div>
 
-    <button class="broke jumpto" data-go="13">This step did not work</button>
+    <button class="broke jumpto" data-go="12">This step did not work</button>
   </div>
 </section>
 
@@ -867,7 +803,7 @@ Report the draft preview address first and stop there.</pre>
     library is not short of volume, it is short of the three frames that would make it useful. That is a
     crew instruction, not a website job, and it is the reason this page stays short.</div>
 
-    <button class="broke jumpto" data-go="13">This step did not work</button>
+    <button class="broke jumpto" data-go="12">This step did not work</button>
   </div>
 </section>
 
@@ -924,7 +860,7 @@ Separately: the website media library already contains six drone stills of our o
     no to, with a proposed name and a proposed sentence next to each. Approving that list is five
     minutes of your time and it is the only part of this job that needs you.</div>
 
-    <button class="broke jumpto" data-go="13">This step did not work</button>
+    <button class="broke jumpto" data-go="12">This step did not work</button>
   </div>
 </section>
 
@@ -969,7 +905,7 @@ Separately: the website media library already contains six drone stills of our o
     </table>
 
     <p>Your published post is at
-    <span class="slot empty" data-slot="postUrl">no address entered yet, see step 9</span>.</p>
+    <span class="slot empty" data-slot="postUrl">no address entered yet, see step 8</span>.</p>
 
     <div class="ask">
       <div class="askhead"><b>PASTE INTO YOUR CLAUDE</b><button class="btn sm" data-copy="p10">Copy</button></div>
@@ -1002,7 +938,7 @@ Report step 2 first and stop there.</pre>
     it is a roof your company put on a house in Wright County. Nothing on it came from a stock library.
     That is the finish line for job three.</div>
 
-    <button class="broke jumpto" data-go="13">This step did not work</button>
+    <button class="broke jumpto" data-go="12">This step did not work</button>
   </div>
 </section>
 
