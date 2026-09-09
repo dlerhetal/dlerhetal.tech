@@ -168,6 +168,7 @@
   .cw-btn{flex:0 0 auto; align-self:flex-start; font:inherit; font-size:15.5px; font-weight:700;
       color:var(--blue); background:var(--gold); border:1px solid #e0b400; border-radius:5px;
       padding:7px 16px; cursor:pointer}
+  .cw-btn.sm{font-size:14px; padding:4px 11px; white-space:nowrap}
   .cw-btn:hover{background:#ffd733}
   .cw-btn:focus{outline:2px solid var(--blue); outline-offset:2px}
   .cw-status{font-size:15.5px; font-weight:700; color:var(--ok); min-height:21px; margin:0 0 6px}
@@ -705,6 +706,46 @@
     A penalty here does not land on the thin page alone, it lands on the site. Fifteen template fills
     are worse than three real pages.</div>
 
+
+    <h3>The photographs are the answer to that, and they are already sorted by town</h3>
+    <p class="kicker">Every photograph out of the job records carries the town it was taken in, and
+    they have been split into one list per town. That is what turns a city page from a template fill
+    into a page with proof on it. A town with photographs can show roofs you actually did there. A
+    town with none has nothing to offset the risk above.</p>
+
+    <div style="overflow-x:auto" data-cwstatus>
+    <table>
+      <tr><th>Town</th><th class="num">Photographs</th><th class="num">Jobs</th><th>Page planned</th><th>Get the photographs</th></tr>
+      <tr><td>Monticello</td><td class="num">185</td><td class="num">3</td><td>Yes</td><td><button type="button" class="cw-btn sm" data-prompt="read assets/images/by_city/monticello.csv in this workspace. It is the Monticello job photographs, columns local_file, project_number, project_name, city, caption, url. Group them by project_number, show me the project_name and the caption for each, and help me pick a handful for a Monticello page. local_file is the copy on disk and that is the one to upload.">Copy</button></td></tr>
+      <tr><td>Otsego</td><td class="num">164</td><td class="num">2</td><td>Yes</td><td><button type="button" class="cw-btn sm" data-prompt="read assets/images/by_city/otsego.csv in this workspace. It is the Otsego job photographs, columns local_file, project_number, project_name, city, caption, url. Group them by project_number, show me the project_name and the caption for each, and help me pick a handful for a Otsego page. local_file is the copy on disk and that is the one to upload.">Copy</button></td></tr>
+      <tr><td>St Michael</td><td class="num">85</td><td class="num">2</td><td>Yes</td><td><button type="button" class="cw-btn sm" data-prompt="read assets/images/by_city/st-michael.csv in this workspace. It is the St Michael job photographs, columns local_file, project_number, project_name, city, caption, url. Group them by project_number, show me the project_name and the caption for each, and help me pick a handful for a St Michael page. local_file is the copy on disk and that is the one to upload.">Copy</button></td></tr>
+      <tr><td>Buffalo</td><td class="num">62</td><td class="num">2</td><td>Yes</td><td><button type="button" class="cw-btn sm" data-prompt="read assets/images/by_city/buffalo.csv in this workspace. It is the Buffalo job photographs, columns local_file, project_number, project_name, city, caption, url. Group them by project_number, show me the project_name and the caption for each, and help me pick a handful for a Buffalo page. local_file is the copy on disk and that is the one to upload.">Copy</button></td></tr>
+      <tr><td>Annandale</td><td class="num">50</td><td class="num">1</td><td>Not yet</td><td><button type="button" class="cw-btn sm" data-prompt="read assets/images/by_city/annandale.csv in this workspace. It is the Annandale job photographs, columns local_file, project_number, project_name, city, caption, url. Group them by project_number, show me the project_name and the caption for each, and help me pick a handful for a Annandale page. local_file is the copy on disk and that is the one to upload.">Copy</button></td></tr>
+      <tr><td>St Cloud</td><td class="num">50</td><td class="num">1</td><td>Not yet</td><td><button type="button" class="cw-btn sm" data-prompt="read assets/images/by_city/st-cloud.csv in this workspace. It is the St Cloud job photographs, columns local_file, project_number, project_name, city, caption, url. Group them by project_number, show me the project_name and the caption for each, and help me pick a handful for a St Cloud page. local_file is the copy on disk and that is the one to upload.">Copy</button></td></tr>
+      <tr><td>Minneapolis</td><td class="num">19</td><td class="num">1</td><td>Not yet</td><td><button type="button" class="cw-btn sm" data-prompt="read assets/images/by_city/minneapolis.csv in this workspace. It is the Minneapolis job photographs, columns local_file, project_number, project_name, city, caption, url. Group them by project_number, show me the project_name and the caption for each, and help me pick a handful for a Minneapolis page. local_file is the copy on disk and that is the one to upload.">Copy</button></td></tr>
+      <tr><td>Albertville</td><td class="num">0</td><td class="num">0</td><td>Yes</td><td><span style="color:var(--mute)">nothing to pull</span></td></tr>
+    </table>
+    <div class="cw-status"></div>
+    </div>
+    <p class="kicker">615 photographs across 7 towns, counted out of the lists
+    themselves on 9 September 2026, and every file checked as present on disk. <b>This is a starting
+    point with the evidence attached, not an approved set.</b> It is only where we can see proof from
+    here. You know your own customers, and there may be every reason to build a page for a town that
+    is not on this list at all. The step below builds a page for any city you name.</p>
+
+<div class="note"><b>Albertville has a page planned and no job photographs on this record.</b> Every other town on the list has something to show. That is a fact about the photograph library, and you will know straight away whether it means the photographs never got filed or the work was somewhere else.</div>
+<div class="note"><b>Annandale, St Cloud and Minneapolis have photographs and no page planned.</b> Stated as an observation, not a recommendation. The evidence exists if you want it.</div>
+
+    <div class="note"><b>A town that is not on the list.</b> The whole photograph library is
+    assets\images\from_companycam\_manifest_companycam.json, 616 records with an
+    address_city field on every one. Have your Claude search that for the town before you assume
+    there is nothing there. Not everything in it is an image: 6105Pettis2.pdf, which is application/pdf. Filter on mime starting with image/ or a naive pull puts a document in a photograph gallery.</div>
+
+    <div class="note"><b>How many go on a page.</b> Not all of them. A gallery of a hundred and
+    eighty five is not a page, it is a folder. The working test is that every photograph you put up
+    has a true sentence under it, saying what the roof was and what you did to it. However many
+    survive that test is the right number, and it is usually a small one.</div>
+
     <h3>What makes a city page a real page</h3>
     <p class="kicker">Only one of these is something a machine can supply, and it is the last one. The
     rest have to come out of your own records, and that is exactly why they work.</p>
@@ -948,30 +989,31 @@
    purpose: two of the five wizards have no shared copy plumbing. */
 (function(){
   "use strict";
-  var btn = document.getElementById("cwCopy");
-  if(!btn) return;
-  var st = document.getElementById("cwStatus");
-  function say(ok, msg){
+  function say(st, ok, msg){
     if(!st) return;
     st.textContent = msg;
     st.className = "cw-status" + (ok ? "" : " bad");
     setTimeout(function(){ st.textContent = ""; st.className = "cw-status"; }, 5000);
   }
+  [].slice.call(document.querySelectorAll(".cw-btn")).forEach(function(btn){
+  var box = btn.closest ? (btn.closest("[data-cwstatus]") || btn.closest(".cw")) : null;
+  var st = box ? box.querySelector(".cw-status") : null;
   btn.addEventListener("click", function(){
     var txt = btn.getAttribute("data-prompt") || "";
     if(navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(txt).then(
-        function(){ say(true, "Copied. Paste it into your Claude."); },
-        function(){ say(false, "Could not copy. Select the line and copy it by hand."); });
+        function(){ say(st, true, "Copied. Paste it into your Claude."); },
+        function(){ say(st, false, "Could not copy. Select the line and copy it by hand."); });
     } else {
       var ta = document.createElement("textarea");
       ta.value = txt; document.body.appendChild(ta); ta.select();
       var ok = false;
       try { ok = document.execCommand("copy"); } catch(e){}
       document.body.removeChild(ta);
-      say(ok, ok ? "Copied. Paste it into your Claude."
-                 : "Could not copy. Select the line and copy it by hand.");
+      say(st, ok, ok ? "Copied. Paste it into your Claude."
+                     : "Could not copy. Select the line and copy it by hand.");
     }
+  });
   });
 })();
 </script>
