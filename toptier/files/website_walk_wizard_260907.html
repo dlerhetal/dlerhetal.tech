@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
 <title>The Website Walk</title>
 <style>
   :root{
@@ -152,6 +152,33 @@
   }
   body{-webkit-print-color-adjust:exact; print-color-adjust:exact}
 </style>
+<style id="cw-style">
+  /* Working this with your Claude. One shared treatment across the five
+     wizards; see work/scripts/claude_walk_block_260909.py */
+  .cw{background:var(--paper); border:1px solid var(--line); border-left:6px solid var(--gold);
+      border-radius:8px; padding:20px 22px; margin:0 0 20px}
+  .cw h2{margin:0 0 8px; font-size:23px; color:var(--blue); line-height:1.25}
+  .cw p{margin:0 0 12px}
+  .cw p:last-child{margin-bottom:0}
+  .cw-ask{display:flex; gap:10px; align-items:stretch; flex-wrap:wrap;
+      background:#f5f7fa; border:1px solid var(--line); border-radius:6px; padding:12px 13px;
+      margin:0 0 8px}
+  .cw-ask code{flex:1 1 260px; min-width:0; font-family:Consolas,"Courier New",monospace;
+      font-size:15px; line-height:1.5; color:var(--ink); overflow-wrap:anywhere; word-break:break-word}
+  .cw-btn{flex:0 0 auto; align-self:flex-start; font:inherit; font-size:15.5px; font-weight:700;
+      color:var(--blue); background:var(--gold); border:1px solid #e0b400; border-radius:5px;
+      padding:7px 16px; cursor:pointer}
+  .cw-btn:hover{background:#ffd733}
+  .cw-btn:focus{outline:2px solid var(--blue); outline-offset:2px}
+  .cw-status{font-size:15.5px; font-weight:700; color:var(--ok); min-height:21px; margin:0 0 6px}
+  .cw-status.bad{color:var(--warn)}
+  .cw dl{margin:0}
+  @media (max-width:520px){
+    .cw{padding:16px 15px}
+    .cw h2{font-size:21px}
+    .cw-btn{width:100%; text-align:center}
+  }
+</style>
 </head>
 <body>
 <div class="shell">
@@ -168,13 +195,30 @@
 
 <!-- ============ 0 : Start here ============ -->
 <section class="screen on" data-t="Start here">
+<div class="cw">
+  <h2>Working this with your Claude</h2>
+  <p>This page is on the web at an address your Claude can read, so you do not have to work it alone.
+  Hand it the line below and it will read the whole page, take you through it one step at a time, and
+  check the result before you move on to the next one.</p>
+  <div class="cw-ask">
+    <code>read https://dlerhetal.tech/toptier/files/website_walk_wizard_260907.html and walk me through it one step at a time, and check each step worked before we move on</code>
+    <button type="button" class="cw-btn" id="cwCopy" data-prompt="read https://dlerhetal.tech/toptier/files/website_walk_wizard_260907.html and walk me through it one step at a time, and check each step worked before we move on">Copy</button>
+  </div>
+  <div class="cw-status" id="cwStatus"></div>
+  <p><b>What it can check for itself.</b> It can fetch an address and tell you whether it really
+  resolves, read a robots file back to you, confirm a sitemap lists the page you just made, and read
+  the words on a live page to see whether your change is actually there.</p>
+  <p><b>What it cannot see.</b> Anything behind a login. A dashboard, a console, an advertising account
+  or a profile manager is yours to open, and for those it has to take your word for what is on the
+  screen. Say plainly what you see and it can tell you whether that is the right answer.</p>
+</div>
   <div class="prereq">
     <h2>Before you start</h2>
     <ul>
       <li><b>Which machine:</b> the computer you run Claude Code on, with your shared workspace open.
         This is not a phone job.</li>
-      <li><b>Your Claude session open,</b> in the folder you and Dale share, so anything it writes is
-        on the record for both sides.</li>
+      <li><b>Your Claude session open,</b> in the folder you keep this work in, so anything it writes
+        stays on the record.</li>
       <li><b>Your WordPress administrator login</b> for
         <a href="https://toptiermn.com/wp-admin/" target="_blank" rel="noopener">https://toptiermn.com/wp-admin/</a>,
         and an application password created under your own account so your Claude can save changes
@@ -254,8 +298,7 @@
   <div class="card">
     <h2>Getting your Claude the keys</h2>
     <p class="lede">One time setup, about five minutes, and then your Claude can save changes to the
-      site instead of you clicking through a builder.
-      <a href="#" class="broke" data-step="Your keys">This step broke</a></p>
+      site instead of you clicking through a builder.</p>
 
     <div class="human">
       <div class="tagline">A person has to do this one</div>
@@ -319,8 +362,7 @@
   <div class="card">
     <h2>Two details only a search engine reads</h2>
     <p class="lede">Neither is visible to a visitor. Both are quick, and one of them may already be
-      right.
-      <a href="#" class="broke" data-step="The details search engines read">This step broke</a></p>
+      right.</p>
 
     <p>The robots file is the first thing a search engine reads on any website. It is supposed to end
     with a line pointing at the sitemap, which is the index of every page you have. The walk list read
@@ -399,8 +441,7 @@
 <section class="screen" data-t="The footer">
   <div class="card">
     <h2>The footer, four small things in one place</h2>
-    <p class="lede">All four sit in the same part of the site, so they are one sitting.
-      <a href="#" class="broke" data-step="The footer">This step broke</a></p>
+    <p class="lede">All four sit in the same part of the site, so they are one sitting.</p>
 
     <table>
       <thead><tr><th style="width:34%">What</th><th>Why it matters</th></tr></thead>
@@ -458,7 +499,7 @@
     </div>
 
     <div class="fillrow">
-      <label for="footerdiag">What the diagnosis came back with (paste the short version here, it gets sent back to Dale with any feedback)</label>
+      <label for="footerdiag">What the diagnosis came back with (paste the short version here, it is saved on this page so you have it later)</label>
       <textarea id="footerdiag" placeholder="For example: footer is Elementor template id 1234. The two menus are a desktop and mobile pair, mobile one hidden above 768 pixels. Map is its own widget, address is separate."></textarea>
     </div>
 
@@ -503,8 +544,7 @@
   <div class="card">
     <h2>Half the work the company does is invisible</h2>
     <p class="lede">Checked on the live homepage on 7 September: siding, gutter, storm and hail each
-      appear zero times.
-      <a href="#" class="broke" data-step="The services">This step broke</a></p>
+      appear zero times.</p>
 
     <p>There is one page covering every service. Somebody searching for gutters, or for storm damage,
     has nothing on this site to find, and a search engine has nothing to file the company under. The
@@ -568,8 +608,7 @@
   <div class="card">
     <h2>A page for each town, and this one has a date on it</h2>
     <p class="lede">Albertville, St Michael, Otsego, Monticello and Buffalo all return page not found
-      today. All five were checked on 7 September.
-      <a href="#" class="broke" data-step="The towns">This step broke</a></p>
+      today. All five were checked on 7 September.</p>
 
     <p>The mail is in homes from <b>15 September 2026</b>, in those five towns. A homeowner who reads
     the card and searches their town plus roofing finds nothing about their town on this site. This is
@@ -640,8 +679,109 @@
     </div>
 
     <div class="fillrow">
-      <label for="t_urls">The five live addresses once they exist (paste them here, they travel back with any feedback)</label>
+      <label for="t_urls">The five live addresses once they exist (paste them here, it is saved on this page so you have it later)</label>
       <textarea id="t_urls" placeholder="One per line, exactly as your Claude reports them."></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7 : Add another city ============ -->
+<section class="screen" data-t="Add another city">
+  <div class="card">
+    <h2>Adding another city, any time after today</h2>
+    <p class="lede">The five towns on the step before this one are the first batch, and none of them
+      exists on the site yet. This step is the general case: the same job, for any city you decide to
+      add later, without anybody having to write a new instruction for it.</p>
+
+    <div class="stop"><b>Read this first, because it is the one way this backfires.</b> A stack of
+    near identical city pages that differ only by the town name is what Google calls
+    <b>doorway abuse</b>, and it is named in their published spam policy, not a grey area. Their own
+    wording: doorway abuse is <i>"when sites or pages are created to rank for specific, similar
+    search queries"</i>, and one of the examples they list is <i>"having multiple domain names or
+    pages targeted at specific regions or cities that funnel users to one page"</i>. The same document
+    names <b>scaled content abuse</b>, <i>"when many pages are generated for the primary purpose of
+    manipulating search rankings and not helping users"</i>. Read either page at
+    <a href="https://developers.google.com/search/docs/essentials/spam-policies" target="_blank" rel="noopener">developers.google.com/search/docs/essentials/spam-policies</a>.
+    A penalty here does not land on the thin page alone, it lands on the site. Fifteen template fills
+    are worse than three real pages.</div>
+
+    <h3>What makes a city page a real page</h3>
+    <p class="kicker">Only one of these is something a machine can supply, and it is the last one. The
+    rest have to come out of your own records, and that is exactly why they work.</p>
+    <ul>
+      <li><b>Work you actually did there.</b> A job on a named street or subdivision, what the roof
+        was, what it turned into. One is enough, three is better.</li>
+      <li><b>Photographs from that city,</b> your own, not stock. A house that is recognizably in that
+        town does more than any paragraph.</li>
+      <li><b>Something true and local</b> that a person who lives there would recognize: a storm and
+        its year, the age and style of the housing stock, a landmark, the way a subdivision was built
+        out all at once so the roofs all age together.</li>
+      <li><b>A reason the page exists beyond the town name.</b> If you removed the town name and the
+        page still read the same as the last one, it is not a page yet.</li>
+    </ul>
+
+    <div class="ask">
+      <div class="head"><span>Paste this into your Claude, one city at a time</span>
+        <button class="btn g copy" style="font-size:15.5px;padding:7px 14px" data-src="ask_addcity" data-status="st_addcity">Copy</button></div>
+      <div class="body" id="ask_addcity">
+        <p>Website: toptiermn.com, WordPress on Elementor Cloud, SEO plugin Rank Math. There is a
+        Cloudflare CDN in front of the site, so add a random query string to every fetch or you will
+        read a cached copy.</p>
+        <p>I want to add a city page for CITY NAME HERE.</p>
+        <p>First, read the town page instruction in the step called The towns on
+        https://dlerhetal.tech/toptier/files/website_walk_wizard_260907.html and follow the same
+        specification, so this page matches the ones already defined instead of drifting into its own
+        shape. If any of those five town pages is already live, fetch one and match its structure,
+        headings and depth as well.</p>
+        <p>These are the true local details for this city, and they are the whole point of the page.
+        Do not invent, embellish or generalize any of them, and do not pad the page with anything you
+        cannot source from what I give you here: LOCAL DETAILS HERE, JOBS WE HAVE DONE THERE, PHOTO
+        FILENAMES HERE.</p>
+        <p>If what I have given you is not enough to make this page meaningfully different from the
+        other city pages on the site, stop and tell me that plainly, and tell me what you would need.
+        Do not write it anyway. Near identical city pages are doorway abuse under Google's published
+        spam policy and the penalty falls on the whole site.</p>
+        <p>Hard rules for the wording, these are legal, not stylistic. Minnesota statute 325E.66 bars a
+        roofing contractor from interpreting an insurance policy, from advising on coverage, and from
+        advertising that it will pay or waive a deductible. Statute 72B.02 bars advertising as a public
+        adjuster. Use inspect, document, measure, repair and replace. Never use file, handle, negotiate,
+        advocate, ensure or covered about insurance. Never suggest insurers drop homeowners over roof
+        age. Statute 326B.87 requires the license number BC807923 on advertising, so it goes on this
+        page.</p>
+        <p>Build it, show it to me before you publish, and only publish once I approve it. After
+        saving, clear the builder cache with a DELETE to /wp-json/elementor/v1/cache.</p>
+      </div>
+      <div class="foot"><div class="status" id="st_addcity"></div></div>
+    </div>
+
+    <h3>Then prove that one landed, before you start the next</h3>
+    <p class="kicker">Same shape as the rest of the walk: you ask for the proof rather than taking the
+    word for it.</p>
+
+    <div class="ask">
+      <div class="head"><span>Paste this into your Claude</span>
+        <button class="btn g copy" style="font-size:15.5px;padding:7px 14px" data-src="ask_citycheck" data-status="st_citycheck">Copy</button></div>
+      <div class="body" id="ask_citycheck">
+        <p>Website: toptiermn.com, behind a Cloudflare CDN, so add a random query string to every fetch.
+        Check the city page we just published and give me pass or fail per line with the evidence you
+        actually got.</p>
+        <p>One. The page address returns 200 and is not a redirect to somewhere else.</p>
+        <p>Two. The city name is in the page title tag.</p>
+        <p>Three. https://toptiermn.com/sitemap_index.xml returns 200 and the page sitemap under it
+        lists this new address. If Rank Math has not picked it up yet, say so rather than marking it
+        pass.</p>
+        <p>Four. The license number BC807923 is on the page.</p>
+        <p>Five. Compare the visible text of this page against the other city pages on the site and
+        tell me what percentage of it is the same wording. If most of it matches, say so bluntly and
+        tell me which parts are the template.</p>
+        <p>Do not fix anything in this pass.</p>
+      </div>
+      <div class="foot"><div class="status" id="st_citycheck"></div></div>
+    </div>
+
+    <div class="fillrow">
+      <label for="citylist">Cities you are adding, and where each one got to (saved on this page so you have it later)</label>
+      <textarea id="citylist" placeholder="One per line. The city, the address once it is live, and the local detail you used, so you can see at a glance which ones are real pages and which are still waiting on a photograph or a job."></textarea>
     </div>
   </div>
 </section>
@@ -651,8 +791,7 @@
   <div class="card">
     <h2>Prove it landed</h2>
     <p class="lede">One instruction that checks every change on this walk at once, against the live
-      site rather than against anybody's word for it.
-      <a href="#" class="broke" data-step="Prove it landed">This step broke</a></p>
+      site rather than against anybody's word for it.</p>
 
     <p>Two things make a website change look done when it is not. The builder saves a change that the
     visitor never sees, because a cached copy is being served in front of it. And a report says done
@@ -696,40 +835,6 @@
   </div>
 </section>
 
-<!-- ============ 8 : Something wrong? ============ -->
-<section class="screen" data-t="Something wrong?">
-  <div class="card">
-    <h2>Something on this page wrong, unclear, or broken?</h2>
-    <p class="lede">Say so here and it comes straight back to be fixed.</p>
-
-    <label class="q" for="fstep">Which step</label>
-    <select id="fstep">
-      <option value="">Pick one</option>
-      <option>Start here</option>
-      <option>Already done</option>
-      <option>Your keys</option>
-      <option>The details search engines read</option>
-      <option>The footer</option>
-      <option>The services</option>
-      <option>The towns</option>
-      <option>Prove it landed</option>
-      <option>Something else</option>
-    </select>
-
-    <label class="q" for="fwhat">What happened, or what is wrong</label>
-    <textarea id="fwhat" placeholder="What you expected, what you got, and what the screen or your Claude said."></textarea>
-
-    <label class="q" for="fleft">What is still open on the website after this walk</label>
-    <textarea id="fleft">Anything your Claude refused or could not prove, and anything on the site that bothers you that is not on this page at all.</textarea>
-
-    <div style="display:flex; gap:12px; margin-top:20px; flex-wrap:wrap">
-      <button class="btn p" id="btnSend">Send this back</button>
-      <button class="btn s" id="btnCopy">Copy instead</button>
-    </div>
-    <div class="status" id="stForm"></div>
-  </div>
-</section>
-
 <div class="nav">
   <button class="btn s" id="prev">Back</button>
   <button class="btn p" id="next">Next</button>
@@ -742,7 +847,6 @@
 <script>
 (function(){
   "use strict";
-  var RECEIVER = "https://script.google.com/macros/s/AKfycbw4EMVKAGn3E5ZbqdApH-_9hfD8rMYU0lC47BZkkpjj3IUrZTxQOyULFR48-P2jHq6YiA/exec";
   var KEY = "toptier_websitewalk_260907";
   var screens = [].slice.call(document.querySelectorAll(".screen"));
   var rail = document.getElementById("rail");
@@ -835,100 +939,40 @@
     });
   });
 
-  // "this step broke" links jump to the form and preselect the step
-  [].slice.call(document.querySelectorAll("a.broke")).forEach(function(a){
-    a.addEventListener("click", function(e){
-      e.preventDefault();
-      var sel = document.getElementById("fstep");
-      if(sel) sel.value = a.dataset.step;
-      store.fstep = a.dataset.step;
-      try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e2){}
-      go(screens.length-1);
-    });
-  });
-
-  // ---- receiver -----------------------------------------------------------
-  function payload(){
-    return {
-      form: "TopTier-GuideFeedback-WebsiteWalk",
-      submittedAt: new Date().toISOString(),
-      answers: {
-        step: val("fstep"),
-        whatHappened: val("fwhat"),
-        whatIsLeft: val("fleft"),
-        wpUser: val("wpuser"),
-        footerDiagnosis: val("footerdiag"),
-        townAlbertville: val("t_alb"),
-        townStMichael: val("t_stm"),
-        townOtsego: val("t_ots"),
-        townMonticello: val("t_mon"),
-        townBuffalo: val("t_buf"),
-        townPageUrls: val("t_urls")
-      }
-    };
-  }
-  function val(id){ var e = document.getElementById(id); return e ? e.value : ""; }
-
-  function post(p, statusEl, okMsg){
-    statusEl.textContent = "Sending..."; statusEl.className = "status";
-    TTPOST(JSON.stringify(p)).then(function(r){
-      if(!r.ok) throw new Error("HTTP "+r.status);
-      statusEl.textContent = okMsg; statusEl.className = "status ok";
-    }).catch(function(){
-      statusEl.textContent = "The receiver is not answering. Use Copy instead and paste it into chat.";
-      statusEl.className = "status bad";
-    });
-  }
-
-  document.getElementById("btnSend").addEventListener("click", function(){
-    post(payload(), document.getElementById("stForm"), "Sent. It will be picked up in chat.");
-  });
-  document.getElementById("btnCopy").addEventListener("click", function(){
-    copyText(JSON.stringify(payload(), null, 2), document.getElementById("stForm"),
-             "Copied. Paste it into chat.");
-  });
-
   paint(); go(0);
 })();
 </script>
 </div>
-
-<script id="tt-endpoint-shim">
-/* The Top Tier form return path. Injected at publish time by
-   work/hubpub/endpoint_stamp_260908.py. Do not hand edit this in a
-   published file; edit the stamper and re-run it. */
+<script id="cw-script">
+/* Copy handler for the "Working this with your Claude" block. Standalone on
+   purpose: two of the five wizards have no shared copy plumbing. */
 (function(){
   "use strict";
-  var TT_ENDPOINT  = "https://script.google.com/macros/s/AKfycbw4EMVKAGn3E5ZbqdApH-_9hfD8rMYU0lC47BZkkpjj3IUrZTxQOyULFR48-P2jHq6YiA/exec";
-  var TT_TIMEOUT_MS = 15000;
-
-  /* This is a SIMPLE cross origin request on purpose: POST, a plain string
-     body, and no custom headers at all. Adding a Content-Type header turns it
-     into a preflighted request, and an Apps Script web app cannot answer the
-     OPTIONS preflight, so every send would fail in the browser. */
-  window.TTPOST = function(bodyString){
-    var ctl = (typeof AbortController !== "undefined") ? new AbortController() : null;
-    var timer = setTimeout(function(){ if (ctl) { ctl.abort(); } }, TT_TIMEOUT_MS);
-    var opts = { method: "POST", body: String(bodyString), redirect: "follow" };
-    if (ctl) { opts.signal = ctl.signal; }
-
-    return fetch(TT_ENDPOINT, opts).then(function(res){
-      clearTimeout(timer);
-      if (!res.ok) { return { ok: false, status: res.status }; }
-      return res.text().then(function(t){
-        var body = null;
-        try { body = JSON.parse(t); } catch (e) { body = null; }
-        /* Success ONLY on a confirmed 2xx whose body says so. An unreadable or
-           unexpected body is reported as a failure, because a send we cannot
-           prove is exactly the defect this page is being fixed for. */
-        if (body && body.ok === true) { return { ok: true, status: res.status, body: body }; }
-        return { ok: false, status: res.status, body: body };
-      });
-    }).catch(function(err){
-      clearTimeout(timer);
-      throw err;  /* network, CORS or timeout: the page's own catch shows the fallback */
-    });
-  };
+  var btn = document.getElementById("cwCopy");
+  if(!btn) return;
+  var st = document.getElementById("cwStatus");
+  function say(ok, msg){
+    if(!st) return;
+    st.textContent = msg;
+    st.className = "cw-status" + (ok ? "" : " bad");
+    setTimeout(function(){ st.textContent = ""; st.className = "cw-status"; }, 5000);
+  }
+  btn.addEventListener("click", function(){
+    var txt = btn.getAttribute("data-prompt") || "";
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(
+        function(){ say(true, "Copied. Paste it into your Claude."); },
+        function(){ say(false, "Could not copy. Select the line and copy it by hand."); });
+    } else {
+      var ta = document.createElement("textarea");
+      ta.value = txt; document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch(e){}
+      document.body.removeChild(ta);
+      say(ok, ok ? "Copied. Paste it into your Claude."
+                 : "Could not copy. Select the line and copy it by hand.");
+    }
+  });
 })();
 </script>
 </body>
