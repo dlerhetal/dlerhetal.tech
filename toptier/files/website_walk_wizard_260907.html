@@ -688,35 +688,55 @@
 <!-- ============ 7 : Add another city ============ -->
 <section class="screen" data-t="Add another city">
   <div class="card">
-    <h2>Adding another city, any time after today</h2>
+    <h2>Building the city pages from your own document</h2>
     <p class="lede">The five towns on the step before this one are the first batch, and none of them
-      exists on the site yet. This step is the general case: the same job, for any city you decide to
-      add later, without anybody having to write a new instruction for it.</p>
+      exists on the site yet. This is the general case. Write your document, a section per city, and
+      hand the whole thing to your Claude with the instruction below. It works for one city or for
+      twenty, today or in six months.</p>
 
-    <div class="stop"><b>Read this first, because it is the one way this backfires.</b> A stack of
-    near identical city pages that differ only by the town name is what Google calls
-    <b>doorway abuse</b>, and it is named in their published spam policy, not a grey area. Their own
-    wording: doorway abuse is <i>"when sites or pages are created to rank for specific, similar
-    search queries"</i>, and one of the examples they list is <i>"having multiple domain names or
-    pages targeted at specific regions or cities that funnel users to one page"</i>. The same document
-    names <b>scaled content abuse</b>, <i>"when many pages are generated for the primary purpose of
-    manipulating search rankings and not helping users"</i>. Read either page at
-    <a href="https://developers.google.com/search/docs/essentials/spam-policies" target="_blank" rel="noopener">developers.google.com/search/docs/essentials/spam-policies</a>.
-    A penalty here does not land on the thin page alone, it lands on the site. Fifteen template fills
-    are worse than three real pages.</div>
+    <div class="stop"><b>The one constraint, and it is not ours.</b> A stack of near identical city
+    pages that differ only by the town name is what Google calls <b>doorway abuse</b>, named in their
+    published spam policy, not a grey area. Their wording: doorway abuse is <i>"when sites or pages
+    are created to rank for specific, similar search queries"</i>, and one of their own examples is
+    <i>"having multiple domain names or pages targeted at specific regions or cities that funnel
+    users to one page"</i>. The same document names <b>scaled content abuse</b>, <i>"when many pages
+    are generated for the primary purpose of manipulating search rankings and not helping users"</i>,
+    at <a href="https://developers.google.com/search/docs/essentials/spam-policies" target="_blank" rel="noopener">developers.google.com/search/docs/essentials/spam-policies</a>.
+    The penalty does not land on the thin page, it lands on the site. A real photograph of a roof you
+    did in that town, and a paragraph only you could write, is what makes each page a page rather
+    than a template fill.</div>
 
+    <p class="kicker">This is what you paste along with your document.</p>
 
-    <h3>A real photograph is the answer to that</h3>
-    <p class="kicker">A photograph of a roof you actually did in that town is the one thing on a city
-    page nobody else can produce and nothing can fake. It is what turns the page from a template fill
-    into a page with proof on it, and it is worth more than any paragraph.</p>
-    <p>Pick the photographs off your own computer and add them to the page in Elementor the way you
-    would add any other image. There is nothing to set up.</p>
+    <div class="ask">
+      <div class="head"><span>Paste this into your Claude</span>
+        <button class="btn g copy" style="font-size:15.5px;padding:7px 14px" data-src="ask_addcity" data-status="st_addcity">Copy</button></div>
+      <div class="body" id="ask_addcity">
+        <p>I am building service pages for the towns we work in. I will give you a document with a
+        section for each town, with paragraphs and a photo, sometimes with an attribution.</p>
+        <p>For each town, build one page on toptiermn.com matching the structure of our existing town
+        pages.</p>
+        <p>Rules:</p>
+        <p>1. Every page has to carry something only we can say about that town: work we actually did
+        there, local specifics, a real photo. Pages that differ only by the town name are doorway
+        pages under Google's spam policy and can hurt the whole site. If a section does not have
+        anything town-specific in it, tell me before you build it.</p>
+        <p>2. Never publish a customer's name or street address. Not in the text, not in a caption,
+        not in an attribution, not in alt text, not in a filename.</p>
+        <p>3. Give each image a descriptive filename with the town in it, and write real alt text
+        naming the town.</p>
+        <p>4. When the pages are published, fetch each URL, confirm it resolves, confirm it appears
+        in the sitemap, and tell me which ones failed.</p>
+        <p>Start by reading my document and telling me which towns have enough town-specific material
+        and which do not.</p>
+      </div>
+      <div class="foot"><div class="status" id="st_addcity"></div></div>
+    </div>
 
-    <h3>Where there is documented work to draw on</h3>
-    <p class="kicker">Counts of job photographs on record, by town, read on 9 September 2026. Not a
-    list of pages to build and not approved. It is only where there is real work documented, which is
-    the difference between a page with proof and a page without.</p>
+    <h3>Which towns have real work behind them</h3>
+    <p class="kicker">Counts of job photographs on record, by town, read on 9 September 2026. A short
+    reference while you write, nothing more. Not a list of pages to build, and nothing here is
+    committed.</p>
 
     <div style="overflow-x:auto">
     <table>
@@ -731,115 +751,9 @@
       <tr><td>Albertville</td><td class="num">0</td><td class="num">0</td><td>Yes</td></tr>
     </table>
     </div>
-    <p class="kicker">615 photographs across 7 towns. <b>Nothing here is
-    committed.</b> Take towns off this list as freely as you add them, and build a page for a town
-    that is not on it at all if you have a reason. You know your customers.</p>
-
-<div class="note"><b>Albertville is in the first batch with no documented job photographs at all.</b> Every other town on the list has work on record. That is a fact about what got photographed, and you will know straight away what it means.</div>
-<div class="note"><b>Annandale, St Cloud and Minneapolis have documented work and are not in the first batch.</b> An observation, not a recommendation.</div>
-
-    <h3>What makes a city page a real page</h3>
-    <p class="kicker">Only one of these is something a machine can supply, and it is the last one. The
-    rest have to come out of your own records, and that is exactly why they work.</p>
-    <ul>
-      <li><b>Work you actually did there.</b> A job on a named street or subdivision, what the roof
-        was, what it turned into. One is enough, three is better.</li>
-      <li><b>Photographs from that city,</b> your own, not stock. A house that is recognizably in that
-        town does more than any paragraph.</li>
-      <li><b>Something true and local</b> that a person who lives there would recognize: a storm and
-        its year, the age and style of the housing stock, a landmark, the way a subdivision was built
-        out all at once so the roofs all age together.</li>
-      <li><b>A reason the page exists beyond the town name.</b> If you removed the town name and the
-        page still read the same as the last one, it is not a page yet.</li>
-    </ul>
-
-    <div class="ask">
-      <div class="head"><span>Paste this into your Claude, one city at a time</span>
-        <button class="btn g copy" style="font-size:15.5px;padding:7px 14px" data-src="ask_addcity" data-status="st_addcity">Copy</button></div>
-      <div class="body" id="ask_addcity">
-        <p>Website: toptiermn.com, WordPress on Elementor Cloud, SEO plugin Rank Math. There is a
-        Cloudflare CDN in front of the site, so add a random query string to every fetch or you will
-        read a cached copy.</p>
-        <p>I want to add a city page for CITY NAME HERE.</p>
-        <p>First, read the town page instruction in the step called The towns on
-        https://dlerhetal.tech/toptier/files/website_walk_wizard_260907.html and follow the same
-        specification, so this page matches the ones already defined instead of drifting into its own
-        shape. If any of those five town pages is already live, fetch one and match its structure,
-        headings and depth as well.</p>
-        <p>These are the true local details for this city, and they are the whole point of the page.
-        Do not invent, embellish or generalize any of them, and do not pad the page with anything you
-        cannot source from what I give you here: LOCAL DETAILS HERE, JOBS WE HAVE DONE THERE, PHOTO
-        FILENAMES HERE.</p>
-        <p>If what I have given you is not enough to make this page meaningfully different from the
-        other city pages on the site, stop and tell me that plainly, and tell me what you would need.
-        Do not write it anyway. Near identical city pages are doorway abuse under Google's published
-        spam policy and the penalty falls on the whole site.</p>
-        <p>Hard rules for the wording, these are legal, not stylistic. Minnesota statute 325E.66 bars a
-        roofing contractor from interpreting an insurance policy, from advising on coverage, and from
-        advertising that it will pay or waive a deductible. Statute 72B.02 bars advertising as a public
-        adjuster. Use inspect, document, measure, repair and replace. Never use file, handle, negotiate,
-        advocate, ensure or covered about insurance. Never suggest insurers drop homeowners over roof
-        age. Statute 326B.87 requires the license number BC807923 on advertising, so it goes on this
-        page.</p>
-        <p>Build it, show it to me before you publish, and only publish once I approve it. After
-        saving, clear the builder cache with a DELETE to /wp-json/elementor/v1/cache.</p>
-      </div>
-      <div class="foot"><div class="status" id="st_addcity"></div></div>
-    </div>
-
-    <h3>Then prove that one landed, before you start the next</h3>
-    <p class="kicker">Same shape as the rest of the walk: you ask for the proof rather than taking the
-    word for it.</p>
-
-    <div class="ask">
-      <div class="head"><span>Paste this into your Claude</span>
-        <button class="btn g copy" style="font-size:15.5px;padding:7px 14px" data-src="ask_citycheck" data-status="st_citycheck">Copy</button></div>
-      <div class="body" id="ask_citycheck">
-        <p>Website: toptiermn.com, behind a Cloudflare CDN, so add a random query string to every fetch.
-        Check the city page we just published and give me pass or fail per line with the evidence you
-        actually got.</p>
-        <p>One. The page address returns 200 and is not a redirect to somewhere else.</p>
-        <p>Two. The city name is in the page title tag.</p>
-        <p>Three. https://toptiermn.com/sitemap_index.xml returns 200 and the page sitemap under it
-        lists this new address. If Rank Math has not picked it up yet, say so rather than marking it
-        pass.</p>
-        <p>Four. The license number BC807923 is on the page.</p>
-        <p>Five. Compare the visible text of this page against the other city pages on the site and
-        tell me what percentage of it is the same wording. If most of it matches, say so bluntly and
-        tell me which parts are the template.</p>
-        <p>Do not fix anything in this pass.</p>
-      </div>
-      <div class="foot"><div class="status" id="st_citycheck"></div></div>
-    </div>
-
-    <div class="fillrow">
-      <label for="citylist">Cities you are adding or taking down, and where each one got to (saved on this page so you have it later)</label>
-      <textarea id="citylist" placeholder="One per line. The city, the address once it is live, and the local detail you used, so you can see at a glance which ones are real pages and which are still waiting on a photograph or a job."></textarea>
-    </div>
-
-    <h3>Taking a city page down</h3>
-    <p class="kicker">As ordinary as adding one. A page you decide against, or one that never earned
-    its keep, should come off properly rather than be left to rot.</p>
-
-    <div class="ask">
-      <div class="head"><span>Paste this into your Claude</span>
-        <button class="btn g copy" style="font-size:15.5px;padding:7px 14px" data-src="ask_delcity" data-status="st_delcity">Copy</button></div>
-      <div class="body" id="ask_delcity">
-        <p>Website: toptiermn.com, WordPress on Elementor Cloud, SEO plugin Rank Math, Cloudflare in
-        front so add a random query string to every fetch.</p>
-        <p>I want to take down the city page for CITY NAME HERE.</p>
-        <p>Show me first, before you change anything: the page id and address, anything on the site
-        that links to it, and whether it is in a menu.</p>
-        <p>Then remove it, put a 301 redirect from its old address to the services page so nobody
-        lands on a not found, take it out of any menu, and remove or fix every internal link you
-        found.</p>
-        <p>Then clear the builder cache with a DELETE to /wp-json/elementor/v1/cache and prove it:
-        fetch the old address cache busted and show me that it redirects rather than returning 404 or
-        still serving the page, and confirm it has dropped out of
-        https://toptiermn.com/sitemap_index.xml.</p>
-      </div>
-      <div class="foot"><div class="status" id="st_delcity"></div></div>
-    </div>
+    <p class="kicker">615 photographs across 7 towns. <b>Albertville is in the first batch with no documented job photographs at all.</b> Annandale, St Cloud and Minneapolis have documented work and are not in the first batch.
+    You know your customers, so build a page for a town that is not on this list at all if you have a
+    reason, and leave off any of these you do not want.</p>
   </div>
 </section>
 
