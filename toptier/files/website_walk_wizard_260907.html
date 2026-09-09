@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
+<meta name="robots" content="noindex, nofollow">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
 <title>The Website Walk</title>
 <style>
   :root{
@@ -604,7 +604,7 @@
 </section>
 
 <!-- ============ 6 : The towns ============ -->
-<section class="screen" data-t="The towns" data-gate="t_alb,t_stm,t_ots,t_mon,t_buf">
+<section class="screen" data-t="The towns">
   <div class="card">
     <h2>A page for each town, and this one has a date on it</h2>
     <p class="lede">Albertville, St Michael, Otsego, Monticello and Buffalo all return page not found
@@ -616,22 +616,13 @@
     a year from now.</p>
 
     <h3>The part your Claude cannot do, and it is a small part</h3>
-    <p class="kicker">A town page that only repeats the town name is the same page every roofer has.
-    What makes it worth reading is one true local thing, and that lives in your head, not in any file.
-    A neighborhood you have worked, a landmark, a subdivision, the year of a storm that came through,
-    the kind of roofs on those streets. One line each is enough. These fill themselves into the
-    instruction below.</p>
+    <p class="kicker">A town page that only repeats the town name is the same page every roofer has,
+    and Google calls that a doorway page. What makes a page worth reading is one true local thing, and
+    that lives in your head, not in any file. A neighborhood you have worked, a landmark, a
+    subdivision, the year of a storm that came through, the kind of roofs on those streets. Put those
+    words, and your photographs, in your own document with a section for each town, and hand that
+    document to your Claude along with the instruction below.</p>
 
-    <div class="fillrow"><label for="t_alb">Albertville, one true local detail</label>
-      <input class="fill" type="text" id="t_alb" style="min-width:100%" placeholder="for example: the streets off County Road 37, and what those roofs are"></div>
-    <div class="fillrow"><label for="t_stm">St Michael, one true local detail</label>
-      <input class="fill" type="text" id="t_stm" style="min-width:100%" placeholder=""></div>
-    <div class="fillrow"><label for="t_ots">Otsego, one true local detail</label>
-      <input class="fill" type="text" id="t_ots" style="min-width:100%" placeholder=""></div>
-    <div class="fillrow"><label for="t_mon">Monticello, one true local detail</label>
-      <input class="fill" type="text" id="t_mon" style="min-width:100%" placeholder=""></div>
-    <div class="fillrow"><label for="t_buf">Buffalo, one true local detail</label>
-      <input class="fill" type="text" id="t_buf" style="min-width:100%" placeholder=""></div>
     <div class="status" id="gateMsg"></div>
 
     <div class="ask">
@@ -642,22 +633,22 @@
         Albertville, MN 55301, phone 612-205-5503, Minnesota license BC807923. WordPress on Elementor
         Cloud, Rank Math for SEO, application password in my environment file, Cloudflare CDN in front
         so cache bust every fetch.</p>
-        <p>Build five new pages, one for each town we work: Albertville, St Michael, Otsego, Monticello
-        and Buffalo. Right now none of these exist and the obvious addresses return page not found.</p>
+        <p>I am giving you a document. It has a section for each town we work, with my own words
+        about that town and photographs, sometimes with an attribution. Build one page per town from
+        that document. The towns in the document are the list. If a town is not in there, do not build
+        it.</p>
+        <p>Right now none of these pages exist and the obvious addresses return page not found.</p>
         <p>Before you build, read an existing page and tell me the slug pattern and the page template
-        the site already uses, then propose the five addresses and wait for me to approve them. Do not
+        the site already uses, then propose the addresses and wait for me to approve them. Do not
         guess at a pattern the site does not use.</p>
         <p>Each page needs: a heading naming the town and the work, a short honest description of the
         work we do there, the services named in plain words a homeowner would use (roof replacement,
         roof repair, siding, gutters, storm and hail damage), the address, the phone number as a link
         that dials, the license number BC807923, and a way to ask for a quote that matches the one on
-        the homepage. No stock photographs of houses that are not ours.</p>
-        <p>The local detail for each town, in my own words, use these and do not invent others:</p>
-        <p>Albertville: <span class="slot" data-slot="t_alb">not filled in yet</span></p>
-        <p>St Michael: <span class="slot" data-slot="t_stm">not filled in yet</span></p>
-        <p>Otsego: <span class="slot" data-slot="t_ots">not filled in yet</span></p>
-        <p>Monticello: <span class="slot" data-slot="t_mon">not filled in yet</span></p>
-        <p>Buffalo: <span class="slot" data-slot="t_buf">not filled in yet</span></p>
+        the homepage.</p>
+        <p>Use only the words and the photographs in my document for the local detail. Do not invent
+        local detail, and no stock photographs of houses that are not ours. Give each image a
+        descriptive filename with the town in it, and real alt text naming the town.</p>
         <p>Hard rules for the wording, these are legal, not stylistic. Minnesota statute 325E.66 bars a
         roofing contractor from interpreting an insurance policy, from advising on coverage, and from
         advertising that it will pay or waive a deductible. Statute 72B.02 bars advertising as a public
@@ -665,95 +656,26 @@
         advocate, ensure or covered about insurance. Never suggest insurers drop homeowners over roof
         age. Statute 326B.87 requires the license number BC807923 on advertising, so it goes on every
         one of these pages.</p>
-        <p>Do not write the same page five times with the town name swapped. A search engine treats that
-        as one page and a reader can smell it.</p>
-        <p>Method: build one page first, show it to me, and only build the other four once I approve it.
+        <p>Never publish a customer's name or a street address. Not in the text, not in a caption, not
+        in an attribution, not in alt text, not in a filename.</p>
+        <p>Do not write the same page over and over with the town name swapped. A search engine treats
+        that as one page and a reader can smell it. Google calls it a doorway page and it is a
+        documented spam policy violation that can hurt the whole site. If a town's section in my
+        document has nothing genuinely town-specific in it, tell me before you build that page.</p>
+        <p>Method: build one page first, show it to me, and only build the rest once I approve it.
         After saving, clear the builder cache with a DELETE to /wp-json/elementor/v1/cache, fetch each
         new address cache busted, and confirm it returns 200 with the town name in the page title. Then
-        add all five to the sitemap if Rank Math has not picked them up, and paste me the five live
+        add them all to the sitemap if Rank Math has not picked them up, and paste me the live
         addresses.</p>
-        <p>There is a deadline and it is real: postcards land in these five towns starting 15 September
-        2026.</p>
+        <p>There is a deadline and it is real: postcards land starting 15 September 2026.</p>
       </div>
       <div class="foot"><div class="status" id="st_town"></div></div>
     </div>
 
     <div class="fillrow">
-      <label for="t_urls">The five live addresses once they exist (paste them here, it is saved on this page so you have it later)</label>
+      <label for="t_urls">The live addresses once they exist (paste them here, it is saved on this page so you have it later)</label>
       <textarea id="t_urls" placeholder="One per line, exactly as your Claude reports them."></textarea>
     </div>
-  </div>
-</section>
-
-<!-- ============ 7 : Add another city ============ -->
-<section class="screen" data-t="Add another city">
-  <div class="card">
-    <h2>Building the city pages from your own document</h2>
-    <p class="lede">The five towns on the step before this one are the first batch, and none of them
-      exists on the site yet. This is the general case. Write your document, a section per city, and
-      hand the whole thing to your Claude with the instruction below. It works for one city or for
-      twenty, today or in six months.</p>
-
-    <div class="stop"><b>The one constraint, and it is not ours.</b> A stack of near identical city
-    pages that differ only by the town name is what Google calls <b>doorway abuse</b>, named in their
-    published spam policy, not a grey area. Their wording: doorway abuse is <i>"when sites or pages
-    are created to rank for specific, similar search queries"</i>, and one of their own examples is
-    <i>"having multiple domain names or pages targeted at specific regions or cities that funnel
-    users to one page"</i>. The same document names <b>scaled content abuse</b>, <i>"when many pages
-    are generated for the primary purpose of manipulating search rankings and not helping users"</i>,
-    at <a href="https://developers.google.com/search/docs/essentials/spam-policies" target="_blank" rel="noopener">developers.google.com/search/docs/essentials/spam-policies</a>.
-    The penalty does not land on the thin page, it lands on the site. A real photograph of a roof you
-    did in that town, and a paragraph only you could write, is what makes each page a page rather
-    than a template fill.</div>
-
-    <p class="kicker">This is what you paste along with your document.</p>
-
-    <div class="ask">
-      <div class="head"><span>Paste this into your Claude</span>
-        <button class="btn g copy" style="font-size:15.5px;padding:7px 14px" data-src="ask_addcity" data-status="st_addcity">Copy</button></div>
-      <div class="body" id="ask_addcity">
-        <p>I am building service pages for the towns we work in. I will give you a document with a
-        section for each town, with paragraphs and a photo, sometimes with an attribution.</p>
-        <p>For each town, build one page on toptiermn.com matching the structure of our existing town
-        pages.</p>
-        <p>Rules:</p>
-        <p>1. Every page has to carry something only we can say about that town: work we actually did
-        there, local specifics, a real photo. Pages that differ only by the town name are doorway
-        pages under Google's spam policy and can hurt the whole site. If a section does not have
-        anything town-specific in it, tell me before you build it.</p>
-        <p>2. Never publish a customer's name or street address. Not in the text, not in a caption,
-        not in an attribution, not in alt text, not in a filename.</p>
-        <p>3. Give each image a descriptive filename with the town in it, and write real alt text
-        naming the town.</p>
-        <p>4. When the pages are published, fetch each URL, confirm it resolves, confirm it appears
-        in the sitemap, and tell me which ones failed.</p>
-        <p>Start by reading my document and telling me which towns have enough town-specific material
-        and which do not.</p>
-      </div>
-      <div class="foot"><div class="status" id="st_addcity"></div></div>
-    </div>
-
-    <h3>Which towns have real work behind them</h3>
-    <p class="kicker">Counts of job photographs on record, by town, read on 9 September 2026. A short
-    reference while you write, nothing more. Not a list of pages to build, and nothing here is
-    committed.</p>
-
-    <div style="overflow-x:auto">
-    <table>
-      <tr><th>Town</th><th class="num">Job photographs on record</th><th class="num">Jobs</th><th>In the first batch</th></tr>
-      <tr><td>Monticello</td><td class="num">185</td><td class="num">3</td><td>Yes</td></tr>
-      <tr><td>Otsego</td><td class="num">164</td><td class="num">2</td><td>Yes</td></tr>
-      <tr><td>St Michael</td><td class="num">85</td><td class="num">2</td><td>Yes</td></tr>
-      <tr><td>Buffalo</td><td class="num">62</td><td class="num">2</td><td>Yes</td></tr>
-      <tr><td>Annandale</td><td class="num">50</td><td class="num">1</td><td>No</td></tr>
-      <tr><td>St Cloud</td><td class="num">50</td><td class="num">1</td><td>No</td></tr>
-      <tr><td>Minneapolis</td><td class="num">19</td><td class="num">1</td><td>No</td></tr>
-      <tr><td>Albertville</td><td class="num">0</td><td class="num">0</td><td>Yes</td></tr>
-    </table>
-    </div>
-    <p class="kicker">615 photographs across 7 towns. <b>Albertville is in the first batch with no documented job photographs at all.</b> Annandale, St Cloud and Minneapolis have documented work and are not in the first batch.
-    You know your customers, so build a page for a town that is not on this list at all if you have a
-    reason, and leave off any of these you do not want.</p>
   </div>
 </section>
 
@@ -919,31 +841,30 @@
    purpose: two of the five wizards have no shared copy plumbing. */
 (function(){
   "use strict";
-  function say(st, ok, msg){
+  var btn = document.getElementById("cwCopy");
+  if(!btn) return;
+  var st = document.getElementById("cwStatus");
+  function say(ok, msg){
     if(!st) return;
     st.textContent = msg;
     st.className = "cw-status" + (ok ? "" : " bad");
     setTimeout(function(){ st.textContent = ""; st.className = "cw-status"; }, 5000);
   }
-  [].slice.call(document.querySelectorAll(".cw-btn")).forEach(function(btn){
-  var box = btn.closest ? (btn.closest("[data-cwstatus]") || btn.closest(".cw")) : null;
-  var st = box ? box.querySelector(".cw-status") : null;
   btn.addEventListener("click", function(){
     var txt = btn.getAttribute("data-prompt") || "";
     if(navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(txt).then(
-        function(){ say(st, true, "Copied. Paste it into your Claude."); },
-        function(){ say(st, false, "Could not copy. Select the line and copy it by hand."); });
+        function(){ say(true, "Copied. Paste it into your Claude."); },
+        function(){ say(false, "Could not copy. Select the line and copy it by hand."); });
     } else {
       var ta = document.createElement("textarea");
       ta.value = txt; document.body.appendChild(ta); ta.select();
       var ok = false;
       try { ok = document.execCommand("copy"); } catch(e){}
       document.body.removeChild(ta);
-      say(st, ok, ok ? "Copied. Paste it into your Claude."
-                     : "Could not copy. Select the line and copy it by hand.");
+      say(ok, ok ? "Copied. Paste it into your Claude."
+                 : "Could not copy. Select the line and copy it by hand.");
     }
-  });
   });
 })();
 </script>
