@@ -1,0 +1,537 @@
+/* ==========================================================================
+   TOP TIER ROOFING & REMODELING - MARKETING ASSET DESIGN SYSTEM
+   File: assets/design/toptier_tokens.css
+   Created: 2026-08-31
+
+   This is the single source of visual truth for every marketing graphic
+   rendered by work/scripts/render_assets_260831.py.
+
+   WHOSE BRAND THIS IS
+   -------------------
+   These tokens carry TOP TIER's identity. Top Tier is the client, and these
+   assets get posted on Top Tier's Facebook, Instagram and website. The
+   consulting firm's own branding (Section Blue, Gold, the consultant
+   watermark) belongs ONLY on internal consulting deliverables and must
+   NEVER appear on anything in this file or anything it styles.
+
+   BRAND STATUS: PROVISIONAL - SEE THE SWAP BLOCK BELOW
+   ----------------------------------------------------
+   As of 2026-08-31 the file assets/brand_toptier_260831.md did not exist,
+   so the brand colors below were NOT taken from a brand document. They were
+   sampled with Pillow directly from Top Tier's own published artwork:
+
+     assets/images/from_site/Top-Tier-logo-final-sample-1.jpg
+        dominant colors: #FFFFFF, #000000, #FF0000  (white, black, red)
+     assets/images/from_site/toptiertruckwrap-e1724437980675.webp
+        dominant colors: #3E4850 family (gunmetal / steel gray)
+
+   So the brand read is: black and white, a hot red accent, gunmetal support.
+   Raw #FF0000 is too harsh for large fills and vibrates on a phone screen,
+   so --ttRed is set one step down from it. The raw logo red is preserved as
+   --ttRedLogo for anything that must match the logo exactly.
+
+   TO SWAP IN THE REAL BRAND: edit ONLY the BRAND SWAP BLOCK below. Nothing
+   else in this file, and nothing in any asset HTML, should need to change.
+   Every other token either is a fixed structural decision (spacing, type
+   scale, stroke weight) or derives from the swap block.
+   ========================================================================== */
+
+:root {
+
+  /* ======================================================================
+     BRAND SWAP BLOCK - the only part that changes when brand.md lands
+     ====================================================================== */
+
+  /* Core brand colors (PROVISIONAL, sampled from Top Tier artwork) */
+  --ttRed:            #E11B22;   /* primary accent, calls to action        */
+  --ttRedLogo:        #FF0000;   /* exact logo red, use only to match art  */
+  --ttRedDeep:        #9E1016;   /* pressed / shadowed red                 */
+  --ttRedTint:        #FDECEC;   /* pale red wash for panels               */
+  --ttInk:            #101214;   /* near black, the primary brand dark     */
+  --ttInkSoft:        #3E4850;   /* gunmetal from the truck wrap           */
+  --ttInkFaint:       #6B757D;   /* muted body text on light               */
+  --ttPaper:          #FFFFFF;   /* primary light ground                   */
+  --ttPaperAlt:       #F2F4F6;   /* panel / card ground on light           */
+  --ttLine:           #D7DCE1;   /* hairline rules on light                */
+  --ttLineDark:       #2A3238;   /* hairline rules on dark                 */
+  --ttNavy:           #003C55;   /* toptiermn.com navy, sampled from the   */
+  --ttNavyTint:       #D7E3E9;   /* client's own live site. Water color.    */
+
+  /* Brand typography (PROVISIONAL - Windows-resolvable stacks, no network
+     fetch, so rendering is deterministic offline. Replace the first family
+     in each stack when the real brand face is confirmed.) */
+  --ttFontDisplay:    "Segoe UI Black", "Arial Black", Impact, "Segoe UI", Arial, sans-serif;
+  --ttFontBody:       "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ttFontMono:       "Cascadia Mono", Consolas, "Courier New", monospace;
+
+  /* Brand facts that appear on the assets themselves.
+     MN Statute 326B.87 requires the contractor license number on EVERY
+     piece of advertising. Do not ship an ad asset without it. */
+  --ttLegalName:      "Top Tier Roofing & Remodeling, LLC";
+  --ttLicense:        "BC807923";
+  --ttPhone:          "(612) 205-5503";
+  --ttWeb:            "toptiermn.com";
+
+  /* ======================================================================
+     DERIVED SEMANTIC COLOR - do not edit, these point at the swap block
+     ====================================================================== */
+
+  --ttBg:             var(--ttPaper);
+  --ttBgDark:         var(--ttInk);
+  --ttBgPanel:        var(--ttPaperAlt);
+  --ttText:           var(--ttInk);
+  --ttTextMuted:      var(--ttInkFaint);
+  --ttTextOnDark:     #FFFFFF;
+  --ttTextMutedOnDark:#A6B0B8;
+  --ttAccent:         var(--ttRed);
+  --ttAccentOnDark:   #FF3A40;
+
+  /* Locator map. A stylized service-area map is not a technical cutaway, so
+     it gets its own small semantic group rather than borrowing the cutaway
+     water tokens. --ttWater (#2E86C1) is a bright diagram blue built for
+     flow arrows on a shingle drawing; a river drawn in it reads as cartoon.
+     The client's own site navy is the honest water color here. */
+  --ttMapLand:        #F4F6F7;   /* the ground the map sits on             */
+  --ttMapWater:       var(--ttNavy);
+  --ttMapWaterTint:   var(--ttNavyTint);
+  --ttMapRoad:        var(--ttInkSoft);
+  --ttMapDot:         var(--ttInk);
+  --ttMapDotMuted:    #8E979E;   /* outer ring towns, context not focus    */
+
+  /* ======================================================================
+     DATA GRAPHIC PALETTE - waterfalls, funnels, share-of-market figures
+     Sequential enough to read as one family, separable enough to label.
+     ====================================================================== */
+
+  --ttSeries1:        #1F3A4D;   /* deepest, use for the largest bar       */
+  --ttSeries2:        #2E5D74;
+  --ttSeries3:        #4A8DA6;
+  --ttSeries4:        #7FB8C9;
+  --ttSeries5:        #B9DCE5;   /* lightest                               */
+  --ttSeriesAccent:   var(--ttRed);        /* the one bar that matters     */
+  --ttSeriesMuted:    #C3CAD0;             /* context / everyone else      */
+
+  --ttPositive:       #1E7B4D;   /* money in, gain, gross margin           */
+  --ttPositiveTint:   #E4F2EA;
+  --ttNegative:       #B3261E;   /* money out, cost, loss                  */
+  --ttNegativeTint:   #FAE9E8;
+  --ttNeutral:        #4A5560;   /* subtotal / total bars                  */
+  --ttNeutralTint:    #EDEFF1;
+  --ttGridline:       #E1E5E9;
+  --ttAxis:           #9AA4AC;
+  --ttAnnotation:     var(--ttRed);
+
+  /* ======================================================================
+     TECHNICAL CUTAWAY MATERIALS - building science drawings
+     Fill plus a darker Edge for every material, so an SVG shape and its
+     stroke always agree. Chosen to stay distinguishable in grayscale,
+     because these get printed on mailer inserts.
+     ====================================================================== */
+
+  --ttMatLumber:        #D9B27C;   /* rafters, joists, framing, fascia     */
+  --ttMatLumberEdge:    #9E7B4C;
+  --ttMatSheathing:     #C6A882;   /* OSB / plywood deck                   */
+  --ttMatSheathingEdge: #8E7350;
+  --ttMatInsulation:    #F4D9E4;   /* batt insulation                      */
+  --ttMatInsulationEdge:#C99BAE;
+  --ttMatFlashing:      #B9C2C9;   /* step, valley, drip edge metal        */
+  --ttMatFlashingEdge:  #6E7A83;
+  --ttMatFlashingHilite:#EDF1F4;   /* the bright edge that reads as metal  */
+  --ttMatShingle:       #4B5259;   /* asphalt shingle body                 */
+  --ttMatShingleEdge:   #2C3238;
+  --ttMatShingleAlt:    #656D75;   /* alternating course, shows the lap    */
+  --ttMatUnderlayment:  #2F3A44;   /* synthetic felt                       */
+  --ttMatIceWater:      #7A3FA0;   /* ice and water shield membrane        */
+  --ttMatIceWaterEdge:  #52226F;
+  --ttMatRidgeVent:     #8A9299;
+  --ttMatDrywall:       #F0EDE7;
+  --ttMatDrywallEdge:   #C7C1B6;
+  --ttMatBrick:         #A6584C;   /* chimney / masonry                    */
+  --ttMatBrickEdge:     #71372E;
+  --ttMatAir:           #EAF1F5;   /* attic cavity, ventilated space       */
+  --ttMatSky:           #DCE9F2;   /* background behind an exterior view   */
+  --ttMatGutter:        #CFD6DC;
+  --ttMatSoffit:        #E3E7EA;
+
+  /* Water, and things going wrong. The failure red is deliberately a
+     different red from the brand red so a diagram never implies that
+     the brand mark is the defect. */
+  --ttWater:            #2E86C1;
+  --ttWaterDeep:        #1B5A85;
+  --ttWaterTint:        #D6EAF6;
+  --ttIce:              #A9D6EA;
+  --ttFail:             #C2261C;
+  --ttFailTint:         #F7DCDA;
+  --ttGood:             #1E7B4D;
+  --ttGoodTint:         #E4F2EA;
+  --ttHeat:             #E08A1E;   /* heat loss / warm air arrows          */
+  --ttHeatTint:         #FBEBD4;
+
+  /* ======================================================================
+     SVG STROKE WEIGHTS - drawing line language for the cutaways
+     Values are unitless so they drop straight into stroke-width.
+     ====================================================================== */
+
+  --ttStrokeHairline:  1;    /* hatching, texture, sub-detail              */
+  --ttStrokeThin:      2;    /* internal material edges                    */
+  --ttStrokeBase:      3;    /* standard object outline                    */
+  --ttStrokeBold:      5;    /* silhouette of the assembly                 */
+  --ttStrokeHeavy:     8;    /* the one element the drawing is about       */
+  --ttStrokeLeader:    2.5;  /* callout leader lines                       */
+  --ttStrokeArrow:     4;    /* flow arrows, water path, air path          */
+  --ttStrokeDashLong:  "14 8";
+  --ttStrokeDashShort: "6 6";
+  --ttStrokeDashDot:   "12 6 3 6";
+
+  /* ======================================================================
+     TYPE SCALE - absolute px, tuned for the 1080px social canvas.
+     Size presets below redefine these where the canvas is a different
+     size (landscape, letter). Read a value, never invent one.
+     ====================================================================== */
+
+  --ttSizeMicro:      20px;   /* legal line, license number, source note   */
+  --ttSizeCaption:    26px;   /* axis labels, small callouts               */
+  --ttSizeBody:       32px;   /* body copy                                 */
+  --ttSizeLead:       38px;   /* lead paragraph, subhead                   */
+  --ttSizeH4:         46px;
+  --ttSizeH3:         58px;
+  --ttSizeH2:         74px;
+  --ttSizeH1:         94px;
+  --ttSizeDisplay:   120px;   /* one word, one number                      */
+  --ttSizeNumber:    152px;   /* the hero figure on a stat graphic         */
+
+  --ttWeightRegular:  400;
+  --ttWeightMedium:   600;
+  --ttWeightBold:     700;
+  --ttWeightBlack:    900;
+
+  --ttLeadingTight:   1.02;   /* display headlines                         */
+  --ttLeadingSnug:    1.15;
+  --ttLeadingBase:    1.35;
+  --ttLeadingLoose:   1.5;
+
+  --ttTrackTight:     -0.02em;
+  --ttTrackBase:      0em;
+  --ttTrackWide:      0.06em;
+  --ttTrackCaps:      0.12em;  /* for uppercase eyebrow labels             */
+
+  /* ======================================================================
+     SPACING SCALE - the only gaps that exist. Do not type a raw px gap.
+     ====================================================================== */
+
+  --ttSpace1:    4px;
+  --ttSpace2:    8px;
+  --ttSpace3:   12px;
+  --ttSpace4:   16px;
+  --ttSpace5:   24px;
+  --ttSpace6:   32px;
+  --ttSpace7:   40px;
+  --ttSpace8:   56px;
+  --ttSpace9:   72px;
+  --ttSpace10:  96px;
+  --ttSpace11: 128px;
+  --ttSpace12: 160px;
+
+  --ttCanvasPad:      64px;   /* safe inset from the canvas edge           */
+  --ttCanvasPadTight: 48px;
+
+  /* ======================================================================
+     RADII, BORDERS, SHADOW
+     ====================================================================== */
+
+  --ttRadiusNone:  0px;
+  --ttRadiusSm:    6px;
+  --ttRadiusMd:   14px;
+  --ttRadiusLg:   26px;
+  --ttRadiusXl:   40px;
+  --ttRadiusPill: 999px;
+
+  --ttBorderHair: 1px solid var(--ttLine);
+  --ttBorderThin: 2px solid var(--ttLine);
+  --ttBorderBold: 4px solid var(--ttInk);
+  --ttBorderAccent: 4px solid var(--ttRed);
+
+  --ttShadowSm: 0 2px 6px rgba(16, 18, 20, 0.10);
+  --ttShadowMd: 0 8px 24px rgba(16, 18, 20, 0.14);
+  --ttShadowLg: 0 20px 60px rgba(16, 18, 20, 0.20);
+
+  /* ======================================================================
+     CANVAS PRESET DIMENSIONS - declared here for reference. The renderer
+     holds the same numbers and is the enforcing authority. If these two
+     ever disagree, the renderer wins and this comment is the bug.
+       square    1080 x 1080
+       portrait  1080 x 1350
+       story     1080 x 1920
+       landscape 1200 x 628
+       letter     816 x 1056  (8.5in x 11in at 96 CSS px per inch)
+     ====================================================================== */
+}
+
+/* ==========================================================================
+   SIZE PRESETS
+   An author writes:  <div class="asset" data-asset-id="x" data-size="square">
+   and never types a pixel dimension. The renderer reads data-size off the
+   same attribute, so the CSS box and the exported PNG cannot disagree.
+   ========================================================================== */
+
+.asset {
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  background: var(--ttBg);
+  color: var(--ttText);
+  font-family: var(--ttFontBody);
+  font-size: var(--ttSizeBody);
+  line-height: var(--ttLeadingBase);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.asset *,
+.asset *::before,
+.asset *::after { box-sizing: border-box; }
+
+/* NEVER put a box-shadow, outline, transform or margin on .asset itself.
+   The renderer screenshots the element's own border box; anything drawn
+   outside it is silently lost, and a transform changes the captured size.
+   Put preview chrome on .assetWrap instead. */
+
+.asset[data-size="square"]    { width: 1080px; height: 1080px; }
+.asset[data-size="portrait"]  { width: 1080px; height: 1350px; }
+.asset[data-size="story"]     { width: 1080px; height: 1920px; }
+
+.asset[data-size="landscape"] {
+  width: 1200px; height: 628px;
+  --ttCanvasPad: 48px;
+  --ttCanvasPadTight: 32px;
+  --ttSizeMicro:    16px;
+  --ttSizeCaption:  20px;
+  --ttSizeBody:     24px;
+  --ttSizeLead:     30px;
+  --ttSizeH4:       36px;
+  --ttSizeH3:       46px;
+  --ttSizeH2:       58px;
+  --ttSizeH1:       74px;
+  --ttSizeDisplay:  92px;
+  --ttSizeNumber:  116px;
+}
+
+/* letter: 8.5in x 11in, TRIM ONLY, no bleed. Chromium lays out CSS at 96px
+   per inch, so the box is 816 x 1056 CSS px and 300 dpi is 2550 x 3300. The
+   renderer exports this preset at that size and as a vector PDF.
+
+   READ THIS BEFORE COPYING 2550 x 3300 ONTO A PRINT JOB. That figure is the
+   TRIM. Anything that goes to a printer with bleed uses a LARGER canvas and a
+   different pixel count, and the two are not interchangeable. A letter piece
+   with the usual 0.125 in bleed on every edge is 8.75 x 11.25 in, which is
+   840 x 1080 CSS px and exports at 300 dpi as 2625 x 3375 px. Such a piece is
+   NOT this preset: it is data-size="custom" with its own box, as in
+   output/when_to_call_260831.html. Safety on a bleed canvas is 0.125 in inside
+   the trim, so 24 px in from the canvas edge, not from the trim line.
+
+   Type in either case is sized for paper read at arm's length, not a phone at
+   6 inches. */
+.asset[data-size="letter"] {
+  width: 816px; height: 1056px;
+  --ttCanvasPad: 54px;
+  --ttCanvasPadTight: 36px;
+  --ttSizeMicro:     9px;
+  --ttSizeCaption:  11px;
+  --ttSizeBody:     13px;
+  --ttSizeLead:     16px;
+  --ttSizeH4:       20px;
+  --ttSizeH3:       26px;
+  --ttSizeH2:       34px;
+  --ttSizeH1:       44px;
+  --ttSizeDisplay:  60px;
+  --ttSizeNumber:   78px;
+  --ttSpace5:       16px;
+  --ttSpace6:       22px;
+  --ttSpace7:       28px;
+  --ttSpace8:       36px;
+  --ttSpace9:       48px;
+  --ttSpace10:      64px;
+  --ttStrokeBase:   2;
+  --ttStrokeBold:   3;
+  --ttStrokeHeavy:  5;
+}
+
+/* ==========================================================================
+   THEME MODIFIERS - put one on .asset alongside data-size
+   ========================================================================== */
+
+.asset.themeLight  { background: var(--ttPaper); color: var(--ttText); }
+.asset.themePanel  { background: var(--ttPaperAlt); color: var(--ttText); }
+.asset.themeDark   { background: var(--ttInk); color: var(--ttTextOnDark); }
+.asset.themeDark   { --ttText: #FFFFFF; --ttTextMuted: var(--ttTextMutedOnDark);
+                     --ttLine: var(--ttLineDark); --ttAccent: var(--ttAccentOnDark);
+                     --ttBgPanel: #1C2126; --ttGridline: #2A3238; }
+.asset.themeSteel  { background: var(--ttInkSoft); color: #FFFFFF;
+                     --ttText: #FFFFFF; --ttTextMuted: #C6CDD2;
+                     --ttLine: #56616A; --ttAccent: var(--ttAccentOnDark); }
+
+/* ==========================================================================
+   LAYOUT HELPERS
+   ========================================================================== */
+
+.ttPad        { padding: var(--ttCanvasPad); }
+.ttPadTight   { padding: var(--ttCanvasPadTight); }
+.ttFill       { width: 100%; height: 100%; }
+.ttStack      { display: flex; flex-direction: column; }
+.ttRow        { display: flex; flex-direction: row; align-items: center; }
+.ttSpread     { display: flex; justify-content: space-between; align-items: center; }
+.ttCenter     { display: flex; align-items: center; justify-content: center; }
+.ttGrow       { flex: 1 1 auto; min-height: 0; min-width: 0; }
+.ttGap2 { gap: var(--ttSpace2); } .ttGap3 { gap: var(--ttSpace3); }
+.ttGap4 { gap: var(--ttSpace4); } .ttGap5 { gap: var(--ttSpace5); }
+.ttGap6 { gap: var(--ttSpace6); } .ttGap7 { gap: var(--ttSpace7); }
+.ttGap8 { gap: var(--ttSpace8); }
+
+/* ==========================================================================
+   TYPE COMPONENTS
+   ========================================================================== */
+
+.ttEyebrow {
+  font-family: var(--ttFontBody);
+  font-size: var(--ttSizeCaption);
+  font-weight: var(--ttWeightBold);
+  letter-spacing: var(--ttTrackCaps);
+  text-transform: uppercase;
+  color: var(--ttAccent);
+  margin: 0;
+}
+.ttDisplay { font-family: var(--ttFontDisplay); font-size: var(--ttSizeDisplay);
+             font-weight: var(--ttWeightBlack); line-height: var(--ttLeadingTight);
+             letter-spacing: var(--ttTrackTight); margin: 0; }
+.ttH1 { font-family: var(--ttFontDisplay); font-size: var(--ttSizeH1);
+        font-weight: var(--ttWeightBlack); line-height: var(--ttLeadingTight);
+        letter-spacing: var(--ttTrackTight); margin: 0; }
+.ttH2 { font-family: var(--ttFontDisplay); font-size: var(--ttSizeH2);
+        font-weight: var(--ttWeightBlack); line-height: var(--ttLeadingSnug);
+        letter-spacing: var(--ttTrackTight); margin: 0; }
+.ttH3 { font-family: var(--ttFontBody); font-size: var(--ttSizeH3);
+        font-weight: var(--ttWeightBold); line-height: var(--ttLeadingSnug); margin: 0; }
+.ttH4 { font-family: var(--ttFontBody); font-size: var(--ttSizeH4);
+        font-weight: var(--ttWeightBold); line-height: var(--ttLeadingSnug); margin: 0; }
+.ttLead { font-size: var(--ttSizeLead); line-height: var(--ttLeadingBase); margin: 0; }
+.ttBody { font-size: var(--ttSizeBody); line-height: var(--ttLeadingBase); margin: 0; }
+.ttCaption { font-size: var(--ttSizeCaption); line-height: var(--ttLeadingBase);
+             color: var(--ttTextMuted); margin: 0; }
+.ttMicro { font-size: var(--ttSizeMicro); line-height: var(--ttLeadingBase);
+           color: var(--ttTextMuted); margin: 0; }
+.ttNumber { font-family: var(--ttFontDisplay); font-size: var(--ttSizeNumber);
+            font-weight: var(--ttWeightBlack); line-height: 0.95;
+            letter-spacing: var(--ttTrackTight); font-variant-numeric: tabular-nums;
+            margin: 0; }
+.ttNum { font-variant-numeric: tabular-nums; }
+.ttAccentText { color: var(--ttAccent); }
+.ttMutedText  { color: var(--ttTextMuted); }
+.ttUp   { color: var(--ttPositive); }
+.ttDown { color: var(--ttNegative); }
+
+/* ==========================================================================
+   SURFACE COMPONENTS
+   ========================================================================== */
+
+.ttCard { background: var(--ttBgPanel); border-radius: var(--ttRadiusMd);
+          padding: var(--ttSpace5); }
+.ttCardOutline { background: transparent; border: var(--ttBorderThin);
+                 border-radius: var(--ttRadiusMd); padding: var(--ttSpace5); }
+.ttBadge { display: inline-flex; align-items: center; gap: var(--ttSpace2);
+           background: var(--ttAccent); color: #FFFFFF;
+           font-weight: var(--ttWeightBold); font-size: var(--ttSizeCaption);
+           letter-spacing: var(--ttTrackWide); text-transform: uppercase;
+           padding: var(--ttSpace2) var(--ttSpace4); border-radius: var(--ttRadiusPill); }
+.ttRule { height: 2px; background: var(--ttLine); border: 0; margin: 0; }
+.ttRuleAccent { height: 6px; background: var(--ttAccent); border: 0; margin: 0;
+                width: 120px; border-radius: var(--ttRadiusPill); }
+.ttKeyline { border-left: var(--ttBorderAccent); padding-left: var(--ttSpace5); }
+
+/* ==========================================================================
+   BRAND FOOTER - required on advertising assets
+   MN 326B.87 requires the contractor license number on every piece of
+   advertising. The footer bar carries it. Any asset that is an ad, a
+   mailer or a promotional post gets this bar; a purely informational
+   diagram does not have to, but it costs nothing to include.
+   ========================================================================== */
+
+.ttFooterBar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--ttSpace5);
+  padding: var(--ttSpace4) var(--ttCanvasPad);
+  background: var(--ttInk); color: #FFFFFF;
+  font-size: var(--ttSizeMicro); letter-spacing: var(--ttTrackWide);
+}
+.ttFooterBar .ttFooterMark { font-family: var(--ttFontDisplay);
+  font-weight: var(--ttWeightBlack); letter-spacing: var(--ttTrackBase);
+  font-size: calc(var(--ttSizeMicro) * 1.5); }
+.ttFooterBar .ttFooterMark span { color: var(--ttAccentOnDark); }
+.ttLicenseLine::before { content: "MN License "; }
+
+/* ==========================================================================
+   DATA GRAPHIC PRIMITIVES
+   ========================================================================== */
+
+.ttBarPos     { background: var(--ttPositive); }
+.ttBarNeg     { background: var(--ttNegative); }
+.ttBarTotal   { background: var(--ttNeutral); }
+.ttBarAccent  { background: var(--ttAccent); }
+.ttBarMuted   { background: var(--ttSeriesMuted); }
+.ttS1 { background: var(--ttSeries1); } .ttS2 { background: var(--ttSeries2); }
+.ttS3 { background: var(--ttSeries3); } .ttS4 { background: var(--ttSeries4); }
+.ttS5 { background: var(--ttSeries5); }
+.ttGridLine { height: 1px; background: var(--ttGridline); }
+.ttAxisLine { background: var(--ttAxis); }
+
+/* ==========================================================================
+   SVG DRAWING DEFAULTS for the technical cutaways
+   Wrap a drawing in <svg class="ttDraw"> and material classes do the rest.
+   ========================================================================== */
+
+.ttDraw { display: block; width: 100%; height: 100%; overflow: visible; }
+.ttDraw text { font-family: var(--ttFontBody); fill: var(--ttText); }
+.ttDraw .ttLabel { font-size: var(--ttSizeCaption); font-weight: var(--ttWeightMedium); }
+.ttDraw .ttLabelBold { font-size: var(--ttSizeCaption); font-weight: var(--ttWeightBold); }
+.ttDraw .ttLeader { stroke: var(--ttInkSoft); stroke-width: var(--ttStrokeLeader);
+                    fill: none; stroke-linecap: round; }
+.ttDraw .ttArrowWater { stroke: var(--ttWater); stroke-width: var(--ttStrokeArrow);
+                        fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ttDraw .ttArrowAir  { stroke: var(--ttHeat); stroke-width: var(--ttStrokeArrow);
+                        fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ttDraw .ttArrowFail { stroke: var(--ttFail); stroke-width: var(--ttStrokeArrow);
+                        fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+.ttDraw .matLumber      { fill: var(--ttMatLumber);      stroke: var(--ttMatLumberEdge);      stroke-width: var(--ttStrokeThin); }
+.ttDraw .matSheathing   { fill: var(--ttMatSheathing);   stroke: var(--ttMatSheathingEdge);   stroke-width: var(--ttStrokeThin); }
+.ttDraw .matInsulation  { fill: var(--ttMatInsulation);  stroke: var(--ttMatInsulationEdge);  stroke-width: var(--ttStrokeThin); }
+.ttDraw .matFlashing    { fill: var(--ttMatFlashing);    stroke: var(--ttMatFlashingEdge);    stroke-width: var(--ttStrokeBase); }
+.ttDraw .matShingle     { fill: var(--ttMatShingle);     stroke: var(--ttMatShingleEdge);     stroke-width: var(--ttStrokeThin); }
+.ttDraw .matShingleAlt  { fill: var(--ttMatShingleAlt);  stroke: var(--ttMatShingleEdge);     stroke-width: var(--ttStrokeThin); }
+.ttDraw .matUnderlayment{ fill: var(--ttMatUnderlayment);stroke: var(--ttMatUnderlayment);    stroke-width: var(--ttStrokeHairline); }
+.ttDraw .matIceWater    { fill: var(--ttMatIceWater);    stroke: var(--ttMatIceWaterEdge);    stroke-width: var(--ttStrokeThin); }
+.ttDraw .matBrick       { fill: var(--ttMatBrick);       stroke: var(--ttMatBrickEdge);       stroke-width: var(--ttStrokeThin); }
+.ttDraw .matDrywall     { fill: var(--ttMatDrywall);     stroke: var(--ttMatDrywallEdge);     stroke-width: var(--ttStrokeThin); }
+.ttDraw .matGutter      { fill: var(--ttMatGutter);      stroke: var(--ttMatFlashingEdge);    stroke-width: var(--ttStrokeBase); }
+.ttDraw .matSoffit      { fill: var(--ttMatSoffit);      stroke: var(--ttMatFlashingEdge);    stroke-width: var(--ttStrokeThin); }
+.ttDraw .matAir         { fill: var(--ttMatAir);         stroke: none; }
+.ttDraw .matSky         { fill: var(--ttMatSky);         stroke: none; }
+.ttDraw .matWater       { fill: var(--ttWater);          stroke: var(--ttWaterDeep);          stroke-width: var(--ttStrokeThin); }
+.ttDraw .matIce         { fill: var(--ttIce);            stroke: var(--ttWaterDeep);          stroke-width: var(--ttStrokeThin); }
+.ttDraw .matFail        { fill: var(--ttFailTint);       stroke: var(--ttFail);               stroke-width: var(--ttStrokeBold); }
+.ttDraw .matGood        { fill: var(--ttGoodTint);       stroke: var(--ttGood);               stroke-width: var(--ttStrokeBold); }
+.ttDraw .outlineHeavy   { fill: none; stroke: var(--ttInk); stroke-width: var(--ttStrokeHeavy);
+                          stroke-linejoin: round; }
+.ttDraw .outlineBold    { fill: none; stroke: var(--ttInk); stroke-width: var(--ttStrokeBold);
+                          stroke-linejoin: round; }
+
+/* ==========================================================================
+   PREVIEW CHROME - gallery page only, never captured
+   Wrap each .asset in .assetWrap for a readable authoring page. The
+   renderer captures the inner .asset, so nothing here reaches the PNG.
+   ========================================================================== */
+
+.assetWrap { display: inline-block; margin: 0 0 var(--ttSpace8) 0;
+             box-shadow: var(--ttShadowMd); background: #FFFFFF; }
+.assetWrapLabel { font-family: var(--ttFontMono); font-size: 13px; color: #555;
+                  padding: 6px 8px; background: #F2F4F6; border-bottom: 1px solid #DDD; }
