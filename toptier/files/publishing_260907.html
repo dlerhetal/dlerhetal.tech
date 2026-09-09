@@ -616,7 +616,7 @@ Confirm you have these and will apply them without being reminded.</pre>
 
 The post answers this question, which is a question our customers actually ask us:
 
-[PASTE THE QUESTION FROM THE WIZARD HERE]
+<span class="slot empty" data-slot="postSubject">no question entered yet, go back to step 5</span>
 
 Do not write anything yet. First interview me. Ask me between six and ten short questions whose answers only I could know: our actual numbers, our actual practice on a job site, what we do that the next contractor does not, and what usually goes wrong. Ask them one or two at a time so I can answer in a sentence each. When you have enough to write something that could not have been written about any other roofing company, say so and stop.
 
@@ -652,10 +652,15 @@ Check the whole thing against my standing rules before you show it to me, and te
     not say. Not the ones that are wrong, the ones that are merely not yours. Then send them back:</p>
 
     <div class="ask">
-      <div class="askhead"><b>PASTE INTO YOUR CLAUDE, STEP THREE OF THREE</b><button class="btn sm" data-copy="p7">Copy</button></div>
+      <div class="fillrow">
+      <label for="voiceLines">The sentences that do not sound like you</label>
+      <textarea class="fill" id="voiceLines" rows="5" placeholder="One per line, copied out of the draft. They fill into the instruction below."></textarea>
+    </div>
+
+    <div class="askhead"><b>PASTE INTO YOUR CLAUDE, STEP THREE OF THREE</b><button class="btn sm" data-copy="p7">Copy</button></div>
       <pre id="p7">Here are the sentences in that draft that do not sound like me:
 
-[PASTE THE SENTENCES]
+<span class="slot empty" data-slot="voiceLines">no sentences entered yet, the box is just above</span>
 
 Rewrite each one in my voice, using the way I answered your interview questions as the reference for how I talk. Do not smooth them out. If a sentence only exists to fill space, cut it rather than rewriting it.
 
