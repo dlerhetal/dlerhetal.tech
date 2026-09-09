@@ -34,6 +34,22 @@
   .legend div{display:flex;align-items:center;gap:10px;font-size:13px;color:#dbe4f2}
   .legend b{color:#fff}
 
+  /* The hub-ownership strip. Deliberately NOT a card: full width, outside the
+     grid, gold wash, no number circle, no shadow, and a button instead of a
+     tile. It is about the site itself, so it must not read as a tenth
+     deliverable. */
+  .ownstrip{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;
+            margin:20px 0 2px;padding:13px 18px;background:#fff8e2;
+            border:1px solid var(--tt-gold);border-left:6px solid var(--tt-gold)}
+  .os-txt{flex:1 1 400px;min-width:0}
+  .os-k{display:block;font-size:10.5px;font-weight:700;letter-spacing:.09em;
+        text-transform:uppercase;color:#8a6d00;margin-bottom:2px}
+  .os-b{font-size:13.4px;color:var(--tt-text)}
+  a.os-go{flex:0 0 auto;display:inline-block;background:var(--tt-blue);color:#fff;
+          text-decoration:none;font-size:13.4px;font-weight:700;padding:9px 17px;
+          border:2px solid var(--tt-gold)}
+  a.os-go:hover,a.os-go:focus{background:var(--tt-blue-dark)}
+
   .sechead{margin:30px 0 2px;padding:9px 15px;background:var(--tt-blue);color:#fff;
            font-size:16px;font-weight:700;border-left:5px solid var(--tt-gold)}
   .sechead .sub{display:block;font-size:12px;font-weight:400;color:#cdd8ea;margin-top:2px}
@@ -103,6 +119,7 @@
     .act{margin:0 11px 8px}
     .doc{margin:0 14px 9px}
     .direct{margin:12px 11px 0}
+    .ownstrip{margin:15px 0 2px;padding:12px 13px}
   }
 </style>
 </head>
@@ -141,6 +158,13 @@
 </header>
 
 <div class="wrap">
+  <div class="ownstrip">
+    <div class="os-txt"><span class="os-k">This site</span>
+      <span class="os-b">Everything on this page sits on hosting outside the company today. This walkthrough moves the whole hub onto a free site under a Top Tier account, in twelve steps that all happen in a web browser. Guy runs it. Save a copy of the walkthrough before you start, because it lives on the thing it moves.</span>
+    </div>
+    <a class="os-go" href="files/hub_handover_wizard_260909.html" target="_blank" rel="noopener">Open the walkthrough</a>
+  </div>
+
   <div class="sechead">The engagement deliverables
     <span class="sub">Each piece of work, with the finished materials that fill it. Start with the steps, keep the documents.</span>
   </div>
@@ -150,11 +174,6 @@
           <span class="num">1</span>
           <div class="chead-txt"><h2>Critical Path Method</h2><div class="rule"></div><p class="lede">The operating system for the year: the priority cards that name the dollar targets, the wall those cards hang on, and the weekly meeting rhythm that keeps them moving.</p></div>
         </div>
-        <p class="tier tier-do">Work through these</p>
-        <a class="act" href="files/hub_handover_wizard_260909.html" target="_blank" rel="noopener">
-          <span class="act-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6.5v11l8.5-5.5z"/></svg></span>
-          <span class="act-txt"><span class="act-t">Moving this hub onto hosting Top Tier owns</span><span class="act-n">Twelve steps, all of them in a web browser, that put this whole hub on a free site under a Top Tier account so it stops depending on anyone outside the company. No software to install and nothing to type into a black window. It runs past the move itself into how you add, replace and change things afterwards. <b>Save a copy of the page before you start</b>, because it lives on the thing it teaches you to move.</span></span>
-        </a>
         <p class="tier tier-read">Open and read</p>
         <div class="doc">
           <span class="doc-dot dot-web" title="web page"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.8 12h16.4M12 3.8c2.4 2.2 3.6 5.1 3.6 8.2S14.4 18 12 20.2C9.6 18 8.4 15.1 8.4 12S9.6 5.9 12 3.8z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></span>
