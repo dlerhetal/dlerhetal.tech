@@ -1039,7 +1039,7 @@ body > .shell > header{padding-right:126px}
       if(ctl) { try { ctl.abort(); } catch(e){} }
       fail("Nothing answered within ten seconds.");
     }, 10000);
-    TTPOST(JSON.stringify(p), signal: ctl ? ctl.signal : undefined).then(function(r){
+    TTPOST(JSON.stringify(p)).then(function(r){
       return r.text().then(function(t){ return {ok:r.ok, status:r.status, text:t}; });
     }).then(function(r){
       if(done) return;
