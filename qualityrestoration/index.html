@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Quality Restoration Hub</title>
+<style>
+  :root{--blue:#1A3C6E;--blue2:#25508a;--gold:#FFCD00;--ink:#1c2530;--soft:#5a6675;--line:#d9dee6;--bg:#eef1f5;--card:#fff;--rec:#eef7ee;--recink:#256b28;--recline:#b7d9b8;--warn:#fff6e6;--warnline:#e0b64d;--warnink:#8a6100;--red:#a1291f;--redbg:#fdecec;--redline:#e6b3b3;--need:#fbe9d6;--needink:#9a5a12;--needline:#e6c199;}
+  *{box-sizing:border-box;}
+  body{background:var(--bg);color:var(--ink);font-family:Calibri,"Segoe UI",system-ui,sans-serif;font-size:18px;line-height:1.5;margin:0;padding:0 0 70px;}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 16px;}
+  header{background:linear-gradient(100deg,var(--blue),var(--blue2));color:#fff;padding:22px 0 0;}
+  header .wrap{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;}
+  .brand{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#cdd7e6;font-weight:700;}
+  .brand b{color:var(--gold);}
+  header h1{margin:6px 0 2px;font-size:30px;}
+  header .sub{color:#cdd7e6;font-size:15px;margin-bottom:16px;}
+  .snap{text-align:right;font-size:13.5px;color:#dbe4f0;line-height:1.7;}
+  .snap b{color:#fff;}
+  nav{background:var(--blue);position:sticky;top:0;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.15);}
+  nav .wrap{display:flex;gap:4px;flex-wrap:wrap;padding:0 16px;}
+  nav button{background:none;border:0;color:#cdd7e6;font-family:inherit;font-size:15.5px;font-weight:700;padding:12px 16px;cursor:pointer;border-bottom:3px solid transparent;}
+  nav button:hover{color:#fff;}
+  nav button.active{color:var(--gold);border-bottom-color:var(--gold);}
+  section{padding-top:22px;}
+  h2{color:var(--blue);font-size:23px;border-bottom:2px solid var(--gold);padding-bottom:6px;margin:6px 0 16px;}
+  h3{color:var(--blue);font-size:18px;margin:20px 0 8px;}
+  .alert{background:var(--redbg);border:1px solid var(--redline);border-left:5px solid var(--red);border-radius:8px;padding:14px 20px;margin:16px 0;}
+  .alert h3{margin:0 0 6px;color:var(--red);}
+  .alert p{margin:6px 0;font-size:15.5px;}
+  a{color:var(--blue2);}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-bottom:18px;}
+  table.crit{width:100%;border-collapse:collapse;}
+  table.crit td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;font-size:15.5px;}
+  table.crit td.k{width:38%;color:var(--soft);font-weight:600;}
+  table.crit td.v{color:var(--ink);}
+  .val{}
+  .need{background:var(--need);color:var(--needink);border:1px solid var(--needline);border-radius:4px;padding:1px 7px;font-size:13px;font-weight:700;}
+  .flag{background:var(--warn);color:var(--warnink);border:1px solid var(--warnline);border-radius:4px;padding:1px 7px;font-size:13px;font-weight:700;}
+  .ok{color:var(--recink);font-weight:700;}
+  .bad{color:var(--red);font-weight:700;}
+  .grouphd{background:#f1f4f8;color:var(--blue);font-weight:700;font-size:13.5px;letter-spacing:.5px;text-transform:uppercase;padding:8px 10px;border-top:2px solid var(--blue);}
+  .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 14px;}
+  button.act{font-family:inherit;font-size:14.5px;font-weight:700;padding:8px 16px;border-radius:7px;border:1px solid var(--blue2);background:#fff;color:var(--blue2);cursor:pointer;}
+  button.act.primary{background:var(--gold);color:var(--blue);border-color:var(--gold);}
+  .day{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 20px 14px;margin-bottom:16px;}
+  .day .dhd{color:var(--blue);font-size:17px;font-weight:700;border-bottom:2px solid var(--gold);padding:12px 0 8px;margin-bottom:6px;display:flex;justify-content:space-between;}
+  .day .dhd span{font-size:13px;color:var(--soft);font-weight:600;}
+  ul.chk{list-style:none;margin:0;padding:0;}
+  ul.chk li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dotted var(--line);font-size:15.5px;}
+  ul.chk li:last-child{border-bottom:0;}
+  ul.chk input{margin-top:4px;width:18px;height:18px;flex:0 0 auto;}
+  ul.chk .qr{display:block;font-size:13.5px;color:var(--recink);margin-top:2px;}
+  ul.chk .qr.pending{color:var(--needink);}
+  .idx{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 20px;margin-bottom:14px;}
+  .idx .row{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px dotted var(--line);flex-wrap:wrap;}
+  .idx .row:last-child{border-bottom:0;}
+  .idx .row .t{font-weight:700;color:var(--ink);}
+  .idx .row .p{font-size:13px;color:var(--soft);font-family:Consolas,monospace;}
+  .st{font-size:12.5px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;}
+  .st.done{background:var(--rec);color:var(--recink);border:1px solid var(--recline);}
+  .st.prog{background:var(--warn);color:var(--warnink);border:1px solid var(--warnline);}
+  .st.wait{background:#eef;color:#556;border:1px solid #ccd;}
+  .note{font-size:13.5px;color:var(--soft);font-style:italic;margin:8px 0;}
+  footer{border-top:1px solid var(--line);margin-top:26px;padding-top:14px;font-size:13px;color:var(--soft);}
+  .teardown{background:var(--warn);border:1px solid var(--warnline);border-radius:8px;padding:10px 16px;font-size:14px;color:var(--warnink);margin-top:12px;}
+  @media print{nav,.toolbar,footer .noprint{display:none;} body{background:#fff;} .day,.card,.idx{break-inside:avoid;} section[hidden]{display:block!important;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div>
+      <div class="brand">Engagement Hub &middot; <b>Global Resources, LLC</b></div>
+      <h1>Quality Restoration</h1>
+      <div class="sub">Quality Services LLC (dba Quality Restoration) &middot; Corona, CA &middot; Engagement 218267003</div>
+    </div>
+    <div class="snap">
+      <b>Start:</b> 2026-09-14, 11:00<br>
+      <b>Budget:</b> 150 hrs @ $595/hr<br>
+      <b>Owner:</b> Tyler Vest &middot; <b>Rep:</b> Nathan Bee (SMS)<br>
+      <b>Priorities:</b> Tax &middot; Dashboards &middot; Asset Protection &middot; Profit
+    </div>
+  </div>
+</header>
+<nav>
+  <div class="wrap">
+    <button class="active" data-t="overview" onclick="tab('overview',this)">Overview</button>
+    <button data-t="criterion" onclick="tab('criterion',this)">Criterion Card</button>
+    <button data-t="days" onclick="tab('days',this)">First 3 Days</button>
+    <button data-t="findings" onclick="tab('findings',this)">Deep-Dive Findings</button>
+    <button data-t="questions" onclick="tab('questions',this)">Questions for Tyler</button>
+    <button data-t="work" onclick="tab('work',this)">Work &amp; Files</button>
+  </div>
+</nav>
+<div class="wrap">
+
+<section id="overview">
+  <h2>Overview</h2>
+  <div class="alert">
+    <h3>Open flag: the CSLB license is suspended</h3>
+    <p><b>License #1114862 is under Qualifier's Bond Suspension</b> (qualifier Paul Tutunjian's bond cancelled 08/15/2026). A suspended license means the company cannot legally contract until cured. Source: <a href="https://www.cslb.ca.gov/1114862" target="_blank" rel="noopener">cslb.ca.gov/1114862</a>. Cure path and the 7031 disgorgement risk are in the Deep-Dive Findings tab.</p>
+  </div>
+  <div class="alert" style="border-left-color:var(--warnline);background:var(--warn);">
+    <h3 style="color:var(--warnink);">Also flagged: the website is compromised</h3>
+    <p>quality-restore.com is a <b>hacked WordPress site serving live casino/gambling spam</b> &mdash; Google has indexed 500+ injected pages titled "| Quality Restoration Services". The real site is also dead as a lead source (pages last edited 2016&ndash;2022, no lead-capture form). Tyler is very likely unaware. Details in Deep-Dive Findings.</p>
+  </div>
+  <div class="card">
+    <p>This is the working hub for the Quality Restoration engagement: the single place we store findings and work. Use the tabs above.</p>
+    <ul>
+      <li><b>Criterion Card</b> &mdash; every critical fact about the company, filled where we have it and flagged where we still need it. Toggle a blank printable version for on-site capture.</li>
+      <li><b>First 3 Days</b> &mdash; the requirements checklist for opening the job (pre-arrival through Day 3), annotated with what is already done for this engagement.</li>
+      <li><b>Deep-Dive Findings</b> &mdash; the synthesized intelligence across license, website, marketing/competitors, and permits.</li>
+      <li><b>Questions for Tyler</b> &mdash; the on-site question bank, built from the findings and ordered by urgency.</li>
+      <li><b>Work &amp; Files</b> &mdash; index of every briefing, intake document, and deliverable as it is produced.</li>
+    </ul>
+    <div class="teardown"><b>Teardown reminder:</b> this hub is hosted at <code>dlerhetal.tech/qualityrestoration</code>. When the engagement ends, it gets pulled down and archived to a local drive, and the live mount removed. (Standing order 2026-09-12.)</div>
+  </div>
+</section>
+
+<section id="criterion" hidden>
+  <h2>Criterion Card &mdash; critical information</h2>
+  <div class="toolbar">
+    <button class="act primary" id="blankBtn" onclick="toggleBlank()">Show blank template (for capture)</button>
+    <button class="act" onclick="window.print()">Print</button>
+    <span class="note" id="blankState">Showing: filled card</span>
+  </div>
+  <div class="card">
+  <table class="crit" id="critTable">
+    <tr><td class="grouphd" colspan="2">Identity</td></tr>
+    <tr><td class="k">Legal entity name</td><td class="v"><span class="val">Quality Services LLC</span></td></tr>
+    <tr><td class="k">DBA / trade name</td><td class="v"><span class="val">Quality Restoration</span></td></tr>
+    <tr><td class="k">Owner (Member/CEO)</td><td class="v"><span class="val">Tyler Earl Vest</span></td></tr>
+    <tr><td class="k">Other principal</td><td class="v"><span class="val">Paul Stephan Tutunjian &mdash; license qualifier (RME), &lt;10% owner</span></td></tr>
+    <tr><td class="k">Ownership %</td><td class="v"><span class="val">Tyler ~100% / Paul &lt;10%</span> <span class="flag">confirm</span></td></tr>
+    <tr><td class="k">Entity type</td><td class="v"><span class="val">California LLC</span></td></tr>
+    <tr><td class="k">Tax election</td><td class="v"><span class="need">NEED</span> disregarded (Sch C) vs S-corp &mdash; from Form 568</td></tr>
+    <tr><td class="k">Years in business</td><td class="v"><span class="val">Claimed 14&ndash;18; entity licensed ~20 mo (01/2024); predecessor sole prop 2018</span></td></tr>
+
+    <tr><td class="grouphd" colspan="2">Contact</td></tr>
+    <tr><td class="k">Address (on file / 44)</td><td class="v"><span class="val">1701 Rimpau Ave #101, Corona, CA 92881</span> <span class="flag">conflict</span></td></tr>
+    <tr><td class="k">Address (of record)</td><td class="v"><span class="val">1750 California Ave Ste 113, Corona, CA 92881</span></td></tr>
+    <tr><td class="k">Phone (main)</td><td class="v"><span class="val">(951) 433-0185</span></td></tr>
+    <tr><td class="k">Cell</td><td class="v"><span class="val">(951) 667-9927</span></td></tr>
+    <tr><td class="k">Fax</td><td class="v"><span class="need">NEED</span></td></tr>
+    <tr><td class="k">Email</td><td class="v"><span class="need">NEED</span></td></tr>
+    <tr><td class="k">Website</td><td class="v"><span class="val"><a href="https://quality-restore.com/" target="_blank" rel="noopener">quality-restore.com</a></span></td></tr>
+    <tr><td class="k">LinkedIn / Facebook</td><td class="v"><span class="val">Tyler Vest (LinkedIn); facebook.com/waterdamagecorona</span></td></tr>
+
+    <tr><td class="grouphd" colspan="2">Registration &amp; tax IDs</td></tr>
+    <tr><td class="k">EIN</td><td class="v"><span class="need">NEED</span> from tax return</td></tr>
+    <tr><td class="k">CA SoS entity number</td><td class="v"><span class="need">NEED</span> bizfile lookup pending</td></tr>
+    <tr><td class="k">SoS formation / file date</td><td class="v"><span class="need">NEED</span> expected ~late 2023/early 2024</td></tr>
+    <tr><td class="k">Registered agent</td><td class="v"><span class="need">NEED</span> bizfile</td></tr>
+    <tr><td class="k">Management (mgr vs member)</td><td class="v"><span class="need">NEED</span> bizfile / operating agreement</td></tr>
+    <tr><td class="k">Fiscal year end</td><td class="v"><span class="need">NEED</span></td></tr>
+
+    <tr><td class="grouphd" colspan="2">License &amp; bonding (CSLB #1114862)</td></tr>
+    <tr><td class="k">CSLB license #</td><td class="v"><span class="val">1114862</span></td></tr>
+    <tr><td class="k">Classification</td><td class="v"><span class="val">B &mdash; General Building (only)</span></td></tr>
+    <tr><td class="k">License status</td><td class="v"><span class="bad">SUSPENDED &mdash; Qualifier's Bond Suspension</span></td></tr>
+    <tr><td class="k">Issued / expires</td><td class="v"><span class="val">01/10/2024 &mdash; 01/31/2028</span></td></tr>
+    <tr><td class="k">Contractor bond</td><td class="v"><span class="val">$25,000 &mdash; Merchants Bonding #101983166 (eff 08/15/2026)</span></td></tr>
+    <tr><td class="k">LLC worker bond</td><td class="v"><span class="val">$100,000 &mdash; Old Republic #A150009247 (eff 11/08/2023)</span></td></tr>
+    <tr><td class="k">Qualifier bond</td><td class="v"><span class="bad">CANCELLED 08/15/2026</span> (Paul Tutunjian) &mdash; cause of suspension</td></tr>
+    <tr><td class="k">Workers' comp</td><td class="v"><span class="val">Wellfleet NY #N9WC771219, exp 05/09/2027 (active)</span></td></tr>
+    <tr><td class="k">General liability</td><td class="v"><span class="val">$2M &mdash; Palomar #ENC031521301, exp 04/28/2027</span></td></tr>
+    <tr><td class="k">CSLB disciplinary history</td><td class="v"><span class="ok">None disclosed</span></td></tr>
+    <tr><td class="k">Predecessor license</td><td class="v"><span class="val">#1046073 (Paul's earlier business) &mdash; inactive/expired 10/31/2024</span> <span class="flag">verify</span></td></tr>
+
+    <tr><td class="grouphd" colspan="2">Business profile</td></tr>
+    <tr><td class="k">Industry</td><td class="v"><span class="val">Restoration / remediation contractor</span></td></tr>
+    <tr><td class="k">NAICS (proposed)</td><td class="v"><span class="val">236118 Residential Remodelers (primary) &middot; 562910 Remediation Services (secondary)</span> <span class="ok">on ISI 2025 list</span></td></tr>
+    <tr><td class="k">Services</td><td class="v"><span class="val">Water, mold, fire/smoke, reconstruction, contents, sewage, carpet/flooring</span></td></tr>
+    <tr><td class="k">Certifications</td><td class="v"><span class="val">IICRC firm; WRT; ASD; EPA RRRP</span></td></tr>
+    <tr><td class="k">Revenue model</td><td class="v"><span class="val">Insurance-carrier-billed (Xactimate); 60&ndash;120 day payment cycle</span></td></tr>
+    <tr><td class="k">Annual revenue</td><td class="v"><span class="val">~$1.1M (auth) vs $1.5M (44)</span> <span class="flag">unverified</span></td></tr>
+    <tr><td class="k">Employees</td><td class="v"><span class="val">8 FT (8&ndash;10 stated); named: Tyler, Paul, Zach, Adrian</span></td></tr>
+    <tr><td class="k">Reviews</td><td class="v"><span class="val">Yelp 52; HomeAdvisor 5.0; BBB A+</span></td></tr>
+    <tr><td class="k">Bank</td><td class="v"><span class="need">NEED</span></td></tr>
+    <tr><td class="k">CPA / accountant</td><td class="v"><span class="need">NEED</span></td></tr>
+    <tr><td class="k">Attorney</td><td class="v"><span class="need">NEED</span> (relevant to asset-protection priority)</td></tr>
+    <tr><td class="k">Insurance agent</td><td class="v"><span class="need">NEED</span></td></tr>
+    <tr><td class="k">Accounting / estimating software</td><td class="v"><span class="need">NEED</span> (QuickBooks? Xactimate? CRM?)</td></tr>
+
+    <tr><td class="grouphd" colspan="2">Engagement</td></tr>
+    <tr><td class="k">Engagement #</td><td class="v"><span class="val">218267003</span></td></tr>
+    <tr><td class="k">Contracting firm</td><td class="v"><span class="val">Global Resources, LLC (GR)</span></td></tr>
+    <tr><td class="k">SMS rep / analyst</td><td class="v"><span class="val">Nathan Bee / Rachel Hoppman</span></td></tr>
+    <tr><td class="k">Start</td><td class="v"><span class="val">09/14/2026, 11:00</span></td></tr>
+    <tr><td class="k">Hours / rate</td><td class="v"><span class="val">150 hrs &plusmn;10% @ $595/hr + $62/day per diem</span></td></tr>
+    <tr><td class="k">Diagnostic fee</td><td class="v"><span class="val">$1,300</span></td></tr>
+    <tr><td class="k">Client priorities</td><td class="v"><span class="val">1 Taxation &middot; 2 Dashboards &middot; 3 Asset Protection &middot; 4 Profitability</span></td></tr>
+    <tr><td class="k">Scope areas checked</td><td class="v"><span class="val">Org Structure, Operations, Cash Flow, Tax/Succession &amp; Exit</span></td></tr>
+  </table>
+  </div>
+  <p class="note">NEED = we do not have it yet. conflict/unverified = two sources disagree; confirm with the client or a primary record.</p>
+</section>
+
+<section id="days" hidden>
+  <h2>First 3 Days &mdash; job-opening requirements</h2>
+  <div class="toolbar">
+    <button class="act primary" onclick="saveProgress()">Save progress to DONE.md</button>
+    <button class="act" onclick="window.print()">Print</button>
+    <span class="note" id="saveState">Check state is a working aid only. Real completion is recorded in DONE.md.</span>
+  </div>
+  <p class="note">A reusable checklist for opening any engagement, annotated for Quality Restoration. Green = already done for this job; amber = still open for this job.</p>
+
+  <div class="day">
+    <div class="dhd">Pre-arrival (before Day 1) <span>set the table before you walk in</span></div>
+    <ul class="chk">
+      <li><input type="checkbox" data-id="pa1"><div>Confirm start date/time AND location.<span class="qr">QR: 09/14 11:00 confirmed; <b>address unconfirmed</b> (1701 Rimpau vs 1750 California Ave) &mdash; ask Tyler.</span></div></li>
+      <li><input type="checkbox" data-id="pa2" checked><div>Read the full intake packet: the 44, Authorization, GR agreement, Cash Constraints addendum.<span class="qr">QR: done.</span></div></li>
+      <li><input type="checkbox" data-id="pa3" checked><div>Complete deep-dive research (company, industry, region).<span class="qr">QR: done &mdash; deep_dive_260912.md.</span></div></li>
+      <li><input type="checkbox" data-id="pa4" checked><div>Populate the criterion card; flag every gap.<span class="qr">QR: done (this hub); gaps flagged NEED.</span></div></li>
+      <li><input type="checkbox" data-id="pa5"><div>Prepare the document-request checklist to hand the owner.<span class="qr pending">QR: pending &mdash; branded one-pager to build.</span></div></li>
+      <li><input type="checkbox" data-id="pa6"><div>Verify NAICS and submit the RMA / Industry Data request.<span class="qr pending">QR: codes verified (236118 + 562910); RMA drafted, awaiting send.</span></div></li>
+      <li><input type="checkbox" data-id="pa7" checked><div>Confirm contracting firm and branding.<span class="qr">QR: GR (Global Resources).</span></div></li>
+      <li><input type="checkbox" data-id="pa8"><div>Set up engagement folder structure (CFM / VER / UDE / CTS) and this hub.<span class="qr pending">QR: hub built; project scaffold pending.</span></div></li>
+      <li><input type="checkbox" data-id="pa9"><div>Confirm logistics: working space, parking, hours, who to ask for on arrival.<span class="qr pending">QR: open.</span></div></li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="dhd">Day 1 &mdash; Opening <span>relationship, scope, and the documents</span></div>
+    <ul class="chk">
+      <li><input type="checkbox" data-id="d1a"><div>Opening Conference with the owner: expectations, the 2-to-1 assurance framing, confidentiality/NDA.</div></li>
+      <li><input type="checkbox" data-id="d1b"><div>Confirm scope areas and priority order.<span class="qr">QR: Tax, Dashboards, Asset Protection, Profitability.</span></div></li>
+      <li><input type="checkbox" data-id="d1c"><div>Tour the operation; meet key people.<span class="qr">QR: Paul (qualifier), Zach, Adrian.</span></div></li>
+      <li><input type="checkbox" data-id="d1d"><div>Collect financials + returns: P&amp;L, Balance Sheet (2&ndash;3 yrs + YTD), tax returns incl <b>Form 568</b>, AR aging, operating agreement, bank statements.</div></li>
+      <li><input type="checkbox" data-id="d1e"><div>Confirm entity structure, ownership %, and tax election (disregarded vs S-corp).</div></li>
+      <li><input type="checkbox" data-id="d1f"><div>Surface the license-suspension finding to the owner (per the decision-form ruling).<span class="qr">QR: license #1114862 suspended; qualifier bond cancelled 08/15/26.</span></div></li>
+      <li><input type="checkbox" data-id="d1g"><div>Establish the daily check-in cadence (GR presents work daily per the agreement).</div></li>
+      <li><input type="checkbox" data-id="d1h"><div>Confirm data access: accounting software, Xactimate, CRM.</div></li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="dhd">Day 2 &mdash; Diagnostic <span>dig into the numbers and the people</span></div>
+    <ul class="chk">
+      <li><input type="checkbox" data-id="d2a"><div>Financial diagnostic (once docs are in hand): profit potential, minimum mandatory profit, break-even, working-capital requirement, cash conversion cycle, average payables cycle.</div></li>
+      <li><input type="checkbox" data-id="d2b"><div>Labor efficiency and equipment utilization review.</div></li>
+      <li><input type="checkbox" data-id="d2c"><div>Job-costing review at the Xactimate line level; supplement-recovery review.</div></li>
+      <li><input type="checkbox" data-id="d2d"><div>AR aging deep dive &mdash; the 60&ndash;120 day carrier-payment cash trap (client's core pain).</div></li>
+      <li><input type="checkbox" data-id="d2e"><div>Management assessment &amp; survey; employee interviews.</div></li>
+      <li><input type="checkbox" data-id="d2f"><div>Identify UDEs (undesirable effects); shape the Value Enhancement Program.</div></li>
+      <li><input type="checkbox" data-id="d2g"><div>Begin the 13-week cash flow model (CFM) build.</div></li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="dhd">Day 3 &mdash; Synthesis + first deliverables <span>show value, set the roadmap</span></div>
+    <ul class="chk">
+      <li><input type="checkbox" data-id="d3a"><div>Draft the first weekly budget within cash constraints (per the Cash Constraints Assurance).</div></li>
+      <li><input type="checkbox" data-id="d3b"><div>First VER (Value Enhancement Review) direction; set the MAM cadence.</div></li>
+      <li><input type="checkbox" data-id="d3c"><div>Present findings/recommendations progress to the owner.</div></li>
+      <li><input type="checkbox" data-id="d3d"><div>Entity/tax-structure discussion (S-corp analysis, CA LLC fee, SMLLC asset-protection weakness) &mdash; route specifics to CPA/attorney; GR does not give legal/tax advice.</div></li>
+      <li><input type="checkbox" data-id="d3e"><div>Confirm dashboard/KPI scope (client priority #2).</div></li>
+      <li><input type="checkbox" data-id="d3f"><div>Set the roadmap for the remaining hours against the 150-hour budget.</div></li>
+      <li><input type="checkbox" data-id="d3g"><div>Record everything done in DONE.md.</div></li>
+    </ul>
+  </div>
+</section>
+
+<section id="work" hidden>
+  <h2>Findings &amp; Work</h2>
+  <p class="note">Everything produced for this engagement. Paths are local until the hub is deployed; deployed artifacts get relative links.</p>
+  <div class="idx">
+    <div class="row"><div><span class="t">Deep-dive intelligence briefing</span><div class="p">work\research\deep_dive_260912.md</div></div><span class="st done">done</span></div>
+    <div class="row"><div><span class="t">Intake decision form (v2, research-informed)</span><div class="p">output\intake_decisions_260912.html</div></div><span class="st prog">awaiting your answers</span></div>
+    <div class="row"><div><span class="t">Criterion card</span><div class="p">this hub &rarr; Criterion Card tab</div></div><span class="st done">done</span></div>
+    <div class="row"><div><span class="t">First-3-days requirements list</span><div class="p">this hub &rarr; First 3 Days tab</div></div><span class="st done">done</span></div>
+    <div class="row"><div><span class="t">RMA / Industry Data request</span><div class="p">236118 + 562910, zip 92881</div></div><span class="st prog">drafted, awaiting send</span></div>
+    <div class="row"><div><span class="t">Intake originals (the 44, Authorization, GR agreement)</span><div class="p">_extracted\ &middot; work\renders\</div></div><span class="st done">read &amp; verified</span></div>
+    <div class="row"><div><span class="t">Document-request checklist for Tyler</span><div class="p">to build</div></div><span class="st wait">pending</span></div>
+    <div class="row"><div><span class="t">Context briefs (engagement, owners/entity, marketing, financial)</span><div class="p">to generate at scaffold</div></div><span class="st wait">pending</span></div>
+    <div class="row"><div><span class="t">CA SoS (bizfile) entity record</span><div class="p">to pull</div></div><span class="st wait">pending</span></div>
+    <div class="row"><div><span class="t">Financials, tax returns, Form 568, AR aging</span><div class="p">request from client</div></div><span class="st wait">not received</span></div>
+  </div>
+</section>
+
+<section id="findings" hidden>
+  <h2>Deep-Dive Findings</h2>
+  <p class="note">Synthesis of four research streams (entity/license, website/digital, permits, competitors/marketing). Full sourced briefings in work\research\; the consolidated master briefing is deep_dive_v2_260912.md.</p>
+
+  <div class="card">
+    <h3>License &amp; legal &mdash; the urgent one</h3>
+    <ul>
+      <li><b>Suspended = unlicensed for B&amp;P 7031.</b> Any B-license work performed or collected on while suspended can be clawed back <b>100%</b> by the customer (disgorgement), even if the work is flawless and even if the customer knew. Highest-dollar risk; reason to pause licensed work now.</li>
+      <li><b>The cure is fast and clean if Paul stays:</b> reinstate/rescind Paul's <b>$25,000</b> Bond of Qualifying Individual within the ~90-day window (rescission by roughly 11/13/2026) and the suspension lifts, potentially retroactively, with no exam and no new application.</li>
+      <li><b>The decisive fork:</b> is Paul leaving, or did the bond just lapse? That single fact chooses the path (bond cure vs. replace the qualifier). If Paul exits, Tyler must qualify himself (4 yrs experience + exams) or bring a real RMO/RME &mdash; renting a paper qualifier is a misdemeanor (7068.1).</li>
+      <li><b>The ~$1,000</b> minor-work exemption and the mitigation-vs-reconstruction line matter for what they can legally touch meanwhile. This is landscape, not legal advice &mdash; route specifics to a CA construction attorney.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Website &amp; digital footprint</h3>
+    <ul>
+      <li><b>The website is hacked.</b> quality-restore.com is a compromised WordPress site serving live casino/gambling spam; Google has indexed 500+ injected pages titled "| Quality Restoration Services". Security + brand + SEO-penalty hazard. Tyler is very likely unaware.</li>
+      <li><b>Dead as a lead source:</b> real service pages last edited 2016&ndash;2017, home/about 2022; no city landing pages, no lead-capture form (phone only), no chat/financing/scheduler.</li>
+      <li><b>Marketing is dormant everywhere:</b> Facebook ~48 followers, last post ~Oct 2022; skeletal LinkedIn; no Instagram/TikTok; no evidence of any paid acquisition.</li>
+      <li><b>Reputation is split across two entities</b> &mdash; the LLC (Tyler, 2024) and Paul's predecessor sole prop (BBB A+ since 2018, separate CSLB license #1046073 now expired). Relevant to the "18 years" claim and the ownership-transition story.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Competitors &amp; marketing</h3>
+    <ul>
+      <li><b>The suspension is also a marketing blocker:</b> Google Guaranteed / Local Services Ads and every carrier DRP/TPA program require a license in good standing &mdash; so the two highest-volume paid channels are gated until it clears. This sets the sequence for the whole marketing plan.</li>
+      <li><b>They're losing the "near me" search war to one beatable rival</b> (Superior Restoration, ~367 Google reviews @ 4.9) &mdash; and it's an organic/review lead, not paid, so a review-velocity engine can close it with no license dependency.</li>
+      <li><b>Best growth lever needs no money and no license clearance:</b> a systematic ~2-reviews/week Google cadence. They already earn 5-star work (52 Yelp, 5.0 HomeAdvisor); they're just not routing it to Google, where ranking rewards recency.</li>
+      <li><b>Referrals (plumbers + insurance agents first)</b> are the cheapest, highest-converting, cash-flow-smoothing channel &mdash; and their "we handle your claim" reputation is the exact message that converts, provable with customer quotes.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Permits &amp; the revenue truth</h3>
+    <ul>
+      <li><b>Do not size this business from permits.</b> Exactly one permit is attributable anywhere searchable: a $500 interior drywall patch (2022) under the predecessor sole prop. Mitigation/water/mold work is non-permitted, so a near-empty trail is expected and does not undercut the revenue claim.</li>
+      <li><b>Size revenue from the return / Form 568 / Xactimate exports / AR aging</b> &mdash; never permits. The $1.1M vs $1.5M conflict gets resolved from the books, on-site.</li>
+      <li><b>One high-value source is still unmined:</b> Corona eTRAKiT (their home city, login-gated) &mdash; a 10-minute manual browser search by contractor name is the single highest-leverage next step. Shovels.ai (paid) would consolidate all jurisdictions at once by license #.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="questions" hidden>
+  <h2>Questions for Tyler</h2>
+  <p class="note">Built from the findings, ordered by urgency then by the client's stated priorities. The license block goes first &mdash; it gates everything else.</p>
+
+  <div class="card">
+    <h3>A. License &amp; continuity (ask first)</h3>
+    <ul>
+      <li>Is Paul staying in the business, or on his way out? (This one answer changes the whole plan.)</li>
+      <li>Are you aware the CSLB license is currently suspended, and that it was Paul's qualifier bond cancelling on 08/15 that did it?</li>
+      <li>Are you performing or collecting on any B-license work right now? (Disgorgement exposure while suspended.)</li>
+      <li>Do you want Paul to stay as qualifier, or do you want to qualify the license yourself?</li>
+      <li>Do you have 4+ years of qualifying experience if you need to sit the exam?</li>
+      <li>Has any customer refused payment or asked for money back citing the license?</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>B. Entity &amp; tax structure (priority #1 Tax, #3 Asset Protection)</h3>
+    <ul>
+      <li>Is the LLC taxed as a disregarded entity (Schedule C) or has it made an S-corp election? (Form 568 will tell us.)</li>
+      <li>What was net profit last year, and how much did you take as draw vs. W-2 payroll?</li>
+      <li>Is there a written operating agreement? Who's on it besides you?</li>
+      <li>What happened to the old sole prop (Quality Restoration, 2018) &mdash; formally wound down? Assets/customer list moved into the LLC?</li>
+      <li>Do you own the building and equipment personally or in the LLC? Any separate holding entity?</li>
+      <li>Any umbrella/excess policy beyond the $2M GL? Any personal guarantees on debt or leases?</li>
+      <li>Who's your CPA, and when did you last review entity structure with them?</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>C. Revenue &amp; profitability (priority #4)</h3>
+    <ul>
+      <li>Actual revenue 2024, 2025, YTD 2026? (Let's settle the $1.1M vs $1.5M.)</li>
+      <li>Split across mitigation, reconstruction, contents, commercial?</li>
+      <li>Do you track job-level profit margins? Who writes your Xactimate estimates?</li>
+      <li>How disciplined is supplement recovery &mdash; are you chasing every dollar the carrier owes?</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>D. Cash flow &amp; AR (the structural pain)</h3>
+    <ul>
+      <li>Current AR balance and average days-to-pay from carriers?</li>
+      <li>How do you fund payroll and materials during the 60&ndash;120 day carrier gap &mdash; line of credit, factoring, owner cash?</li>
+      <li>Do you watch a 13-week cash position today? Which carriers/TPAs pay fastest vs. slowest?</li>
+      <li>Any jobs stuck in supplement or depreciation limbo right now?</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>E. Marketing &amp; lead gen (priority #2 Dashboards + growth)</h3>
+    <ul>
+      <li>Where do your leads actually come from today &mdash; referral, insurance, Yelp, or the web?</li>
+      <li>Did you know your website is compromised and hasn't been meaningfully updated since ~2016&ndash;2022?</li>
+      <li>Are you on any carrier DRP/TPA programs? Which ones?</li>
+      <li>Do you run any paid ads (Google LSA, Yelp)? (We found none.)</li>
+      <li>Who owns the relationships with plumbers, agents, and adjusters &mdash; you or Paul?</li>
+      <li>Are you routing happy customers to leave Google reviews? (52 on Yelp, thin on Google.)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>F. Operations, people &amp; goals</h3>
+    <ul>
+      <li>How many field crew vs. office, and who does what across the 8&ndash;10?</li>
+      <li>Could the business run for a month without you or Paul on site?</li>
+      <li>What numbers do you look at now, if any? (This seeds the dashboard scope.)</li>
+      <li>Equipment owned outright? How well utilized between losses?</li>
+      <li>Three-to-five-year goal &mdash; grow, sell, or pass it on? Any succession thinking given the Paul dynamic?</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Quality Restoration engagement hub &middot; Global Resources, LLC &middot; internal working document &middot; built 2026-09-12.
+    <div class="teardown noprint"><b>Teardown:</b> hosted at dlerhetal.tech/qualityrestoration; pull down and archive to local drive when the engagement ends, then remove the live mount.</div>
+  </div>
+</footer>
+</div>
+<script>
+var KEY="qr_hub_v1";
+function tab(id,btn){
+  document.querySelectorAll('section').forEach(function(s){s.hidden=(s.id!==id);});
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('active',b===btn);});
+  window.scrollTo(0,0);
+}
+// checklist persistence (working aid only; real record is DONE.md)
+function loadChk(){
+  var st={};try{st=JSON.parse(localStorage.getItem(KEY)||"{}");}catch(e){}
+  document.querySelectorAll('ul.chk input').forEach(function(i){
+    var id=i.getAttribute('data-id');
+    if(id in st) i.checked=st[id];
+    i.addEventListener('change',saveChk);
+  });
+}
+function saveChk(){
+  var st={};
+  document.querySelectorAll('ul.chk input').forEach(function(i){st[i.getAttribute('data-id')]=i.checked;});
+  try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}
+}
+function saveProgress(){
+  var done=[];
+  document.querySelectorAll('ul.chk li').forEach(function(li){
+    var i=li.querySelector('input');
+    if(i&&i.checked){done.push(li.querySelector('div').childNodes[0].textContent.trim());}
+  });
+  var s=document.getElementById('saveState');
+  var payload={form:"QualityRestoration-ChecklistProgress",submittedAt:new Date().toISOString(),answers:{completed:done}};
+  fetch("http://127.0.0.1:8788/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
+   .then(function(r){if(!r.ok)throw 0;s.textContent="Sent "+done.length+" completed items to Claude to record in DONE.md.";s.style.color="#256b28";})
+   .catch(function(){s.textContent="Receiver unreachable (only runs on your machine, not the hosted hub). Tell Claude in chat what you completed.";s.style.color="#9a5a12";});
+}
+function toggleBlank(){
+  var t=document.getElementById('critTable');
+  var on=t.classList.toggle('blank');
+  document.querySelectorAll('#critTable .v').forEach(function(td){
+    if(on){td.dataset.filled=td.innerHTML;td.innerHTML='&nbsp;';}
+    else if(td.dataset.filled!==undefined){td.innerHTML=td.dataset.filled;}
+  });
+  document.getElementById('blankBtn').textContent=on?'Show filled card':'Show blank template (for capture)';
+  document.getElementById('blankState').textContent='Showing: '+(on?'blank template':'filled card');
+}
+loadChk();
+</script>
+</body>
+</html>
