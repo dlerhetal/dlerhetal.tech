@@ -17,6 +17,7 @@ Disallow: /aaron/
 Disallow: /anthem/
 Disallow: /countertops/
 Disallow: /qfm/
+Disallow: /qualityrestoration/
 Disallow: /schmidt/
 Disallow: /toptier/
 Disallow: /united-auto-body/
