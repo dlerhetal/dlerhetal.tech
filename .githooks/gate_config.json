@@ -1,0 +1,43 @@
+{
+  "about": "Config for the publish gate (.githooks/publish_gate.py). Every top-level directory that contains an HTML file is treated as a CLIENT NAMESPACE and gets the universal checks, unless it is listed in exclude. Add public or scratch directories to exclude; add a client-specific convention check under namespaces. Field names are camelCase on purpose.",
+
+  "exclude": [
+    "_agent_outbox",
+    "archive",
+    "brand",
+    "context",
+    "eaa",
+    "forward-deployed-decade",
+    "legal",
+    "output",
+    "proctor",
+    "qbo-app",
+    "qbo-callback",
+    "setup",
+    "the-game",
+    "thegame",
+    "tutorials",
+    "work"
+  ],
+
+  "globalTriggers": [
+    "robots.txt",
+    ".githooks/"
+  ],
+
+  "textExtensions": [".html", ".htm", ".js", ".json", ".txt", ".css", ".md", ".xml", ".svg"],
+
+  "loopbackPattern": "127\\.0\\.0\\.1|localhost|0\\.0\\.0\\.0",
+
+  "stampMarkers": [
+    "hub-endpoint-shim",
+    "tt-endpoint-shim"
+  ],
+
+  "namespaces": {
+    "exampleclient": {
+      "about": "Closed engagement, kept as the worked example of an opt-in convention check. Every non-index page must carry the home button class.",
+      "homeButtonMarker": "exampleHome"
+    }
+  }
+}

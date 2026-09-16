@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+# Publish gate for EVERY client namespace in this repo. Tracked in the repo so
+# it cannot drift away from the tree it guards. The installed hook at
+# .git/hooks/pre-push is a one-line delegate to this file.
+#
+# History: until 2026-09-14 the gate lived outside this repo and only fired
+# on pushes touching one client namespace. That client closed, so a later
+# client namespace push went out unchecked.
+#
+# The gate reads git's pre-push refs on stdin, works out which client
+# namespaces the push touches, and checks those namespaces in the tree being
+# pushed. Namespaces and exclusions come from .githooks/gate_config.json.
+#
+# Dry run against the current commit, all namespaces:
+#     python .githooks/publish_gate.py
+#
+# To push anyway, deliberately:   git push --no-verify
+
+ROOT=$(git rev-parse --show-toplevel)
+GATE="$ROOT/.githooks/publish_gate.py"
+
+if [ ! -f "$GATE" ]; then
+    echo "pre-push: THE GATE IS MISSING at $GATE. Refusing the push."
+    exit 1
+fi
+
+python "$GATE" --pre-push "$@"
+rc=$?
+if [ $rc -ne 0 ]; then
+    echo ""
+    echo "pre-push: THE GATE FAILED. The push is blocked. Read the failures above."
+    echo "pre-push: to push anyway, deliberately: git push --no-verify"
+    exit 1
+fi
+exit 0
