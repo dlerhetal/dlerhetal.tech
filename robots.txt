@@ -14,6 +14,8 @@ User-agent: *
 # Consulting client material. Nothing links to these from the public site;
 # they are handed to the client by direct URL.
 
+# Pulled down 2026-09-21 and kept locally in each client's own archive:
+
 # Retired client material that is still served from this origin.
 Disallow: /archive/
 
