@@ -10,11 +10,10 @@
 
 User-agent: *
 
-# --- Client engagement namespaces: disallowed ---
-# Consulting client material. Nothing links to these from the public site;
-# they are handed to the client by direct URL.
 
 # Pulled down 2026-09-21 and kept locally in each client's own archive:
+# No client namespace is served from this origin. Standing rule: client work is never
+# public facing here, and it comes down at the end of the engagement.
 
 # Retired client material that is still served from this origin.
 Disallow: /archive/
