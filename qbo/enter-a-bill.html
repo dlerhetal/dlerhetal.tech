@@ -182,7 +182,7 @@
 </div>
 
 <div class="stop">
-  <h2>Read this first. Three ways this goes wrong.</h2>
+  <h2>Read this first. Four ways this goes wrong.</h2>
   <ul>
     <li><strong>A Bill is not an Expense and it is not a Check.</strong> Use <em>Bill</em> only when the
         money has not left the bank yet. If you already paid it, you are on the wrong screen. See
@@ -195,6 +195,12 @@
         <br><em>If you already did it wrong:</em> delete the Expense or Check you created, then pay the
         bill properly through <span class="btnlabel">Pay bills</span>. Do this before the month is
         reconciled, because unpicking it afterward is much harder.</li>
+    <li><strong>"Schedule online payment" is not the same as recording a payment.</strong> After you
+        save a bill, QuickBooks offers it. It enrolls you in paying that vendor through QuickBooks, it
+        cannot be switched off, and it fires on its own date whether the money is in the account or
+        not. See <a href="#step10">Step 10</a>.
+        <br><em>If you already did it wrong:</em> open the bill, cancel the scheduled payment before
+        its send date, and confirm nothing left the bank.</li>
     <li><strong>Entering the same bill twice is the single most common mistake.</strong> Always fill in the
         vendor's invoice number in the Bill no. field. QuickBooks watches that field and warns you when a
         number repeats. Leave it blank and it cannot help you. See <a href="#step6">Step 6</a>.
@@ -492,7 +498,7 @@
 </div>
 
 <div class="step">
-  <div class="head"><span class="t"><span class="n">10</span>Save it</span></div>
+  <div class="head" id="step10"><span class="t"><span class="n">10</span>Save it</span></div>
   <div class="body">
     <p>Bottom right, click the arrow next to <span class="btnlabel">Save and new</span> and pick what you
       want:</p>
@@ -502,6 +508,28 @@
     </ul>
     <div class="ok"><strong>It worked if:</strong> the screen clears or closes with no error, and the bar
       at the bottom shows the total you expected.</div>
+
+    <div class="stop" style="margin:16px 0">
+      <h2 style="font-size:20px">Do not press "Schedule online payment"</h2>
+      <p style="margin:6px 0 0">After you save, QuickBooks puts a
+        <span class="btnlabel">Schedule online payment</span> button in front of you. It used to read
+        "Make payment" and it no longer does the same thing. That button signs you up to pay the
+        vendor <em>through</em> QuickBooks as an online payment service. It is not a way of recording
+        that you already paid, and there is no setting that turns it off. [vendor: Intuit support
+        states the button replaced "Make payment" and cannot be disabled]</p>
+      <p style="margin:10px 0 0"><strong>Three reasons to leave it alone:</strong></p>
+      <ul style="margin:6px 0 0">
+        <li><strong>If you pay by check, it is the wrong door.</strong> Record the check through
+          <span class="btnlabel">Pay bills</span> instead, which is covered further down this page.</li>
+        <li><strong>A scheduled payment fires whether the money is there or not.</strong> You want to
+          decide what to pay after you have looked at the balance, not two weeks ahead of it.</li>
+        <li><strong>It is how a bill gets paid twice.</strong> Schedule it here, write a check as
+          well, and the books show double what actually left the bank.</li>
+      </ul>
+      <p style="margin:10px 0 0">To record that a bill is settled without paying through QuickBooks,
+        use <span class="btnlabel">Mark as paid</span>, or go through
+        <span class="btnlabel">Pay bills</span>. Both leave the money movement in your hands.</p>
+    </div>
     <div class="fixbox"><strong>Already gone wrong:</strong> if the browser closed or the connection
       dropped mid entry, check <span class="path">Expenses</span> before you re-type anything.
       QuickBooks saves more often than you would expect, and re-entering a bill that did save is how a
