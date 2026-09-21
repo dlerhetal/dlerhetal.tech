@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QBO Wizard: Clear Out Aged Accounts Receivable</title>
+<meta name="description" content="A step by step walk through for working an accounts receivable aging report: apply payments and credits, collect what is live, and write off what is dead.">
+<style>
+  :root{
+    --blue:#1A3C6E;
+    --blue-soft:#2E5496;
+    --gold:#FFCD00;
+    --ink:#1b1b1b;
+    --muted:#5a5a5a;
+    --line:#d7dde6;
+    --paper:#ffffff;
+    --shell:#eef1f6;
+    --red:#a4262c;
+    --red-bg:#fdf3f3;
+    --green:#0f6b3f;
+    --green-bg:#f0f8f3;
+    --amber-bg:#fffbea;
+    --fix:#7a4a00;
+    --fix-bg:#fff8ec;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--shell);
+    color:var(--ink);
+    font-family:Calibri,"Segoe UI",Tahoma,sans-serif;
+    font-size:19px;
+    line-height:1.55;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 0 60px;background:var(--paper);
+        box-shadow:0 0 22px rgba(0,0,0,.10)}
+  header{background:var(--blue);color:#fff;padding:26px 34px 22px;border-bottom:5px solid var(--gold)}
+  header h1{margin:0 0 6px;font-size:31px;line-height:1.2}
+  header .sub{font-size:17px;opacity:.93}
+  header .who{margin-top:12px;font-size:16px;background:rgba(255,255,255,.12);
+               display:inline-block;padding:5px 12px;border-radius:3px}
+  main{padding:0 34px}
+  h2{color:var(--blue);font-size:24px;margin:34px 0 10px;padding-bottom:6px;
+     border-bottom:2px solid var(--line)}
+  h3{color:var(--blue-soft);font-size:20px;margin:22px 0 6px}
+  p{margin:10px 0}
+  a{color:var(--blue-soft)}
+
+  .backlink{padding:14px 34px 0;font-size:16px}
+  .backlink a{text-decoration:none;font-weight:bold}
+  .backlink a:hover{text-decoration:underline}
+
+  .box{border:1px solid var(--line);border-left:6px solid var(--blue-soft);
+       background:#f7f9fc;padding:16px 20px;margin:20px 0;border-radius:3px}
+  .box h3{margin-top:0}
+  .stop{border:2px solid var(--red);border-left:8px solid var(--red);
+        background:var(--red-bg);padding:18px 22px;margin:24px 0;border-radius:3px}
+  .stop h2{color:var(--red);border:0;margin:0 0 8px;font-size:23px}
+  .stop ul{margin:8px 0 0;padding-left:22px}
+  .stop li{margin:9px 0}
+  .stop a{color:var(--red);font-weight:bold}
+  .prereq{border:2px solid var(--gold);background:var(--amber-bg);
+          padding:18px 22px;margin:24px 0;border-radius:3px}
+  .prereq h2{color:var(--blue);border:0;margin:0 0 8px;font-size:23px}
+  .prereq ul{margin:6px 0 0;padding-left:22px}
+  .prereq li{margin:8px 0}
+
+  .step{border:1px solid var(--line);border-radius:4px;margin:20px 0;overflow:hidden;
+        break-inside:avoid;page-break-inside:avoid}
+  .step > .head{background:var(--blue);color:#fff;padding:11px 18px;font-size:20px;font-weight:bold;
+                display:flex;justify-content:space-between;align-items:center;gap:14px}
+  .step > .head .n{background:var(--gold);color:var(--blue);border-radius:50%;
+                   width:34px;height:34px;min-width:34px;display:inline-flex;
+                   align-items:center;justify-content:center;font-size:18px;margin-right:12px}
+  .step > .head .t{display:flex;align-items:center;flex:1}
+  .step > .body{padding:16px 20px}
+  .step ol,.step ul{padding-left:24px}
+  .step li{margin:8px 0}
+
+  .why{background:#f2f6fc;border-left:6px solid var(--blue);padding:10px 16px;margin:12px 0;
+       border-radius:3px;font-size:17px}
+  .why strong{color:var(--blue)}
+
+  .path{display:inline-block;background:#eaeff7;border:1px solid #c6d2e4;border-radius:3px;
+        padding:2px 9px;font-family:Consolas,"Courier New",monospace;font-size:17px;color:var(--blue)}
+  .btnlabel{display:inline-block;background:var(--blue);color:#fff;border-radius:4px;
+            padding:2px 11px;font-weight:bold;font-size:17px}
+  .field{display:inline-block;border-bottom:2px solid var(--blue-soft);font-weight:bold;
+         color:var(--blue)}
+  .unconf{display:inline-block;background:#fff4d6;border:1px solid #e0c46a;border-radius:3px;
+          padding:1px 8px;font-size:15px;font-weight:bold;color:#6b5200;text-transform:uppercase;
+          letter-spacing:.4px}
+
+  a.urlbox{display:block;background:#eaeff7;border:1px solid #c6d2e4;border-radius:4px;
+           padding:12px 16px;margin:12px 0;font-family:Consolas,"Courier New",monospace;
+           font-size:18px;color:var(--blue-soft);text-decoration:none;word-break:break-all}
+  a.urlbox:hover{background:#dde6f4;border-color:var(--blue-soft);text-decoration:underline}
+
+  .ok{border-left:6px solid var(--green);background:var(--green-bg);padding:12px 18px;margin:14px 0;
+      border-radius:3px}
+  .ok strong{color:var(--green)}
+  .bad{border-left:6px solid var(--red);background:var(--red-bg);padding:12px 18px;margin:14px 0;
+       border-radius:3px}
+  .bad strong{color:var(--red)}
+  .fixbox{border-left:6px solid var(--fix);background:var(--fix-bg);padding:12px 18px;margin:14px 0;
+          border-radius:3px}
+  .fixbox strong{color:var(--fix)}
+  .fixbox ol,.fixbox ul{margin:8px 0 0}
+
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:17px}
+  th{background:var(--blue);color:#fff;text-align:left;padding:9px 12px;font-weight:bold}
+  td{border:1px solid var(--line);padding:9px 12px;vertical-align:top}
+  tr:nth-child(even) td{background:#f7f9fc}
+
+  .cells{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:14px 0}
+  .cell label{display:block;font-size:15px;font-weight:bold;color:var(--blue);
+              text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+  .cell input{width:100%;padding:9px 11px;border:2px solid #c6d2e4;border-radius:4px;
+              font-family:inherit;font-size:18px;background:#fcfdff}
+  .cell input:focus{outline:none;border-color:var(--blue-soft);background:#fff}
+
+  .note{margin:16px 0}
+  .note label{display:block;font-size:15px;font-weight:bold;color:var(--blue);margin-bottom:5px}
+  .note textarea{width:100%;min-height:70px;padding:10px 12px;border:2px solid #c6d2e4;
+                 border-radius:4px;font-family:inherit;font-size:17px;background:#fcfdff;resize:vertical}
+  .note textarea:focus{outline:none;border-color:var(--blue-soft);background:#fff}
+
+  footer{padding:22px 34px;color:var(--muted);font-size:15px;border-top:2px solid var(--line);
+         margin-top:30px}
+
+  @page{size:letter portrait;margin:.5in}
+  @media print{
+    body{background:#fff;font-size:11pt}
+    .wrap{box-shadow:none;max-width:none}
+    .backlink{display:none}
+    .step{break-inside:avoid;page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="backlink"><a href="index.html">&larr; All QBO Wizards</a></div>
+
+<header>
+  <h1>Clear Out Aged Accounts Receivable</h1>
+  <div class="sub">Working the aging report: apply what is already there, collect what is live, and write off what is dead without deleting anything.</div>
+  <div class="who">QBO Wizard&nbsp; |&nbsp; Written for an owner doing this alone, with no bookkeeping background</div>
+</header>
+
+<main>
+
+<div class="box">
+  <h3>What this job is, in plain words</h3>
+  <p style="margin-top:0"><strong>Accounts receivable</strong> is the money customers owe you and have not
+    paid. An <strong>aging report</strong> is that money sorted by how old it is: due now, 30 days late, 60,
+    90, older. <strong>Aged</strong> receivables are the ones that have been sitting there long enough to
+    be a problem.</p>
+  <p>Working this list is the highest paid hour in the business, because some of it is money you can still
+    collect and some of it was never really owed at all. You do not find out which is which by looking. You
+    find out by going through it in the order below.</p>
+</div>
+
+<div class="prereq">
+  <h2>Before you start</h2>
+  <ul>
+    <li><strong>What you need:</strong> a computer, two browser tabs, and a couple of uninterrupted hours.
+        This is not a five minute job and pretending otherwise is why it never gets done.</li>
+    <li><strong>A QuickBooks login allowed to create credit memos and receive payments.</strong> A sales
+        only or reports only login cannot finish this, and only a company admin can widen it.</li>
+    <li><strong>The authority to give up on money.</strong> Writing a receivable off is a business
+        decision, not a bookkeeping chore. If you are the owner, that is yours to make. If you are not,
+        get the owner's yes in writing before Step 8.</li>
+    <li><strong>An accountant you can email.</strong> Two things here depend on how your books are kept
+        and which tax years are already filed. Both are flagged in the steps. One short email answers
+        both, and it is worth sending before you start rather than half way through.</li>
+    <li><strong>The bank feed caught up.</strong> A payment that arrived but was never recorded looks
+        exactly like an unpaid invoice, so clear that queue first:
+        <a href="match-bank-transactions.html">Match downloaded bank and credit card transactions</a>.</li>
+    <li><strong>Time:</strong> 30 minutes on a tidy ledger. A first pass through several years of build up
+        is a day, and most of it is Steps 4 to 6.</li>
+  </ul>
+</div>
+
+<div class="stop">
+  <h2>Read this first. One of these is genuinely irreversible.</h2>
+  <ul>
+    <li><strong>Never delete an old invoice to make it go away.</strong> Deleting removes income from a
+        period you have probably already reported and paid tax on, changes financial statements you may
+        have already given a bank, and destroys the record of what the work was. Write it off instead,
+        which leaves everything visible. See <a href="#step8">Step 8</a>.
+        <br><em>If you have already deleted invoices:</em> QuickBooks keeps a history of who did what,
+        under the gear icon in the audit log, and a deleted transaction's details are usually still
+        readable there. You can re-enter it from that record. Do this sooner rather than later, and
+        <strong>do not delete any more while you work out the damage</strong>.</li>
+    <li><strong>Never write anything off before Step 4.</strong> A large share of old balances are not
+        unpaid at all. They are payments and credits sitting unapplied, meaning the money came in but was
+        never attached to the invoice it paid. Writing those off destroys real money in your books and
+        leaves the customer's account wrong in the other direction.</li>
+    <li><strong>Do not touch a tax year that has already been filed without asking.</strong> Dating a
+        write off inside a filed year changes numbers that were reported to the government. One email to
+        your accountant settles which date to use. See <a href="#step8">Step 8</a>.</li>
+    <li><strong>How you write off depends on whether your books are kept on a cash or an accrual
+        basis.</strong> On <em>accrual</em>, income is counted when you invoice, so it was already counted
+        and writing it off gives you a bad debt expense. On <em>cash</em>, income is only counted when the
+        money arrives, so it was never counted, and a write off that creates an expense counts the loss
+        twice. <span class="unconf">Unconfirmed for your file</span>: ask your accountant which basis you
+        are on before Step 8. It is a one line question.</li>
+  </ul>
+</div>
+
+<h2 id="which">What kind of old balance is it?</h2>
+<p>Every aged line is one of these five. Working out which one comes before doing anything about it.</p>
+<table>
+  <thead>
+    <tr><th style="width:30%">What it actually is</th><th style="width:26%">What to do</th><th>Step</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>They paid, but the payment was never attached to the invoice</td>
+        <td>Apply the payment</td><td>Step 4</td></tr>
+    <tr><td>There is a credit sitting unused on their account</td>
+        <td>Apply the credit</td><td>Step 5</td></tr>
+    <tr><td>The invoice is a duplicate of another one</td>
+        <td>Void the duplicate</td><td>Step 6</td></tr>
+    <tr><td>They genuinely owe it and might still pay</td>
+        <td>Collect it</td><td>Step 7</td></tr>
+    <tr><td>They genuinely owe it and never will pay</td>
+        <td>Write it off</td><td>Step 8</td></tr>
+  </tbody>
+</table>
+
+<div class="box">
+  <h3>Where you are starting from (fill this in, it follows you down the page)</h3>
+  <p style="margin-top:0;font-size:17px;color:var(--muted)">
+    Type these once, off the aging report in Step 2. Later steps show them back to you so you can see what
+    actually moved. Everything you type stays in this browser on this computer and goes nowhere else.
+  </p>
+  <div class="cells">
+    <div class="cell">
+      <label for="v_asof">Report as of date</label>
+      <input id="v_asof" data-k="asof" placeholder="e.g. 03/31/2026" autocomplete="off">
+    </div>
+    <div class="cell">
+      <label for="v_total">Total owed to you</label>
+      <input id="v_total" data-k="total" placeholder="e.g. 212,312.00" autocomplete="off">
+    </div>
+    <div class="cell">
+      <label for="v_90">Total over 90 days</label>
+      <input id="v_90" data-k="over90" placeholder="e.g. 61,480.00" autocomplete="off">
+    </div>
+  </div>
+</div>
+
+<h2>The steps</h2>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">1</span>Sign in to QuickBooks Online</span></div>
+  <div class="body">
+    <p>Open a browser and go to:</p>
+    <a class="urlbox" href="https://qbo.intuit.com" target="_blank" rel="noopener">https://qbo.intuit.com</a>
+    <div class="note">
+      <label for="n1">Notes on this step</label>
+      <textarea id="n1" data-k="n1" placeholder="Anything odd here? Type it. It is saved on this page."></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">2</span>Run the aging report and keep a copy</span></div>
+  <div class="body">
+    <ol>
+      <li>Left menu <span class="path">Reports</span>.</li>
+      <li>In the search box at the top, type
+        <span class="path">Accounts receivable aging detail</span> and open it. The detail version lists
+        every single invoice. The summary version gives one line per customer, which is useful to look at
+        but useless for the work you are about to do.</li>
+      <li>Set the report date to <span class="field" data-show="asof">the date you are working as of</span>.
+        Today is usually right.</li>
+      <li>Export it to a spreadsheet or save the PDF.</li>
+    </ol>
+    <p>Type the total and the over 90 figure into the boxes above before you go on.</p>
+    <div class="why"><strong>Why keep the copy:</strong> this is your before picture. In Step 9 it is the
+      only way to see what your afternoon actually achieved.</div>
+    <div class="ok"><strong>Looks right:</strong> columns for current, 1 to 30, 31 to 60, 61 to 90 and 91
+      and over, with a total equal to
+      <span class="field" data-show="total">the total owed to you</span>.</div>
+    <div class="note">
+      <label for="n2">Notes on this step</label>
+      <textarea id="n2" data-k="n2"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">3</span>Sort the list before you work it</span></div>
+  <div class="body">
+    <p>Do not start at the top. Work in this order, because it recovers the most money per hour of your
+      time:</p>
+    <ol>
+      <li><strong>Biggest balances first</strong>, regardless of age. A handful of customers is usually
+        most of the money.</li>
+      <li><strong>Then anything over 90 days</strong>, which is
+        <span class="field" data-show="over90">the over 90 total</span>. The odds of collecting fall
+        sharply with age, so old and large is the urgent corner.</li>
+      <li><strong>Then the small old stuff</strong>, which is mostly cleanup rather than collection.</li>
+    </ol>
+    <div class="note">
+      <label for="n3">Notes on this step</label>
+      <textarea id="n3" data-k="n3"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">4</span>Find and apply unapplied payments first</span></div>
+  <div class="body">
+    <p>An <strong>unapplied payment</strong> is money you received and recorded, but which was never
+      attached to the invoice it was paying. The invoice therefore still looks unpaid. This step usually
+      removes the most balance for the least work and it is the one people skip.</p>
+    <ol>
+      <li><span class="path">Reports</span> &rarr; search <span class="path">Open Invoices</span> and run
+        it. Payments recorded but never applied show up on this report as negative lines under the
+        customer.</li>
+      <li>For each customer showing both an open invoice and an unapplied payment, click
+        <span class="btnlabel">+ New</span> &rarr; <span class="path">Customers</span> &rarr;
+        <span class="btnlabel">Receive payment</span>.</li>
+      <li>Pick the customer. Their open invoices list at the top, their unapplied credits and payments
+        below.</li>
+      <li>Tick the invoice, tick the credit or payment, and check the amount being applied equals the
+        invoice. The remaining balance should fall to zero.</li>
+      <li>Save.</li>
+    </ol>
+    <div class="ok"><strong>Correct:</strong> the invoice flips to Paid and the customer's open balance
+      falls. No new money was recorded, because none arrived. You attached money that was already
+      there.</div>
+    <div class="bad"><strong>Do not type an amount into the payment field here.</strong> If you type
+      rather than ticking an existing credit, you have just recorded the money arriving a second time.
+      Check the total at the bottom before you save.</div>
+    <div class="fixbox"><strong>If you have already recorded a payment twice:</strong> the customer will
+      show a credit balance, meaning your books think you owe them money. Open the extra payment from
+      <span class="path">Sales</span> &rarr; <span class="path">Customers</span> &rarr; their transaction
+      list, and delete the one that never corresponded to real money in the bank. If both correspond to
+      real deposits, the customer genuinely overpaid and that is a refund or a credit against their next
+      invoice, not a bookkeeping error.</div>
+    <div class="note">
+      <label for="n4">Notes on this step</label>
+      <textarea id="n4" data-k="n4"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">5</span>Apply the credit memos</span></div>
+  <div class="body">
+    <p>A <strong>credit memo</strong> is a document that reduces what a customer owes, usually because you
+      overbilled or they returned something. Issued but never applied, it leaves the invoice open and the
+      credit dangling, so both sides of their account are wrong.</p>
+    <ol>
+      <li>Same screen: <span class="btnlabel">+ New</span> &rarr;
+        <span class="btnlabel">Receive payment</span>, pick the customer.</li>
+      <li>In the credits section, tick the credit memo and tick the invoice it belongs against.</li>
+      <li>Check the payment amount at the top is zero. You are not receiving money here, you are matching
+        two documents that already exist.</li>
+      <li>Save.</li>
+    </ol>
+    <p>If your file is set to apply credits automatically this may already have happened. If it is not,
+      doing it by hand is the only way, and it is worth asking your accountant whether to turn that setting
+      on so next year's list is shorter.</p>
+    <div class="note">
+      <label for="n5">Notes on this step</label>
+      <textarea id="n5" data-k="n5"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">6</span>Kill the duplicates, by voiding not deleting</span></div>
+  <div class="body">
+    <p>Look for the same customer, the same amount, dates within a few days. Duplicate invoices are common
+      where one person billed from the field and another billed from the office.</p>
+    <ol>
+      <li>Open the one you are sure is the duplicate, usually the later one with no payment against it.</li>
+      <li>Use the action menu at the bottom of the invoice and choose <span class="btnlabel">Void</span>,
+        not Delete.</li>
+      <li>In the memo, write what it duplicates and the date you voided it.</li>
+    </ol>
+    <div class="why"><strong>Why void rather than delete:</strong> a voided invoice keeps its number, keeps
+      the trail, and shows as zero. A deleted one vanishes, and a gap in your invoice numbers is a question
+      nobody can answer two years later, including you.</div>
+    <div class="fixbox"><strong>The duplicate has a payment applied to it:</strong> stop. Unapplying and
+      reapplying a payment across two invoices is easy to get half right and it moves real money on your
+      books. This is one to hand to an accountant, or at minimum to do slowly with the bank statement open
+      beside you so you can prove which payment was which.</div>
+    <div class="note">
+      <label for="n6">Notes on this step</label>
+      <textarea id="n6" data-k="n6"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">7</span>Collect what is actually collectible</span></div>
+  <div class="body">
+    <p>What survives Steps 4 to 6 is real money genuinely owed. From here it is a collection job, not a
+      bookkeeping one.</p>
+    <ol>
+      <li>Send a statement: <span class="path">Sales</span> &rarr;
+        <span class="path">Customers</span>, select the customers, and use the statement action. A
+        statement lists every open invoice at once, which answers the standard stall of "send me a
+        copy".</li>
+      <li>Then telephone. Email gets ignored, statements get filed, calls get answered. Ask one question:
+        what date will it be paid.</li>
+      <li>Write what they said in the invoice memo with the date of the call. That memo is visible to
+        anyone who opens the invoice, and by next month you will not remember.</li>
+      <li>Call again on the date they promised. The follow up is the whole trick. One call moves nothing.
+        A pattern of calls moves you up the pile ahead of the people who do not call.</li>
+    </ol>
+    <div class="why"><strong>Why the order matters:</strong> nothing costs you credibility faster than
+      demanding money for an invoice that was paid four months ago, which is exactly what Steps 4 to 6
+      prevent.</div>
+    <div class="note">
+      <label for="n7">Notes on this step</label>
+      <textarea id="n7" data-k="n7"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step8">
+  <div class="head"><span class="t"><span class="n">8</span>Write off what is dead</span></div>
+  <div class="body">
+    <p>Some of it will never be paid. The customer is gone, the business closed, or the amount is smaller
+      than the cost of chasing it. Leaving it on the report forever means every report you produce
+      overstates what you are owed, and you will make decisions on a number that is not real.</p>
+    <p><strong>Before you start:</strong> if you are not the owner, get the owner's approval in writing.
+      Either way, ask your accountant two things: whether your books are on a cash or accrual basis, and
+      what date to use so that an already filed tax year is not disturbed.</p>
+    <h3>The method: a credit memo against a bad debt item</h3>
+    <ol>
+      <li><strong>Make the account, once.</strong> <span class="path">Transactions</span> &rarr;
+        <span class="path">Chart of accounts</span> &rarr; New. Account type Expenses, detail type Bad
+        debts, name it Bad Debts. Skip this if it already exists.</li>
+      <li><strong>Make the item, once.</strong> Gear icon &rarr;
+        <span class="path">Products and services</span> &rarr; New, a non inventory service named Bad
+        Debt, with its income account pointed at the Bad Debts expense account you just made. Leave the
+        price at zero and leave it non taxable.</li>
+      <li><strong>Create the credit memo.</strong> <span class="btnlabel">+ New</span> &rarr;
+        <span class="path">Customers</span> &rarr; <span class="btnlabel">Credit memo</span>. Pick the
+        customer, choose the Bad Debt item, enter the amount being written off, and write "Bad debt" in the
+        message with the invoice number it relates to.</li>
+      <li><strong>Apply it.</strong> <span class="btnlabel">+ New</span> &rarr;
+        <span class="btnlabel">Receive payment</span>, pick the customer, tick the invoice and tick the
+        credit memo, confirm the payment amount is zero, save.</li>
+    </ol>
+    <p><span class="unconf">Unconfirmed</span> QuickBooks Online also has a Write off invoices tool that
+      does this in a batch. It appears in the accountant tools, so whether it is available to you depends
+      on your access and how your file is set up. If you have an outside accountant on the file, it is
+      quicker to ask them to run it than to do thirty of these by hand.</p>
+    <div class="ok"><strong>Correct:</strong> the invoice reads Paid or Closed, the customer's open
+      balance falls, and the amount appears as a Bad Debts expense on your profit report for the date you
+      used.</div>
+    <div class="fixbox"><strong>If you deleted invoices instead of writing them off:</strong> look under
+      the gear icon for the audit log, which records every change with the original details. Re-enter what
+      was deleted from that record, then write those invoices off properly. Do this before the year is
+      filed if you possibly can, and tell your accountant what happened rather than hoping it goes
+      unnoticed.</div>
+    <div class="note">
+      <label for="n8">Notes on this step</label>
+      <textarea id="n8" data-k="n8"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">9</span>Prove what changed</span></div>
+  <div class="body">
+    <ol>
+      <li>Rerun <span class="path">Accounts receivable aging detail</span> for
+        <span class="field" data-show="asof">the same as of date</span>.</li>
+      <li>Compare it with the copy you saved in Step 2. You started at
+        <span class="field" data-show="total">the original total</span>, with
+        <span class="field" data-show="over90">the over 90 figure</span> in the oldest column.</li>
+      <li>Run the <span class="path">Balance Sheet</span>, which is the report of what the business owns
+        and owes. Its Accounts Receivable line must equal the total on the aging report for the same
+        date.</li>
+    </ol>
+    <div class="ok"><strong>A good outcome:</strong> the total came down, the oldest column came down
+      hardest, and every line still on the report is one you can explain in a sentence.</div>
+    <div class="fixbox"><strong>The two reports do not agree:</strong> something has been posted straight
+      into Accounts Receivable without going through an invoice, usually a journal entry made by someone
+      trying to tidy up. That is an accountant question and worth an hour of their time, because until
+      those two agree, neither number can be given to a bank or a buyer.</div>
+    <div class="note">
+      <label for="n9">Notes on this step</label>
+      <textarea id="n9" data-k="n9"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">10</span>Stop it coming back</span></div>
+  <div class="body">
+    <p>Aged receivables are a habit problem, not an accounting problem. Four habits fix it permanently, and
+      all four are things one person can hold:</p>
+    <ul>
+      <li><strong>Invoice the day the work finishes.</strong> Every day of delay adds a day to the age and
+        loses a day of memory on both sides.</li>
+      <li><strong>Run the aging report weekly,</strong> not when it becomes a crisis. Fifteen minutes on a
+        Monday.</li>
+      <li><strong>Call at 31 days, every time.</strong> An account that gets chased on a schedule gets paid
+        ahead of the ones that do not.</li>
+      <li><strong>Turn on online payments</strong> if the fee is acceptable to you. The easier it is to
+        pay you, the sooner you get paid.</li>
+    </ul>
+    <div class="note">
+      <label for="n10">Notes on this step</label>
+      <textarea id="n10" data-k="n10"></textarea>
+    </div>
+  </div>
+</div>
+
+<h2>Quick reference</h2>
+<table>
+  <thead><tr><th style="width:44%">You want to</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>See every open invoice by age</td><td>Reports &rarr; search "Accounts receivable aging detail"</td></tr>
+    <tr><td>One line per customer</td><td>Reports &rarr; search "Accounts receivable aging summary"</td></tr>
+    <tr><td>Spot unapplied payments and credits</td><td>Reports &rarr; search "Open Invoices"</td></tr>
+    <tr><td>Apply a payment or a credit to an invoice</td><td>+ New &rarr; Customers &rarr; Receive payment</td></tr>
+    <tr><td>Issue a credit</td><td>+ New &rarr; Customers &rarr; Credit memo</td></tr>
+    <tr><td>Send a customer a statement</td><td>Sales &rarr; Customers &rarr; select &rarr; statement action</td></tr>
+    <tr><td>Add a Bad Debts expense account</td><td>Transactions &rarr; Chart of accounts &rarr; New</td></tr>
+    <tr><td>Add a Bad Debt item</td><td>Gear icon &rarr; Products and services &rarr; New</td></tr>
+    <tr><td>See who changed or deleted something</td><td>Gear icon &rarr; Audit log</td></tr>
+  </tbody>
+</table>
+
+</main>
+
+<footer>
+  QBO Wizards. Everything you type on this page is saved in your own browser only. Nothing is sent
+  anywhere. Menu names in QuickBooks Online change from time to time and differ by plan, so if a label
+  does not match exactly, look for the nearest equivalent wording.
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var KEY = "qbo_wizard_aged_ar";
+  function load(){
+    try { return JSON.parse(localStorage.getItem(KEY) || "{}"); }
+    catch(e){ return {}; }
+  }
+  function save(d){
+    try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e){}
+  }
+  var data = load();
+
+  var fields = document.querySelectorAll("[data-k]");
+  Array.prototype.forEach.call(fields, function(el){
+    var k = el.getAttribute("data-k");
+    if (data[k] !== undefined) el.value = data[k];
+    el.addEventListener("input", function(){
+      data[k] = el.value;
+      save(data);
+      paint();
+    });
+  });
+
+  var shows = document.querySelectorAll("[data-show]");
+  function paint(){
+    Array.prototype.forEach.call(shows, function(el){
+      var k = el.getAttribute("data-show");
+      var v = (data[k] || "").trim();
+      if (!el.getAttribute("data-fallback")) {
+        el.setAttribute("data-fallback", el.textContent);
+      }
+      el.textContent = v ? v : el.getAttribute("data-fallback");
+      el.style.opacity = v ? "1" : ".75";
+      el.style.borderBottomStyle = v ? "solid" : "dashed";
+    });
+  }
+  paint();
+})();
+</script>
+</body>
+</html>

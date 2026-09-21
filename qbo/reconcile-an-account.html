@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QBO Wizard: Reconcile an Account in QuickBooks Online</title>
+<meta name="description" content="A step by step walk through for proving a bank or credit card account against its statement, written for an owner doing it alone for the first time.">
+<style>
+  :root{
+    --blue:#1A3C6E;
+    --blue-soft:#2E5496;
+    --gold:#FFCD00;
+    --ink:#1b1b1b;
+    --muted:#5a5a5a;
+    --line:#d7dde6;
+    --paper:#ffffff;
+    --shell:#eef1f6;
+    --red:#a4262c;
+    --red-bg:#fdf3f3;
+    --green:#0f6b3f;
+    --green-bg:#f0f8f3;
+    --amber-bg:#fffbea;
+    --fix:#7a4a00;
+    --fix-bg:#fff8ec;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--shell);
+    color:var(--ink);
+    font-family:Calibri,"Segoe UI",Tahoma,sans-serif;
+    font-size:19px;
+    line-height:1.55;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 0 60px;background:var(--paper);
+        box-shadow:0 0 22px rgba(0,0,0,.10)}
+  header{background:var(--blue);color:#fff;padding:26px 34px 22px;border-bottom:5px solid var(--gold)}
+  header h1{margin:0 0 6px;font-size:31px;line-height:1.2}
+  header .sub{font-size:17px;opacity:.93}
+  header .who{margin-top:12px;font-size:16px;background:rgba(255,255,255,.12);
+               display:inline-block;padding:5px 12px;border-radius:3px}
+  main{padding:0 34px}
+  h2{color:var(--blue);font-size:24px;margin:34px 0 10px;padding-bottom:6px;
+     border-bottom:2px solid var(--line)}
+  h3{color:var(--blue-soft);font-size:20px;margin:22px 0 6px}
+  p{margin:10px 0}
+  a{color:var(--blue-soft)}
+
+  .backlink{padding:14px 34px 0;font-size:16px}
+  .backlink a{text-decoration:none;font-weight:bold}
+  .backlink a:hover{text-decoration:underline}
+
+  .box{border:1px solid var(--line);border-left:6px solid var(--blue-soft);
+       background:#f7f9fc;padding:16px 20px;margin:20px 0;border-radius:3px}
+  .box h3{margin-top:0}
+  .stop{border:2px solid var(--red);border-left:8px solid var(--red);
+        background:var(--red-bg);padding:18px 22px;margin:24px 0;border-radius:3px}
+  .stop h2{color:var(--red);border:0;margin:0 0 8px;font-size:23px}
+  .stop ul{margin:8px 0 0;padding-left:22px}
+  .stop li{margin:9px 0}
+  .stop a{color:var(--red);font-weight:bold}
+  .prereq{border:2px solid var(--gold);background:var(--amber-bg);
+          padding:18px 22px;margin:24px 0;border-radius:3px}
+  .prereq h2{color:var(--blue);border:0;margin:0 0 8px;font-size:23px}
+  .prereq ul{margin:6px 0 0;padding-left:22px}
+  .prereq li{margin:8px 0}
+
+  .step{border:1px solid var(--line);border-radius:4px;margin:20px 0;overflow:hidden;
+        break-inside:avoid;page-break-inside:avoid}
+  .step > .head{background:var(--blue);color:#fff;padding:11px 18px;font-size:20px;font-weight:bold;
+                display:flex;justify-content:space-between;align-items:center;gap:14px}
+  .step > .head .n{background:var(--gold);color:var(--blue);border-radius:50%;
+                   width:34px;height:34px;min-width:34px;display:inline-flex;
+                   align-items:center;justify-content:center;font-size:18px;margin-right:12px}
+  .step > .head .t{display:flex;align-items:center;flex:1}
+  .step > .body{padding:16px 20px}
+  .step ol,.step ul{padding-left:24px}
+  .step li{margin:8px 0}
+
+  .why{background:#f2f6fc;border-left:6px solid var(--blue);padding:10px 16px;margin:12px 0;
+       border-radius:3px;font-size:17px}
+  .why strong{color:var(--blue)}
+
+  .path{display:inline-block;background:#eaeff7;border:1px solid #c6d2e4;border-radius:3px;
+        padding:2px 9px;font-family:Consolas,"Courier New",monospace;font-size:17px;color:var(--blue)}
+  .btnlabel{display:inline-block;background:var(--blue);color:#fff;border-radius:4px;
+            padding:2px 11px;font-weight:bold;font-size:17px}
+  .field{display:inline-block;border-bottom:2px solid var(--blue-soft);font-weight:bold;
+         color:var(--blue)}
+  .unconf{display:inline-block;background:#fff4d6;border:1px solid #e0c46a;border-radius:3px;
+          padding:1px 8px;font-size:15px;font-weight:bold;color:#6b5200;text-transform:uppercase;
+          letter-spacing:.4px}
+
+  a.urlbox{display:block;background:#eaeff7;border:1px solid #c6d2e4;border-radius:4px;
+           padding:12px 16px;margin:12px 0;font-family:Consolas,"Courier New",monospace;
+           font-size:18px;color:var(--blue-soft);text-decoration:none;word-break:break-all}
+  a.urlbox:hover{background:#dde6f4;border-color:var(--blue-soft);text-decoration:underline}
+
+  .ok{border-left:6px solid var(--green);background:var(--green-bg);padding:12px 18px;margin:14px 0;
+      border-radius:3px}
+  .ok strong{color:var(--green)}
+  .bad{border-left:6px solid var(--red);background:var(--red-bg);padding:12px 18px;margin:14px 0;
+       border-radius:3px}
+  .bad strong{color:var(--red)}
+  .fixbox{border-left:6px solid var(--fix);background:var(--fix-bg);padding:12px 18px;margin:14px 0;
+          border-radius:3px}
+  .fixbox strong{color:var(--fix)}
+  .fixbox ol,.fixbox ul{margin:8px 0 0}
+
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:17px}
+  th{background:var(--blue);color:#fff;text-align:left;padding:9px 12px;font-weight:bold}
+  td{border:1px solid var(--line);padding:9px 12px;vertical-align:top}
+  tr:nth-child(even) td{background:#f7f9fc}
+
+  .cells{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:14px 0}
+  .cell label{display:block;font-size:15px;font-weight:bold;color:var(--blue);
+              text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+  .cell input{width:100%;padding:9px 11px;border:2px solid #c6d2e4;border-radius:4px;
+              font-family:inherit;font-size:18px;background:#fcfdff}
+  .cell input:focus{outline:none;border-color:var(--blue-soft);background:#fff}
+
+  .note{margin:16px 0}
+  .note label{display:block;font-size:15px;font-weight:bold;color:var(--blue);margin-bottom:5px}
+  .note textarea{width:100%;min-height:70px;padding:10px 12px;border:2px solid #c6d2e4;
+                 border-radius:4px;font-family:inherit;font-size:17px;background:#fcfdff;resize:vertical}
+  .note textarea:focus{outline:none;border-color:var(--blue-soft);background:#fff}
+
+  footer{padding:22px 34px;color:var(--muted);font-size:15px;border-top:2px solid var(--line);
+         margin-top:30px}
+
+  @page{size:letter portrait;margin:.5in}
+  @media print{
+    body{background:#fff;font-size:11pt}
+    .wrap{box-shadow:none;max-width:none}
+    .backlink{display:none}
+    .step{break-inside:avoid;page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="backlink"><a href="index.html">&larr; All QBO Wizards</a></div>
+
+<header>
+  <h1>Reconcile an Account in QuickBooks Online</h1>
+  <div class="sub">Proving the books agree with the statement, and what to do when the difference will not go to zero.</div>
+  <div class="who">QBO Wizard&nbsp; |&nbsp; Written for an owner doing this alone, with no bookkeeping background</div>
+</header>
+
+<main>
+
+<div class="box">
+  <h3>What reconciling is, in plain words</h3>
+  <p style="margin-top:0">Once a month the bank sends a statement: a list of every dollar in and out, and
+    the balance at the end. <strong>Reconciling</strong> means going down that list and confirming that
+    every line on it is also in QuickBooks, and that nothing extra is in QuickBooks that the bank never
+    saw. When the two agree to the penny, the account is reconciled.</p>
+  <p>That is the only thing in bookkeeping that actually <em>proves</em> your numbers. Everything else is
+    typing. This is checking. Done monthly it takes fifteen minutes. Skipped for six months it becomes the
+    reason you cannot trust a single report in the file.</p>
+</div>
+
+<div class="prereq">
+  <h2>Before you start</h2>
+  <ul>
+    <li><strong>What you need:</strong> a computer with a real screen. Reconciling on a phone is
+        technically possible and practically miserable, because the screen is a wide table.</li>
+    <li><strong>The statement itself</strong>, as a PDF or on paper, for one single month. You need two
+        numbers off it: the <strong>statement ending date</strong> and the <strong>statement ending
+        balance</strong>, which is the balance printed at the bottom of that statement. Everything here
+        hangs on those two numbers.</li>
+    <li><strong>A QuickBooks login that is allowed to reconcile.</strong> A limited user, and any reports
+        only user, will not see the tool at all. Only a <strong>company admin</strong> can widen that, so
+        if you are not one, this needs another person before you start.</li>
+    <li><strong>Every transaction for that month already in the books.</strong> If your bank feeds into
+        QuickBooks automatically, work that queue to empty first. That is a separate job with its own
+        wizard: <a href="match-bank-transactions.html">Match downloaded bank and credit card
+        transactions</a>.</li>
+    <li><strong>The previous month already reconciled.</strong> Do these in order, oldest first. Skipping a
+        month and coming back is the main reason beginning balances go wrong, and a wrong beginning balance
+        stops you dead.</li>
+    <li><strong>Time:</strong> 10 to 20 minutes for a clean month. The first month of an account nobody has
+        reconciled in a year can take most of a morning. That is normal and it only happens once.</li>
+  </ul>
+</div>
+
+<div class="stop">
+  <h2>Read this first. Four ways this goes wrong.</h2>
+  <ul>
+    <li><strong>Never force it to balance with an adjustment.</strong> If you click finish while the
+        difference is not zero, QuickBooks offers to write the gap off as an adjusting entry. That buries a
+        real error in an expense bucket where you will never find it again, and every report from then on
+        carries it. See <a href="#step9">Step 9</a>.
+        <br><em>If you already took one:</em> it is recoverable but unpleasant. Undo that reconciliation,
+        delete the adjusting entry (look for a transaction named something like Reconciliation Discrepancy
+        on the date the month ended), and reconcile again properly.</li>
+    <li><strong>Never change the beginning balance to make it match.</strong> A wrong beginning balance
+        means something inside an already reconciled month was edited or deleted afterward. Fix that, do
+        not paper over it. See <a href="#step5">Step 5</a>.</li>
+    <li><strong>Undoing a finished reconciliation is not a small thing.</strong> It strips the reconciled
+        mark from every transaction in that month at once, and on most plans only an accountant login can
+        put it back efficiently. It is reversible in principle and a bad afternoon in practice.</li>
+    <li><strong>Do not tick a line just because it is in the list.</strong> You tick a line because you
+        found it on the statement. Ticking to close a gap is the same mistake as taking the adjustment,
+        just slower and harder to find later.</li>
+  </ul>
+</div>
+
+<h2 id="which">Which screen do I want?</h2>
+<table>
+  <thead>
+    <tr><th style="width:34%">Your situation</th><th style="width:24%">Use this</th><th>Why</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>You have a statement and you want to prove the books match the bank.</td>
+      <td><strong>Reconcile</strong></td>
+      <td>This guide. It is the only thing that actually proves the balance.</td>
+    </tr>
+    <tr>
+      <td>Downloaded transactions are piled up waiting to be sorted.</td>
+      <td>Bank transactions review queue</td>
+      <td>Sorting them into categories is not the same as proving them. Do that first, then come here.</td>
+    </tr>
+    <tr>
+      <td>You just want to see what the balance is.</td>
+      <td>Dashboard, or the account register</td>
+      <td>A balance you have not reconciled is a guess with a dollar sign in front of it.</td>
+    </tr>
+    <tr>
+      <td>Something in an already reconciled month is wrong.</td>
+      <td>Stop and read Step 5 first</td>
+      <td>Editing a reconciled transaction quietly breaks the next month's starting point.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="box">
+  <h3>The numbers off the statement (fill these in, they follow you down the page)</h3>
+  <p style="margin-top:0;font-size:17px;color:var(--muted)">
+    Type them once here. Every later step shows them back to you, so you are never working from memory.
+    Everything you type stays in this browser on this computer and goes nowhere else.
+  </p>
+  <div class="cells">
+    <div class="cell">
+      <label for="v_acct">Account being reconciled</label>
+      <input id="v_acct" data-k="acct" placeholder="e.g. Operating Checking 1234" autocomplete="off">
+    </div>
+    <div class="cell">
+      <label for="v_end">Statement ending date</label>
+      <input id="v_end" data-k="enddate" placeholder="e.g. 03/31/2026" autocomplete="off">
+    </div>
+    <div class="cell">
+      <label for="v_bal">Statement ending balance</label>
+      <input id="v_bal" data-k="endbal" placeholder="e.g. 18,402.17" autocomplete="off">
+    </div>
+    <div class="cell">
+      <label for="v_beg">Beginning balance on the statement</label>
+      <input id="v_beg" data-k="begbal" placeholder="e.g. 12,905.44" autocomplete="off">
+    </div>
+  </div>
+</div>
+
+<h2>The steps</h2>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">1</span>Sign in to QuickBooks Online</span></div>
+  <div class="body">
+    <p>Open a browser and go to:</p>
+    <a class="urlbox" href="https://qbo.intuit.com" target="_blank" rel="noopener">https://qbo.intuit.com</a>
+    <p>Sign in, and check the company name in the top bar before you touch anything.</p>
+    <div class="why"><strong>Why it matters:</strong> if you have more than one company file, reconciling
+      the right statement against the wrong file wastes an hour and teaches you nothing.</div>
+    <div class="note">
+      <label for="n1">Notes on this step</label>
+      <textarea id="n1" data-k="n1" placeholder="Anything odd here? Type it. It is saved on this page."></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">2</span>Empty the review queue first</span></div>
+  <div class="body">
+    <p>If the account is connected to your bank, QuickBooks downloads transactions into a waiting list
+      called <span class="path">For review</span>. Clear that list before you start here.</p>
+    <p>Full walk through: <a href="match-bank-transactions.html">Match downloaded bank and credit card
+      transactions</a>.</p>
+    <div class="why"><strong>Why it matters:</strong> anything still sitting in review is not in the books
+      yet. It cannot be ticked off, so it turns into a difference you will spend twenty minutes hunting
+      for a cause you already knew about.</div>
+    <div class="ok"><strong>Ready:</strong> the For review count for
+      <span class="field" data-show="acct">this account</span> is zero, or everything left is dated after
+      <span class="field" data-show="enddate">the statement ending date</span>.</div>
+    <div class="fixbox"><strong>Already gone wrong:</strong> if you are already mid reconciliation and
+      realize the queue is full, do not abandon what you have ticked. Save the reconciliation and come
+      back. QuickBooks keeps your ticks.</div>
+    <div class="note">
+      <label for="n2">Notes on this step</label>
+      <textarea id="n2" data-k="n2"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">3</span>Open the Reconcile tool</span></div>
+  <div class="body">
+    <p>There are two places this lives, depending on your QuickBooks Online version and how recently the
+      menus were updated. Try them in this order:</p>
+    <ol>
+      <li><strong>The gear icon</strong> in the top right, then under the <span class="path">Tools</span>
+        column, click <span class="btnlabel">Reconcile</span>.</li>
+      <li>If it is not there, look in the left menu under <span class="path">Transactions</span> for a
+        <span class="btnlabel">Reconcile</span> entry.</li>
+    </ol>
+    <p><span class="unconf">Unconfirmed</span> Intuit has moved this item between the gear menu and the
+      left hand Transactions menu more than once, and an accountant style layout differs again. Both paths
+      reach the same screen, so use whichever one your file shows.</p>
+    <div class="ok"><strong>Looks right:</strong> a page headed Reconcile with an account dropdown and two
+      empty boxes for an ending balance and an ending date.</div>
+    <div class="fixbox"><strong>There is no Reconcile entry anywhere:</strong> your login does not include
+      it. Nothing you can do from your side changes that. A company admin has to widen your access. If the
+      admin login belonged to someone who has left the business, you can recover it through the account
+      recovery on the sign in page, but expect identity checks and allow a day.</div>
+    <div class="note">
+      <label for="n3">Notes on this step</label>
+      <textarea id="n3" data-k="n3"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">4</span>Pick the account</span></div>
+  <div class="body">
+    <p>Choose <span class="field" data-show="acct">the account</span> from the
+      <span class="path">Account</span> dropdown at the top.</p>
+    <p>Bank accounts and credit cards both reconcile here and the process is identical. The only
+      difference is that on a credit card the balance is money you owe, so it reads the other way round.</p>
+    <div class="why"><strong>Why it matters:</strong> credit cards are the accounts most often left
+      unreconciled, and they are where quiet recurring charges hide. Reconcile them too.</div>
+    <div class="fixbox"><strong>If you started on the wrong account:</strong> nothing is saved until you
+      finish, so back out and start again. If you already finished a month against the wrong account, undo
+      that reconciliation before doing anything else.</div>
+    <div class="note">
+      <label for="n4">Notes on this step</label>
+      <textarea id="n4" data-k="n4"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step5">
+  <div class="head"><span class="t"><span class="n">5</span>Check the beginning balance before anything else</span></div>
+  <div class="body">
+    <p>QuickBooks fills in a <span class="path">Beginning balance</span> by itself. It is the ending
+      balance from the last month you reconciled. You cannot edit it on this screen, and that is
+      deliberate.</p>
+    <p>Compare it to <span class="field" data-show="begbal">the beginning balance printed on the
+      statement</span>.</p>
+    <div class="why"><strong>Why it matters:</strong> if the starting point is wrong, everything built on
+      top of it is wrong. Carrying on regardless just moves the problem into next month, where it is
+      harder to find.</div>
+    <div class="ok"><strong>They match:</strong> carry on to Step 6.</div>
+    <div class="fixbox"><strong>They do not match. What to do:</strong>
+      <ol>
+        <li>This always means the same thing: a transaction inside a month you already reconciled was
+          later changed, deleted, or had its amount edited.</li>
+        <li>Go to <span class="path">Reports</span> and search for the reconciliation discrepancy report
+          for this account. It lists exactly which transactions were touched and by how much.</li>
+        <li>Put those transactions back the way they were. Usually the amount or the date was edited and
+          you can simply set it back.</li>
+        <li>If the report is empty or the difference still will not resolve, stop here and get an
+          accountant on it for an hour. This is the one problem on this page that is genuinely worth
+          paying someone to solve, because the alternative is that no month after it can ever be trusted.</li>
+      </ol>
+    </div>
+    <div class="note">
+      <label for="n5">Notes on this step</label>
+      <textarea id="n5" data-k="n5"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">6</span>Type the ending date and ending balance</span></div>
+  <div class="body">
+    <ol>
+      <li><span class="path">Ending date</span>: <span class="field" data-show="enddate">the statement
+        ending date</span>, exactly. Not the end of the calendar month, unless the statement says so.
+        Plenty of credit cards close on the 17th.</li>
+      <li><span class="path">Ending balance</span>: <span class="field" data-show="endbal">the statement
+        ending balance</span>, to the penny, straight off the statement. Do not round it and do not adjust
+        it to what you think it should be.</li>
+    </ol>
+    <p>Then click the button that starts it, usually labeled something like
+      <span class="btnlabel">Start reconciling</span> in the lower right.</p>
+    <div class="why"><strong>Why it matters:</strong> these two numbers are the bank's version of the
+      truth. Your job for the next fifteen minutes is to make your books agree with them, so typing them
+      wrong sends you hunting for an error that does not exist.</div>
+    <div class="fixbox"><strong>Already gone wrong:</strong> if the difference is a strange number and
+      nothing you tick moves it sensibly, come back here and read both numbers off the statement again
+      before you spend another minute. A mistyped ending balance is the most common cause of an
+      unexplainable difference, and there is no shame in it.</div>
+    <div class="note">
+      <label for="n6">Notes on this step</label>
+      <textarea id="n6" data-k="n6"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">7</span>Understand the screen you just landed on</span></div>
+  <div class="body">
+    <p>Across the top is a summary strip. The number that matters is the last one, usually labeled
+      <span class="path">Difference</span>. Your entire job is to get that to 0.00.</p>
+    <table>
+      <thead><tr><th style="width:32%">What you see</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td>Statement ending balance</td><td>What you typed in Step 6. The bank's version.</td></tr>
+        <tr><td>Cleared balance</td><td>Your beginning balance plus everything you have ticked so far.
+            Cleared just means the bank has actually processed it.</td></tr>
+        <tr><td><strong>Difference</strong></td><td>The gap between those two. Must reach 0.00.</td></tr>
+      </tbody>
+    </table>
+    <p>Below that, the transactions are usually split into tabs for money out and money in, with an option
+      to see everything in one list. Work one tab at a time. It is far easier to keep your place.</p>
+    <div class="note">
+      <label for="n7">Notes on this step</label>
+      <textarea id="n7" data-k="n7"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">8</span>Tick off what is on the statement</span></div>
+  <div class="body">
+    <p>Go down the <strong>statement</strong>, line by line, and find each line in QuickBooks. Not the
+      other way round. The statement is the master list.</p>
+    <ol>
+      <li>Find the matching line by date and amount.</li>
+      <li>Click its tick box on the right to mark it cleared.</li>
+      <li>Move to the next line on the statement.</li>
+    </ol>
+    <p>Sorting the QuickBooks list by amount rather than by date makes this much faster, because you are
+      hunting for a specific dollar figure, not a date.</p>
+    <div class="why"><strong>Why it matters:</strong> working from the statement guarantees you notice
+      anything the bank did that your books do not know about, including fees, and including a payment
+      that went out that you did not authorize.</div>
+    <div class="ok"><strong>Going well:</strong> the Difference figure shrinks toward zero as you work.</div>
+    <div class="fixbox"><strong>A statement line is nowhere in QuickBooks:</strong> the transaction was
+      never entered. Leave this reconciliation open, open a second browser tab, enter it properly there as
+      whatever it actually is (a bill payment, an expense, a deposit, a bank fee), then come back to this
+      tab and refresh. It will appear in the list, ready to tick.</div>
+    <div class="fixbox"><strong>A QuickBooks line is nowhere on the statement:</strong> leave it unticked.
+      That is normal for a check written near month end that has not been cashed yet. If it is still
+      unticked three months later, it is a check that was lost or never cashed, and that is worth a phone
+      call.</div>
+    <div class="note">
+      <label for="n8">Notes on this step</label>
+      <textarea id="n8" data-k="n8"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step9">
+  <div class="head"><span class="t"><span class="n">9</span>When the difference will not go to zero</span></div>
+  <div class="body">
+    <p>This happens to everyone, every so often, including people who do it for a living. Work this list in
+      order. It is roughly the order of likelihood.</p>
+    <table>
+      <thead><tr><th style="width:38%">Check</th><th>What it catches</th></tr></thead>
+      <tbody>
+        <tr><td>Divide the difference by 9. Is it a whole number?</td>
+            <td>Two digits typed the wrong way round, 54.18 entered as 45.18. Very common.</td></tr>
+        <tr><td>Is the difference exactly equal to one line on the statement?</td>
+            <td>Something you have not ticked, or never entered at all.</td></tr>
+        <tr><td>Is the difference exactly twice a transaction?</td>
+            <td>The same thing entered twice, or entered with the sign the wrong way round.</td></tr>
+        <tr><td>Read the ending balance off the statement again.</td>
+            <td>A mistyped ending balance. It is wrong more often than people admit.</td></tr>
+        <tr><td>Is the ending date right?</td>
+            <td>A wrong date drags in part of the next month.</td></tr>
+        <tr><td>Any duplicates in the list?</td>
+            <td>Same payee, same amount, a day apart, usually one typed by hand and one from the bank feed.</td></tr>
+      </tbody>
+    </table>
+    <div class="bad"><strong>Do not take the adjustment.</strong> Finishing while the difference is not
+      zero lets QuickBooks write the gap off for you. That closes the month with a known error inside it,
+      and the error stays in the file permanently.</div>
+    <div class="fixbox"><strong>If you genuinely cannot find it:</strong> save and close the
+      reconciliation, which keeps every tick you have made, and come back to it with fresh eyes or with an
+      hour of an accountant's time. An unfinished reconciliation costs you nothing. A forced one costs you
+      the ability to trust the account, which is the whole reason you are doing this.</div>
+    <div class="note">
+      <label for="n9">Notes on this step</label>
+      <textarea id="n9" data-k="n9"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">10</span>Finish, and keep the report</span></div>
+  <div class="body">
+    <p>With the difference at <strong>0.00</strong>, click the finish button in the top right, usually
+      labeled something like <span class="btnlabel">Finish now</span>.</p>
+    <p>QuickBooks shows the reconciliation report. Save it as a PDF and file it next to the statement PDF,
+      every month, in the same folder.</p>
+    <div class="why"><strong>Why it matters:</strong> when a lender, a buyer or the tax authority asks
+      what happened in a month two years ago, this report plus the statement is the complete answer, and
+      you will not have to reconstruct anything.</div>
+    <div class="ok"><strong>Done:</strong> a success message and the report on screen for
+      <span class="field" data-show="acct">the account</span> through
+      <span class="field" data-show="enddate">the ending date</span>.</div>
+    <div class="note">
+      <label for="n10">Notes on this step</label>
+      <textarea id="n10" data-k="n10"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">11</span>Verify it stuck</span></div>
+  <div class="body">
+    <ol>
+      <li>Open the account register, which is just the running list of everything in that account: left
+        menu <span class="path">Transactions</span>, then <span class="path">Chart of accounts</span>
+        (the list of all your accounts and spending buckets), then the View register link on that
+        account.</li>
+      <li>Look at the narrow column near the right edge. Reconciled lines show
+        <span class="path">R</span>. Lines the bank has processed but that are not reconciled show
+        <span class="path">C</span>. Neither shows blank.</li>
+    </ol>
+    <div class="ok"><strong>Correct:</strong> everything you ticked, dated on or before
+      <span class="field" data-show="enddate">the ending date</span>, now shows R.</div>
+    <div class="bad"><strong>Never toggle that R by hand</strong> from inside the register. It is clickable
+      and it should not be. Changing it silently breaks next month's beginning balance and you will not
+      know why.</div>
+    <div class="fixbox"><strong>If you have already clicked one by accident:</strong> click it back to R
+      immediately, then reconcile next month as normal. If the beginning balance next month is off by the
+      amount of that transaction, that is what happened, and setting it back to R fixes it.</div>
+    <div class="note">
+      <label for="n11">Notes on this step</label>
+      <textarea id="n11" data-k="n11"></textarea>
+    </div>
+  </div>
+</div>
+
+<h2>Quick reference</h2>
+<table>
+  <thead><tr><th style="width:44%">You want to</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Reconcile an account</td><td>Gear icon &rarr; Tools &rarr; Reconcile (or Transactions &rarr; Reconcile)</td></tr>
+    <tr><td>See past reconciliation reports</td><td>The Reconcile page &rarr; History by account</td></tr>
+    <tr><td>Find what broke a beginning balance</td><td>Reports &rarr; search "Reconciliation" for that account</td></tr>
+    <tr><td>Open an account register</td><td>Transactions &rarr; Chart of accounts &rarr; View register</td></tr>
+    <tr><td>Clear the downloaded queue first</td><td>Transactions &rarr; Bank transactions &rarr; For review</td></tr>
+  </tbody>
+</table>
+
+</main>
+
+<footer>
+  QBO Wizards. Everything you type on this page is saved in your own browser only. Nothing is sent
+  anywhere. Menu names in QuickBooks Online change from time to time and differ by plan, so if a label
+  does not match exactly, look for the nearest equivalent wording.
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var KEY = "qbo_wizard_reconcile";
+  function load(){
+    try { return JSON.parse(localStorage.getItem(KEY) || "{}"); }
+    catch(e){ return {}; }
+  }
+  function save(d){
+    try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e){}
+  }
+  var data = load();
+
+  var fields = document.querySelectorAll("[data-k]");
+  Array.prototype.forEach.call(fields, function(el){
+    var k = el.getAttribute("data-k");
+    if (data[k] !== undefined) el.value = data[k];
+    el.addEventListener("input", function(){
+      data[k] = el.value;
+      save(data);
+      paint();
+    });
+  });
+
+  var shows = document.querySelectorAll("[data-show]");
+  function paint(){
+    Array.prototype.forEach.call(shows, function(el){
+      var k = el.getAttribute("data-show");
+      var v = (data[k] || "").trim();
+      if (!el.getAttribute("data-fallback")) {
+        el.setAttribute("data-fallback", el.textContent);
+      }
+      el.textContent = v ? v : el.getAttribute("data-fallback");
+      el.style.opacity = v ? "1" : ".75";
+      el.style.borderBottomStyle = v ? "solid" : "dashed";
+    });
+  }
+  paint();
+})();
+</script>
+</body>
+</html>

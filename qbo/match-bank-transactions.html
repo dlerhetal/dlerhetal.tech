@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QBO Wizard: Match Downloaded Bank and Credit Card Transactions</title>
+<meta name="description" content="A step by step walk through for clearing the QuickBooks Online review queue without creating duplicates, written for an owner doing it alone.">
+<style>
+  :root{
+    --blue:#1A3C6E;
+    --blue-soft:#2E5496;
+    --gold:#FFCD00;
+    --ink:#1b1b1b;
+    --muted:#5a5a5a;
+    --line:#d7dde6;
+    --paper:#ffffff;
+    --shell:#eef1f6;
+    --red:#a4262c;
+    --red-bg:#fdf3f3;
+    --green:#0f6b3f;
+    --green-bg:#f0f8f3;
+    --amber-bg:#fffbea;
+    --fix:#7a4a00;
+    --fix-bg:#fff8ec;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--shell);
+    color:var(--ink);
+    font-family:Calibri,"Segoe UI",Tahoma,sans-serif;
+    font-size:19px;
+    line-height:1.55;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 0 60px;background:var(--paper);
+        box-shadow:0 0 22px rgba(0,0,0,.10)}
+  header{background:var(--blue);color:#fff;padding:26px 34px 22px;border-bottom:5px solid var(--gold)}
+  header h1{margin:0 0 6px;font-size:31px;line-height:1.2}
+  header .sub{font-size:17px;opacity:.93}
+  header .who{margin-top:12px;font-size:16px;background:rgba(255,255,255,.12);
+               display:inline-block;padding:5px 12px;border-radius:3px}
+  main{padding:0 34px}
+  h2{color:var(--blue);font-size:24px;margin:34px 0 10px;padding-bottom:6px;
+     border-bottom:2px solid var(--line)}
+  h3{color:var(--blue-soft);font-size:20px;margin:22px 0 6px}
+  p{margin:10px 0}
+  a{color:var(--blue-soft)}
+
+  .backlink{padding:14px 34px 0;font-size:16px}
+  .backlink a{text-decoration:none;font-weight:bold}
+  .backlink a:hover{text-decoration:underline}
+
+  .box{border:1px solid var(--line);border-left:6px solid var(--blue-soft);
+       background:#f7f9fc;padding:16px 20px;margin:20px 0;border-radius:3px}
+  .box h3{margin-top:0}
+  .stop{border:2px solid var(--red);border-left:8px solid var(--red);
+        background:var(--red-bg);padding:18px 22px;margin:24px 0;border-radius:3px}
+  .stop h2{color:var(--red);border:0;margin:0 0 8px;font-size:23px}
+  .stop ul{margin:8px 0 0;padding-left:22px}
+  .stop li{margin:9px 0}
+  .stop a{color:var(--red);font-weight:bold}
+  .prereq{border:2px solid var(--gold);background:var(--amber-bg);
+          padding:18px 22px;margin:24px 0;border-radius:3px}
+  .prereq h2{color:var(--blue);border:0;margin:0 0 8px;font-size:23px}
+  .prereq ul{margin:6px 0 0;padding-left:22px}
+  .prereq li{margin:8px 0}
+
+  .step{border:1px solid var(--line);border-radius:4px;margin:20px 0;overflow:hidden;
+        break-inside:avoid;page-break-inside:avoid}
+  .step > .head{background:var(--blue);color:#fff;padding:11px 18px;font-size:20px;font-weight:bold;
+                display:flex;justify-content:space-between;align-items:center;gap:14px}
+  .step > .head .n{background:var(--gold);color:var(--blue);border-radius:50%;
+                   width:34px;height:34px;min-width:34px;display:inline-flex;
+                   align-items:center;justify-content:center;font-size:18px;margin-right:12px}
+  .step > .head .t{display:flex;align-items:center;flex:1}
+  .step > .body{padding:16px 20px}
+  .step ol,.step ul{padding-left:24px}
+  .step li{margin:8px 0}
+
+  .why{background:#f2f6fc;border-left:6px solid var(--blue);padding:10px 16px;margin:12px 0;
+       border-radius:3px;font-size:17px}
+  .why strong{color:var(--blue)}
+
+  .path{display:inline-block;background:#eaeff7;border:1px solid #c6d2e4;border-radius:3px;
+        padding:2px 9px;font-family:Consolas,"Courier New",monospace;font-size:17px;color:var(--blue)}
+  .btnlabel{display:inline-block;background:var(--blue);color:#fff;border-radius:4px;
+            padding:2px 11px;font-weight:bold;font-size:17px}
+  .field{display:inline-block;border-bottom:2px solid var(--blue-soft);font-weight:bold;
+         color:var(--blue)}
+  .unconf{display:inline-block;background:#fff4d6;border:1px solid #e0c46a;border-radius:3px;
+          padding:1px 8px;font-size:15px;font-weight:bold;color:#6b5200;text-transform:uppercase;
+          letter-spacing:.4px}
+
+  a.urlbox{display:block;background:#eaeff7;border:1px solid #c6d2e4;border-radius:4px;
+           padding:12px 16px;margin:12px 0;font-family:Consolas,"Courier New",monospace;
+           font-size:18px;color:var(--blue-soft);text-decoration:none;word-break:break-all}
+  a.urlbox:hover{background:#dde6f4;border-color:var(--blue-soft);text-decoration:underline}
+
+  .ok{border-left:6px solid var(--green);background:var(--green-bg);padding:12px 18px;margin:14px 0;
+      border-radius:3px}
+  .ok strong{color:var(--green)}
+  .bad{border-left:6px solid var(--red);background:var(--red-bg);padding:12px 18px;margin:14px 0;
+       border-radius:3px}
+  .bad strong{color:var(--red)}
+  .fixbox{border-left:6px solid var(--fix);background:var(--fix-bg);padding:12px 18px;margin:14px 0;
+          border-radius:3px}
+  .fixbox strong{color:var(--fix)}
+  .fixbox ol,.fixbox ul{margin:8px 0 0}
+
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:17px}
+  th{background:var(--blue);color:#fff;text-align:left;padding:9px 12px;font-weight:bold}
+  td{border:1px solid var(--line);padding:9px 12px;vertical-align:top}
+  tr:nth-child(even) td{background:#f7f9fc}
+
+  .cells{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:14px 0}
+  .cell label{display:block;font-size:15px;font-weight:bold;color:var(--blue);
+              text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+  .cell input{width:100%;padding:9px 11px;border:2px solid #c6d2e4;border-radius:4px;
+              font-family:inherit;font-size:18px;background:#fcfdff}
+  .cell input:focus{outline:none;border-color:var(--blue-soft);background:#fff}
+
+  .note{margin:16px 0}
+  .note label{display:block;font-size:15px;font-weight:bold;color:var(--blue);margin-bottom:5px}
+  .note textarea{width:100%;min-height:70px;padding:10px 12px;border:2px solid #c6d2e4;
+                 border-radius:4px;font-family:inherit;font-size:17px;background:#fcfdff;resize:vertical}
+  .note textarea:focus{outline:none;border-color:var(--blue-soft);background:#fff}
+
+  footer{padding:22px 34px;color:var(--muted);font-size:15px;border-top:2px solid var(--line);
+         margin-top:30px}
+
+  @page{size:letter portrait;margin:.5in}
+  @media print{
+    body{background:#fff;font-size:11pt}
+    .wrap{box-shadow:none;max-width:none}
+    .backlink{display:none}
+    .step{break-inside:avoid;page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="backlink"><a href="index.html">&larr; All QBO Wizards</a></div>
+
+<header>
+  <h1>Match Downloaded Bank and Credit Card Transactions</h1>
+  <div class="sub">Clearing the review queue without creating a single duplicate. Match before you Add.</div>
+  <div class="who">QBO Wizard&nbsp; |&nbsp; Written for an owner doing this alone, with no bookkeeping background</div>
+</header>
+
+<main>
+
+<div class="box">
+  <h3>What this queue is, in plain words</h3>
+  <p style="margin-top:0">When your bank or credit card is connected to QuickBooks, every transaction the
+    bank processes gets downloaded into a waiting list called <span class="path">For review</span>.
+    Nothing in that list is in your books yet. It is a pile of raw bank lines waiting for you to say what
+    each one is.</p>
+  <p>You do one of two things with each line. If the transaction is <em>already</em> in QuickBooks because
+    you entered it, you <strong>Match</strong> it, which just links the two together. If it is not in
+    QuickBooks at all, you <strong>Add</strong> it, which creates it. Getting those two the wrong way round
+    is how the same cost ends up in your books twice, and it is the most common damage done in QuickBooks
+    by someone new to it.</p>
+</div>
+
+<div class="prereq">
+  <h2>Before you start</h2>
+  <ul>
+    <li><strong>What you need:</strong> a computer. This screen is a wide table with a lot of small
+        controls and it is genuinely painful on a phone.</li>
+    <li><strong>The bank or card already connected to QuickBooks.</strong> Connecting an account is a
+        different job from this one. It needs the online banking login, and it usually triggers a security
+        code sent by text, which often means <strong>a phone that may not be in your hand</strong>. If the
+        account is not connected yet, line that up before you sit down.</li>
+    <li><strong>A QuickBooks login allowed to enter transactions.</strong> A reports only login cannot do
+        any of this, and only a company admin can change it.</li>
+    <li><strong>Some idea of what the business actually bought.</strong> This job is twenty percent
+        clicking and eighty percent knowing what a payee is. Where you do not recognize a name, park it
+        rather than guessing.</li>
+    <li><strong>Time:</strong> 10 to 15 minutes a week if you keep up. Six months of backlog is a full
+        day and the accuracy is worse, which is the whole argument for doing it weekly.</li>
+  </ul>
+</div>
+
+<div class="stop">
+  <h2>Read this first. This screen makes duplicates faster than any other.</h2>
+  <ul>
+    <li><strong>Add is not Match.</strong> <span class="btnlabel">Add</span> creates a brand new
+        transaction. <span class="btnlabel">Match</span> ties the bank line to one that already exists.
+        If you already entered the bill, the check or the invoice, clicking Add records the cost a second
+        time. Always look for a match first. See <a href="#step5">Step 5</a>.
+        <br><em>If you already did it:</em> fixable. On the <span class="path">Categorized</span> tab
+        there is an Undo on each row. Undo sends the bank line back to For review and removes what it
+        created, then you can match it properly. Do this before you reconcile the month.</li>
+    <li><strong>Never Add money that came in from a customer with an open invoice.</strong> It has to be
+        matched to that invoice, or recorded as a payment against it. Adding it straight to income leaves
+        the invoice sitting unpaid forever and counts the sale twice. See <a href="#step7">Step 7</a>.</li>
+    <li><strong>Money moved between two of your own accounts is a transfer, not income and not an
+        expense.</strong> It appears twice, once leaving one account and once arriving in the other.
+        Recorded wrong it inflates both your sales and your costs, which affects what you owe in tax. See
+        <a href="#step8">Step 8</a>.</li>
+    <li><strong>Exclude is not a filing cabinet.</strong> Excluding hides a line and records nothing. Used
+        on something you simply did not understand, it silently removes a real transaction from the books,
+        and it will not be there at reconciling time.
+        <br><em>If you already did it:</em> the <span class="path">Excluded</span> tab still holds it, and
+        you can send it back to For review. Nothing is lost as long as you remember it is there.</li>
+    <li><strong>Do not let a rule run on autopilot until you trust it.</strong> A rule set to add
+        automatically posts transactions without you ever seeing them.</li>
+  </ul>
+</div>
+
+<h2 id="which">Add, Match, Transfer or Exclude?</h2>
+<table>
+  <thead>
+    <tr><th style="width:26%">Button</th><th style="width:34%">Use it when</th><th>What it does</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Match</strong></td>
+      <td>The transaction is already in QuickBooks: a bill you paid, a payment on an invoice, a check you
+          wrote.</td>
+      <td>Links the two. Nothing new is created. This is the safe default.</td>
+    </tr>
+    <tr>
+      <td><strong>Add</strong> (some layouts say Categorize or Confirm)</td>
+      <td>Nothing in the books represents this yet. A card swipe nobody entered.</td>
+      <td>Creates a new expense or deposit using the category shown.</td>
+    </tr>
+    <tr>
+      <td><strong>Record as transfer</strong></td>
+      <td>Money moved between two accounts that both belong to the business.</td>
+      <td>Records one movement instead of a fake expense and a fake sale.</td>
+    </tr>
+    <tr>
+      <td><strong>Exclude</strong></td>
+      <td>Only a genuine double download, or activity from before the date you started keeping books in
+          QuickBooks.</td>
+      <td>Takes it off the list and records nothing. Use rarely.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="box">
+  <h3>What you are working on (fill this in, it follows you down the page)</h3>
+  <p style="margin-top:0;font-size:17px;color:var(--muted)">
+    Type it once. Later steps show it back to you. Everything you type stays in this browser on this
+    computer and goes nowhere else.
+  </p>
+  <div class="cells">
+    <div class="cell">
+      <label for="v_acct">Account you are clearing</label>
+      <input id="v_acct" data-k="acct" placeholder="e.g. Operating Checking 1234" autocomplete="off">
+    </div>
+    <div class="cell">
+      <label for="v_from">Working from this date</label>
+      <input id="v_from" data-k="fromdate" placeholder="e.g. 01/01/2026" autocomplete="off">
+    </div>
+    <div class="cell">
+      <label for="v_count">How many are For review</label>
+      <input id="v_count" data-k="count" placeholder="e.g. 148" autocomplete="off">
+    </div>
+  </div>
+</div>
+
+<h2>The steps</h2>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">1</span>Sign in to QuickBooks Online</span></div>
+  <div class="body">
+    <p>Open a browser and go to:</p>
+    <a class="urlbox" href="https://qbo.intuit.com" target="_blank" rel="noopener">https://qbo.intuit.com</a>
+    <div class="note">
+      <label for="n1">Notes on this step</label>
+      <textarea id="n1" data-k="n1" placeholder="Anything odd here? Type it. It is saved on this page."></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">2</span>Open the downloaded transactions</span></div>
+  <div class="body">
+    <p>In the left menu, click <span class="path">Transactions</span>, then
+      <span class="path">Bank transactions</span>.</p>
+    <p><span class="unconf">Unconfirmed</span> Older layouts call this <span class="path">Banking</span>
+      in the left menu, with a Banking tab inside it. Same screen, older name. If you see no Transactions
+      entry, look for Banking.</p>
+    <div class="ok"><strong>Looks right:</strong> a row of account tiles across the top, each showing a
+      bank balance, a QuickBooks balance and a count of items waiting.</div>
+    <div class="fixbox"><strong>The page invites you to connect an account and shows no tiles:</strong>
+      nothing is connected. That is a separate setup job and it needs your online banking login, so it may
+      not be something you can finish in the next five minutes. In the meantime you can still enter
+      transactions by hand, and you can still reconcile from the paper statement.</div>
+    <div class="note">
+      <label for="n2">Notes on this step</label>
+      <textarea id="n2" data-k="n2"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">3</span>Pick the account and the For review tab</span></div>
+  <div class="body">
+    <p>Click the tile for <span class="field" data-show="acct">the account you are clearing</span>, then
+      make sure you are on the <span class="path">For review</span> tab. The other two tabs are
+      <span class="path">Categorized</span>, meaning already dealt with, and
+      <span class="path">Excluded</span>.</p>
+    <p>The count on that tab is <span class="field" data-show="count">how many items are waiting</span>.
+      If the number is large, work oldest first.</p>
+    <div class="why"><strong>Why oldest first:</strong> matching works by looking for a transaction you
+      already entered. Working forward in time means the older entries are still available to match
+      against, instead of being buried under newer ones.</div>
+    <div class="note">
+      <label for="n3">Notes on this step</label>
+      <textarea id="n3" data-k="n3"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">4</span>Read a row before you touch it</span></div>
+  <div class="body">
+    <p>Each row shows the date, the description the bank sent, and the amount. QuickBooks adds its own
+      guess at who the payee is and which category it belongs in, and a note when it thinks it has found a
+      match.</p>
+    <p>Click anywhere on the row to expand it. Expanding changes nothing, and it is the only way to see
+      what QuickBooks is actually proposing to do.</p>
+    <div class="bad"><strong>The guessed category is a guess.</strong> It is based on the bank's
+      description text and on what similar transactions were called before, sometimes by a previous
+      bookkeeper who was also guessing. It is right often enough to be dangerous.</div>
+    <div class="note">
+      <label for="n4">Notes on this step</label>
+      <textarea id="n4" data-k="n4"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step5">
+  <div class="head"><span class="t"><span class="n">5</span>Look for a match first, always</span></div>
+  <div class="body">
+    <p>If the row offers a match, it says so, naming the transaction it found and its date.</p>
+    <ol>
+      <li>Check the amount is identical.</li>
+      <li>Check the date is close. A check can clear a week or two after you wrote it, so a gap is normal.
+        A gap of months usually means it is the wrong match.</li>
+      <li>Check the name is the right one.</li>
+      <li>If all three hold, click <span class="btnlabel">Match</span>.</li>
+    </ol>
+    <p>If several candidates are offered, open the list and pick deliberately. If none is right, there is
+      usually a link to search for other possible matches by date and amount.</p>
+    <div class="why"><strong>Why it matters:</strong> a match records nothing new, it just connects the
+      bank line to the entry you already made. That is what keeps one real payment from becoming two
+      recorded ones.</div>
+    <div class="ok"><strong>Correct:</strong> the row leaves For review and shows on the Categorized tab
+      as matched. No new transaction was created.</div>
+    <div class="fixbox"><strong>You clicked Add on something already entered:</strong> go to the
+      <span class="path">Categorized</span> tab, find that row, and click Undo. That removes what it
+      created and returns the line to For review, where you can match it properly. If the month has already
+      been reconciled, undoing will unbalance it, so in that case leave it and instead delete the duplicate
+      transaction, then re-reconcile that month.</div>
+    <div class="note">
+      <label for="n5">Notes on this step</label>
+      <textarea id="n5" data-k="n5"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">6</span>If there is genuinely nothing to match, categorize it</span></div>
+  <div class="body">
+    <ol>
+      <li><span class="path">Vendor or Customer</span>: pick the real name, not the garbled description
+        the bank sent. Consistent names are what make your reports readable later.</li>
+      <li><span class="path">Category</span>: the spending bucket it belongs in. Pick the closest one that
+        already exists. <strong>Do not invent a new one</strong> for a perfect fit.</li>
+      <li>Add a short memo if the payee name will mean nothing to you in six months.</li>
+      <li>Click <span class="btnlabel">Add</span> (some layouts say Confirm).</li>
+    </ol>
+    <div class="why"><strong>Why it matters:</strong> the category decides which line of your profit
+      report this shows up on. That report is how you will decide what to cut, so a sloppy category today
+      is a bad decision later.</div>
+    <div class="fixbox"><strong>You do not know what something is:</strong> leave it in the queue. Build a
+      short list of unknowns and settle them in one pass, with the card statement or a phone call. An
+      honest blank is worth more than a confident wrong answer, because a wrong answer never gets
+      revisited.</div>
+    <div class="note">
+      <label for="n6">Notes on this step</label>
+      <textarea id="n6" data-k="n6"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step7">
+  <div class="head"><span class="t"><span class="n">7</span>Handle money coming in carefully</span></div>
+  <div class="body">
+    <p>A deposit is the single easiest thing to get wrong on this screen, and the mistakes cost real
+      money, because they change what you appear to have earned.</p>
+    <table>
+      <thead><tr><th style="width:42%">What the deposit is</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td>Payment on an invoice you sent</td>
+            <td>Match it. If the payment was never recorded in QuickBooks, record it first
+                (+ New &rarr; Customers &rarr; Receive payment), then match.</td></tr>
+        <tr><td>One lump deposit covering several customer checks</td>
+            <td>QuickBooks can match one bank line to several recorded payments at once. Tick all of them
+                so the total agrees.</td></tr>
+        <tr><td>A customer paying on the spot with no invoice</td>
+            <td>A sales receipt is the clean way. Categorizing straight to income also works if you do not
+                need a record against that customer.</td></tr>
+        <tr><td>You putting your own money in, or a loan arriving</td>
+            <td>Neither of these is income, and treating them as income means paying tax on your own
+                money. This one is worth a five minute call to an accountant rather than a guess.</td></tr>
+      </tbody>
+    </table>
+    <div class="fixbox"><strong>Already added a customer payment straight to income:</strong> undo it on
+      the Categorized tab, then record it properly against the invoice. If you leave it, you will see the
+      invoice still showing as unpaid while the money is clearly in the bank, and you will chase a customer
+      who already paid you.</div>
+    <div class="note">
+      <label for="n7">Notes on this step</label>
+      <textarea id="n7" data-k="n7"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step8">
+  <div class="head"><span class="t"><span class="n">8</span>Money moved between your own accounts</span></div>
+  <div class="body">
+    <p>A card payment out of checking, or a move to savings, is a <strong>transfer</strong>: the same money
+      leaving one of your accounts and arriving in another. It is not an expense and the arriving side is
+      not a sale.</p>
+    <ol>
+      <li>Expand the row.</li>
+      <li>Choose the transfer option, usually a tab or a radio labeled
+        <span class="path">Record as transfer</span>.</li>
+      <li>Pick the other account, the one the money went to or came from.</li>
+      <li>Save.</li>
+    </ol>
+    <p>When the other account is also connected, the matching side shows up in that account's queue. Match
+      it there rather than recording a second transfer, or the money appears to move twice.</p>
+    <div class="why"><strong>Why it matters:</strong> recorded as an expense and a sale, a single sweep
+      between your own accounts inflates both your revenue and your costs. Do it monthly and your business
+      looks bigger and less profitable than it is, to you and to anyone you show the numbers to.</div>
+    <div class="note">
+      <label for="n8">Notes on this step</label>
+      <textarea id="n8" data-k="n8"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">9</span>Use rules, carefully, for the boring ones</span></div>
+  <div class="body">
+    <p>A rule tells QuickBooks that anything matching a description should be filled in a set way. When the
+      same payee arrives every month for the same thing, this saves real time. Rules live on the bank
+      transactions page, usually on a <span class="path">Rules</span> tab.</p>
+    <p>Keep them to things that never change: the phone bill, the rent, the payroll fee. Leave the
+      automatic option <strong>off</strong> at first, so the rule fills in the detail and you still press
+      the button yourself. Turn it on only after you have watched the rule behave for a month.</p>
+    <div class="bad"><strong>A careless rule is worse than no rule.</strong> One that matches on a common
+      word will quietly miscategorize everything containing it, and because it runs automatically you never
+      see it happen.</div>
+    <div class="fixbox"><strong>A rule has been miscategorizing for months:</strong> turn the rule off
+      first so it stops, then fix the rule, then correct the past transactions. The Categorized tab lets
+      you select several rows at once, which is much faster than opening them one by one.</div>
+    <div class="note">
+      <label for="n9">Notes on this step</label>
+      <textarea id="n9" data-k="n9"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">10</span>Finish, then prove it</span></div>
+  <div class="body">
+    <p>When For review is empty, or everything left is genuinely unknown and parked on purpose, the
+      sorting is done. Sorting is not the same as being right, so prove it:</p>
+    <p><a href="reconcile-an-account.html">Reconcile the account</a> against the statement. That is the
+      step that proves the books agree with the bank. Everything before it is preparation.</p>
+    <div class="ok"><strong>Done well:</strong> For review is at or near zero, the Categorized tab reads
+      sensibly with real names on it, and the reconciliation comes out at a difference of 0.00.</div>
+    <div class="note">
+      <label for="n10">Notes on this step</label>
+      <textarea id="n10" data-k="n10"></textarea>
+    </div>
+  </div>
+</div>
+
+<h2>Quick reference</h2>
+<table>
+  <thead><tr><th style="width:44%">You want to</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Open the review queue</td><td>Transactions &rarr; Bank transactions &rarr; For review</td></tr>
+    <tr><td>See what you already sorted</td><td>Transactions &rarr; Bank transactions &rarr; Categorized</td></tr>
+    <tr><td>Undo something you sorted</td><td>Categorized tab &rarr; Undo on that row</td></tr>
+    <tr><td>See what you excluded</td><td>Transactions &rarr; Bank transactions &rarr; Excluded</td></tr>
+    <tr><td>Manage rules</td><td>Transactions &rarr; Bank transactions &rarr; Rules</td></tr>
+    <tr><td>Record a customer payment by hand</td><td>+ New &rarr; Customers &rarr; Receive payment</td></tr>
+  </tbody>
+</table>
+
+</main>
+
+<footer>
+  QBO Wizards. Everything you type on this page is saved in your own browser only. Nothing is sent
+  anywhere. Menu names in QuickBooks Online change from time to time and differ by plan, so if a label
+  does not match exactly, look for the nearest equivalent wording.
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var KEY = "qbo_wizard_match_bank";
+  function load(){
+    try { return JSON.parse(localStorage.getItem(KEY) || "{}"); }
+    catch(e){ return {}; }
+  }
+  function save(d){
+    try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e){}
+  }
+  var data = load();
+
+  var fields = document.querySelectorAll("[data-k]");
+  Array.prototype.forEach.call(fields, function(el){
+    var k = el.getAttribute("data-k");
+    if (data[k] !== undefined) el.value = data[k];
+    el.addEventListener("input", function(){
+      data[k] = el.value;
+      save(data);
+      paint();
+    });
+  });
+
+  var shows = document.querySelectorAll("[data-show]");
+  function paint(){
+    Array.prototype.forEach.call(shows, function(el){
+      var k = el.getAttribute("data-show");
+      var v = (data[k] || "").trim();
+      if (!el.getAttribute("data-fallback")) {
+        el.setAttribute("data-fallback", el.textContent);
+      }
+      el.textContent = v ? v : el.getAttribute("data-fallback");
+      el.style.opacity = v ? "1" : ".75";
+      el.style.borderBottomStyle = v ? "solid" : "dashed";
+    });
+  }
+  paint();
+})();
+</script>
+</body>
+</html>

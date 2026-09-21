@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QBO Wizard: Enter a Bill in QuickBooks Online</title>
+<meta name="description" content="A step by step walk through for recording a bill you owe now and will pay later, written for an owner doing it alone for the first time.">
+<style>
+  :root{
+    --blue:#1A3C6E;
+    --blue-soft:#2E5496;
+    --gold:#FFCD00;
+    --ink:#1b1b1b;
+    --muted:#5a5a5a;
+    --line:#d7dde6;
+    --paper:#ffffff;
+    --shell:#eef1f6;
+    --red:#a4262c;
+    --red-bg:#fdf3f3;
+    --green:#0f6b3f;
+    --green-bg:#f0f8f3;
+    --amber-bg:#fffbea;
+    --fix:#7a4a00;
+    --fix-bg:#fff8ec;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--shell);
+    color:var(--ink);
+    font-family:Calibri,"Segoe UI",Tahoma,sans-serif;
+    font-size:19px;
+    line-height:1.55;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 0 60px;background:var(--paper);
+        box-shadow:0 0 22px rgba(0,0,0,.10)}
+  header{background:var(--blue);color:#fff;padding:26px 34px 22px;border-bottom:5px solid var(--gold)}
+  header h1{margin:0 0 6px;font-size:31px;line-height:1.2}
+  header .sub{font-size:17px;opacity:.93}
+  header .who{margin-top:12px;font-size:16px;background:rgba(255,255,255,.12);
+               display:inline-block;padding:5px 12px;border-radius:3px}
+  main{padding:0 34px}
+  h2{color:var(--blue);font-size:24px;margin:34px 0 10px;padding-bottom:6px;
+     border-bottom:2px solid var(--line)}
+  h3{color:var(--blue-soft);font-size:20px;margin:22px 0 6px}
+  p{margin:10px 0}
+  a{color:var(--blue-soft)}
+
+  .backlink{padding:14px 34px 0;font-size:16px}
+  .backlink a{text-decoration:none;font-weight:bold}
+  .backlink a:hover{text-decoration:underline}
+
+  .box{border:1px solid var(--line);border-left:6px solid var(--blue-soft);
+       background:#f7f9fc;padding:16px 20px;margin:20px 0;border-radius:3px}
+  .box h3{margin-top:0}
+  .stop{border:2px solid var(--red);border-left:8px solid var(--red);
+        background:var(--red-bg);padding:18px 22px;margin:24px 0;border-radius:3px}
+  .stop h2{color:var(--red);border:0;margin:0 0 8px;font-size:23px}
+  .stop ul{margin:8px 0 0;padding-left:22px}
+  .stop li{margin:9px 0}
+  .stop a{color:var(--red);font-weight:bold}
+  .prereq{border:2px solid var(--gold);background:var(--amber-bg);
+          padding:18px 22px;margin:24px 0;border-radius:3px}
+  .prereq h2{color:var(--blue);border:0;margin:0 0 8px;font-size:23px}
+  .prereq ul{margin:6px 0 0;padding-left:22px}
+  .prereq li{margin:8px 0}
+
+  .step{border:1px solid var(--line);border-radius:4px;margin:20px 0;overflow:hidden;
+        break-inside:avoid;page-break-inside:avoid}
+  .step > .head{background:var(--blue);color:#fff;padding:11px 18px;font-size:20px;font-weight:bold;
+                display:flex;justify-content:space-between;align-items:center;gap:14px}
+  .step > .head .n{background:var(--gold);color:var(--blue);border-radius:50%;
+                   width:34px;height:34px;min-width:34px;display:inline-flex;
+                   align-items:center;justify-content:center;font-size:18px;margin-right:12px}
+  .step > .head .t{display:flex;align-items:center;flex:1}
+  .step > .body{padding:16px 20px}
+  .step ol,.step ul{padding-left:24px}
+  .step li{margin:8px 0}
+
+  .why{background:#f2f6fc;border-left:6px solid var(--blue);padding:10px 16px;margin:12px 0;
+       border-radius:3px;font-size:17px}
+  .why strong{color:var(--blue)}
+
+  .path{display:inline-block;background:#eaeff7;border:1px solid #c6d2e4;border-radius:3px;
+        padding:2px 9px;font-family:Consolas,"Courier New",monospace;font-size:17px;color:var(--blue)}
+  .btnlabel{display:inline-block;background:var(--blue);color:#fff;border-radius:4px;
+            padding:2px 11px;font-weight:bold;font-size:17px}
+  .field{display:inline-block;border-bottom:2px solid var(--blue-soft);font-weight:bold;
+         color:var(--blue)}
+  .unconf{display:inline-block;background:#fff4d6;border:1px solid #e0c46a;border-radius:3px;
+          padding:1px 8px;font-size:15px;font-weight:bold;color:#6b5200;text-transform:uppercase;
+          letter-spacing:.4px}
+
+  a.urlbox{display:block;background:#eaeff7;border:1px solid #c6d2e4;border-radius:4px;
+           padding:12px 16px;margin:12px 0;font-family:Consolas,"Courier New",monospace;
+           font-size:18px;color:var(--blue-soft);text-decoration:none;word-break:break-all}
+  a.urlbox:hover{background:#dde6f4;border-color:var(--blue-soft);text-decoration:underline}
+
+  .ok{border-left:6px solid var(--green);background:var(--green-bg);padding:12px 18px;margin:14px 0;
+      border-radius:3px}
+  .ok strong{color:var(--green)}
+  .bad{border-left:6px solid var(--red);background:var(--red-bg);padding:12px 18px;margin:14px 0;
+       border-radius:3px}
+  .bad strong{color:var(--red)}
+  .fixbox{border-left:6px solid var(--fix);background:var(--fix-bg);padding:12px 18px;margin:14px 0;
+          border-radius:3px}
+  .fixbox strong{color:var(--fix)}
+  .fixbox ol,.fixbox ul{margin:8px 0 0}
+
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:17px}
+  th{background:var(--blue);color:#fff;text-align:left;padding:9px 12px;font-weight:bold}
+  td{border:1px solid var(--line);padding:9px 12px;vertical-align:top}
+  tr:nth-child(even) td{background:#f7f9fc}
+
+  .cells{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:14px 0}
+  .cell label{display:block;font-size:15px;font-weight:bold;color:var(--blue);
+              text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+  .cell input{width:100%;padding:9px 11px;border:2px solid #c6d2e4;border-radius:4px;
+              font-family:inherit;font-size:18px;background:#fcfdff}
+  .cell input:focus{outline:none;border-color:var(--blue-soft);background:#fff}
+
+  .note{margin:16px 0}
+  .note label{display:block;font-size:15px;font-weight:bold;color:var(--blue);margin-bottom:5px}
+  .note textarea{width:100%;min-height:70px;padding:10px 12px;border:2px solid #c6d2e4;
+                 border-radius:4px;font-family:inherit;font-size:17px;background:#fcfdff;resize:vertical}
+  .note textarea:focus{outline:none;border-color:var(--blue-soft);background:#fff}
+
+  footer{padding:22px 34px;color:var(--muted);font-size:15px;border-top:2px solid var(--line);
+         margin-top:30px}
+
+  @page{size:letter portrait;margin:.5in}
+  @media print{
+    body{background:#fff;font-size:11pt}
+    .wrap{box-shadow:none;max-width:none}
+    .backlink{display:none}
+    .step{break-inside:avoid;page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="backlink"><a href="index.html">&larr; All QBO Wizards</a></div>
+
+<header>
+  <h1>Enter a Bill in QuickBooks Online</h1>
+  <div class="sub">Recording something you owe now and will pay later, so the amount you owe is on record.</div>
+  <div class="who">QBO Wizard&nbsp; |&nbsp; Written for an owner doing this alone, with no bookkeeping background</div>
+</header>
+
+<main>
+
+<div class="box">
+  <h3>What a bill is, in plain words</h3>
+  <p style="margin-top:0">A vendor has done something for you, or sold you something, and sent paper asking
+    for money. The money has not left your bank yet. Entering it as a <strong>bill</strong> puts it on a
+    list of what you owe and when it is due. That list is called
+    <strong>accounts payable</strong>, which just means the total of everything you owe suppliers but have
+    not paid yet.</p>
+  <p>If you get nothing else from this page: a bill is entered <em>before</em> you pay, and paid
+    <em>later</em> on a different screen. The two halves are separate on purpose.</p>
+</div>
+
+<div class="prereq">
+  <h2>Before you start</h2>
+  <ul>
+    <li><strong>What you need:</strong> a computer with a web browser. This can be done on a phone, but the
+        bill screen is cramped and the amount boxes are easy to mis-tap, so use a real keyboard if you have
+        one.</li>
+    <li><strong>Your QuickBooks Online sign in,</strong> on a login that is allowed to enter transactions.
+        If your login is set to view only or reports only, the button in Step 2 simply is not there.
+        Only a <strong>company admin</strong> can change that, so if you are not one, this needs another
+        person before you can start.</li>
+    <li><strong>The actual bill in front of you</strong>, on paper or as a PDF. You need five things off
+        it: the vendor name, the vendor's own invoice number, the date printed on it, the due date or the
+        payment terms, and the amount.</li>
+    <li><strong>If this vendor has never been used before</strong>, you will create them as you go. That is
+        Step 4 and it takes about a minute.</li>
+    <li><strong>Time:</strong> about 3 minutes once you have done two of them. Budget 10 for the first.</li>
+  </ul>
+</div>
+
+<div class="stop">
+  <h2>Read this first. Three ways this goes wrong.</h2>
+  <ul>
+    <li><strong>A Bill is not an Expense and it is not a Check.</strong> Use <em>Bill</em> only when the
+        money has not left the bank yet. If you already paid it, you are on the wrong screen. See
+        <a href="#which">Which screen do I want?</a>
+        <br><em>If you already did it wrong:</em> this is recoverable. Open the transaction, and if the
+        title at the top says Expense or Check, delete it and re-enter it as a Bill. Nothing is lost.</li>
+    <li><strong>Never pay a bill using the Expense or Check screen.</strong> That records money leaving the
+        bank but leaves the bill sitting there marked unpaid, so the same cost is counted twice and your
+        expenses read high forever after.
+        <br><em>If you already did it wrong:</em> delete the Expense or Check you created, then pay the
+        bill properly through <span class="btnlabel">Pay bills</span>. Do this before the month is
+        reconciled, because unpicking it afterward is much harder.</li>
+    <li><strong>Entering the same bill twice is the single most common mistake.</strong> Always fill in the
+        vendor's invoice number in the Bill no. field. QuickBooks watches that field and warns you when a
+        number repeats. Leave it blank and it cannot help you. See <a href="#step6">Step 6</a>.
+        <br><em>If you already did it twice:</em> find both, keep the one that has a payment attached or
+        the earlier one, and delete the other.</li>
+  </ul>
+  <p style="margin-bottom:0"><strong>Nothing on this page is irreversible</strong> as long as you have not
+    yet reconciled the month. Reconciling is the monthly check that your books agree with the bank
+    statement. Once a month is reconciled, deleting things inside it breaks that check, so fix mistakes
+    while they are fresh.</p>
+</div>
+
+<h2 id="which">Which screen do I want?</h2>
+<table>
+  <thead>
+    <tr><th style="width:34%">Your situation</th><th style="width:22%">Use this</th><th>Why</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>The vendor sent an invoice. You will pay it in a couple of weeks.</td>
+      <td><strong>Bill</strong></td>
+      <td>This guide. Puts the amount on the list of what you owe, with a due date.</td>
+    </tr>
+    <tr>
+      <td>You already paid it by card or debit card, right now.</td>
+      <td>Expense</td>
+      <td>Money is already gone. There is nothing left to owe, so nothing to track.</td>
+    </tr>
+    <tr>
+      <td>You already paid it by paper check.</td>
+      <td>Check</td>
+      <td>Same as above, and it records the check number so you can find it later.</td>
+    </tr>
+    <tr>
+      <td>You are paying a bill you entered earlier.</td>
+      <td>Pay bills</td>
+      <td>Marks the bill paid and takes it off what you owe. Expense and Check do not.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="box">
+  <h3>What you are entering (fill this in, it follows you down the page)</h3>
+  <p style="margin-top:0;font-size:17px;color:var(--muted)">
+    Type these once. Every later step shows your values back to you, so you are never comparing the screen
+    against something you are holding in your head. Everything you type stays in this browser on this
+    computer and goes nowhere else.
+  </p>
+  <div class="cells">
+    <div class="cell">
+      <label for="v_vendor">Vendor name</label>
+      <input id="v_vendor" data-k="vendor" placeholder="e.g. Acme Supply Co." autocomplete="off">
+    </div>
+    <div class="cell">
+      <label for="v_billno">Vendor's invoice number</label>
+      <input id="v_billno" data-k="billno" placeholder="e.g. INV-1001" autocomplete="off">
+    </div>
+    <div class="cell">
+      <label for="v_date">Date on the bill</label>
+      <input id="v_date" data-k="date" placeholder="e.g. 03/15/2026" autocomplete="off">
+    </div>
+    <div class="cell">
+      <label for="v_amount">Amount</label>
+      <input id="v_amount" data-k="amount" placeholder="e.g. 400.00" autocomplete="off">
+    </div>
+  </div>
+</div>
+
+<h2>The steps</h2>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">1</span>Sign in to QuickBooks Online</span></div>
+  <div class="body">
+    <p>Open a browser and go to:</p>
+    <a class="urlbox" href="https://qbo.intuit.com" target="_blank" rel="noopener">https://qbo.intuit.com</a>
+    <p>Sign in. If more than one company is listed, pick the one you are working in.</p>
+    <div class="why"><strong>Why it matters:</strong> entering transactions into the wrong company file is
+      slow to find and slow to undo, because nothing about it looks wrong until the numbers do.</div>
+    <div class="ok"><strong>Looks right:</strong> you land on a Dashboard or Business overview page, and
+      the company name is in the top bar.</div>
+    <div class="bad"><strong>Looks wrong:</strong> the left menu has no <span class="path">Expenses</span>
+      section. You are probably in a simplified self employed product, which has no Bills at all.</div>
+    <div class="fixbox"><strong>Already gone wrong:</strong> if you have been entering into the wrong
+      company, stop before you enter any more. Each transaction has to be deleted one at a time from the
+      wrong file and entered in the right one. It is tedious but nothing is lost.</div>
+    <div class="note">
+      <label for="n1">Notes on this step</label>
+      <textarea id="n1" data-k="n1" placeholder="Anything odd here? Type it. It is saved on this page."></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">2</span>Open the new transaction menu</span></div>
+  <div class="body">
+    <p>In the <strong>top left corner</strong>, click the green <span class="btnlabel">+ New</span> button.
+      It sits above the left hand menu, not inside it.</p>
+    <p>A panel opens with columns for Customers, Vendors, Employees and Other. Everything you ever create
+      in QuickBooks starts from this one button.</p>
+    <div class="why"><strong>Why it matters:</strong> most people go hunting in the left menu for a way to
+      create things. The left menu is for looking at lists. This button is for making new records.</div>
+    <div class="ok"><strong>Looks right:</strong> you can see a column headed
+      <span class="path">Vendors</span>.</div>
+    <div class="bad"><strong>Looks wrong:</strong> there is no <span class="btnlabel">+ New</span> button
+      at all.</div>
+    <div class="fixbox"><strong>Already gone wrong:</strong> no + New button means your login is view only
+      or reports only. There is no way around it from your side. A company admin has to change your user
+      role. If you are the owner and the admin login belonged to someone who has left, you can recover the
+      admin account through the sign in page's account recovery, but expect identity checks and allow a
+      day for it.</div>
+    <div class="note">
+      <label for="n2">Notes on this step</label>
+      <textarea id="n2" data-k="n2"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">3</span>Choose Bill</span></div>
+  <div class="body">
+    <p>Under the <span class="path">Vendors</span> column, click <span class="btnlabel">Bill</span>.</p>
+    <p>It sits at the top of that column, with Expense, Check and Pay bills nearby. Those three are the
+      ones you do <strong>not</strong> want right now, and they are close enough together to catch you.</p>
+    <div class="why"><strong>Why it matters:</strong> Expense and Check both assume the money has already
+      left. Picking one of those means the cash goes out of your books on a day the bank says it did not,
+      and the month will not reconcile.</div>
+    <div class="ok"><strong>Looks right:</strong> a screen opens titled <span class="path">Bill</span> with
+      a <span class="path">Vendor</span> dropdown at the top left.</div>
+    <div class="fixbox"><strong>Already gone wrong:</strong> if the screen says Expense or Check, do not
+      try to convert it. There is no convert. Close without saving and click Bill instead. If you already
+      saved it, open it from <span class="path">Expenses</span>, delete it, and start again.</div>
+    <div class="note">
+      <label for="n3">Notes on this step</label>
+      <textarea id="n3" data-k="n3"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">4</span>Pick the vendor</span></div>
+  <div class="body">
+    <p>Click the <span class="path">Vendor</span> dropdown at the top and start typing
+      <span class="field" data-show="vendor">the vendor name</span>. A vendor is simply anyone you pay:
+      a supplier, a subcontractor, the phone company.</p>
+    <p><strong>If they are already in the list,</strong> click the name. Their address and payment terms
+      fill in by themselves.</p>
+    <p><strong>If they are not in the list,</strong> click <span class="btnlabel">+ Add new</span> at the
+      top of the dropdown, type the name exactly as it appears on the bill, then
+      <span class="btnlabel">Save</span>. The address can wait.</p>
+    <div class="why"><strong>Why it matters:</strong> everything you ever want to know later, what you
+      spend with this supplier, what you still owe them, is gathered under this one name. Two spellings
+      means two separate answers and neither is right.</div>
+    <div class="bad"><strong>Watch out:</strong> two entries that look almost the same, for example one
+      with "Inc" and one without. Pick the one that already has history.</div>
+    <div class="fixbox"><strong>Already gone wrong:</strong> if you have created a near duplicate vendor,
+      QuickBooks can merge them. Rename the one you want to lose so that it exactly matches the name of the
+      one you want to keep, and save. QuickBooks will offer to merge the two. <strong>Merging cannot be
+      undone</strong>, so be sure which one you are keeping before you confirm.</div>
+    <div class="note">
+      <label for="n4">Notes on this step</label>
+      <textarea id="n4" data-k="n4"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">5</span>Set the dates and terms</span></div>
+  <div class="body">
+    <ol>
+      <li><span class="path">Bill date</span>: the date printed on the vendor's invoice,
+        <span class="field" data-show="date">not today's date</span>.</li>
+      <li><span class="path">Terms</span>: if the bill says Net 30, meaning payment is due 30 days after
+        the bill date, pick Net 30 and the due date fills itself in. If the bill states no terms, skip
+        this.</li>
+      <li><span class="path">Due date</span>: only type this if you skipped Terms. Otherwise leave what
+        QuickBooks worked out.</li>
+    </ol>
+    <div class="why"><strong>Why it matters:</strong> the bill date is what decides how old the debt looks
+      on your reports, and the due date is what decides the order you pay people in. Using today's date on
+      a bill that arrived three weeks ago makes an overdue account look current, and you pay it late.</div>
+    <div class="ok"><strong>Looks right:</strong> the due date is later than the bill date, and matches
+      what the vendor expects.</div>
+    <div class="fixbox"><strong>Already gone wrong:</strong> dates on a bill are safely editable. Open the
+      bill from <span class="path">Expenses</span>, correct the date, and save. The only caution is a bill
+      dated inside a month you have already reconciled, in which case change the date and then check that
+      month still reconciles.</div>
+    <div class="note">
+      <label for="n5">Notes on this step</label>
+      <textarea id="n5" data-k="n5"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step6">
+  <div class="head"><span class="t"><span class="n">6</span>Type the vendor's invoice number</span></div>
+  <div class="body">
+    <p>In the <span class="path">Bill no.</span> field, type
+      <span class="field" data-show="billno">the vendor's invoice number</span>, exactly as printed.</p>
+    <p><strong>Do not skip this field.</strong> It is the only thing standing between you and paying the
+      same bill twice. When a number is already used for that vendor, QuickBooks shows a warning right
+      under the field.</p>
+    <div class="why"><strong>Why it matters:</strong> with no bookkeeper checking behind you, this warning
+      is your entire duplicate defense. It costs four seconds to type.</div>
+    <div class="bad"><strong>If you see a warning that the bill number has already been used:</strong>
+      stop. Do not alter the number to make the warning go away. Close without saving and look at the
+      existing bill, because it is probably this same one arriving a second time.</div>
+    <div class="fixbox"><strong>Already gone wrong:</strong> to find duplicates entered earlier, go to
+      <span class="path">Expenses</span>, filter the Type to Bill, and sort by amount. Identical amounts to
+      the same vendor sitting next to each other are the ones to look at. Delete the copy that has no
+      payment attached. If you have already <em>paid</em> both, that is a call to the vendor for a refund
+      or a credit, not something QuickBooks can fix.</div>
+    <div class="note">
+      <label for="n6">Notes on this step</label>
+      <textarea id="n6" data-k="n6"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">7</span>Category details, or Item details?</span></div>
+  <div class="body">
+    <p>Partway down there are two sections that look almost the same. This is the part that confuses
+      everybody, so here is the plain version.</p>
+    <table>
+      <thead><tr><th style="width:30%">Section</th><th>Use it when</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Category details</strong></td>
+          <td>Almost always. A category is just the name of the spending bucket the cost belongs in:
+              postage, utilities, computer services, supplies, professional fees.</td>
+        </tr>
+        <tr>
+          <td><strong>Item details</strong></td>
+          <td>Only when you are buying goods you have set up as products to resell. If products have never
+              been set up in your file, this section will be empty and you can ignore it entirely.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Unless you know you are buying stock to resell, use <strong>Category details</strong>.</p>
+    <div class="why"><strong>Why it matters:</strong> the two sections post the cost to different places.
+      Using Item details on an ordinary overhead bill puts the cost somewhere your profit report does not
+      expect, and the profit number comes out wrong.</div>
+    <div class="note">
+      <label for="n7">Notes on this step</label>
+      <textarea id="n7" data-k="n7"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">8</span>Fill in the line</span></div>
+  <div class="body">
+    <p>On the first row under <span class="path">Category details</span>:</p>
+    <ol>
+      <li><span class="path">Category</span>: start typing the spending bucket, for example Postage and
+        Delivery or Computer Services. Pick the closest one that already exists.
+        <strong>Do not create a new one</strong> just because nothing is a perfect fit. The full list of
+        these buckets is called the <strong>chart of accounts</strong>, and a list that grows a new line
+        every week stops telling you anything.</li>
+      <li><span class="path">Description</span>: what it was for, in plain words.</li>
+      <li><span class="path">Amount</span>: <span class="field" data-show="amount">the amount</span>.</li>
+    </ol>
+    <p>If the bill covers several different things, use a second row for each. The rows have to add up to
+      the total on the paper.</p>
+    <div class="why"><strong>Why it matters:</strong> the category you pick here is the only thing that
+      decides where this cost shows up on your profit report. Put fuel under office supplies for a year and
+      you will genuinely not know what fuel costs you.</div>
+    <div class="ok"><strong>Looks right:</strong> the <span class="path">Total</span> at the bottom right
+      matches the total printed on the vendor's bill, to the penny.</div>
+    <div class="fixbox"><strong>Already gone wrong:</strong> a wrong category is the easiest thing on this
+      page to fix. Open the bill, change the category, save. If you have used the wrong category on dozens
+      of past bills, do not re-open them one at a time. Go to
+      <span class="path">Expenses</span>, filter to that vendor, and correct them in a batch, or accept
+      the history and just be right from today forward.</div>
+    <div class="note">
+      <label for="n8">Notes on this step</label>
+      <textarea id="n8" data-k="n8"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">9</span>Attach the bill itself</span></div>
+  <div class="body">
+    <p>Near the bottom of the screen there is an <span class="path">Attachments</span> box. Drag the PDF or
+      a photo of the bill onto it, or click it and browse.</p>
+    <div class="why"><strong>Why it matters:</strong> you are the only person who knows what this was.
+      When someone questions this bill in eighteen months, the attachment answers it in four seconds
+      instead of forty minutes in a filing cabinet. It also means a lost paper copy does not matter.</div>
+    <div class="note">
+      <label for="n9">Notes on this step</label>
+      <textarea id="n9" data-k="n9"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">10</span>Save it</span></div>
+  <div class="body">
+    <p>Bottom right, click the arrow next to <span class="btnlabel">Save and new</span> and pick what you
+      want:</p>
+    <ul>
+      <li><span class="btnlabel">Save and new</span> if you have another bill to enter.</li>
+      <li><span class="btnlabel">Save and close</span> if that was the last one.</li>
+    </ul>
+    <div class="ok"><strong>It worked if:</strong> the screen clears or closes with no error, and the bar
+      at the bottom shows the total you expected.</div>
+    <div class="fixbox"><strong>Already gone wrong:</strong> if the browser closed or the connection
+      dropped mid entry, check <span class="path">Expenses</span> before you re-type anything.
+      QuickBooks saves more often than you would expect, and re-entering a bill that did save is how a
+      duplicate is born.</div>
+    <div class="note">
+      <label for="n10">Notes on this step</label>
+      <textarea id="n10" data-k="n10"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">11</span>Check that it landed</span></div>
+  <div class="body">
+    <p>Do this the first several times, until you trust it. Two minutes now, rather than a surprise at
+      month end.</p>
+    <ol>
+      <li>In the left menu, click <span class="path">Expenses</span>, then the
+        <span class="path">Vendors</span> tab.</li>
+      <li>Find <span class="field" data-show="vendor">the vendor</span> in the list.</li>
+      <li>Their <span class="path">Open balance</span>, meaning what you still owe them, should have gone
+        up by <span class="field" data-show="amount">the amount of this bill</span>.</li>
+    </ol>
+    <div class="why"><strong>Why it matters:</strong> nobody is going to review this behind you. Checking
+      the balance moved is the whole quality control department now, and it takes a minute.</div>
+    <div class="ok"><strong>Correct:</strong> the open balance went up, and the bill shows with a status of
+      <span class="path">Open</span>.</div>
+    <div class="fixbox"><strong>The balance did not move:</strong> most likely it saved as an Expense
+      instead of a Bill, which happens if the wrong item was clicked back in Step 3. Open the transaction
+      and read the title at the top of the screen. If it says Expense, delete it and start again from
+      Step 2. The second most likely cause is that it saved against a similarly named vendor, so check the
+      other spelling before you re-enter anything.</div>
+    <div class="note">
+      <label for="n11">Notes on this step</label>
+      <textarea id="n11" data-k="n11"></textarea>
+    </div>
+  </div>
+</div>
+
+<h2>When it comes time to pay it</h2>
+<div class="box">
+  <p style="margin-top:0">Do not use Expense and do not use Check. Both record money leaving while leaving
+    the bill open, so the cost lands in your books twice.</p>
+  <p><span class="btnlabel">+ New</span> &rarr; <span class="path">Vendors</span> column &rarr;
+    <span class="btnlabel">Pay bills</span>, tick the bill, pick the bank account the money is coming from,
+    and save. The bill flips from Open to Paid and what you owe comes down.</p>
+  <p style="margin-bottom:0">That screen is also the closest thing you have to a payment plan. It lists
+    every bill with its due date, so you can decide who gets paid this week with the facts in front of
+    you rather than from the pile on the desk.</p>
+</div>
+
+<h2>Quick reference</h2>
+<table>
+  <thead><tr><th style="width:38%">You want to</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Enter a bill</td><td>+ New &rarr; Vendors &rarr; Bill</td></tr>
+    <tr><td>Pay a bill you entered</td><td>+ New &rarr; Vendors &rarr; Pay bills</td></tr>
+    <tr><td>See everything you owe</td><td>Expenses &rarr; Vendors tab</td></tr>
+    <tr><td>See what is overdue and by how long</td><td>Reports &rarr; search "Accounts payable aging summary"</td></tr>
+    <tr><td>Find a bill you already entered</td><td>Expenses &rarr; Expenses tab &rarr; filter Type to Bill</td></tr>
+  </tbody>
+</table>
+
+</main>
+
+<footer>
+  QBO Wizards. Everything you type on this page is saved in your own browser only. Nothing is sent
+  anywhere. Menu names in QuickBooks Online change from time to time and differ by plan, so if a label
+  does not match exactly, look for the nearest equivalent wording.
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var KEY = "qbo_wizard_enter_a_bill";
+  function load(){
+    try { return JSON.parse(localStorage.getItem(KEY) || "{}"); }
+    catch(e){ return {}; }
+  }
+  function save(d){
+    try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e){}
+  }
+  var data = load();
+
+  var fields = document.querySelectorAll("[data-k]");
+  Array.prototype.forEach.call(fields, function(el){
+    var k = el.getAttribute("data-k");
+    if (data[k] !== undefined) el.value = data[k];
+    el.addEventListener("input", function(){
+      data[k] = el.value;
+      save(data);
+      paint();
+    });
+  });
+
+  var shows = document.querySelectorAll("[data-show]");
+  function paint(){
+    Array.prototype.forEach.call(shows, function(el){
+      var k = el.getAttribute("data-show");
+      var v = (data[k] || "").trim();
+      if (!el.getAttribute("data-fallback")) {
+        el.setAttribute("data-fallback", el.textContent);
+      }
+      el.textContent = v ? v : el.getAttribute("data-fallback");
+      el.style.opacity = v ? "1" : ".75";
+      el.style.borderBottomStyle = v ? "solid" : "dashed";
+    });
+  }
+  paint();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QBO Wizards</title>
+<meta name="description" content="Practical step by step walk throughs for QuickBooks Online, written for business owners and office staff who did not train as bookkeepers.">
+<style>
+  :root {
+    --base: #E6E9EE;
+    --surface: #F2F4F7;
+    --navy: #1A3C6E;
+    --navy-dark: #0F2748;
+    --lava: #CF2A27;
+    --lava-dark: #A11F1C;
+    --olive: #556B2F;
+    --gold: #FFCD00;
+    --text: #14213D;
+    --muted: #5B6777;
+    --border: rgba(26, 60, 110, 0.22);
+    --radius: 6px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--base);
+    color: var(--text);
+    font-family: 'Segoe UI', Calibri, system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  a { color: var(--lava); text-decoration: none; }
+  a:hover { color: var(--lava-dark); text-decoration: underline; }
+
+  nav.topbar {
+    background: var(--navy);
+    color: white;
+    border-bottom: 3px solid var(--olive);
+  }
+  .topbar-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .topbar .brand { font-weight: 700; font-size: 17px; color: white; }
+  .topbar .brand:hover { color: white; text-decoration: none; }
+  .topbar .brand .dot { color: var(--lava); }
+  .topbar ul { list-style: none; display: flex; gap: 22px; margin: 0; padding: 0; }
+  .topbar ul a { color: rgba(255,255,255,0.82); font-weight: 600; font-size: 14px; }
+  .topbar ul a:hover { color: white; text-decoration: none; }
+  .topbar ul a.active { color: white; border-bottom: 2px solid var(--lava); padding-bottom: 2px; }
+
+  main { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .page-head h1 {
+    margin: 0 0 10px 0;
+    font-size: 32px;
+    line-height: 1.2;
+    color: var(--navy);
+  }
+  .page-head .lede { font-size: 17px; margin: 0 0 8px 0; max-width: 62ch; }
+  .page-head p { max-width: 62ch; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin: 40px 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    margin-bottom: 20px;
+  }
+
+  .tool-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--lava);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .tool-card:hover { transform: translateY(-1px); }
+  .tool-card h2 { margin: 0 0 6px 0; font-size: 18px; font-weight: 700; color: var(--navy); }
+  .tool-card .status {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    background: rgba(207, 42, 39, 0.1);
+    color: var(--lava-dark);
+    align-self: flex-start;
+  }
+  .tool-card p { margin: 0 0 14px 0; font-size: 14px; line-height: 1.55; flex: 1; }
+  .tool-card .card-cta { font-size: 13px; font-weight: 600; color: var(--lava); }
+  .tool-card .card-cta:hover { color: var(--lava-dark); }
+  .tool-card .card-cta::after { content: " \2192"; }
+
+  .rhythm {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--navy);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 20px;
+  }
+  .rhythm h3 { margin: 0 0 4px 0; color: var(--navy); font-size: 19px; }
+  .rhythm h3 + .time { font-size: 13px; color: var(--muted); font-weight: 600; margin: 0 0 10px 0; }
+  .rhythm h3.later { margin-top: 26px; }
+  .rhythm ol { margin: 0; padding-left: 22px; }
+  .rhythm li { margin: 9px 0; font-size: 15px; }
+  .rhythm .closing { margin: 18px 0 0 0; font-size: 15px; }
+
+  table { border-collapse: collapse; width: 100%; margin: 14px 0 0 0; font-size: 14px; }
+  th { background: var(--navy); color: #fff; text-align: left; padding: 8px 11px; font-weight: 700; }
+  td { border: 1px solid var(--border); padding: 8px 11px; vertical-align: top; }
+  tr:nth-child(even) td { background: #fff; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+    padding: 24px 0 0 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  @page { size: letter portrait; margin: .5in; }
+  @media print {
+    body { background: #fff; }
+    nav.topbar { display: none; }
+    .tool-card, .rhythm { break-inside: avoid; page-break-inside: avoid; }
+  }
+
+  @media (max-width: 560px) {
+    .topbar-inner { padding: 12px 18px; }
+    .topbar ul { gap: 14px; }
+    main { padding: 28px 18px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="brand">dlerhetal<span class="dot">.</span>tech</a>
+    <ul>
+      <li><a href="/">Tools</a></li>
+      <li><a href="/tutorials/">Tutorials</a></li>
+      <li><a href="/setup/">Setup</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+  <div class="page-head">
+    <h1>QBO Wizards</h1>
+    <p class="lede">Five step by step walk throughs for QuickBooks Online, written for the person who ends
+      up doing the books because there is nobody else to do them.</p>
+    <p>No accounting vocabulary is assumed. Where a term of art turns up, it is explained in the same
+      sentence. Each wizard tells you what you need before you start, which mistakes are expensive and
+      which are irreversible, exactly where to click, how to tell it worked, and what to do when it has
+      already gone wrong. Every page works on a phone, prints cleanly, and keeps your own notes in your
+      browser where only you can see them.</p>
+    <p>These are written for the ordinary version of QuickBooks Online in a browser. Intuit changes menu
+      names from time to time and some paths differ by plan, so anywhere a path could not be stated with
+      certainty, the page says so on the spot rather than guessing.</p>
+  </div>
+
+  <p class="section-label">The wizards</p>
+  <div class="tools-grid">
+
+    <article class="tool-card">
+      <h2>Enter a Bill</h2>
+      <span class="status">About 5 minutes</span>
+      <p>Record something you owe now and will pay later, so what you owe and when it is due is on record
+        instead of in a pile on the desk. For anyone who has ever paid the same invoice twice.</p>
+      <a href="enter-a-bill.html" class="card-cta">Open the wizard</a>
+    </article>
+
+    <article class="tool-card">
+      <h2>Match Downloaded Transactions</h2>
+      <span class="status">15 minutes a week</span>
+      <p>Clear the queue of bank and credit card transactions QuickBooks downloads, without creating a
+        duplicate of everything you already entered. The most damaging screen in the product if you use it
+        wrong, and the fastest if you use it right.</p>
+      <a href="match-bank-transactions.html" class="card-cta">Open the wizard</a>
+    </article>
+
+    <article class="tool-card">
+      <h2>Reconcile an Account</h2>
+      <span class="status">15 to 20 minutes a month</span>
+      <p>Prove your books agree with the bank statement, to the penny, and know what to do when the
+        difference will not go to zero. This is the one thing that makes every other number trustworthy.</p>
+      <a href="reconcile-an-account.html" class="card-cta">Open the wizard</a>
+    </article>
+
+    <article class="tool-card">
+      <h2>Create and Send an Invoice</h2>
+      <span class="status">About 5 minutes</span>
+      <p>Bill a customer for work already done and send it from QuickBooks, so you can see when it was
+        opened and chase it on evidence rather than memory.</p>
+      <a href="create-and-send-an-invoice.html" class="card-cta">Open the wizard</a>
+    </article>
+
+    <article class="tool-card">
+      <h2>Clear Out Aged Receivables</h2>
+      <span class="status">30 minutes to a day</span>
+      <p>Work the list of money customers owe you: attach payments and credits that were never applied,
+        collect what is still live, and write off what is dead without deleting anything. Usually the
+        highest paid hour in the business.</p>
+      <a href="clear-aged-receivables.html" class="card-cta">Open the wizard</a>
+    </article>
+
+  </div>
+
+  <p class="section-label">Do this every week</p>
+
+  <div class="rhythm">
+    <p style="margin-top:0">If you are doing the books yourself, the thing that sinks you is not a wrong
+      click. It is three months of transactions piling up until the file is too far gone to face. A short
+      pass every week and a slightly longer one at month end keeps it from ever getting there, and it is
+      genuinely less total work than a quarterly catch up.</p>
+
+    <h3>Every week, one sitting</h3>
+    <p class="time">About 30 to 45 minutes. Pick a fixed slot and keep it.</p>
+    <ol>
+      <li><strong>Invoice everything finished this week.</strong> Nothing ages faster than an invoice you
+        have not sent yet. Wizard:
+        <a href="create-and-send-an-invoice.html">Create and Send an Invoice</a>. Allow 5 minutes each.</li>
+      <li><strong>Enter the bills that arrived.</strong> Open the envelopes, enter them, attach the PDF,
+        put the paper away. Wizard: <a href="enter-a-bill.html">Enter a Bill</a>. Allow 3 minutes each
+        once you are used to it.</li>
+      <li><strong>Clear the downloaded transactions.</strong> Match what is already entered, categorize
+        what is not, park anything you do not recognize. Wizard:
+        <a href="match-bank-transactions.html">Match Downloaded Transactions</a>. Allow 15 minutes if you
+        did it last week, an hour if you did not.</li>
+      <li><strong>Look at who owes you.</strong> Run the receivables aging report and make the calls on
+        anything past 30 days. Wizard:
+        <a href="clear-aged-receivables.html">Clear Out Aged Receivables</a>, Steps 2, 3 and 7. Allow 10
+        minutes, plus the calls.</li>
+    </ol>
+
+    <h3 class="later">Every month, once the statements arrive</h3>
+    <p class="time">About 1 to 2 hours, on top of that week's normal pass.</p>
+    <ol>
+      <li><strong>Finish the weekly pass first.</strong> Reconciling against a half sorted queue wastes
+        your time twice.</li>
+      <li><strong>Reconcile every account,</strong> checking account, savings and every credit card, not
+        just the main one. Wizard:
+        <a href="reconcile-an-account.html">Reconcile an Account</a>. Allow 15 to 20 minutes each once
+        you are current.</li>
+      <li><strong>Save each reconciliation report</strong> as a PDF next to the statement, in the same
+        folder, every month.</li>
+      <li><strong>Work the receivables properly,</strong> not just the calls: apply the unapplied payments
+        and credits, void the duplicates, and write off what is genuinely dead. Wizard:
+        <a href="clear-aged-receivables.html">Clear Out Aged Receivables</a>, all steps.</li>
+      <li><strong>Read your profit report and your balance sheet</strong> once the above is done and not
+        before. Until the accounts are reconciled those two reports are opinion, not fact.</li>
+    </ol>
+
+    <h3 class="later">Where the time actually goes</h3>
+    <table>
+      <thead>
+        <tr><th style="width:42%">Task</th><th style="width:22%">How often</th><th>Rough time</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Send invoices for finished work</td><td>Weekly</td><td>5 minutes each</td></tr>
+        <tr><td>Enter bills received</td><td>Weekly</td><td>3 minutes each</td></tr>
+        <tr><td>Clear the downloaded queue</td><td>Weekly</td><td>15 minutes, kept current</td></tr>
+        <tr><td>Chase anything past 30 days</td><td>Weekly</td><td>10 minutes, plus calls</td></tr>
+        <tr><td>Reconcile each account</td><td>Monthly</td><td>15 to 20 minutes each</td></tr>
+        <tr><td>Full receivables cleanup</td><td>Monthly</td><td>30 to 60 minutes</td></tr>
+      </tbody>
+    </table>
+
+    <p class="closing">If you have already fallen behind, do not try to fix it in date order from the
+      beginning. Get the <em>current</em> month clean first, so that from today forward the file is
+      trustworthy, then work backward a month at a time when you have an evening. A file that is right from
+      today is worth more than one that is half right from two years ago.</p>
+  </div>
+
+</main>
+
+<footer>
+  These pages are general guidance on using QuickBooks Online, not accounting or tax advice. QuickBooks
+  and QuickBooks Online are products of Intuit, which has no involvement with these pages. Anything you
+  type into a wizard stays in your own browser on your own computer and is not sent anywhere.
+</footer>
+
+</body>
+</html>

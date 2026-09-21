@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QBO Wizard: Create and Send an Invoice in QuickBooks Online</title>
+<meta name="description" content="A step by step walk through for billing a customer in QuickBooks Online and sending the invoice so it can be tracked, written for an owner doing it alone.">
+<style>
+  :root{
+    --blue:#1A3C6E;
+    --blue-soft:#2E5496;
+    --gold:#FFCD00;
+    --ink:#1b1b1b;
+    --muted:#5a5a5a;
+    --line:#d7dde6;
+    --paper:#ffffff;
+    --shell:#eef1f6;
+    --red:#a4262c;
+    --red-bg:#fdf3f3;
+    --green:#0f6b3f;
+    --green-bg:#f0f8f3;
+    --amber-bg:#fffbea;
+    --fix:#7a4a00;
+    --fix-bg:#fff8ec;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--shell);
+    color:var(--ink);
+    font-family:Calibri,"Segoe UI",Tahoma,sans-serif;
+    font-size:19px;
+    line-height:1.55;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 0 60px;background:var(--paper);
+        box-shadow:0 0 22px rgba(0,0,0,.10)}
+  header{background:var(--blue);color:#fff;padding:26px 34px 22px;border-bottom:5px solid var(--gold)}
+  header h1{margin:0 0 6px;font-size:31px;line-height:1.2}
+  header .sub{font-size:17px;opacity:.93}
+  header .who{margin-top:12px;font-size:16px;background:rgba(255,255,255,.12);
+               display:inline-block;padding:5px 12px;border-radius:3px}
+  main{padding:0 34px}
+  h2{color:var(--blue);font-size:24px;margin:34px 0 10px;padding-bottom:6px;
+     border-bottom:2px solid var(--line)}
+  h3{color:var(--blue-soft);font-size:20px;margin:22px 0 6px}
+  p{margin:10px 0}
+  a{color:var(--blue-soft)}
+
+  .backlink{padding:14px 34px 0;font-size:16px}
+  .backlink a{text-decoration:none;font-weight:bold}
+  .backlink a:hover{text-decoration:underline}
+
+  .box{border:1px solid var(--line);border-left:6px solid var(--blue-soft);
+       background:#f7f9fc;padding:16px 20px;margin:20px 0;border-radius:3px}
+  .box h3{margin-top:0}
+  .stop{border:2px solid var(--red);border-left:8px solid var(--red);
+        background:var(--red-bg);padding:18px 22px;margin:24px 0;border-radius:3px}
+  .stop h2{color:var(--red);border:0;margin:0 0 8px;font-size:23px}
+  .stop ul{margin:8px 0 0;padding-left:22px}
+  .stop li{margin:9px 0}
+  .stop a{color:var(--red);font-weight:bold}
+  .prereq{border:2px solid var(--gold);background:var(--amber-bg);
+          padding:18px 22px;margin:24px 0;border-radius:3px}
+  .prereq h2{color:var(--blue);border:0;margin:0 0 8px;font-size:23px}
+  .prereq ul{margin:6px 0 0;padding-left:22px}
+  .prereq li{margin:8px 0}
+
+  .step{border:1px solid var(--line);border-radius:4px;margin:20px 0;overflow:hidden;
+        break-inside:avoid;page-break-inside:avoid}
+  .step > .head{background:var(--blue);color:#fff;padding:11px 18px;font-size:20px;font-weight:bold;
+                display:flex;justify-content:space-between;align-items:center;gap:14px}
+  .step > .head .n{background:var(--gold);color:var(--blue);border-radius:50%;
+                   width:34px;height:34px;min-width:34px;display:inline-flex;
+                   align-items:center;justify-content:center;font-size:18px;margin-right:12px}
+  .step > .head .t{display:flex;align-items:center;flex:1}
+  .step > .body{padding:16px 20px}
+  .step ol,.step ul{padding-left:24px}
+  .step li{margin:8px 0}
+
+  .why{background:#f2f6fc;border-left:6px solid var(--blue);padding:10px 16px;margin:12px 0;
+       border-radius:3px;font-size:17px}
+  .why strong{color:var(--blue)}
+
+  .path{display:inline-block;background:#eaeff7;border:1px solid #c6d2e4;border-radius:3px;
+        padding:2px 9px;font-family:Consolas,"Courier New",monospace;font-size:17px;color:var(--blue)}
+  .btnlabel{display:inline-block;background:var(--blue);color:#fff;border-radius:4px;
+            padding:2px 11px;font-weight:bold;font-size:17px}
+  .field{display:inline-block;border-bottom:2px solid var(--blue-soft);font-weight:bold;
+         color:var(--blue)}
+  .unconf{display:inline-block;background:#fff4d6;border:1px solid #e0c46a;border-radius:3px;
+          padding:1px 8px;font-size:15px;font-weight:bold;color:#6b5200;text-transform:uppercase;
+          letter-spacing:.4px}
+
+  a.urlbox{display:block;background:#eaeff7;border:1px solid #c6d2e4;border-radius:4px;
+           padding:12px 16px;margin:12px 0;font-family:Consolas,"Courier New",monospace;
+           font-size:18px;color:var(--blue-soft);text-decoration:none;word-break:break-all}
+  a.urlbox:hover{background:#dde6f4;border-color:var(--blue-soft);text-decoration:underline}
+
+  .ok{border-left:6px solid var(--green);background:var(--green-bg);padding:12px 18px;margin:14px 0;
+      border-radius:3px}
+  .ok strong{color:var(--green)}
+  .bad{border-left:6px solid var(--red);background:var(--red-bg);padding:12px 18px;margin:14px 0;
+       border-radius:3px}
+  .bad strong{color:var(--red)}
+  .fixbox{border-left:6px solid var(--fix);background:var(--fix-bg);padding:12px 18px;margin:14px 0;
+          border-radius:3px}
+  .fixbox strong{color:var(--fix)}
+  .fixbox ol,.fixbox ul{margin:8px 0 0}
+
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:17px}
+  th{background:var(--blue);color:#fff;text-align:left;padding:9px 12px;font-weight:bold}
+  td{border:1px solid var(--line);padding:9px 12px;vertical-align:top}
+  tr:nth-child(even) td{background:#f7f9fc}
+
+  .cells{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:14px 0}
+  .cell label{display:block;font-size:15px;font-weight:bold;color:var(--blue);
+              text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+  .cell input{width:100%;padding:9px 11px;border:2px solid #c6d2e4;border-radius:4px;
+              font-family:inherit;font-size:18px;background:#fcfdff}
+  .cell input:focus{outline:none;border-color:var(--blue-soft);background:#fff}
+
+  .note{margin:16px 0}
+  .note label{display:block;font-size:15px;font-weight:bold;color:var(--blue);margin-bottom:5px}
+  .note textarea{width:100%;min-height:70px;padding:10px 12px;border:2px solid #c6d2e4;
+                 border-radius:4px;font-family:inherit;font-size:17px;background:#fcfdff;resize:vertical}
+  .note textarea:focus{outline:none;border-color:var(--blue-soft);background:#fff}
+
+  footer{padding:22px 34px;color:var(--muted);font-size:15px;border-top:2px solid var(--line);
+         margin-top:30px}
+
+  @page{size:letter portrait;margin:.5in}
+  @media print{
+    body{background:#fff;font-size:11pt}
+    .wrap{box-shadow:none;max-width:none}
+    .backlink{display:none}
+    .step{break-inside:avoid;page-break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="backlink"><a href="index.html">&larr; All QBO Wizards</a></div>
+
+<header>
+  <h1>Create and Send an Invoice in QuickBooks Online</h1>
+  <div class="sub">Billing a customer who will pay later, and sending it so you can see when it was opened.</div>
+  <div class="who">QBO Wizard&nbsp; |&nbsp; Written for an owner doing this alone, with no bookkeeping background</div>
+</header>
+
+<main>
+
+<div class="box">
+  <h3>What an invoice is, in plain words</h3>
+  <p style="margin-top:0">An <strong>invoice</strong> is a bill you send to a customer for work you have
+    already done, which they will pay later. Creating one puts the amount on a list of money owed to you,
+    called <strong>accounts receivable</strong>. That list is what you chase.</p>
+  <p>If the customer paid you at the time, in cash or on a card, that is not an invoice, it is a
+    <strong>sales receipt</strong>. Using an invoice for money you already have creates a debt that does
+    not exist and it will sit on your reports until you notice.</p>
+</div>
+
+<div class="prereq">
+  <h2>Before you start</h2>
+  <ul>
+    <li><strong>What you need:</strong> a computer is easiest. The mobile app can create an invoice and it
+        is fine for a one line job billed from the truck, but the lines and the terms are fiddly on a small
+        screen.</li>
+    <li><strong>A QuickBooks login allowed to create sales.</strong> A reports only login cannot, and only
+        a company admin can widen it.</li>
+    <li><strong>The customer's email address.</strong> Without it you can print or download a PDF, but you
+        cannot send from QuickBooks, and you lose the record of when it was sent and when it was
+        opened.</li>
+    <li><strong>What you are billing, in writing.</strong> The work order, the signed estimate, the
+        timesheet. Invoicing from memory is where disputes start, and a dispute is an unpaid invoice.</li>
+    <li><strong>The terms you agreed.</strong> Due on receipt, Net 15, Net 30. "Net 30" simply means
+        payment is due 30 days from the invoice date. If nothing was agreed, decide now rather than
+        after.</li>
+    <li><strong>Sales tax:</strong> if what you sell is taxable, sales tax has to be set up in the company
+        already. Setting it up in the middle of your first invoice is a bad time to learn it, and getting
+        it wrong is a filing problem rather than a typo. If you are unsure, that is one accountant question
+        worth asking once.</li>
+    <li><strong>Time:</strong> about 5 minutes. Less once the customer and the line items exist.</li>
+  </ul>
+</div>
+
+<div class="stop">
+  <h2>Read this first. Four expensive habits.</h2>
+  <ul>
+    <li><strong>Do not invoice work that was already paid for on the spot.</strong> That is a
+        <strong>Sales receipt</strong>. An invoice creates a debt that was never owed. See
+        <a href="#which">Which screen do I want?</a>
+        <br><em>If you already did it:</em> delete the invoice if no payment has been attached, then
+        create a sales receipt instead.</li>
+    <li><strong>Do not mark an invoice paid to make it disappear from the list.</strong> That tells your
+        books money arrived when it did not, and the month will not reconcile against the bank.</li>
+    <li><strong>Do not edit an invoice after a payment has been applied to it.</strong> Changing the
+        amount underneath an applied payment leaves a stray credit or a stray balance, and untangling it
+        takes far longer than creating it did. Issue a credit memo instead, which is a document that
+        reduces what a customer owes without destroying the original invoice. See
+        <a href="#step10">Step 10</a>.</li>
+    <li><strong>Do not send it from your own email program.</strong> Sent from QuickBooks you get a record
+        of when it went, when it was opened, and a pay link if card payments are turned on. Sent from your
+        inbox, QuickBooks still shows it as never sent, and in three weeks you will not know which
+        customers were billed.</li>
+  </ul>
+  <p style="margin-bottom:0"><strong>Nothing here is irreversible</strong> while the invoice is unpaid and
+    the month is unreconciled. Once a payment is applied, or the month is closed, fixes become credit memos
+    rather than edits.</p>
+</div>
+
+<h2 id="which">Which screen do I want?</h2>
+<table>
+  <thead>
+    <tr><th style="width:34%">Your situation</th><th style="width:24%">Use this</th><th>Why</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Work is done. The customer will pay later.</td>
+      <td><strong>Invoice</strong></td>
+      <td>This guide. Puts the amount on the list of money owed to you.</td>
+    </tr>
+    <tr>
+      <td>The customer paid at the time, cash or card.</td>
+      <td>Sales receipt</td>
+      <td>Records the sale and the money together. Nothing left owing.</td>
+    </tr>
+    <tr>
+      <td>You are quoting work you have not done yet.</td>
+      <td>Estimate</td>
+      <td>Changes no numbers at all. Turns into an invoice later in one click.</td>
+    </tr>
+    <tr>
+      <td>Money came in against an invoice you already sent.</td>
+      <td>Receive payment</td>
+      <td>Applies the money to that invoice and closes it.</td>
+    </tr>
+    <tr>
+      <td>You overbilled, or the customer returned something.</td>
+      <td>Credit memo</td>
+      <td>Reduces what they owe while keeping the original invoice intact.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="box">
+  <h3>What you are billing (fill this in, it follows you down the page)</h3>
+  <p style="margin-top:0;font-size:17px;color:var(--muted)">
+    Type these once. Later steps show them back to you. Everything you type stays in this browser on this
+    computer and goes nowhere else.
+  </p>
+  <div class="cells">
+    <div class="cell">
+      <label for="v_cust">Customer name</label>
+      <input id="v_cust" data-k="customer" placeholder="e.g. Acme Supply Co." autocomplete="off">
+    </div>
+    <div class="cell">
+      <label for="v_email">Customer email</label>
+      <input id="v_email" data-k="email" placeholder="e.g. accounts@example.com" autocomplete="off">
+    </div>
+    <div class="cell">
+      <label for="v_inv">Invoice number</label>
+      <input id="v_inv" data-k="invno" placeholder="e.g. INV-1001" autocomplete="off">
+    </div>
+    <div class="cell">
+      <label for="v_amount">Total you expect</label>
+      <input id="v_amount" data-k="amount" placeholder="e.g. 2,450.00" autocomplete="off">
+    </div>
+  </div>
+</div>
+
+<h2>The steps</h2>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">1</span>Sign in to QuickBooks Online</span></div>
+  <div class="body">
+    <p>Open a browser and go to:</p>
+    <a class="urlbox" href="https://qbo.intuit.com" target="_blank" rel="noopener">https://qbo.intuit.com</a>
+    <div class="note">
+      <label for="n1">Notes on this step</label>
+      <textarea id="n1" data-k="n1" placeholder="Anything odd here? Type it. It is saved on this page."></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">2</span>Open a new invoice</span></div>
+  <div class="body">
+    <p>Click the green <span class="btnlabel">+ New</span> button in the top left, then under the
+      <span class="path">Customers</span> column click <span class="btnlabel">Invoice</span>.</p>
+    <p>There is a second route: left menu <span class="path">Sales</span>, then the
+      <span class="path">Invoices</span> tab, then the new invoice button on the right. Same screen.</p>
+    <p><span class="unconf">Unconfirmed</span> Intuit has rolled out more than one invoice layout. On the
+      newer one the fields sit in a single column with a live preview beside them; on the older one they
+      run across the top in a band. The fields are the same in both, so this guide names fields, not
+      positions on the screen.</p>
+    <div class="fixbox"><strong>No + New button:</strong> your login is view or reports only. A company
+      admin has to change your user role. If the admin login belonged to someone who has left, recover it
+      through the account recovery on the sign in page and allow a day for the identity checks.</div>
+    <div class="note">
+      <label for="n2">Notes on this step</label>
+      <textarea id="n2" data-k="n2"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">3</span>Pick the customer</span></div>
+  <div class="body">
+    <p>In the <span class="path">Customer</span> field, start typing
+      <span class="field" data-show="customer">the customer name</span>.</p>
+    <p><strong>Already there:</strong> click the name and the address, terms and email fill in
+      themselves.</p>
+    <p><strong>Not there:</strong> click <span class="btnlabel">+ Add new</span>, type the name, save. The
+      address can wait, but add the <strong>email now</strong>, because you need it in Step 9.</p>
+    <div class="why"><strong>Why it matters:</strong> everything you will ever want to know about this
+      customer, what they owe, how slowly they pay, how much they are worth to you, gathers under this one
+      name. Two spellings means two half answers.</div>
+    <div class="fixbox"><strong>You have created a near duplicate customer:</strong> QuickBooks can merge
+      them. Rename the one you want to lose so it exactly matches the name of the one you are keeping, and
+      save. It will offer to merge. <strong>Merging cannot be undone</strong>, so be certain which record
+      you are keeping first.</div>
+    <div class="note">
+      <label for="n3">Notes on this step</label>
+      <textarea id="n3" data-k="n3"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">4</span>Check the email address</span></div>
+  <div class="body">
+    <p>The <span class="path">Email</span> field near the top should show
+      <span class="field" data-show="email">the customer email</span>. Correct it here if it is wrong, and
+      then fix it on the customer record too, so you are not doing this again next month.</p>
+    <p>To send to more than one person, separate addresses with a comma. Most layouts also offer Cc and
+      Bcc.</p>
+    <div class="why"><strong>Why it matters:</strong> "we never received it" is the most common reason an
+      invoice sits unpaid, and it is often true. Sending to the person who actually processes payments,
+      rather than to the person who hired you, is worth a week of waiting.</div>
+    <div class="note">
+      <label for="n4">Notes on this step</label>
+      <textarea id="n4" data-k="n4"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">5</span>Set the date, the terms and the invoice number</span></div>
+  <div class="body">
+    <ol>
+      <li><span class="path">Invoice date</span>: the date you are billing. This starts the clock, so do
+        not backdate it to make a month look better.</li>
+      <li><span class="path">Terms</span>: what you agreed. The <span class="path">Due date</span> fills
+        in from it.</li>
+      <li><span class="path">Invoice no.</span>: QuickBooks proposes the next number,
+        <span class="field" data-show="invno">which is usually what you want</span>. Only override it if
+        you run your own numbering, and never reuse a number.</li>
+    </ol>
+    <div class="why"><strong>Why it matters:</strong> the invoice date decides how old the debt looks when
+      you come to chase it, and the due date decides when you are entitled to start chasing. Without those
+      two right, the report that tells you who is late is not telling you anything.</div>
+    <div class="ok"><strong>Looks right:</strong> the due date is later than the invoice date and matches
+      what you agreed.</div>
+    <div class="note">
+      <label for="n5">Notes on this step</label>
+      <textarea id="n5" data-k="n5"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">6</span>Fill in the lines</span></div>
+  <div class="body">
+    <p>Each row of the table is one thing you are billing for.</p>
+    <ol>
+      <li><span class="path">Product or service</span>: pick the item. This is what decides which income
+        line the money lands on, which is why it matters more than it looks.</li>
+      <li><span class="path">Description</span>: plain words the customer will recognize. This is the part
+        they actually read, and a vague description is the most common reason an invoice sits in somebody's
+        pile while they work out what it was for.</li>
+      <li><span class="path">Qty</span> and <span class="path">Rate</span>: the amount calculates
+        itself.</li>
+      <li>Add a row for each separate item. Detail reduces arguments.</li>
+    </ol>
+    <p>If the item you need does not exist, you can add it from the dropdown. Keep that list short and
+      meaningful. Forty near identical items makes your sales reports useless to you.</p>
+    <div class="ok"><strong>Looks right:</strong> the total at the bottom equals
+      <span class="field" data-show="amount">the total you expected</span>, including sales tax if it
+      applies.</div>
+    <div class="fixbox"><strong>Wrong amount, already sent:</strong> if no payment has been applied, open
+      the invoice, correct it, and send it again. If a payment has been applied, do not edit it. Issue a
+      credit memo for the difference (+ New &rarr; Customers &rarr; Credit memo) and apply it, which leaves
+      a clean trail of what happened.</div>
+    <div class="note">
+      <label for="n6">Notes on this step</label>
+      <textarea id="n6" data-k="n6"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">7</span>Message, attachments and payment options</span></div>
+  <div class="body">
+    <ul>
+      <li><span class="path">Message on invoice</span>: what the customer sees. Payment instructions go
+        here.</li>
+      <li><span class="path">Message on statement</span>: only appears if you send statements. Usually
+        leave it alone.</li>
+      <li><span class="path">Attachments</span>: the signed work order, the photos, the delivery ticket.
+        These can be sent with the invoice, and they settle most disputes before they start.</li>
+      <li>If online payments are turned on for the company, the options to accept card or bank transfer
+        appear on this screen. That puts a pay button in the customer's email and visibly speeds up
+        collection, at the cost of a processing fee. That is your decision to make, not a data entry
+        one.</li>
+    </ul>
+    <div class="why"><strong>Why it matters:</strong> with nobody else answering the phone, every dispute
+      you prevent is an afternoon you keep. An attached work order prevents most of them.</div>
+    <div class="note">
+      <label for="n7">Notes on this step</label>
+      <textarea id="n7" data-k="n7"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">8</span>Preview it before it leaves</span></div>
+  <div class="body">
+    <p>Use the print or preview option, usually along the bottom bar or behind a print icon, and look at
+      the invoice the way the customer will see it.</p>
+    <ul>
+      <li>Is the customer name spelled right?</li>
+      <li>Does the description explain the charge to someone who was not there?</li>
+      <li>Is the total <span class="field" data-show="amount">what you expected</span>?</li>
+      <li>Is your own phone number and address on it?</li>
+    </ul>
+    <div class="why"><strong>Why it matters:</strong> thirty seconds here replaces a phone call later, and
+      the phone call is now yours to take.</div>
+    <div class="note">
+      <label for="n8">Notes on this step</label>
+      <textarea id="n8" data-k="n8"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="head"><span class="t"><span class="n">9</span>Send it</span></div>
+  <div class="body">
+    <p>At the bottom right, use the save and send option. On newer layouts this is a button labeled
+      something like <span class="btnlabel">Review and send</span>, which shows the outgoing email first;
+      on older ones it is <span class="btnlabel">Save and send</span>.</p>
+    <p>The other choices on that button do what they say: save and close, save and make another, or save
+      and share a link.</p>
+    <div class="ok"><strong>Sent:</strong> a confirmation appears and the invoice status reads
+      <span class="path">Sent</span>. It changes to <span class="path">Viewed</span> when the customer
+      opens it, which is worth knowing when they later say it never arrived.</div>
+    <div class="fixbox"><strong>The send option will not work:</strong> there is no email address on file.
+      Go back to Step 4. You can still print or download the PDF and send it yourself, but then QuickBooks
+      will not know it was sent, so note the date in the invoice memo so you can still tell later.</div>
+    <div class="note">
+      <label for="n9">Notes on this step</label>
+      <textarea id="n9" data-k="n9"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step10">
+  <div class="head"><span class="t"><span class="n">10</span>Check it landed, and know what comes next</span></div>
+  <div class="body">
+    <ol>
+      <li>Left menu <span class="path">Sales</span>, then the <span class="path">Invoices</span> tab.</li>
+      <li>Find <span class="field" data-show="invno">the invoice number</span>. The status should read
+        Sent, then later Viewed, then Paid.</li>
+      <li>Open the customer from <span class="path">Sales</span> &rarr;
+        <span class="path">Customers</span>. Their open balance should have gone up by
+        <span class="field" data-show="amount">the invoice total</span>.</li>
+    </ol>
+    <p><strong>When they pay:</strong> <span class="btnlabel">+ New</span> &rarr;
+      <span class="path">Customers</span> &rarr; <span class="btnlabel">Receive payment</span>, pick the
+      customer, tick this invoice, choose where the money landed, save. If your bank feeds into QuickBooks,
+      the deposit will then offer to match. Match it. Do not record the same money twice.</p>
+    <p><strong>When they do not pay:</strong> the invoice ages, and working that list is its own job:
+      <a href="clear-aged-receivables.html">Clear out aged accounts receivable</a>.</p>
+    <div class="note">
+      <label for="n10">Notes on this step</label>
+      <textarea id="n10" data-k="n10"></textarea>
+    </div>
+  </div>
+</div>
+
+<h2>Quick reference</h2>
+<table>
+  <thead><tr><th style="width:44%">You want to</th><th>Path</th></tr></thead>
+  <tbody>
+    <tr><td>Create an invoice</td><td>+ New &rarr; Customers &rarr; Invoice</td></tr>
+    <tr><td>Record a sale that was paid on the spot</td><td>+ New &rarr; Customers &rarr; Sales receipt</td></tr>
+    <tr><td>Apply a payment to an invoice</td><td>+ New &rarr; Customers &rarr; Receive payment</td></tr>
+    <tr><td>Reduce what a customer owes</td><td>+ New &rarr; Customers &rarr; Credit memo</td></tr>
+    <tr><td>See every invoice and its status</td><td>Sales &rarr; Invoices tab</td></tr>
+    <tr><td>Resend an invoice</td><td>Sales &rarr; Invoices &rarr; the row's action menu &rarr; Send</td></tr>
+    <tr><td>See who owes you and for how long</td><td>Reports &rarr; search "Accounts receivable aging summary"</td></tr>
+  </tbody>
+</table>
+
+</main>
+
+<footer>
+  QBO Wizards. Everything you type on this page is saved in your own browser only. Nothing is sent
+  anywhere. Menu names in QuickBooks Online change from time to time and differ by plan, so if a label
+  does not match exactly, look for the nearest equivalent wording.
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var KEY = "qbo_wizard_invoice";
+  function load(){
+    try { return JSON.parse(localStorage.getItem(KEY) || "{}"); }
+    catch(e){ return {}; }
+  }
+  function save(d){
+    try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e){}
+  }
+  var data = load();
+
+  var fields = document.querySelectorAll("[data-k]");
+  Array.prototype.forEach.call(fields, function(el){
+    var k = el.getAttribute("data-k");
+    if (data[k] !== undefined) el.value = data[k];
+    el.addEventListener("input", function(){
+      data[k] = el.value;
+      save(data);
+      paint();
+    });
+  });
+
+  var shows = document.querySelectorAll("[data-show]");
+  function paint(){
+    Array.prototype.forEach.call(shows, function(el){
+      var k = el.getAttribute("data-show");
+      var v = (data[k] || "").trim();
+      if (!el.getAttribute("data-fallback")) {
+        el.setAttribute("data-fallback", el.textContent);
+      }
+      el.textContent = v ? v : el.getAttribute("data-fallback");
+      el.style.opacity = v ? "1" : ".75";
+      el.style.borderBottomStyle = v ? "solid" : "dashed";
+    });
+  }
+  paint();
+})();
+</script>
+</body>
+</html>
