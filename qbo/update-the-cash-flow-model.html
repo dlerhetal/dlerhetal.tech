@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>QBO Wizard: Update the 13-Week Cash Flow Model</title>
+<meta name="description" content="A step by step Monday routine for rolling a 13-week cash flow model forward, putting in the real bank balance, and reading what the next quarter of cash looks like.">
+<style>
+  :root{
+    --blue:#1A3C6E;
+    --blue-soft:#2E5496;
+    --gold:#FFCD00;
+    --ink:#1b1b1b;
+    --muted:#5a5a5a;
+    --line:#d7dde6;
+    --paper:#ffffff;
+    --shell:#eef1f6;
+    --red:#a4262c;
+    --red-bg:#fdf3f3;
+    --green:#0f6b3f;
+    --green-bg:#f0f8f3;
+    --amber-bg:#fffbea;
+    --fix:#7a4a00;
+    --fix-bg:#fff8ec;
+    --ask:#c62828;
+    --ask-dark:#96201a;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--shell);
+    color:var(--ink);
+    font-family:Calibri,"Segoe UI",Tahoma,sans-serif;
+    font-size:19px;
+    line-height:1.55;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 0 60px;background:var(--paper);
+        box-shadow:0 0 22px rgba(0,0,0,.10)}
+  header{background:var(--blue);color:#fff;padding:26px 34px 22px;border-bottom:5px solid var(--gold)}
+  header h1{margin:0 0 6px;font-size:31px;line-height:1.2}
+  header .sub{font-size:17px;opacity:.93}
+  header .who{margin-top:12px;font-size:16px;background:rgba(255,255,255,.12);
+               display:inline-block;padding:5px 12px;border-radius:3px}
+  main{padding:0 34px}
+  h2{color:var(--blue);font-size:24px;margin:34px 0 10px;padding-bottom:6px;
+     border-bottom:2px solid var(--line)}
+  h3{color:var(--blue-soft);font-size:20px;margin:22px 0 6px}
+  p{margin:10px 0}
+  a{color:var(--blue-soft)}
+
+  .backlink{padding:14px 34px 0;font-size:16px}
+  .backlink a{text-decoration:none;font-weight:bold}
+  .backlink a:hover{text-decoration:underline}
+
+  .box{border:1px solid var(--line);border-left:6px solid var(--blue-soft);
+       background:#f7f9fc;padding:16px 20px;margin:20px 0;border-radius:3px}
+  .box h3{margin-top:0}
+  .stop{border:2px solid var(--red);border-left:8px solid var(--red);
+        background:var(--red-bg);padding:18px 22px;margin:24px 0;border-radius:3px}
+  .stop h2{color:var(--red);border:0;margin:0 0 8px;font-size:23px}
+  .stop ul{margin:8px 0 0;padding-left:22px}
+  .stop li{margin:9px 0}
+  .stop a{color:var(--red);font-weight:bold}
+  .prereq{border:2px solid var(--gold);background:var(--amber-bg);
+          padding:18px 22px;margin:24px 0;border-radius:3px}
+  .prereq h2{color:var(--blue);border:0;margin:0 0 8px;font-size:23px}
+  .prereq ul{margin:6px 0 0;padding-left:22px}
+  .prereq li{margin:8px 0}
+
+  .step{border:1px solid var(--line);border-radius:4px;margin:20px 0;overflow:hidden;
+        break-inside:avoid;page-break-inside:avoid}
+  .step > .head{background:var(--blue);color:#fff;padding:11px 18px;font-size:20px;font-weight:bold;
+                display:flex;justify-content:space-between;align-items:center;gap:14px}
+  .step > .head .n{background:var(--gold);color:var(--blue);border-radius:50%;
+                   width:34px;height:34px;min-width:34px;display:inline-flex;
+                   align-items:center;justify-content:center;font-size:18px;margin-right:12px}
+  .step > .head .t{display:flex;align-items:center;flex:1}
+  .step > .body{padding:16px 20px}
+  .step ol,.step ul{padding-left:24px}
+  .step li{margin:8px 0}
+
+  .why{background:#f2f6fc;border-left:6px solid var(--blue);padding:10px 16px;margin:12px 0;
+       border-radius:3px;font-size:17px}
+  .why strong{color:var(--blue)}
+
+  .path{display:inline-block;background:#eaeff7;border:1px solid #c6d2e4;border-radius:3px;
+        padding:2px 9px;font-family:Consolas,"Courier New",monospace;font-size:17px;color:var(--blue)}
+  .btnlabel{display:inline-block;background:var(--blue);color:#fff;border-radius:4px;
+            padding:2px 11px;font-weight:bold;font-size:17px}
+  .field{display:inline-block;border-bottom:2px solid var(--blue-soft);font-weight:bold;
+         color:var(--blue)}
+  .unconf{display:inline-block;background:#fff4d6;border:1px solid #e0c46a;border-radius:3px;
+          padding:1px 8px;font-size:15px;font-weight:bold;color:#6b5200;text-transform:uppercase;
+          letter-spacing:.4px}
+
+  a.urlbox{display:block;background:#eaeff7;border:1px solid #c6d2e4;border-radius:4px;
+           padding:12px 16px;margin:12px 0;font-family:Consolas,"Courier New",monospace;
+           font-size:18px;color:var(--blue-soft);text-decoration:none;word-break:break-all}
+  a.urlbox:hover{background:#dde6f4;border-color:var(--blue-soft);text-decoration:underline}
+
+  .ok{border-left:6px solid var(--green);background:var(--green-bg);padding:12px 18px;margin:14px 0;
+      border-radius:3px}
+  .ok strong{color:var(--green)}
+  .bad{border-left:6px solid var(--red);background:var(--red-bg);padding:12px 18px;margin:14px 0;
+       border-radius:3px}
+  .bad strong{color:var(--red)}
+  .fixbox{border-left:6px solid var(--fix);background:var(--fix-bg);padding:12px 18px;margin:14px 0;
+          border-radius:3px}
+  .fixbox strong{color:var(--fix)}
+  .fixbox ol,.fixbox ul{margin:8px 0 0}
+
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:17px}
+  th{background:var(--blue);color:#fff;text-align:left;padding:9px 12px;font-weight:bold}
+  td{border:1px solid var(--line);padding:9px 12px;vertical-align:top}
+  tr:nth-child(even) td{background:#f7f9fc}
+
+  .cells{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:14px 0}
+  .cell label{display:block;font-size:15px;font-weight:bold;color:var(--blue);
+              text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+  .cell input{width:100%;padding:9px 11px;border:2px solid #c6d2e4;border-radius:4px;
+              font-family:inherit;font-size:18px;background:#fcfdff}
+  .cell input:focus{outline:none;border-color:var(--blue-soft);background:#fff}
+
+  .note{margin:16px 0}
+  .note label{display:block;font-size:15px;font-weight:bold;color:var(--blue);margin-bottom:5px}
+  .note textarea{width:100%;min-height:70px;padding:10px 12px;border:2px solid #c6d2e4;
+                 border-radius:4px;font-family:inherit;font-size:17px;background:#fcfdff;resize:vertical}
+  .note textarea:focus{outline:none;border-color:var(--blue-soft);background:#fff}
+
+  footer{padding:22px 34px;color:var(--muted);font-size:15px;border-top:2px solid var(--line);
+         margin-top:30px}
+
+  @page{size:letter portrait;margin:.5in}
+  @media print{
+    body{background:#fff;font-size:11pt}
+    .wrap{box-shadow:none;max-width:none}
+    .backlink{display:none}
+    .step{break-inside:avoid;page-break-inside:avoid}
+  }
+
+  /* Ask panel. Floating help button plus its chat drawer. Self contained. */
+  #askBtn{position:fixed;right:18px;bottom:18px;z-index:9999;width:64px;height:64px;
+          border-radius:50%;border:3px solid #fff;background:var(--ask);color:#fff;
+          box-shadow:0 5px 16px rgba(0,0,0,.35);cursor:pointer;font-family:inherit;padding:0;
+          display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+  #askBtn:hover,#askBtn:focus{background:var(--ask-dark);outline:none}
+  #askBtn:focus-visible{box-shadow:0 0 0 4px var(--gold)}
+  #askBtn .ico{font-size:23px;font-weight:bold}
+  #askBtn .lbl{font-size:12px;font-weight:bold;letter-spacing:.6px;margin-top:3px;
+               text-transform:uppercase}
+
+  #askPanel{position:fixed;right:18px;bottom:94px;z-index:10000;width:392px;
+            max-width:calc(100vw - 24px);max-height:72vh;display:flex;flex-direction:column;
+            background:var(--paper);border:1px solid var(--line);border-radius:8px;
+            box-shadow:0 10px 34px rgba(0,0,0,.30);font-size:16px;overflow:hidden}
+  #askPanel[hidden]{display:none}
+  #askPanel .askhead{background:var(--blue);color:#fff;padding:11px 14px;font-weight:bold;
+                     font-size:17px;display:flex;justify-content:space-between;align-items:center;
+                     border-bottom:4px solid var(--gold)}
+  #askPanel .askhead button{background:none;border:0;color:#fff;font-size:24px;line-height:1;
+                            cursor:pointer;padding:0 2px;font-family:inherit}
+  #askPanel .askpad{padding:13px 14px}
+  #askPanel p{margin:8px 0;font-size:15px}
+  #askPanel label{display:block;font-size:13px;font-weight:bold;color:var(--blue);
+                  text-transform:uppercase;letter-spacing:.4px;margin:8px 0 4px}
+  #askPanel input,#askPanel textarea{width:100%;padding:9px 10px;border:2px solid #c6d2e4;
+            border-radius:4px;font-family:inherit;font-size:16px;background:#fcfdff;color:var(--ink)}
+  #askPanel textarea{resize:vertical;min-height:62px}
+  #askPanel .askgo{margin-top:9px;background:var(--blue);color:#fff;border:0;border-radius:4px;
+                   padding:10px 18px;font-family:inherit;font-size:16px;font-weight:bold;
+                   cursor:pointer}
+  #askPanel .askgo:hover{background:var(--blue-soft)}
+  #askPanel .askgo[disabled]{background:#9aa7ba;cursor:default}
+  #askLog{flex:1 1 auto;overflow-y:auto;padding:13px 14px 4px;background:var(--shell)}
+  #askLog .turn{margin:0 0 11px;padding:9px 12px;border-radius:6px;font-size:15px;
+                line-height:1.5;white-space:normal;word-wrap:break-word}
+  #askLog .me{background:#e4ebf7;border-left:5px solid var(--blue-soft)}
+  #askLog .them{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--gold)}
+  #askLog .who{display:block;font-size:12px;font-weight:bold;text-transform:uppercase;
+               letter-spacing:.5px;color:var(--muted);margin-bottom:3px}
+  #askCtx{padding:0 14px;font-size:13px;color:var(--muted)}
+  .askmsg{min-height:19px;font-size:14px;font-weight:bold}
+  .askmsg.work{color:var(--blue-soft)}
+  .askmsg.bad{color:var(--red)}
+  .askmsg.good{color:var(--green)}
+  #askForget{background:none;border:0;color:var(--muted);font-family:inherit;font-size:13px;
+             text-decoration:underline;cursor:pointer;padding:4px 0 0}
+  @media (max-width:520px){
+    #askPanel{right:10px;left:10px;width:auto;bottom:86px;max-height:76vh}
+    #askBtn{right:12px;bottom:12px;width:58px;height:58px}
+  }
+  @media print{#askBtn,#askPanel{display:none !important}}
+
+  /* Weekly numbers panel. The headline total leads, at the largest size. */
+  .headline{background:var(--blue);color:#fff;border-radius:4px;padding:14px 18px;margin:12px 0 16px;
+            border-bottom:5px solid var(--gold)}
+  .headline .hl-label{display:block;font-size:15px;font-weight:bold;text-transform:uppercase;
+                      letter-spacing:.5px;opacity:.9}
+  .headline .hl-num{display:block;font-size:38px;font-weight:bold;line-height:1.15;margin-top:4px;
+                    word-break:break-word}
+  .headline .hl-sub{display:block;font-size:16px;opacity:.92;margin-top:4px}
+  .headline.low{background:var(--red);border-bottom-color:#fff}
+  .sumline{font-size:18px;margin:10px 0 0}
+  .sumline strong{color:var(--blue)}
+  .cell select{width:100%;padding:9px 11px;border:2px solid #c6d2e4;border-radius:4px;
+               font-family:inherit;font-size:18px;background:#fcfdff}
+  .resetbtn{margin-top:12px;background:#fff;color:var(--blue);border:2px solid var(--blue);
+            border-radius:4px;padding:8px 16px;font-family:inherit;font-size:16px;font-weight:bold;
+            cursor:pointer}
+  .resetbtn:hover{background:#eaeff7}
+  .example{font-size:17px;color:var(--muted)}
+  .example strong{color:var(--ink)}
+  @media print{.resetbtn{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="backlink"><a href="index.html">&larr; All QBO Wizards</a></div>
+
+<header>
+  <h1>Update the 13-Week Cash Flow Model</h1>
+  <div class="sub">The Monday routine. Roll the week forward, put in the real bank balance, and see the next thirteen Saturdays before they arrive.</div>
+  <div class="who">QBO Wizard&nbsp; |&nbsp; Written for an owner doing this alone, with no bookkeeping background</div>
+</header>
+
+<main>
+
+<div class="box">
+  <h3>What this workbook is, in plain words</h3>
+  <p style="margin-top:0">The Cash Flow Model is an Excel workbook that lays out the next 13 weeks side by
+    side, one column per week, each week ending on a Saturday. Every column starts with the cash you
+    expect to have, adds the money you expect to come in, takes away the money you expect to go out, and
+    ends with the cash left over. That ending number becomes the next week's starting number, all the way
+    across.</p>
+  <p>It is only as good as two things: the starting cash in the first week, which must be the real bank
+    balance, and the dates you put on the money coming in and going out. Once a week you replace last
+    week's guesses with what actually happened, and the whole quarter redraws itself. That is this page.</p>
+  <p>Color tells you where you are allowed to type. <strong>Yellow cells are yours.</strong> The one
+    <strong>orange cell is the starting cash</strong>, the single number the other thirteen weeks stand on.
+    Everything else is a formula and is locked on purpose.</p>
+</div>
+
+<div class="prereq">
+  <h2>Before you start</h2>
+  <ul>
+    <li><strong>A Windows computer with the desktop version of Excel.</strong> The workbook runs on its own
+        buttons, and those buttons do not work in Excel in a browser or on a phone. This one is
+        laptop or desktop only.</li>
+    <li><strong>Last week's workbook,</strong> the most recent saved copy. You will make this week's copy
+        from it in Step 2.</li>
+    <li><strong>Your online banking login, for every business bank account.</strong> Checking and any
+        savings or money market account. Banks often send a security code by text when you sign in, which
+        means <strong>your phone needs to be in reach</strong>.</li>
+    <li><strong>QuickBooks, signed in,</strong> so you can see which invoices are still open and which
+        bills are waiting to be paid.</li>
+    <li><strong>Any promises made this week:</strong> a customer who said they would pay on a certain day,
+        a supplier who agreed to a new date. These live in your head or your email, not in the workbook.</li>
+    <li><strong>Time:</strong> 20 to 30 minutes if you did it last Monday. Longer the first few times, and
+        longer if a week was skipped.</li>
+  </ul>
+</div>
+
+<div class="stop">
+  <h2>Read this first. One button in this routine cannot be undone.</h2>
+  <ul>
+    <li><strong>New Week cannot be undone.</strong> The button moves every week in the workbook over by
+        one and there is no Undo afterward. That is why Step 2 makes a dated copy <em>before</em> anything
+        else. Last week's file, left untouched, is your only way back. See <a href="#step2">Step 2</a>.</li>
+    <li><strong>Press New Week once, and only once, per Monday.</strong> Pressing it a second time rolls a
+        second week and the workbook itself warns that forecast dates you entered are lost. If you think
+        you pressed it twice, close without saving and start again from the copy. See
+        <a href="#step4">Step 4</a>.</li>
+    <li><strong>The success message is not proof.</strong> The workbook shows "moved up by 1 week" even
+        when part of it refused to move. Always check that the first date really changed. See
+        <a href="#step4">Step 4</a>.</li>
+    <li><strong>Never add sheets, rows, notes or comments to the workbook.</strong> Use the empty yellow
+        rows that are already there. Anything you want to remember goes in the note boxes on this page,
+        not in the file.</li>
+    <li><strong>A big one-off payment goes in whole, in the one week it will actually be paid.</strong>
+        Never spread it across several weeks to make the chart look smoother. The bank will take it all at
+        once, so the model must show it all at once. See <a href="#step8">Step 8</a>.</li>
+    <li><strong>Type only in yellow cells and the orange starting-cash cell.</strong> If Excel says a cell
+        is on a protected sheet, you are in the wrong cell. Click OK and look for the yellow one. Nothing
+        is broken.</li>
+  </ul>
+</div>
+
+<div class="box" id="glance">
+  <h3>This week at a glance (fills in as you go down the page)</h3>
+  <div class="headline" id="hlLow">
+    <span class="hl-label">Lowest ending cash in the next 13 weeks</span>
+    <span class="hl-num" data-show="lowest">not entered yet</span>
+    <span class="hl-sub">In the week ending <span data-show="lowweek">(not entered yet)</span></span>
+  </div>
+  <table>
+    <tbody>
+      <tr><td style="width:56%">Starting cash this week, all accounts (Step 3)</td><td><strong id="glTotal">not entered yet</strong></td></tr>
+      <tr><td>Bank versus what the model expected (Step 3)</td><td><strong id="glGap">not entered yet</strong></td></tr>
+      <tr><td>Ending cash, week 13 (Step 9)</td><td><strong data-show="wk13">not entered yet</strong></td></tr>
+      <tr><td>This week's file (Step 2)</td><td><strong data-show="fname">not entered yet</strong></td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:17px;color:var(--muted)">Everything you type on this page stays in this browser on
+    this computer and goes nowhere else. Next Monday, clear the numbers with the button below; your step
+    notes are kept.</p>
+  <button type="button" class="resetbtn" id="resetWeek">Start a new week (clears this week's numbers)</button>
+</div>
+
+<h2>The steps</h2>
+
+<div class="step" id="step1">
+  <div class="head"><span class="t"><span class="n">1</span>Open last week's workbook</span></div>
+  <div class="body">
+    <ol>
+      <li>Open the folder where you keep the Cash Flow Model and double-click the most recent one. The date
+        at the end of the file name tells you which is newest.</li>
+      <li>If a yellow bar across the top says <span class="path">PROTECTED VIEW</span>, click
+        <span class="btnlabel">Enable Editing</span>.</li>
+      <li>If a bar says macros have been disabled, click <span class="btnlabel">Enable Content</span>. The
+        workbook's buttons are macros, so without this nothing in Steps 4 onward will work.</li>
+    </ol>
+    <div class="ok"><strong>Looks right:</strong> a tab along the top of Excel named
+      <span class="path">*** CFM : Cash Forecast Model ***</span>. Click it and you see the workbook's own
+      buttons, including <span class="path">Current Rolling Quarter</span> and
+      <span class="path">New Week</span>.</div>
+    <div class="fixbox"><strong>A red bar says macros are blocked because the file came from the internet
+      or another computer:</strong> close the workbook. In File Explorer, right-click the file, choose
+      <span class="path">Properties</span>, tick <span class="path">Unblock</span> near the bottom of the
+      General tab, click OK, and open it again. Excel sometimes does this to a file that arrived by email
+      or download.</div>
+    <div class="note">
+      <label for="n1">Notes on this step</label>
+      <textarea id="n1" data-k="n1" placeholder="Anything odd here? Type it. It is saved on this page."></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step2">
+  <div class="head"><span class="t"><span class="n">2</span>Save this week's copy first, before touching anything</span></div>
+  <div class="body">
+    <p>The file is named for the Saturday that ends its first week, written as year, month, day with two
+      digits each. Once you roll forward in Step 4, the first week will end this coming Saturday, so this
+      week's copy takes this Saturday's date.</p>
+    <p class="sumline">This coming Saturday is <strong id="satLong">(works out from today's date)</strong>,
+      so the date part of the new name is <strong id="satCode">YYMMDD</strong>.</p>
+    <ol>
+      <li>Click <span class="path">File</span> &rarr; <span class="path">Save As</span>.</li>
+      <li>Keep the same folder.</li>
+      <li>In the name, change only the six-digit date at the end to the one above. Everything before it
+        stays exactly as it was.</li>
+      <li>Leave <span class="path">Save as type</span> alone. It should already say Excel Binary Workbook.</li>
+      <li>Click <span class="btnlabel">Save</span>.</li>
+    </ol>
+    <div class="cells">
+      <div class="cell">
+        <label for="v_fname">This week's file name</label>
+        <input id="v_fname" data-k="fname" data-week="1" placeholder="e.g. YourCompany.CFM_v2.1.261010.xlsb" autocomplete="off">
+      </div>
+    </div>
+    <div class="why"><strong>Why first:</strong> New Week in Step 4 cannot be undone. Excel is now working
+      in the new copy, and last week's file is closed and untouched. If anything goes wrong this morning,
+      you delete the new copy and start again from last week's.</div>
+    <div class="ok"><strong>Correct:</strong> the title bar at the top of Excel now shows the new name with
+      this Saturday's date.</div>
+    <div class="note">
+      <label for="n2">Notes on this step</label>
+      <textarea id="n2" data-k="n2"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step3">
+  <div class="head"><span class="t"><span class="n">3</span>Check the week that just ended against the bank</span></div>
+  <div class="body">
+    <p>Do this <strong>before</strong> you roll forward. Right now the first column of weeks is still the
+      week that just ended, and it shows what you expected to happen in it. In a few minutes that column
+      rolls off the front of the model, so this is the one chance to compare.</p>
+    <ol>
+      <li>Click <span class="btnlabel">Current Rolling Quarter</span> on the workbook's tab. This is the
+        main sheet with the 13 week columns.</li>
+      <li>Look down the first week column. Under <span class="path">(B) CASH RECEIPTS</span> is the money
+        you expected in. Under <span class="path">(C) CASH DISBURSEMENTS</span> is the money you expected
+        out.</li>
+      <li>Sign in to online banking and look at last week's activity for every business account.</li>
+      <li>For each line the model expected, decide: did it happen, yes or no? A customer payment that did
+        not arrive, or a bill you did not pay after all, has <strong>slipped</strong>. List every slipped
+        item in the box below, with its amount and the week you now expect it.</li>
+      <li>Now put this morning's balance for each account in the boxes below. The page adds them up.</li>
+    </ol>
+    <div class="headline">
+      <span class="hl-label">Starting cash this week, all accounts added together</span>
+      <span class="hl-num" id="bankTotal">enter the balances below</span>
+    </div>
+    <div class="cells">
+      <div class="cell">
+        <label for="v_bal1">Checking balance this morning</label>
+        <input id="v_bal1" data-k="bal1" data-week="1" inputmode="decimal" placeholder="e.g. 12,500.00" autocomplete="off">
+      </div>
+      <div class="cell">
+        <label for="v_bal2">Savings or money market balance</label>
+        <input id="v_bal2" data-k="bal2" data-week="1" inputmode="decimal" placeholder="e.g. 2,500.00, or 0" autocomplete="off">
+      </div>
+      <div class="cell">
+        <label for="v_bal3">Any other business account</label>
+        <input id="v_bal3" data-k="bal3" data-week="1" inputmode="decimal" placeholder="leave blank if none" autocomplete="off">
+      </div>
+    </div>
+    <p>Then find what the model expected you would have. On the same sheet, the row
+      <span class="path">(E.1) ENDING CASH AVAILABLE</span> near the bottom, first week column. Type it
+      here.</p>
+    <div class="cells">
+      <div class="cell">
+        <label for="v_fcend">Model's ending cash for the week just ended</label>
+        <input id="v_fcend" data-k="fcend" data-week="1" inputmode="decimal" placeholder="e.g. 14,000.00" autocomplete="off">
+      </div>
+    </div>
+    <p class="sumline">Difference: <strong id="gapLine">enter both numbers above</strong></p>
+    <p class="example"><strong>Example with made-up numbers:</strong> checking 12,500 plus savings 2,500
+      is 15,000 in the bank. The model expected 14,000. The bank is 1,000 higher than expected. The usual
+      reason is a bill you expected to pay last week that has not gone out yet, which means it is still
+      coming and belongs on your slipped list.</p>
+    <div class="note">
+      <label for="v_slipped">Slipped items: what, how much, and the week you now expect it</label>
+      <textarea id="v_slipped" data-k="slipped" data-week="1" placeholder="e.g. Customer payment, 3,200, now expected week ending 10/17"></textarea>
+    </div>
+    <div class="why"><strong>Why it matters:</strong> a gap you can explain is fine. A gap you cannot
+      explain means something is moving money that the model does not know about, and every week after
+      this one is off by at least that much.</div>
+    <div class="fixbox"><strong>A check you already mailed has not cleared the bank yet:</strong> do not
+      subtract it from the balance. Leave the bank number exactly as the bank shows it, and put the check
+      on your slipped list so it goes back in as a payment this week.</div>
+    <div class="fixbox"><strong>The first week column is two Saturdays old because a Monday was
+      missed:</strong> stop here and note it in the box below. Do not press New Week twice in one sitting to
+      catch up; that is the one move the workbook itself warns loses data.</div>
+    <div class="note">
+      <label for="n3">Notes on this step</label>
+      <textarea id="n3" data-k="n3"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step4">
+  <div class="head"><span class="t"><span class="n">4</span>Roll the week forward with New Week</span></div>
+  <div class="body">
+    <p>This moves every week over by one. The week that just ended drops off the front, this week becomes
+      the first column, and a new thirteenth week appears at the end. You never type the dates yourself;
+      the button does it.</p>
+    <ol>
+      <li>Make sure you are on the main sheet: click <span class="btnlabel">Current Rolling Quarter</span>.</li>
+      <li>Click <span class="btnlabel">New Week</span> (the lightning bolt) on the workbook's tab.</li>
+      <li>A box titled <span class="path">Continue?</span> asks: <em>"Do you REALLY want to ADVANCE to the
+        next week - this is NoT reversible..."</em> You made the copy in Step 2, so click
+        <span class="btnlabel">Yes</span>.</li>
+      <li>Wait. It takes a moment. A box titled <span class="path">Forecast Model Advanced</span> says
+        <em>"All data in the Forecast Model has now been moved up by 1 week"</em>. Click
+        <span class="btnlabel">OK</span>.</li>
+      <li><strong>Now check it.</strong> Look at the first date across the top of the week columns. It
+        must be this coming Saturday, <strong class="satEcho">this Saturday</strong>.</li>
+    </ol>
+    <div class="ok"><strong>Correct:</strong> the first week column is dated this Saturday, and the orange
+      starting-cash cell in that column is <strong>empty</strong>. New Week clears it on purpose, because
+      the next thing you do is fill it with the real number.</div>
+    <div class="bad"><strong>Do not click New Week again,</strong> not even to see whether it worked. Check
+      the date instead.</div>
+    <div class="fixbox"><strong>A message appears about a worksheet missing data, or the first date did
+      not change:</strong> part of the roll did not happen even though the success box appeared. Close
+      Excel <strong>without saving</strong>, delete this week's copy, and go back to Step 1 with last
+      week's file. Note what the message said in the box below.</div>
+    <div class="fixbox"><strong>A message says you can only exit the AR Collection module with the large
+      blue button:</strong> you were on the wrong sheet and nothing was moved. Click the large blue button
+      at the top of that sheet, then <span class="btnlabel">Current Rolling Quarter</span>, then try
+      <span class="btnlabel">New Week</span> once.</div>
+    <div class="fixbox"><strong>Nothing happens at all when you click it:</strong> macros are off. Go back
+      to Step 1.</div>
+    <div class="note">
+      <label for="n4">Notes on this step</label>
+      <textarea id="n4" data-k="n4"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step5">
+  <div class="head"><span class="t"><span class="n">5</span>Type the real starting cash</span></div>
+  <div class="body">
+    <p>This is the orange cell: the row <span class="path">(A) BEGINNING BALANCE CASH</span>, first week
+      column, at the top of the main sheet.</p>
+    <p class="sumline">The number to type is <strong id="bankTotal2">your total from Step 3</strong>.</p>
+    <ol>
+      <li>Click the orange cell.</li>
+      <li>Type the total, numbers only, no dollar sign. Press Enter.</li>
+    </ol>
+    <div class="ok"><strong>Correct:</strong> the starting cash for week 2 onward changes by itself, all
+      the way across. Only the first week's starting cash is ever typed.</div>
+    <div class="bad"><strong>Never type a starting cash into any later week.</strong> Those cells are
+      formulas that carry each week's ending cash into the next. Typing over one breaks the chain for every
+      week after it.</div>
+    <div class="why"><strong>Why the real bank number and not the model's own guess:</strong> the model's
+      ending cash for last week was a forecast. The bank balance is a fact. Starting every Monday from the
+      fact is what stops small errors from piling up week after week.</div>
+    <div class="note">
+      <label for="n5">Notes on this step</label>
+      <textarea id="n5" data-k="n5"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step6">
+  <div class="head"><span class="t"><span class="n">6</span>Put back what slipped</span></div>
+  <div class="body">
+    <p>Anything on your slipped list from Step 3 rolled off the front with last week. If it is still
+      going to happen, it has to go back in, in the week it will now really happen.</p>
+    <p>Your slipped list:</p>
+    <div class="box" style="margin:8px 0 14px;white-space:pre-wrap"><span data-show="slipped">(nothing listed in Step 3)</span></div>
+    <ol>
+      <li>For money coming in, click <span class="btnlabel">Cash Receipts</span>. For money going out,
+        click <span class="btnlabel">Cash Expenses</span>.</li>
+      <li>If the item already has a row with its name, type the amount in the column for its new week.</li>
+      <li>If it does not, use the next empty yellow row. Type a plain name in the name column, and the
+        amount in the week column. Do not insert a row.</li>
+      <li>Go back with <span class="btnlabel">Current Rolling Quarter</span>.</li>
+    </ol>
+    <div class="ok"><strong>Correct:</strong> the total inflow or total outflow for that week on the main
+      sheet went up by exactly the amount you typed.</div>
+    <div class="fixbox"><strong>A slipped item turns out never to be happening</strong> (a customer who
+      will not pay, a purchase you cancelled): leave it out. Note it below so the reason is on record.</div>
+    <div class="note">
+      <label for="n6">Notes on this step</label>
+      <textarea id="n6" data-k="n6"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step7">
+  <div class="head"><span class="t"><span class="n">7</span>Update the money you expect from customers</span></div>
+  <div class="body">
+    <p>This is the part of the model most likely to be optimistic. Money goes in the week you have good
+      reason to expect it, not the week you would like it.</p>
+    <ol>
+      <li>In QuickBooks, left menu <span class="path">Reports</span>, search
+        <span class="path">Accounts receivable aging detail</span> and open it. It lists every open
+        invoice and how late it is.</li>
+      <li>In the workbook, click <span class="btnlabel">Cash Receipts</span>.</li>
+      <li><strong>A customer promised a date and an amount:</strong> give that payment its own row, named
+        for the customer, with the amount in the week of the promised date.</li>
+      <li><strong>A general line for ordinary collections</strong>, if your workbook has one, covers the
+        steady trickle of smaller payments. When you give a payment its own row, check that the general
+        line is not also counting it. The same dollar must never be in two rows.</li>
+      <li><strong>Invoices more than 90 days late with no promise:</strong> leave them out of the next
+        13 weeks entirely. If one arrives, it is a pleasant surprise rather than a hole.</li>
+      <li>Any other money coming in that is not from an invoice (a refund, a deposit you are owed) also
+        goes here, in its week.</li>
+    </ol>
+    <p class="example"><strong>Example with made-up numbers:</strong> a customer owes 6,000 and promised it
+      for the week ending the 17th. It gets its own row with 6,000 in that week. If your general collections
+      line was built to include that customer, lower the general line so the 6,000 is not counted twice.</p>
+    <div class="why"><strong>Why it matters:</strong> every other number in the model is fairly certain,
+      because bills and rent arrive on schedule. Customer money is the one that moves. A model that assumes
+      everyone pays on time will show you comfortable weeks that never come.</div>
+    <div class="bad"><strong>Leave the Receivables line alone.</strong> On the main sheet,
+      <span class="path">Received on A/R</span> comes from a separate invoice-import feature. If it reads
+      zero in every week, your workbook keeps customer money in Cash Receipts instead. Keep it that way;
+      turning on the import as well would count the same invoices twice.</div>
+    <p>Chasing late invoices is its own job:
+      <a href="clear-aged-receivables.html">Clear Out Aged Receivables</a>, Steps 2, 3 and 7.</p>
+    <div class="note">
+      <label for="n7">Notes on this step</label>
+      <textarea id="n7" data-k="n7"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step8">
+  <div class="head"><span class="t"><span class="n">8</span>Update the money going out</span></div>
+  <div class="body">
+    <p>Payments live in one of three places. Each payment belongs in exactly one of them.</p>
+    <table>
+      <thead><tr><th style="width:30%">Button</th><th style="width:36%">What goes there</th><th>What to do this week</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Recurring Expenses</strong></td>
+          <td>Anything that repeats on a schedule: payroll, rent, a lease, loan payments, insurance,
+            utilities, subscriptions.</td>
+          <td>Nothing, usually. The workbook places these in the right weeks by itself. Change a line only
+            when an amount changed, or when something started or stopped.</td>
+        </tr>
+        <tr>
+          <td><strong>Cash Expenses</strong></td>
+          <td>One-off payments and bills with a known date: a supplier bill, a tax payment, a repair,
+            a quarterly bill.</td>
+          <td>Add new bills in the week you will pay them. Remove any you paid early.</td>
+        </tr>
+        <tr>
+          <td><strong>Investments</strong></td>
+          <td>Large planned payments for a project, for example a consulting or professional fee.</td>
+          <td>Check each one is in the week it will actually clear, as one whole amount.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Recurring Expenses, when something changed</h3>
+    <ol>
+      <li>Click <span class="btnlabel">Recurring Expenses</span>.</li>
+      <li>Each line has a name, a frequency, a day, and an amount. Frequency is a single letter:
+        <span class="path">w</span> weekly, <span class="path">b</span> every two weeks,
+        <span class="path">m</span> monthly. For a monthly line, the day is the day of the month it
+        comes out.</li>
+      <li>To change an amount, type the new amount over the old one.</li>
+      <li>To add a new repeating payment, use the next empty yellow line in the lower section.</li>
+      <li>To stop one, clear its name, frequency, day and amount. Leave the first column alone; it is a
+        formula and turns itself off.</li>
+    </ol>
+    <div class="bad"><strong>Match the letter to how the amount was worked out.</strong> A monthly
+      figure typed with <span class="path">b</span> is counted about 26 times a year instead of 12, so the
+      model shows more than twice the real cost.</div>
+
+    <h3>Cash Expenses, for this week's bills</h3>
+    <ol>
+      <li>In QuickBooks, <span class="path">Reports</span> &rarr; search
+        <span class="path">Unpaid bills</span> to see what is waiting. Your mail and email may hold bills
+        not entered yet.</li>
+      <li>In the workbook, click <span class="btnlabel">Cash Expenses</span>.</li>
+      <li>Each bill goes in the week you will <strong>pay</strong> it, which is not always the week it is
+        due. Type the whole amount in that one week.</li>
+      <li>New payee: next empty yellow row, plain name, amount in the week. Do not insert rows.</li>
+    </ol>
+    <div class="bad"><strong>Big one-off payments go in whole.</strong> If a large check will clear in
+      one piece, the model shows it in one piece, in one week. Splitting it into smaller amounts across
+      several weeks hides the week that actually hurts.</div>
+    <div class="bad"><strong>Never count a payment twice.</strong> Something set up on Recurring
+      Expenses must not also be typed on Cash Expenses. And if you pay for things on a credit card, the
+      model either shows the things you bought or shows the card payment, never both. Keep whichever way
+      your workbook already does it.</div>
+    <div class="ok"><strong>Correct:</strong> on the main sheet, <span class="path">TOTAL OUTFLOW</span>
+      for each week reads like a week you recognize, and the week of any big payment stands out.</div>
+    <div class="note">
+      <label for="n8">Notes on this step</label>
+      <textarea id="n8" data-k="n8"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step9">
+  <div class="head"><span class="t"><span class="n">9</span>Read the ending cash for all 13 weeks</span></div>
+  <div class="body">
+    <p>Click <span class="btnlabel">Current Rolling Quarter</span> and find the row
+      <span class="path">(E.1) ENDING CASH AVAILABLE</span>. That row is the whole point of the workbook:
+      the cash left at the end of each of the next 13 Saturdays.</p>
+    <ol>
+      <li>Run your eye along the row and find the <strong>lowest</strong> number. Type it here with its
+        week.</li>
+      <li>Type the last number in the row, week 13, as well.</li>
+    </ol>
+    <div class="cells">
+      <div class="cell">
+        <label for="v_lowest">Lowest ending cash</label>
+        <input id="v_lowest" data-k="lowest" data-week="1" inputmode="decimal" placeholder="e.g. -2,400.00" autocomplete="off">
+      </div>
+      <div class="cell">
+        <label for="v_lowweek">In the week ending</label>
+        <input id="v_lowweek" data-k="lowweek" data-week="1" placeholder="e.g. 10/24" autocomplete="off">
+      </div>
+      <div class="cell">
+        <label for="v_wk13">Ending cash, week 13</label>
+        <input id="v_wk13" data-k="wk13" data-week="1" inputmode="decimal" placeholder="e.g. 9,000.00" autocomplete="off">
+      </div>
+    </div>
+    <table>
+      <thead><tr><th style="width:34%">What you see</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td>Every week comfortably above zero</td>
+            <td>The plan, as entered, pays everything on time. Keep the dates honest and check again next
+              Monday.</td></tr>
+        <tr><td>A week that is low but positive</td>
+            <td>You get through it, but one late customer payment would tip it over. Treat it as a warning
+              and start on Step 10 early.</td></tr>
+        <tr><td>A week below zero</td>
+            <td>If nothing changes, the bank account runs dry that week: payments bounce, fees land, and
+              automatic drafts fail. It has not happened yet. You can see it coming, and that is the
+              whole value of the model. Go to Step 10.</td></tr>
+        <tr><td>Week 13 lower than this week's starting cash</td>
+            <td>Over the quarter, more is going out than coming in. Even if no single week goes negative,
+              the direction matters more than any one week.</td></tr>
+      </tbody>
+    </table>
+    <div class="why"><strong>Why the lowest week and not the last one:</strong> a quarter can end fine
+      and still have one week in the middle where the account is empty. That single week is the one that
+      bounces a payment.</div>
+    <div class="note">
+      <label for="n9">Notes on this step</label>
+      <textarea id="n9" data-k="n9"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step10">
+  <div class="head"><span class="t"><span class="n">10</span>If a week goes below zero</span></div>
+  <div class="body">
+    <p>Work through these in order. Each time you change something, look at the ending cash row again;
+      stop when the lowest week is back above zero with some room to spare.</p>
+    <ol>
+      <li><strong>Make sure it is real.</strong> Look at that week's payments. Is anything in twice, in
+        the wrong week, or already paid? Fixing a mistake is the cheapest way to close a gap.</li>
+      <li><strong>Bring money in sooner.</strong> Invoice any finished work today
+        (<a href="create-and-send-an-invoice.html">Create and Send an Invoice</a>). Call the customers
+        with the largest late invoices and ask for a date. Only a promised date moves money into an
+        earlier week in the model.</li>
+      <li><strong>Move a payment that can genuinely wait,</strong> but only once the payee has agreed to
+        the new date. Move the whole amount to the new week in Cash Expenses. A payment you simply stop
+        making, without agreement, turns into late fees or a stopped service.</li>
+      <li><strong>Leave the fixed obligations where they are.</strong> Payroll, tax deposits, and loan
+        payments the lender drafts automatically come out on schedule whatever the model says. Moving them
+        in the workbook changes only the workbook.</li>
+      <li><strong>Never split a big payment to hide a bad week.</strong> If a large payment cannot be made
+        in one piece that week, move the whole payment to a week that can carry it, once that date is
+        agreed.</li>
+    </ol>
+    <div class="fixbox"><strong>Nothing on the list closes the gap:</strong> note the week, the amount it
+      is short, and what you tried, in the box below. You now know about the problem weeks before the bank
+      does, which is exactly what the model is for.</div>
+    <div class="note">
+      <label for="n10">Notes on this step</label>
+      <textarea id="n10" data-k="n10"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="step" id="step11">
+  <div class="head"><span class="t"><span class="n">11</span>Save, close, and leave last week's file alone</span></div>
+  <div class="body">
+    <ol>
+      <li>Click <span class="btnlabel">Current Rolling Quarter</span> so the workbook opens on the main
+        sheet next time.</li>
+      <li>Press <span class="path">Ctrl</span> + <span class="path">S</span> to save. The name stays the one
+        you gave it in Step 2.</li>
+      <li>Close Excel.</li>
+      <li>Do not open last week's file to change anything. It is the record of what you expected then, and
+        your way back if this week's copy ever goes wrong.</li>
+    </ol>
+    <div class="cells">
+      <div class="cell">
+        <label for="v_done">Updated on</label>
+        <input id="v_done" data-k="donedate" data-week="1" type="date" autocomplete="off">
+      </div>
+    </div>
+    <div class="ok"><strong>Done well:</strong> the folder has one new file with this Saturday's date,
+      its first week starts from the real bank balance, nothing that slipped has been lost, and you know
+      which week is the tightest and by how much.</div>
+    <div class="note">
+      <label for="n11">Notes on this step</label>
+      <textarea id="n11" data-k="n11"></textarea>
+    </div>
+  </div>
+</div>
+
+<h2>Quick reference</h2>
+<table>
+  <thead><tr><th style="width:44%">You want to</th><th>Where</th></tr></thead>
+  <tbody>
+    <tr><td>See the 13 weeks</td><td>Workbook tab &rarr; Current Rolling Quarter</td></tr>
+    <tr><td>Roll to a new week (once per Monday)</td><td>Workbook tab &rarr; New Week</td></tr>
+    <tr><td>Type this week's starting cash</td><td>Main sheet &rarr; orange cell, (A) BEGINNING BALANCE CASH, first week</td></tr>
+    <tr><td>Money coming in</td><td>Workbook tab &rarr; Cash Receipts</td></tr>
+    <tr><td>One-off payments and bills</td><td>Workbook tab &rarr; Cash Expenses</td></tr>
+    <tr><td>Payments that repeat on a schedule</td><td>Workbook tab &rarr; Recurring Expenses</td></tr>
+    <tr><td>Large planned project payments</td><td>Workbook tab &rarr; Investments</td></tr>
+    <tr><td>The workbook's own explanations</td><td>Workbook tab &rarr; Help by Button</td></tr>
+    <tr><td>Open invoices in QuickBooks</td><td>Reports &rarr; search "Accounts receivable aging detail"</td></tr>
+    <tr><td>Bills waiting to be paid in QuickBooks</td><td>Reports &rarr; search "Unpaid bills"</td></tr>
+  </tbody>
+</table>
+
+</main>
+
+<footer>
+  QBO Wizards. Everything you type into a step note is saved in your own browser only.
+  The one exception is the red Ask button: a question you send there goes to a help
+  service so it can be answered. Button and sheet names are those of the workbook's own tab; if a label
+  does not match exactly, look for the nearest equivalent wording.
+</footer>
+
+</div>
+
+<button type="button" id="askBtn" aria-expanded="false" aria-controls="askPanel"
+        aria-label="Ask a question about this page"><span class="ico" aria-hidden="true">?</span><span class="lbl">Ask</span></button>
+
+<div id="askPanel" role="dialog" aria-labelledby="askTitle" hidden>
+  <div class="askhead"><span id="askTitle">Ask about this page</span>
+    <button type="button" id="askClose" aria-label="Close the ask panel">&times;</button></div>
+
+  <div id="askGate" class="askpad">
+    <p>This helper is for invited readers. Type the access code you were given. This browser will
+      remember it, so you only do this once.</p>
+    <label for="askCode">Access code</label>
+    <input id="askCode" type="password" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <button type="button" class="askgo" id="askSave">Save and continue</button>
+    <p class="askmsg" id="askGateMsg"></p>
+  </div>
+
+  <div id="askLog" hidden aria-live="polite"></div>
+  <div id="askCtx" hidden></div>
+  <div id="askForm" class="askpad" hidden>
+    <label for="askInput">Your question</label>
+    <textarea id="askInput" rows="3"
+      placeholder="What is on your screen that does not match the page?"></textarea>
+    <button type="button" class="askgo" id="askSend">Send</button>
+    <p class="askmsg" id="askMsg"></p>
+    <button type="button" id="askForget">Forget the code on this browser</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var KEY = "qbo_wizard_cash_flow_model";
+  var MONEY = {bal1:1, bal2:1, bal3:1, fcend:1, lowest:1, wk13:1};
+  function load(){
+    try { return JSON.parse(localStorage.getItem(KEY) || "{}"); }
+    catch(e){ return {}; }
+  }
+  function save(d){
+    try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e){}
+  }
+  var data = load();
+
+  function num(v){
+    var s = String(v == null ? "" : v).trim();
+    if (!s) return null;
+    var neg = /^\(.*\)$/.test(s) || s.indexOf("-") !== -1;
+    s = s.replace(/[^0-9.]/g, "");
+    if (!s) return null;
+    var n = parseFloat(s);
+    if (isNaN(n)) return null;
+    return neg ? -n : n;
+  }
+  function money(n){
+    var a = Math.abs(n).toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2});
+    return (n < 0 ? "-$" : "$") + a;
+  }
+
+  var fields = document.querySelectorAll("[data-k]");
+  Array.prototype.forEach.call(fields, function(el){
+    var k = el.getAttribute("data-k");
+    if (data[k] !== undefined) el.value = data[k];
+    el.addEventListener("input", function(){
+      data[k] = el.value;
+      save(data);
+      paint();
+    });
+  });
+
+  var shows = document.querySelectorAll("[data-show]");
+  function setText(id, t){ var el = document.getElementById(id); if (el) el.textContent = t; }
+
+  function paint(){
+    Array.prototype.forEach.call(shows, function(el){
+      var k = el.getAttribute("data-show");
+      var raw = (data[k] || "").trim();
+      var v = raw;
+      if (raw && MONEY[k]) { var n = num(raw); if (n !== null) v = money(n); }
+      if (!el.getAttribute("data-fallback")) {
+        el.setAttribute("data-fallback", el.textContent);
+      }
+      el.textContent = v ? v : el.getAttribute("data-fallback");
+      el.style.opacity = v ? "1" : ".75";
+    });
+
+    var parts = [num(data.bal1), num(data.bal2), num(data.bal3)];
+    var any = false, total = 0;
+    parts.forEach(function(p){ if (p !== null) { any = true; total += p; } });
+    var totalText = any ? money(total) : "";
+    setText("bankTotal", any ? totalText : "enter the balances below");
+    setText("bankTotal2", any ? totalText : "your total from Step 3");
+    setText("glTotal", any ? totalText : "not entered yet");
+
+    var fc = num(data.fcend);
+    var gapText = "enter both numbers above";
+    var glGap = "not entered yet";
+    if (any && fc !== null) {
+      var gap = Math.round((total - fc) * 100) / 100;
+      if (gap === 0) { gapText = "none. The bank matches what the model expected."; glGap = "matches"; }
+      else if (gap > 0) { gapText = "the bank is " + money(gap) + " higher than the model expected."; glGap = money(gap) + " higher"; }
+      else { gapText = "the bank is " + money(-gap) + " lower than the model expected."; glGap = money(-gap) + " lower"; }
+    }
+    setText("gapLine", gapText);
+    setText("glGap", glGap);
+
+    var low = num(data.lowest);
+    var hl = document.getElementById("hlLow");
+    if (hl) { if (low !== null && low < 0) { hl.classList.add("low"); } else { hl.classList.remove("low"); } }
+  }
+
+  /* This coming Saturday (today, if today is Saturday). The file name date and the first week use it. */
+  (function(){
+    var d = new Date();
+    d.setHours(12, 0, 0, 0);
+    d.setDate(d.getDate() + ((6 - d.getDay() + 7) % 7));
+    var mm = ("0" + (d.getMonth() + 1)).slice(-2);
+    var dd = ("0" + d.getDate()).slice(-2);
+    var yy = String(d.getFullYear()).slice(-2);
+    var longText = mm + "/" + dd + "/" + d.getFullYear();
+    setText("satLong", longText);
+    setText("satCode", yy + mm + dd);
+    Array.prototype.forEach.call(document.querySelectorAll(".satEcho"), function(el){ el.textContent = longText; });
+  })();
+
+  var reset = document.getElementById("resetWeek");
+  if (reset) {
+    reset.addEventListener("click", function(){
+      if (!window.confirm("Clear this week's numbers, file name and slipped list? Step notes are kept.")) return;
+      Array.prototype.forEach.call(document.querySelectorAll("[data-week]"), function(el){
+        var k = el.getAttribute("data-k");
+        el.value = "";
+        if (k) delete data[k];
+      });
+      save(data);
+      paint();
+    });
+  }
+
+  paint();
+})();
+</script>
+
+<script>
+/* Ask panel. Talks to a gated help service. The access code is typed by the reader
+   and kept in this browser only; it is deliberately not present anywhere in this file. */
+(function(){
+  var ENDPOINT = "https://dlerhetal.pythonanywhere.com/qbo/chat";
+  var CODE_KEY = "qbo_wizard_ask_code";
+
+  var btn = document.getElementById("askBtn");
+  var panel = document.getElementById("askPanel");
+  var closeBtn = document.getElementById("askClose");
+  var gate = document.getElementById("askGate");
+  var gateMsg = document.getElementById("askGateMsg");
+  var codeBox = document.getElementById("askCode");
+  var saveBtn = document.getElementById("askSave");
+  var log = document.getElementById("askLog");
+  var ctx = document.getElementById("askCtx");
+  var form = document.getElementById("askForm");
+  var input = document.getElementById("askInput");
+  var sendBtn = document.getElementById("askSend");
+  var msg = document.getElementById("askMsg");
+  var forgetBtn = document.getElementById("askForget");
+  if (!btn || !panel) return;
+
+  var history = [];
+  var busy = false;
+
+  function getCode(){
+    try { return localStorage.getItem(CODE_KEY) || ""; } catch(e){ return ""; }
+  }
+  function setCode(v){
+    try { if (v) { localStorage.setItem(CODE_KEY, v); } else { localStorage.removeItem(CODE_KEY); } }
+    catch(e){}
+  }
+  function say(el, text, kind){
+    el.className = "askmsg" + (kind ? " " + kind : "");
+    el.textContent = text || "";
+  }
+  function pageName(){
+    return (document.title || "QBO wizard").replace(/^QBO Wizard:\s*/i, "");
+  }
+  function tidy(s){ return (s || "").replace(/\s+/g, " ").trim(); }
+
+  function nearestStep(){
+    var heads = document.querySelectorAll(".step > .head .t");
+    if (!heads.length) return "";
+    var mark = window.innerHeight * 0.45;
+    var best = heads[0];
+    for (var i = 0; i < heads.length; i++){
+      var top = heads[i].getBoundingClientRect().top;
+      if (top <= mark) { best = heads[i]; }
+    }
+    var num = best.querySelector(".n");
+    var label = tidy(best.textContent);
+    if (num) {
+      var n = tidy(num.textContent);
+      if (n && label.indexOf(n) === 0) { label = "Step " + n + ": " + tidy(label.slice(n.length)); }
+    }
+    return label.slice(0, 200);
+  }
+
+  function addTurn(who, text){
+    var wrap = document.createElement("div");
+    wrap.className = "turn " + (who === "You" ? "me" : "them");
+    var tag = document.createElement("span");
+    tag.className = "who";
+    tag.textContent = who;
+    wrap.appendChild(tag);
+    var lines = String(text).split("\n");
+    for (var i = 0; i < lines.length; i++){
+      if (i) wrap.appendChild(document.createElement("br"));
+      wrap.appendChild(document.createTextNode(lines[i]));
+    }
+    log.appendChild(wrap);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function showGate(show){
+    gate.hidden = !show;
+    log.hidden = show;
+    ctx.hidden = show;
+    form.hidden = show;
+  }
+
+  function refreshCtx(){
+    var step = nearestStep();
+    ctx.textContent = step ? ("Answering about: " + step) : ("Answering about: " + pageName());
+  }
+
+  function openPanel(){
+    panel.hidden = false;
+    btn.setAttribute("aria-expanded", "true");
+    if (getCode()) {
+      showGate(false);
+      refreshCtx();
+      if (!log.childNodes.length) {
+        addTurn("Helper", "Ask anything about this page or about what you are seeing in QuickBooks. Answers are short and cover the step you are on.");
+      }
+      input.focus();
+    } else {
+      showGate(true);
+      say(gateMsg, "");
+      codeBox.focus();
+    }
+  }
+  function closePanel(){
+    panel.hidden = true;
+    btn.setAttribute("aria-expanded", "false");
+  }
+
+  btn.addEventListener("click", function(){
+    if (panel.hidden) { openPanel(); } else { closePanel(); }
+  });
+  closeBtn.addEventListener("click", closePanel);
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && !panel.hidden) closePanel();
+  });
+
+  saveBtn.addEventListener("click", function(){
+    var v = (codeBox.value || "").trim();
+    if (!v) { say(gateMsg, "Type the code first.", "bad"); return; }
+    setCode(v);
+    codeBox.value = "";
+    openPanel();
+  });
+  codeBox.addEventListener("keydown", function(e){
+    if (e.key === "Enter") { e.preventDefault(); saveBtn.click(); }
+  });
+
+  forgetBtn.addEventListener("click", function(){
+    setCode("");
+    history = [];
+    log.innerHTML = "";
+    showGate(true);
+    say(gateMsg, "The code was removed from this browser.", "good");
+  });
+
+  function send(){
+    if (busy) return;
+    var q = (input.value || "").trim();
+    if (!q) { say(msg, "Type a question first.", "bad"); return; }
+    var code = getCode();
+    if (!code) { showGate(true); return; }
+
+    busy = true;
+    sendBtn.disabled = true;
+    say(msg, "Sending your question.", "work");
+    addTurn("You", q);
+    input.value = "";
+    var step = nearestStep();
+
+    var payload = {
+      code: code,
+      message: q,
+      page: pageName(),
+      step: step,
+      history: history.slice(-12)
+    };
+
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(payload)
+    }).then(function(res){
+      say(msg, "Working on an answer.", "work");
+      return res.json().catch(function(){ return {}; }).then(function(data){
+        return {status: res.status, data: data};
+      });
+    }).then(function(r){
+      if (r.status === 200 && r.data && r.data.reply) {
+        history.push({role: "user", content: q});
+        history.push({role: "assistant", content: r.data.reply});
+        addTurn("Helper", r.data.reply);
+        say(msg, "", "");
+      } else if (r.status === 401) {
+        setCode("");
+        showGate(true);
+        say(gateMsg, "That code was not accepted. Check it and try again.", "bad");
+      } else if (r.status === 429) {
+        addTurn("Helper", (r.data && r.data.error) || "The daily limit has been reached. Please try again tomorrow.");
+        say(msg, "Daily limit reached.", "bad");
+      } else {
+        addTurn("Helper", (r.data && r.data.error) || "The answer did not come back. Please try again.");
+        say(msg, "That did not go through.", "bad");
+      }
+    }).catch(function(){
+      addTurn("Helper", "The help service could not be reached. Check your internet connection. Everything on this page still works without it.");
+      say(msg, "Could not reach the service.", "bad");
+    }).then(function(){
+      busy = false;
+      sendBtn.disabled = false;
+      refreshCtx();
+    });
+  }
+
+  sendBtn.addEventListener("click", send);
+  input.addEventListener("keydown", function(e){
+    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); send(); }
+  });
+  window.addEventListener("scroll", function(){
+    if (!panel.hidden && gate.hidden) refreshCtx();
+  }, {passive: true});
+})();
+</script>
+</body>
+</html>
