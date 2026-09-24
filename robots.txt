@@ -18,6 +18,10 @@ User-agent: *
 # Retired client material that is still served from this origin.
 Disallow: /archive/
 
+# Cash flow wizards (added 2026-09-24). Generic walk throughs, no client content;
+# reached by direct link, kept out of search like the wizard pages themselves.
+Disallow: /cfm/
+
 # --- Everything else is deliberately public and stays crawlable ---
 # /                        the site index
 # /tutorials/  /setup/     published how-to material
