@@ -247,13 +247,13 @@
     <li><strong>Never force it to balance with an adjustment.</strong> If you click finish while the
         difference is not zero, QuickBooks offers to write the gap off as an adjusting entry. That buries a
         real error in an expense bucket where you will never find it again, and every report from then on
-        carries it. See <a href="#step9">Step 9</a>.
+        carries it. See <a href="#step10">Step 10</a>.
         <br><em>If you already took one:</em> it is recoverable but unpleasant. Undo that reconciliation,
         delete the adjusting entry (look for a transaction named something like Reconciliation Discrepancy
         on the date the month ended), and reconcile again properly.</li>
     <li><strong>Never change the beginning balance to make it match.</strong> A wrong beginning balance
         means something inside an already reconciled month was edited or deleted afterward. Fix that, do
-        not paper over it. See <a href="#step5">Step 5</a>.</li>
+        not paper over it. See <a href="#step6">Step 6</a>.</li>
     <li><strong>Undoing a finished reconciliation is not a small thing.</strong> It strips the reconciled
         mark from every transaction in that month at once, and on most plans only an accountant login can
         put it back efficiently. It is reversible in principle and a bad afternoon in practice.</li>
@@ -286,7 +286,7 @@
     </tr>
     <tr>
       <td>Something in an already reconciled month is wrong.</td>
-      <td>Stop and read Step 5 first</td>
+      <td>Stop and read Step 6 first</td>
       <td>Editing a reconciled transaction quietly breaks the next month's starting point.</td>
     </tr>
   </tbody>
@@ -358,8 +358,32 @@
   </div>
 </div>
 
+<div class="step" id="compare">
+  <div class="head"><span class="t"><span class="n">3</span>Compare the bank balances first</span></div>
+  <div class="body">
+    <p>Go to <span class="path">Banking</span>, then <span class="path">Bank transactions</span>. Each
+      connected account has a tile at the top with two numbers: <span class="path">Bank</span> (what the
+      bank reports) and <span class="path">Posted</span> (what QuickBooks has).</p>
+    <p>Open your bank's app or website, and your card's app, and compare each account's current balance
+      with the <span class="path">Bank</span> number on its tile.</p>
+    <div class="why"><strong>Why it matters:</strong> if the Bank number on the tile does not match your
+      bank's app, QuickBooks has not downloaded everything yet, and anything missing will show up later as
+      a difference you cannot tick away.</div>
+    <div class="ok"><strong>Looks right:</strong> the app and the tile agree. On a checking account the
+      <span class="path">Posted</span> number is normally lower than the bank by the checks you have written
+      that have not cleared yet. That is expected.</div>
+    <div class="fixbox"><strong>Small difference:</strong> there is new activity since the last download.
+      Click <span class="btnlabel">Update</span> and compare again. <strong>Big difference you cannot
+      explain:</strong> something is missing. Stop and note it here before you reconcile.</div>
+    <div class="note">
+      <label for="nbal">Notes on this step</label>
+      <textarea id="nbal" data-k="nbal"></textarea>
+    </div>
+  </div>
+</div>
+
 <div class="step">
-  <div class="head"><span class="t"><span class="n">3</span>Open the Reconcile tool</span></div>
+  <div class="head"><span class="t"><span class="n">4</span>Open the Reconcile tool</span></div>
   <div class="body">
     <p>There are two places this lives, depending on your QuickBooks Online version and how recently the
       menus were updated. Try them in this order:</p>
@@ -386,7 +410,7 @@
 </div>
 
 <div class="step">
-  <div class="head"><span class="t"><span class="n">4</span>Pick the account</span></div>
+  <div class="head"><span class="t"><span class="n">5</span>Pick the account</span></div>
   <div class="body">
     <p>Choose <span class="field" data-show="acct">the account</span> from the
       <span class="path">Account</span> dropdown at the top.</p>
@@ -404,8 +428,8 @@
   </div>
 </div>
 
-<div class="step" id="step5">
-  <div class="head"><span class="t"><span class="n">5</span>Check the beginning balance before anything else</span></div>
+<div class="step" id="step6">
+  <div class="head"><span class="t"><span class="n">6</span>Check the beginning balance before anything else</span></div>
   <div class="body">
     <p>QuickBooks fills in a <span class="path">Beginning balance</span> by itself. It is the ending
       balance from the last month you reconciled. You cannot edit it on this screen, and that is
@@ -415,7 +439,7 @@
     <div class="why"><strong>Why it matters:</strong> if the starting point is wrong, everything built on
       top of it is wrong. Carrying on regardless just moves the problem into next month, where it is
       harder to find.</div>
-    <div class="ok"><strong>They match:</strong> carry on to Step 6.</div>
+    <div class="ok"><strong>They match:</strong> carry on to Step 7.</div>
     <div class="fixbox"><strong>They do not match. What to do:</strong>
       <ol>
         <li>This always means the same thing: a transaction inside a month you already reconciled was
@@ -437,7 +461,7 @@
 </div>
 
 <div class="step">
-  <div class="head"><span class="t"><span class="n">6</span>Type the ending date and ending balance</span></div>
+  <div class="head"><span class="t"><span class="n">7</span>Type the ending date and ending balance</span></div>
   <div class="body">
     <ol>
       <li><span class="path">Ending date</span>: <span class="field" data-show="enddate">the statement
@@ -464,14 +488,14 @@
 </div>
 
 <div class="step">
-  <div class="head"><span class="t"><span class="n">7</span>Understand the screen you just landed on</span></div>
+  <div class="head"><span class="t"><span class="n">8</span>Understand the screen you just landed on</span></div>
   <div class="body">
     <p>Across the top is a summary strip. The number that matters is the last one, usually labeled
       <span class="path">Difference</span>. Your entire job is to get that to 0.00.</p>
     <table>
       <thead><tr><th style="width:32%">What you see</th><th>What it means</th></tr></thead>
       <tbody>
-        <tr><td>Statement ending balance</td><td>What you typed in Step 6. The bank's version.</td></tr>
+        <tr><td>Statement ending balance</td><td>What you typed in Step 7. The bank's version.</td></tr>
         <tr><td>Cleared balance</td><td>Your beginning balance plus everything you have ticked so far.
             Cleared just means the bank has actually processed it.</td></tr>
         <tr><td><strong>Difference</strong></td><td>The gap between those two. Must reach 0.00.</td></tr>
@@ -487,7 +511,7 @@
 </div>
 
 <div class="step">
-  <div class="head"><span class="t"><span class="n">8</span>Tick off what is on the statement</span></div>
+  <div class="head"><span class="t"><span class="n">9</span>Tick off what is on the statement</span></div>
   <div class="body">
     <p>Go down the <strong>statement</strong>, line by line, and find each line in QuickBooks. Not the
       other way round. The statement is the master list.</p>
@@ -517,8 +541,8 @@
   </div>
 </div>
 
-<div class="step" id="step9">
-  <div class="head"><span class="t"><span class="n">9</span>When the difference will not go to zero</span></div>
+<div class="step" id="step10">
+  <div class="head"><span class="t"><span class="n">10</span>When the difference will not go to zero</span></div>
   <div class="body">
     <p>This happens to everyone, every so often, including people who do it for a living. Work this list in
       order. It is roughly the order of likelihood.</p>
@@ -554,7 +578,7 @@
 </div>
 
 <div class="step">
-  <div class="head"><span class="t"><span class="n">10</span>Finish, and keep the report</span></div>
+  <div class="head"><span class="t"><span class="n">11</span>Finish, and keep the report</span></div>
   <div class="body">
     <p>With the difference at <strong>0.00</strong>, click the finish button in the top right, usually
       labeled something like <span class="btnlabel">Finish now</span>.</p>
@@ -574,7 +598,7 @@
 </div>
 
 <div class="step">
-  <div class="head"><span class="t"><span class="n">11</span>Verify it stuck</span></div>
+  <div class="head"><span class="t"><span class="n">12</span>Verify it stuck</span></div>
   <div class="body">
     <ol>
       <li>Open the account register, which is just the running list of everything in that account: left
