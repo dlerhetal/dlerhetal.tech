@@ -22,6 +22,9 @@ Disallow: /archive/
 # reached by direct link, kept out of search like the wizard pages themselves.
 Disallow: /cfm/
 
+# QuickBooks wizards (added 2026-09-24). Same treatment as /cfm/.
+Disallow: /qbo/
+
 # --- Everything else is deliberately public and stays crawlable ---
 # /                        the site index
 # /tutorials/  /setup/     published how-to material
