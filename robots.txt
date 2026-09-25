@@ -11,12 +11,8 @@
 User-agent: *
 
 
-# Pulled down 2026-09-21 and kept locally in each client's own archive:
 # No client namespace is served from this origin. Standing rule: client work is never
 # public facing here, and it comes down at the end of the engagement.
-
-# Retired client material that is still served from this origin.
-Disallow: /archive/
 
 # Cash flow wizards (added 2026-09-24). Generic walk throughs, no client content;
 # reached by direct link, kept out of search like the wizard pages themselves.
