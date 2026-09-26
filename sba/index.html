@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SBA Loan Guide | dlerhetal.tech</title>
+<meta name="description" content="What a small business owner needs for an SBA loan: which program fits, the eligibility basics, the full document checklist with the official forms, and a quick check of the numbers a lender looks at.">
+<meta property="og:title" content="SBA Loan Guide">
+<meta property="og:description" content="Pick the right SBA loan, gather every document the lender will ask for, and check your debt coverage before you apply. Free, and nothing you enter leaves your browser.">
+<meta property="og:image" content="https://dlerhetal.tech/brand/claude/social/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dlerhetal.tech/sba/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://dlerhetal.tech/sba/">
+<style>
+  :root {
+    --base: #E6E9EE;
+    --surface: #F2F4F7;
+    --navy: #1A3C6E;
+    --navy-dark: #0F2748;
+    --lava: #CF2A27;
+    --lava-dark: #A11F1C;
+    --olive: #556B2F;
+    --gold: #FFCD00;
+    --green: #2E7D32;
+    --text: #14213D;
+    --muted: #5B6777;
+    --border: rgba(26, 60, 110, 0.22);
+    --radius: 6px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--base);
+    color: var(--text);
+    font-family: 'Segoe UI', Calibri, system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--lava); text-decoration: none; }
+  a:hover { color: var(--lava-dark); text-decoration: underline; }
+  nav.topbar { background: var(--navy); color: white; border-bottom: 3px solid var(--olive); }
+  .topbar-inner {
+    max-width: 960px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  .topbar .brand { font-weight: 700; font-size: 17px; color: white; }
+  .topbar .brand:hover { color: white; text-decoration: none; }
+  .topbar .brand .dot { color: var(--lava); }
+  .topbar ul { list-style: none; display: flex; gap: 22px; margin: 0; padding: 0; }
+  .topbar ul a { color: rgba(255,255,255,0.82); font-weight: 600; font-size: 14px; }
+  .topbar ul a:hover { color: white; text-decoration: none; }
+  main { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+  .page-head h1 { margin: 0 0 10px 0; font-size: 32px; line-height: 1.2; color: var(--navy); }
+  .page-head .lede { font-size: 17px; margin: 0 0 8px 0; max-width: 62ch; }
+  .page-head p { max-width: 66ch; }
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0 0; padding: 0; list-style: none; }
+  .jump a {
+    display: inline-block; font-size: 13px; font-weight: 600; padding: 6px 12px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 20px; color: var(--navy);
+  }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--olive); margin: 44px 0 12px 0; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+  h2 { color: var(--navy); font-size: 23px; margin: 0 0 8px 0; }
+  h3 { color: var(--navy); font-size: 17px; margin: 22px 0 6px 0; }
+  .panel {
+    background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--navy);
+    border-radius: var(--radius); padding: 20px 22px; margin: 14px 0;
+  }
+  .panel.lava { border-left-color: var(--lava); }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0 0 0; font-size: 14px; }
+  th { background: var(--navy); color: #fff; text-align: left; padding: 8px 10px; font-weight: 700; }
+  td { border: 1px solid var(--border); padding: 8px 10px; vertical-align: top; }
+  tr:nth-child(even) td { background: #fff; }
+  sup a { font-size: 11px; font-weight: 700; padding: 0 1px; }
+  .picker { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 10px; }
+  label.q { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  select, input[type=number], input[type=text] {
+    width: 100%; font: inherit; font-size: 15px; padding: 8px 10px; border: 1px solid var(--border);
+    border-radius: 4px; background: #fff; color: var(--text);
+  }
+  .result { margin-top: 14px; padding: 14px 16px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); }
+  .result strong { color: var(--navy); }
+  .checks { list-style: none; margin: 8px 0 0 0; padding: 0; }
+  .checks li { display: flex; gap: 10px; align-items: flex-start; padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .checks li:last-child { border-bottom: 0; }
+  .checks input[type=checkbox] { width: 20px; height: 20px; margin-top: 2px; flex: 0 0 auto; accent-color: var(--navy); }
+  .checks .txt { flex: 1; min-width: 0; }
+  .checks .name { font-weight: 600; }
+  .checks .why { font-size: 13.5px; color: var(--muted); display: block; margin-top: 2px; }
+  .checks li.done .name { text-decoration: line-through; color: var(--muted); }
+  .toggles { display: flex; flex-wrap: wrap; gap: 10px 20px; margin: 8px 0 4px 0; font-size: 15px; }
+  .toggles label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+  .toggles input { width: 18px; height: 18px; accent-color: var(--navy); }
+  .alarm {
+    margin: 14px 0; padding: 14px 16px; border-radius: var(--radius); font-size: 15px;
+    background: #FDECEA; border: 2px solid var(--lava); color: var(--lava-dark);
+  }
+  .alarm.ok { background: #E8F5E9; border-color: var(--green); color: var(--green); }
+  .alarm ul { margin: 6px 0 0 0; padding-left: 20px; font-size: 14px; }
+  .bar { height: 10px; background: #fff; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-top: 8px; }
+  .bar span { display: block; height: 100%; background: var(--navy); width: 0; transition: width .2s; }
+  .calc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .verdict-good { color: var(--green); font-weight: 700; }
+  .verdict-bad { color: var(--lava-dark); font-weight: 700; }
+  .verdict-mid { color: #8A6D00; font-weight: 700; }
+  .btn {
+    display: inline-block; font: inherit; font-size: 15px; font-weight: 700; padding: 10px 18px;
+    border-radius: 4px; border: 0; cursor: pointer; background: var(--lava); color: #fff;
+  }
+  .btn:hover { background: var(--lava-dark); color: #fff; text-decoration: none; }
+  .btn.ghost { background: transparent; color: var(--navy); border: 1px solid var(--navy); }
+  .btn.ghost:hover { background: var(--navy); color: #fff; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  ol.sources { font-size: 14px; padding-left: 22px; }
+  ol.sources li { margin: 5px 0; word-break: break-word; }
+  footer {
+    max-width: 960px; margin: 0 auto; padding: 24px 24px 40px; border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--muted);
+  }
+  @page { size: letter portrait; margin: .5in; }
+  @media print {
+    body { background: #fff; }
+    nav.topbar, .jump, .no-print, .cta-row { display: none !important; }
+    .panel { break-inside: avoid; }
+  }
+  @media (max-width: 640px) {
+    .topbar-inner { padding: 12px 16px; }
+    .topbar ul { gap: 14px; }
+    main { padding: 28px 16px 60px; }
+    footer { padding: 20px 16px 36px; }
+    .page-head h1 { font-size: 27px; }
+    .picker, .calc { grid-template-columns: 1fr; }
+    .panel { padding: 16px 14px; }
+    table { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="brand">dlerhetal<span class="dot">.</span>tech</a>
+    <ul>
+      <li><a href="/">Tools</a></li>
+      <li><a href="/tutorials/">Tutorials</a></li>
+      <li><a href="/setup/">Setup</a></li>
+    </ul>
+  </div>
+</nav>
+<main>
+  <div class="page-head">
+    <h1>SBA Loan Guide</h1>
+    <p class="lede">What you need for an SBA loan, in the order you need it.</p>
+    <p>The Small Business Administration does not lend the money itself. It guarantees part of a loan
+      that a bank or other lender makes to you, so the lender takes less risk. The lender still decides,
+      and the lender asks for the paperwork. This page walks you through picking the program, checking the
+      basics, gathering every document, and testing the one number that decides most applications. Your
+      checkmarks and numbers save in this browser only.</p>
+    <ul class="jump no-print">
+      <li><a href="#pick">1. Pick the loan</a></li>
+      <li><a href="#eligible">2. Check the basics</a></li>
+      <li><a href="#gather">3. Gather the package</a></li>
+      <li><a href="#numbers">4. Test your numbers</a></li>
+      <li><a href="#plan">5. Write the plan</a></li>
+      <li><a href="#lender">6. Find a lender</a></li>
+    </ul>
+  </div>
+
+  <!-- 1. PICK -->
+  <p class="section-label" id="pick">Step 1</p>
+  <h2>Pick the loan that fits what the money is for</h2>
+  <p>Most small businesses end up in one of these. The program is driven by what you are buying and how much you need.</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Program</th><th>Up to</th><th>Good for</th><th>Not for</th></tr>
+    <tr><td><strong>7(a) standard</strong></td><td>$5 million</td><td>Buying a business, working capital, equipment, real estate, refinancing business debt</td><td>Speculation, passive investment</td></tr>
+    <tr><td><strong>7(a) small</strong></td><td>$350,000</td><td>The same uses as standard 7(a), with simpler lender processing</td><td>Amounts over $350,000</td></tr>
+    <tr><td><strong>SBA Express</strong></td><td>$500,000</td><td>Faster decisions, often lines of credit; the SBA guarantees 50 percent, so lenders are pickier</td><td>Large projects</td></tr>
+    <tr><td><strong>504</strong></td><td>$5.5 million (SBA portion)</td><td>Buying or building real estate, long-life machinery (10 year useful life or more)</td><td>Working capital, inventory</td></tr>
+    <tr><td><strong>Microloan</strong></td><td>$50,000</td><td>Startups and small needs: working capital, inventory, supplies, equipment</td><td>Paying off existing debt, buying real estate</td></tr>
+  </table>
+  </div>
+  <p style="font-size:14px;color:var(--muted)">Sources: 7(a) program and loan types<sup><a href="#s1">1</a>,<a href="#s2">2</a></sup>, 504<sup><a href="#s4">4</a></sup>, microloans<sup><a href="#s6">6</a></sup>. Limits last checked on sba.gov September 2026.</p>
+
+  <div class="panel no-print">
+    <strong>Quick picker</strong>
+    <div class="picker">
+      <div>
+        <label class="q" for="useFor">What is most of the money for?</label>
+        <select id="useFor">
+          <option value="">Choose one</option>
+          <option value="buy">Buying an existing business</option>
+          <option value="re">Buying, building or renovating real estate I will occupy</option>
+          <option value="equip">Heavy equipment or machinery</option>
+          <option value="wc">Working capital, inventory or payroll</option>
+          <option value="start">Starting a new business</option>
+          <option value="refi">Refinancing business debt</option>
+        </select>
+      </div>
+      <div>
+        <label class="q" for="howMuch">About how much do you need?</label>
+        <select id="howMuch">
+          <option value="">Choose one</option>
+          <option value="50">$50,000 or less</option>
+          <option value="350">$50,001 to $350,000</option>
+          <option value="500">$350,001 to $500,000</option>
+          <option value="5000">$500,001 to $5 million</option>
+          <option value="big">More than $5 million</option>
+        </select>
+      </div>
+    </div>
+    <div class="result" id="pickResult">Answer both questions to see the programs to ask your lender about.</div>
+  </div>
+
+  <!-- 2. ELIGIBLE -->
+  <p class="section-label" id="eligible">Step 2</p>
+  <h2>Check the basics before you spend time on paperwork</h2>
+  <p>Every SBA program starts from the same tests.<sup><a href="#s1">1</a>,<a href="#s4">4</a></sup> If one of these is a no, talk to a lender or an SBDC advisor before going further.</p>
+  <div class="panel">
+    <ul class="checks" id="eligList"></ul>
+  </div>
+
+  <!-- 3. GATHER -->
+  <p class="section-label" id="gather">Step 3</p>
+  <h2>Gather the package</h2>
+  <p>This is what lenders ask for on a typical SBA application. Your lender may add items, but almost nothing on this list gets skipped. Tick the boxes that apply to you and the list adds what your deal needs.</p>
+  <div class="toggles no-print">
+    <label><input type="checkbox" id="tBuy"> I am buying an existing business</label>
+    <label><input type="checkbox" id="tStart"> This is a new business (open a year or less)</label>
+    <label><input type="checkbox" id="tRe"> The loan includes real estate or construction</label>
+    <label><input type="checkbox" id="t504"> I am applying for a 504 loan</label>
+    <label><input type="checkbox" id="tFr"> This is a franchise</label>
+  </div>
+  <div id="alarm" class="alarm" role="status"></div>
+  <div class="bar" aria-hidden="true"><span id="barFill"></span></div>
+  <div id="groups"></div>
+  <div class="cta-row">
+    <button class="btn ghost" type="button" onclick="window.print()">Print this checklist</button>
+    <button class="btn ghost" type="button" id="resetChecks">Clear my checkmarks</button>
+  </div>
+
+  <!-- 4. NUMBERS -->
+  <p class="section-label" id="numbers">Step 4</p>
+  <h2>Test your numbers the way a lender will</h2>
+  <p>Two numbers decide most applications. <strong>Debt service coverage</strong> asks whether the cash the business throws off covers every loan payment with room to spare. <strong>Equity injection</strong> asks how much of your own money is in the deal.</p>
+  <div class="panel">
+    <h3 style="margin-top:0">Debt service coverage ratio (DSCR)</h3>
+    <div class="calc">
+      <div><label class="q" for="cLoan">New loan amount ($)</label><input type="number" id="cLoan" min="0" step="1000" placeholder="250000"></div>
+      <div><label class="q" for="cRate">Interest rate (% per year)</label><input type="number" id="cRate" min="0" step="0.25" placeholder="10.5"></div>
+      <div><label class="q" for="cYears">Term (years)</label><input type="number" id="cYears" min="1" max="25" step="1" placeholder="10"></div>
+      <div><label class="q" for="cCash">Cash flow before loan payments ($ per year)</label><input type="number" id="cCash" min="0" step="1000" placeholder="95000"></div>
+      <div><label class="q" for="cDraw">Owner pay not already in expenses ($ per year)</label><input type="number" id="cDraw" min="0" step="1000" placeholder="0"></div>
+      <div><label class="q" for="cOther">Other loan payments you keep ($ per month)</label><input type="number" id="cOther" min="0" step="100" placeholder="0"></div>
+    </div>
+    <p style="font-size:13.5px;color:var(--muted);margin:8px 0 0">Cash flow before loan payments is net profit plus interest, depreciation and amortization, taken from your tax return or projections.</p>
+    <div class="result" id="dscrResult">Enter the loan and your cash flow to see the ratio.</div>
+    <p style="font-size:14px;margin:12px 0 0">SBA's lender rules set a floor of 1.10 for 7(a) small loans and 1.15 for larger 7(a) loans, and lenders in practice often want 1.25 or better.<sup><a href="#s7">7</a>,<a href="#s10">10</a></sup></p>
+
+    <h3>Equity injection</h3>
+    <div class="calc">
+      <div><label class="q" for="eProject">Total project cost ($)</label><input type="number" id="eProject" min="0" step="1000" placeholder="300000"></div>
+      <div><label class="q" for="eOwn">Your own cash going in ($)</label><input type="number" id="eOwn" min="0" step="1000" placeholder="30000"></div>
+      <div></div>
+    </div>
+    <div class="result" id="eqResult">Enter the project cost and your cash to see your equity share.</div>
+    <p style="font-size:14px;margin:12px 0 0">SBA's current lender rules require at least 10 percent of total project cost from the owner for startups and for a complete change of ownership, and 504 projects need at least 10 percent (more for startups and special-purpose buildings).<sup><a href="#s5">5</a>,<a href="#s7">7</a>,<a href="#s11">11</a></sup></p>
+  </div>
+
+  <!-- 5. PLAN -->
+  <p class="section-label" id="plan">Step 5</p>
+  <h2>Write the business plan and projections</h2>
+  <div class="panel lava">
+    <p style="margin-top:0">Lenders read the plan to see that you know your market, your costs and how the loan gets paid back. SBA's own guide lists the sections a lender expects: executive summary, company description, market analysis, organization and management, products or services, marketing and sales, funding request, and financial projections.<sup><a href="#s8">8</a></sup></p>
+    <p>The Business Plan Wizard walks you through every one of those sections with plain questions and example answers, then builds the plan as a Word document and a financial workbook with a 3-year profit and loss, cash flow, break-even, loan payment, debt coverage and a personal financial statement summary laid out like SBA Form 413.</p>
+    <div class="cta-row"><a class="btn" href="/proposal/">Open the Business Plan Wizard</a></div>
+  </div>
+
+  <!-- 6. LENDER -->
+  <p class="section-label" id="lender">Step 6</p>
+  <h2>Find a lender and free help</h2>
+  <div class="panel">
+    <ul style="margin:0;padding-left:20px">
+      <li><a href="https://www.sba.gov/funding-programs/loans/lender-match-connects-you-lenders" target="_blank" rel="noopener">SBA Lender Match</a> sends your request to SBA lenders who serve your area.<sup><a href="#s12">12</a></sup></li>
+      <li>Your local <a href="https://www.sba.gov/local-assistance/resource-partners/small-business-development-centers-sbdc" target="_blank" rel="noopener">Small Business Development Center</a> reviews plans and projections at no charge.</li>
+      <li><a href="https://www.score.org/find-mentor" target="_blank" rel="noopener">SCORE</a> matches you with a volunteer mentor, also free.</li>
+      <li>Start with the bank that holds your business account. A lender that knows your deposits is the easiest first conversation.</li>
+      <li>For a 504 loan, you work with a Certified Development Company and a bank together.<sup><a href="#s5">5</a></sup></li>
+    </ul>
+  </div>
+
+  <p class="section-label">Sources</p>
+  <ol class="sources">
+    <li id="s1"><a href="https://www.sba.gov/funding-programs/loans/7a-loans" target="_blank" rel="noopener">U.S. Small Business Administration, "7(a) loans."</a></li>
+    <li id="s2"><a href="https://www.sba.gov/partners/lenders/7a-loan-program/types-7a-loans" target="_blank" rel="noopener">U.S. Small Business Administration, "Types of 7(a) loans."</a></li>
+    <li id="s3"><a href="https://www.sba.gov/partners/lenders/7a-loan-program/terms-conditions-eligibility" target="_blank" rel="noopener">U.S. Small Business Administration, "7(a) terms, conditions, and eligibility."</a></li>
+    <li id="s4"><a href="https://www.sba.gov/funding-programs/loans/504-loans" target="_blank" rel="noopener">U.S. Small Business Administration, "504 loans."</a></li>
+    <li id="s5"><a href="https://www.sba.gov/partners/lenders/cdc504-loan-program" target="_blank" rel="noopener">U.S. Small Business Administration, "CDC/504 loan program."</a></li>
+    <li id="s6"><a href="https://www.sba.gov/funding-programs/loans/microloans" target="_blank" rel="noopener">U.S. Small Business Administration, "Microloans."</a></li>
+    <li id="s7"><a href="https://www.sba.gov/document/sop-50-10-lender-development-company-loan-programs" target="_blank" rel="noopener">U.S. Small Business Administration, SOP 50 10, "Lender and Development Company Loan Programs."</a></li>
+    <li id="s8"><a href="https://www.sba.gov/business-guide/plan-your-business/write-your-business-plan" target="_blank" rel="noopener">U.S. Small Business Administration, "Write your business plan."</a></li>
+    <li id="s9"><a href="https://www.sba.gov/federal-contracting/contracting-guide/size-standards" target="_blank" rel="noopener">U.S. Small Business Administration, "Size standards."</a></li>
+    <li id="s10"><a href="https://starfieldsmith.com/2026/01/best-practices-sop-50-10-8-update-new-7a-small-loan-underwriting-requirements/" target="_blank" rel="noopener">Starfield &amp; Smith, "SOP 50 10 8 Update: New 7(a) Small Loan Underwriting Requirements," January 2026.</a></li>
+    <li id="s11"><a href="https://starfieldsmith.com/2025/05/best-practices-a-review-of-equity-injection-requirements-under-sop-50-10-8/" target="_blank" rel="noopener">Starfield &amp; Smith, "A Review of Equity Injection Requirements Under SOP 50 10 8," May 2025.</a></li>
+    <li id="s12"><a href="https://www.sba.gov/funding-programs/loans/lender-match-connects-you-lenders" target="_blank" rel="noopener">U.S. Small Business Administration, "Lender Match."</a></li>
+  </ol>
+</main>
+<footer>
+  General guidance for small business owners, checked against sba.gov in September 2026. It is not legal,
+  tax or lending advice, and program limits change, so confirm the current figures with your lender.
+  Everything you enter on this page stays in your own browser and is not sent anywhere.
+  <span style="display:block;margin-top:6px">dlerhetal.tech</span>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var KEY = 'dlerhetal.sba.v1';
+  var state = { checks: {}, toggles: {}, calc: {} };
+  try { var raw = localStorage.getItem(KEY); if (raw) { var p = JSON.parse(raw); if (p && typeof p === 'object') state = Object.assign(state, p); } } catch (e) {}
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function $(id) { return document.getElementById(id); }
+  function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+
+  /* ---------- Step 1 picker ---------- */
+  function pick() {
+    var u = $('useFor').value, h = $('howMuch').value, out = $('pickResult');
+    if (!u || !h) { out.innerHTML = 'Answer both questions to see the programs to ask your lender about.'; return; }
+    var recs = [];
+    if (h === 'big') {
+      out.innerHTML = '<strong>Above the SBA limits.</strong> A standard 7(a) loan tops out at $5 million and the SBA portion of a 504 at $5.5 million. A larger project can combine an SBA loan with conventional financing; ask a lender that does both.';
+      return;
+    }
+    if (u === 're') { recs.push('<strong>504</strong> for the building, since it offers long fixed-rate terms (10, 20 or 25 years) and a 10 percent down payment is typical'); recs.push('<strong>7(a)</strong> if you also need working capital in the same loan'); }
+    else if (u === 'equip') { recs.push('<strong>504</strong> if the equipment has a useful life of 10 years or more'); recs.push('<strong>7(a)</strong> for shorter-life equipment or a mix of equipment and working capital'); }
+    else if (u === 'buy') { recs.push('<strong>7(a)</strong>, the usual program for buying a business; plan on at least 10 percent of the project from your own cash and an independent business valuation'); }
+    else if (u === 'wc') { recs.push('<strong>7(a)</strong>, including a line of credit through SBA Express or CAPLines'); }
+    else if (u === 'start') { recs.push('<strong>7(a)</strong> with at least 10 percent owner equity and a strong plan with projections'); }
+    else if (u === 'refi') { recs.push('<strong>7(a)</strong>, which allows refinancing of qualifying business debt; <strong>504</strong> can refinance some real estate and equipment debt'); }
+    if (h === '50' && u !== 're' && u !== 'refi') recs.unshift('<strong>Microloan</strong> (up to $50,000 through a nonprofit intermediary), a good fit for startups');
+    if (h === '50' || h === '350') recs.push('At this size a <strong>7(a) small</strong> loan applies, which has simpler processing and a 1.10 coverage floor');
+    if (h === '500' || h === '50' || h === '350') { if (u === 'wc' || u === 'equip') recs.push('<strong>SBA Express</strong> (up to $500,000) if speed matters more than rate'); }
+    out.innerHTML = '<strong>Ask your lender about:</strong><ul style="margin:6px 0 0;padding-left:20px"><li>' + recs.join('</li><li>') + '</li></ul>';
+  }
+  $('useFor').addEventListener('change', pick);
+  $('howMuch').addEventListener('change', pick);
+
+  /* ---------- Step 2 eligibility ---------- */
+  var ELIG = [
+    ['e1', 'The business operates for profit and is located in the United States.', 'Nonprofits, passive businesses and speculative ventures are not eligible.'],
+    ['e2', 'The business is small by SBA size standards for its industry.', 'Size is measured by revenue or employee count and varies by NAICS code. Look yours up on sba.gov.', 's9'],
+    ['e3', 'You can show the business can repay the loan from its cash flow.', 'Historical tax returns for an existing business, or projections plus experience for a new one.'],
+    ['e4', 'You cannot get the same credit elsewhere on reasonable terms.', 'The lender documents this. It is usually a formality for small businesses.'],
+    ['e5', 'Owners of 20 percent or more will personally guarantee the loan.', 'Expect to sign a personal guarantee and fill out a personal financial statement.'],
+    ['e6', 'Owners are current on any federal debt, student loans, taxes and child support.', 'A delinquent federal obligation stops an SBA loan until it is resolved.'],
+    ['e7', 'You have your own money to put in.', 'At least 10 percent of the project for startups and business purchases.', 's7'],
+    ['e8', 'The business is not in an excluded line of work.', 'Lending, passive real estate investment, gambling and a few others are excluded. Ask your lender if unsure.']
+  ];
+  function renderElig() {
+    var ul = $('eligList'); ul.innerHTML = '';
+    ELIG.forEach(function (e) {
+      var li = document.createElement('li');
+      var on = !!state.checks[e[0]];
+      if (on) li.className = 'done';
+      var cite = e[3] ? '<sup><a href="#' + e[3] + '">' + e[3].slice(1) + '</a></sup>' : '';
+      li.innerHTML = '<input type="checkbox" id="c_' + e[0] + '"' + (on ? ' checked' : '') + '><label class="txt" for="c_' + e[0] + '"><span class="name">' + e[1] + '</span>' + cite + '<span class="why">' + e[2] + '</span></label>';
+      li.querySelector('input').addEventListener('change', function (ev) { state.checks[e[0]] = ev.target.checked; li.className = ev.target.checked ? 'done' : ''; save(); });
+      ul.appendChild(li);
+    });
+  }
+
+  /* ---------- Step 3 checklist ---------- */
+  var F1919 = 'https://www.sba.gov/document/sba-form-1919-borrower-information-form';
+  var F413 = 'https://www.sba.gov/document/sba-form-413-personal-financial-statement';
+  var F1244 = 'https://www.sba.gov/document/sba-form-1244-application-section-504-loans';
+  var F4506 = 'https://www.irs.gov/pub/irs-pdf/f4506c.pdf';
+  var GROUPS = [
+    { title: 'SBA and IRS forms', items: [
+      { id: 'f1919', name: 'SBA Form 1919, Borrower Information Form', why: 'The 7(a) application form. The business fills it out with information on each owner of 20 percent or more.', link: F1919, when: 'not504' },
+      { id: 'f1244', name: 'SBA Form 1244, Application for Section 504 Loans', why: 'The 504 application, completed with your Certified Development Company.', link: F1244, when: '504' },
+      { id: 'f413', name: 'SBA Form 413, Personal Financial Statement', why: 'One for each owner of 20 percent or more, dated within 90 days of the application. The Business Plan Wizard workbook has a summary sheet in the same categories.', link: F413 },
+      { id: 'f4506', name: 'IRS Form 4506-C, tax transcript request', why: 'Lets the lender confirm your returns directly with the IRS. The lender usually sends it to you to sign.', link: F4506 }
+    ]},
+    { title: 'Tax returns', items: [
+      { id: 'tBiz', name: 'Business federal tax returns, last 3 years', why: 'All schedules included. A new business skips this and leans on projections.', when: 'notStart' },
+      { id: 'tPers', name: 'Personal federal tax returns, last 3 years, each owner of 20 percent or more', why: 'Shows outside income and personal obligations that affect repayment.' }
+    ]},
+    { title: 'Financial statements', items: [
+      { id: 'sYtd', name: 'Year-to-date profit and loss and balance sheet', why: 'Dated within 90 days of the application.', when: 'notStart' },
+      { id: 'sDebt', name: 'Business debt schedule', why: 'Every loan, lease and line of credit: lender, original amount, balance, rate, monthly payment, maturity, collateral. The workbook has a sheet for it.', when: 'notStart' },
+      { id: 'sAging', name: 'Accounts receivable and payable aging', why: 'Many lenders ask for this with the year-to-date statements.', when: 'notStart' },
+      { id: 'sBank', name: 'Recent business bank statements', why: 'Commonly the last 3 to 12 months.', when: 'notStart' }
+    ]},
+    { title: 'Business plan and projections', items: [
+      { id: 'pPlan', name: 'Business plan', why: 'Required for startups and business purchases, and it strengthens every application. Build it with the Business Plan Wizard.', link: '/proposal/', internal: true },
+      { id: 'pProj', name: '3-year financial projections with assumptions', why: 'Month by month for the first year. The wizard builds the workbook.', link: '/proposal/', internal: true },
+      { id: 'pUse', name: 'Sources and uses of funds', why: 'Where every dollar comes from (loan, your cash, seller or other) and what it pays for.' },
+      { id: 'pRes', name: 'Resume for each owner and key manager', why: 'Lenders lend to people who have run something like this before.' }
+    ]},
+    { title: 'Legal and company documents', items: [
+      { id: 'lOrg', name: 'Formation documents and EIN letter', why: 'Articles of organization or incorporation, operating agreement or bylaws, and the IRS letter assigning your EIN.' },
+      { id: 'lLic', name: 'Business and professional licenses', why: 'State and local licenses for your trade.' },
+      { id: 'lLease', name: 'Lease or proof of your location', why: 'A lease that runs at least as long as the loan term, or can be renewed to match, is often required.' },
+      { id: 'lIns', name: 'Insurance certificates', why: 'General liability, property, and workers compensation if you have employees. Life insurance may be required on key owners.' }
+    ]},
+    { title: 'Buying a business', when: 'buy', items: [
+      { id: 'bLoi', name: 'Signed letter of intent or purchase agreement', why: 'States the price, what is included and the closing terms.' },
+      { id: 'bSeller', name: "Seller's business tax returns (3 years) and year-to-date financials", why: 'The lender underwrites the business you are buying from its own history.' },
+      { id: 'bVal', name: 'Independent business valuation', why: 'Required on most business purchases. The lender orders it.' },
+      { id: 'bNote', name: 'Seller note terms, if the seller is financing part', why: 'A seller note counts toward your equity only in limited cases; your lender will explain.', cite: 's11' }
+    ]},
+    { title: 'New business', when: 'start', items: [
+      { id: 'nEq', name: 'Proof of your equity injection', why: 'Bank or brokerage statements showing the cash you are putting in, and where it came from.' },
+      { id: 'nCost', name: 'Startup cost estimate with quotes', why: 'Equipment quotes, buildout bids, first inventory order, deposits.', link: 'https://www.sba.gov/business-guide/plan-your-business/calculate-your-startup-costs' }
+    ]},
+    { title: 'Real estate and construction', when: 're', items: [
+      { id: 'rCon', name: 'Purchase contract for the property', why: 'Or construction contract and plans.' },
+      { id: 'rBids', name: 'Construction or renovation bids', why: 'Itemized, from licensed contractors.' },
+      { id: 'rEnv', name: 'Environmental review', why: 'The lender orders it; budget for the cost.' },
+      { id: 'rApp', name: 'Appraisal', why: 'The lender orders it.' }
+    ]},
+    { title: 'Franchise', when: 'fr', items: [
+      { id: 'frAg', name: 'Franchise agreement and disclosure document', why: 'The brand must be on the SBA Franchise Directory. Your lender checks it.' }
+    ]}
+  ];
+  function toggles() {
+    return { buy: $('tBuy').checked, start: $('tStart').checked, re: $('tRe').checked, s504: $('t504').checked, fr: $('tFr').checked };
+  }
+  function applies(when, t) {
+    if (!when) return true;
+    if (when === 'buy') return t.buy;
+    if (when === 'start') return t.start;
+    if (when === 're') return t.re;
+    if (when === 'fr') return t.fr;
+    if (when === '504') return t.s504;
+    if (when === 'not504') return !t.s504;
+    if (when === 'notStart') return !t.start;
+    return true;
+  }
+  function renderGroups() {
+    var t = toggles();
+    state.toggles = t; save();
+    var host = $('groups'); host.innerHTML = '';
+    var total = 0, done = 0, missing = [];
+    GROUPS.forEach(function (g) {
+      if (!applies(g.when, t)) return;
+      var items = g.items.filter(function (it) { return applies(it.when, t); });
+      if (!items.length) return;
+      var panel = document.createElement('div'); panel.className = 'panel';
+      panel.innerHTML = '<h3 style="margin-top:0">' + g.title + '</h3>';
+      var ul = document.createElement('ul'); ul.className = 'checks';
+      items.forEach(function (it) {
+        total++;
+        var on = !!state.checks[it.id];
+        if (on) done++; else missing.push(it.name);
+        var li = document.createElement('li'); if (on) li.className = 'done';
+        var link = it.link ? ' <a href="' + it.link + '"' + (it.internal ? '' : ' target="_blank" rel="noopener"') + '>' + (it.internal ? 'Open the wizard' : 'Get it') + '</a>' : '';
+        var cite = it.cite ? '<sup><a href="#' + it.cite + '">' + it.cite.slice(1) + '</a></sup>' : '';
+        li.innerHTML = '<input type="checkbox" id="c_' + it.id + '"' + (on ? ' checked' : '') + '><span class="txt"><label class="name" for="c_' + it.id + '">' + it.name + '</label>' + cite + link + '<span class="why">' + it.why + '</span></span>';
+        li.querySelector('input').addEventListener('change', function (ev) { state.checks[it.id] = ev.target.checked; save(); renderGroups(); });
+        ul.appendChild(li);
+      });
+      panel.appendChild(ul); host.appendChild(panel);
+    });
+    var a = $('alarm');
+    if (missing.length === 0) { a.className = 'alarm ok'; a.innerHTML = '<strong>Package complete.</strong> All ' + total + ' items are checked off. Take it to your lender.'; }
+    else {
+      a.className = 'alarm';
+      var list = missing.slice(0, 6).map(function (m) { return '<li>' + m + '</li>'; }).join('');
+      a.innerHTML = '<strong>Still missing ' + missing.length + ' of ' + total + '.</strong><ul>' + list + (missing.length > 6 ? '<li>and ' + (missing.length - 6) + ' more below</li>' : '') + '</ul>';
+    }
+    $('barFill').style.width = (total ? Math.round(done / total * 100) : 0) + '%';
+  }
+  ['tBuy', 'tStart', 'tRe', 't504', 'tFr'].forEach(function (id) { $(id).addEventListener('change', renderGroups); });
+  var tmap = { tBuy: 'buy', tStart: 'start', tRe: 're', t504: 's504', tFr: 'fr' };
+  Object.keys(tmap).forEach(function (id) { if (state.toggles && state.toggles[tmap[id]]) $(id).checked = true; });
+  $('resetChecks').addEventListener('click', function () { if (confirm('Clear every checkmark on this page?')) { state.checks = {}; save(); renderElig(); renderGroups(); } });
+
+  /* ---------- Step 4 calculators ---------- */
+  var CALC = ['cLoan', 'cRate', 'cYears', 'cCash', 'cDraw', 'cOther', 'eProject', 'eOwn'];
+  CALC.forEach(function (id) {
+    if (state.calc && state.calc[id] != null && state.calc[id] !== '') $(id).value = state.calc[id];
+    $(id).addEventListener('input', function () { state.calc[id] = $(id).value; save(); calc(); });
+  });
+  function num(id) { var v = parseFloat($(id).value); return isFinite(v) ? v : NaN; }
+  function pmt(rate, n, pv) { if (rate === 0) return pv / n; return pv * rate / (1 - Math.pow(1 + rate, -n)); }
+  function calc() {
+    var L = num('cLoan'), r = num('cRate'), y = num('cYears'), c = num('cCash');
+    var d = num('cDraw') || 0, o = num('cOther') || 0;
+    var out = $('dscrResult');
+    if (!(L > 0) || !(r >= 0) || !(y > 0) || !(c >= 0)) { out.innerHTML = 'Enter the loan and your cash flow to see the ratio.'; }
+    else {
+      var m = pmt(r / 100 / 12, Math.round(y * 12), L);
+      var ds = m * 12 + o * 12;
+      var avail = c - d;
+      var ratio = ds > 0 ? avail / ds : 0;
+      var cls = ratio >= 1.25 ? 'verdict-good' : (ratio >= 1.15 ? 'verdict-mid' : 'verdict-bad');
+      var msg = ratio >= 1.25 ? 'Comfortable. This clears the level most lenders like to see.'
+        : ratio >= 1.15 ? 'Meets the SBA floor for a standard 7(a) loan, with little cushion. Expect questions.'
+        : ratio >= 1.10 ? 'Meets the 7(a) small loan floor only. A smaller loan, a longer term or more equity would help.'
+        : 'Below the SBA floors. The loan payment is too large for this cash flow. Borrow less, stretch the term, or show more cash flow.';
+      out.innerHTML = 'Monthly payment on the new loan: <strong>' + money(m) + '</strong><br>' +
+        'Total annual debt service: <strong>' + money(ds) + '</strong><br>' +
+        'Cash available for debt service: <strong>' + money(avail) + '</strong><br>' +
+        'DSCR: <span class="' + cls + '">' + ratio.toFixed(2) + 'x</span> ' + msg;
+    }
+    var P = num('eProject'), E = num('eOwn'), eo = $('eqResult');
+    if (!(P > 0) || !(E >= 0)) { eo.innerHTML = 'Enter the project cost and your cash to see your equity share.'; }
+    else {
+      var pct = E / P * 100;
+      var need = P * 0.10;
+      eo.innerHTML = 'Your equity: <strong>' + pct.toFixed(1) + '%</strong> of the project. ' +
+        (pct >= 10 ? '<span class="verdict-good">Meets the 10 percent minimum for startups and business purchases.</span>'
+          : '<span class="verdict-bad">Below 10 percent.</span> For a startup or a business purchase you would need at least ' + money(need) + ', which is ' + money(need - E) + ' more.');
+    }
+  }
+
+  renderElig();
+  renderGroups();
+  calc();
+})();
+</script>
+</body>
+</html>

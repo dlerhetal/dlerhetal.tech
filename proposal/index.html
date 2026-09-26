@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Business Plan Wizard | dlerhetal.tech</title>
+<meta name="description" content="A free, guided business plan builder for small business owners applying for an SBA or bank loan. Answer plain questions and download a Word business plan and an Excel workbook with 3-year projections, cash flow, break-even and debt coverage.">
+<meta property="og:title" content="Business Plan Wizard">
+<meta property="og:description" content="Answer plain questions, get a lender-ready business plan (.docx) and a financial workbook (.xlsx) with live formulas. Free, and your answers never leave your browser.">
+<meta property="og:image" content="https://dlerhetal.tech/brand/claude/social/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dlerhetal.tech/proposal/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://dlerhetal.tech/proposal/">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="brand">dlerhetal<span class="dot">.</span>tech</a>
+    <ul>
+      <li><a href="/">Tools</a></li>
+      <li><a href="/tutorials/">Tutorials</a></li>
+      <li><a href="/setup/">Setup</a></li>
+    </ul>
+  </div>
+</nav>
+<main>
+  <div class="page-head">
+    <h1>Business Plan Wizard</h1>
+    <p class="lede">A lender-ready business plan and financial workbook, one plain question at a time.</p>
+    <p>SBA lenders and banks ask for a business plan with projections. This wizard walks through every
+      section they expect, shows an example answer for each question, and builds two files you can take to
+      the bank: the plan as a Word document and a workbook with a 3-year forecast, cash flow, break-even and
+      debt coverage. Your answers save in this browser as you type and are never sent anywhere.</p>
+    <p>Applying for an SBA loan? Start with the <a href="/sba/">SBA Loan Guide</a> for the full document checklist.</p>
+  </div>
+
+  <div class="toolbar" aria-label="Plan tools">
+    <button type="button" class="btn ghost small" id="btnSample">Load the sample plan</button>
+    <button type="button" class="btn ghost small" id="btnBackup">Save a backup file</button>
+    <button type="button" class="btn ghost small" id="btnRestore">Open a backup file</button>
+    <input type="file" id="fileRestore" accept="application/json,.json" hidden>
+    <button type="button" class="btn ghost small" id="btnClear">Start over</button>
+  </div>
+
+  <div id="wizardTop"></div>
+  <ol class="stepper" id="stepper" aria-label="Plan sections"></ol>
+  <div id="stepHost"></div>
+
+  <p class="credits">Plan sections follow the SBA's guide to
+    <a href="https://www.sba.gov/business-guide/plan-your-business/write-your-business-plan" target="_blank" rel="noopener">writing a business plan</a>.
+    For free one-on-one help, SCORE offers mentors and its own
+    <a href="https://www.score.org/templates/financial-projections-template/" target="_blank" rel="noopener">financial projections template</a>,
+    and your local <a href="https://www.sba.gov/local-assistance/resource-partners/small-business-development-centers-sbdc" target="_blank" rel="noopener">Small Business Development Center</a>
+    will review a plan at no charge.
+    This wizard is open source under the MIT License (<a href="https://github.com/dlerhetal/dlerhetal.tech/tree/main/proposal" target="_blank" rel="noopener">source and readme</a>, <a href="LICENSE.txt">license</a>).
+    It uses <a href="https://github.com/dolanmiu/docx" target="_blank" rel="noopener">docx</a> (MIT) and
+    <a href="https://github.com/exceljs/exceljs" target="_blank" rel="noopener">ExcelJS</a> (MIT) to build the files in your browser.</p>
+</main>
+<footer>
+  General guidance for small business owners. It is not legal, tax, accounting or lending advice; have your
+  accountant review the projections before you submit them. Everything you type stays in this browser on this
+  device. Use "Save a backup file" to move your answers to another computer.
+  <span style="display:block;margin-top:6px">dlerhetal.tech</span>
+</footer>
+<div id="printPlan" aria-hidden="true"></div>
+
+<script src="questions.js"></script>
+<script src="model.js"></script>
+<script src="plan.js"></script>
+<script src="export-xlsx.js"></script>
+<script src="export-docx.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
