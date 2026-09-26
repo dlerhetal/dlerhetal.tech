@@ -248,10 +248,16 @@
   <!-- 4. NUMBERS -->
   <p class="section-label" id="numbers">Step 4</p>
   <h2>Test your numbers the way a lender will</h2>
+  <p class="rules-note" style="font-size:12.5px;color:var(--muted);margin:4px 0 10px">Rules as of SBA SOP 50 10 8.1, effective Oct 1, 2026.<sup><a href="#s7">7</a>,<a href="#s13">13</a>,<a href="#s14">14</a></sup></p>
   <p>Two numbers decide most applications. <strong>Debt service coverage</strong> asks whether the cash the business throws off covers every loan payment with room to spare. <strong>Equity injection</strong> asks how much of your own money is in the deal.</p>
   <div class="panel">
     <h3 style="margin-top:0">Debt service coverage ratio (DSCR)</h3>
     <div class="calc">
+      <div><label class="q" for="cType">What is the loan for?</label><select id="cType">
+        <option value="1.25">Buying a business or buying out an owner</option>
+        <option value="1.15" selected>Any other purpose, standard 7(a)</option>
+        <option value="1.10">Any other purpose, 7(a) small loan (up to $350,000)</option>
+      </select></div>
       <div><label class="q" for="cLoan">New loan amount ($)</label><input type="number" id="cLoan" min="0" step="1000" placeholder="250000"></div>
       <div><label class="q" for="cRate">Interest rate (% per year)</label><input type="number" id="cRate" min="0" step="0.25" placeholder="10.5"></div>
       <div><label class="q" for="cYears">Term (years)</label><input type="number" id="cYears" min="1" max="25" step="1" placeholder="10"></div>
@@ -259,9 +265,15 @@
       <div><label class="q" for="cDraw">Owner pay not already in expenses ($ per year)</label><input type="number" id="cDraw" min="0" step="1000" placeholder="0"></div>
       <div><label class="q" for="cOther">Other loan payments you keep ($ per month)</label><input type="number" id="cOther" min="0" step="100" placeholder="0"></div>
     </div>
-    <p style="font-size:13.5px;color:var(--muted);margin:8px 0 0">Cash flow before loan payments is net profit plus interest, depreciation and amortization, taken from your tax return or projections.</p>
+    <p style="font-size:13.5px;color:var(--muted);margin:8px 0 0">Cash flow before loan payments is net profit plus interest, depreciation and amortization, taken from your tax return or projections. For a business purchase or buyout, use the business's historical results: projections cannot be used to meet the minimum.</p>
     <div class="result" id="dscrResult">Enter the loan and your cash flow to see the ratio.</div>
-    <p style="font-size:14px;margin:12px 0 0">SBA's lender rules set a floor of 1.10 for 7(a) small loans and 1.15 for larger 7(a) loans, and lenders in practice often want 1.25 or better.<sup><a href="#s7">7</a>,<a href="#s10">10</a></sup></p>
+    <p style="font-size:14px;margin:12px 0 0">SBA's minimum debt service coverage depends on the loan:<sup><a href="#s7">7</a>,<a href="#s10">10</a>,<a href="#s13">13</a>,<a href="#s14">14</a></sup></p>
+    <ul style="font-size:14px;margin:6px 0 0;padding-left:20px">
+      <li><strong>1.25x</strong> for buying a business or buying out an owner, measured on the business's historical results.</li>
+      <li><strong>1.15x</strong> for a standard 7(a) loan for any other purpose.</li>
+      <li><strong>1.10x</strong> for a 7(a) small loan (up to $350,000) for any other purpose. 7(a) small loan processing is not allowed for any change of ownership.</li>
+    </ul>
+    <p style="font-size:14px;margin:6px 0 0">Many lenders want 1.25x or better on every loan.</p>
 
     <h3>Equity injection</h3>
     <div class="calc">
@@ -270,7 +282,7 @@
       <div></div>
     </div>
     <div class="result" id="eqResult">Enter the project cost and your cash to see your equity share.</div>
-    <p style="font-size:14px;margin:12px 0 0">SBA's current lender rules require at least 10 percent of total project cost from the owner for startups and for a complete change of ownership, and 504 projects need at least 10 percent (more for startups and special-purpose buildings).<sup><a href="#s5">5</a>,<a href="#s7">7</a>,<a href="#s11">11</a></sup></p>
+    <p style="font-size:14px;margin:12px 0 0">SBA's lender rules require at least 10 percent of total project cost from the owner for startups and for a complete change of ownership; for buying a business that minimum cannot be waived. A seller note counts toward it only if it is on full standby for the life of the SBA loan, and standby debt plus outside investors can cover no more than half of the required amount. 504 projects need at least 10 percent (more for startups and special-purpose buildings).<sup><a href="#s5">5</a>,<a href="#s7">7</a>,<a href="#s11">11</a>,<a href="#s13">13</a>,<a href="#s14">14</a></sup></p>
   </div>
 
   <!-- 5. PLAN -->
@@ -303,16 +315,18 @@
     <li id="s4"><a href="https://www.sba.gov/funding-programs/loans/504-loans" target="_blank" rel="noopener">U.S. Small Business Administration, "504 loans."</a></li>
     <li id="s5"><a href="https://www.sba.gov/partners/lenders/cdc504-loan-program" target="_blank" rel="noopener">U.S. Small Business Administration, "CDC/504 loan program."</a></li>
     <li id="s6"><a href="https://www.sba.gov/funding-programs/loans/microloans" target="_blank" rel="noopener">U.S. Small Business Administration, "Microloans."</a></li>
-    <li id="s7"><a href="https://www.sba.gov/document/sop-50-10-lender-development-company-loan-programs" target="_blank" rel="noopener">U.S. Small Business Administration, SOP 50 10, "Lender and Development Company Loan Programs."</a></li>
+    <li id="s7"><a href="https://www.sba.gov/document/sop-50-10-lender-development-company-loan-programs" target="_blank" rel="noopener">U.S. Small Business Administration, SOP 50 10 8.1, "Lender and Development Company Loan Programs," effective October 1, 2026.</a></li>
     <li id="s8"><a href="https://www.sba.gov/business-guide/plan-your-business/write-your-business-plan" target="_blank" rel="noopener">U.S. Small Business Administration, "Write your business plan."</a></li>
     <li id="s9"><a href="https://www.sba.gov/federal-contracting/contracting-guide/size-standards" target="_blank" rel="noopener">U.S. Small Business Administration, "Size standards."</a></li>
     <li id="s10"><a href="https://starfieldsmith.com/2026/01/best-practices-sop-50-10-8-update-new-7a-small-loan-underwriting-requirements/" target="_blank" rel="noopener">Starfield &amp; Smith, "SOP 50 10 8 Update: New 7(a) Small Loan Underwriting Requirements," January 2026.</a></li>
     <li id="s11"><a href="https://starfieldsmith.com/2025/05/best-practices-a-review-of-equity-injection-requirements-under-sop-50-10-8/" target="_blank" rel="noopener">Starfield &amp; Smith, "A Review of Equity Injection Requirements Under SOP 50 10 8," May 2025.</a></li>
     <li id="s12"><a href="https://www.sba.gov/funding-programs/loans/lender-match-connects-you-lenders" target="_blank" rel="noopener">U.S. Small Business Administration, "Lender Match."</a></li>
+    <li id="s13"><a href="https://cantrellfirm.com/blog/new-sba-acquisition-rules-sop-50-10-8-1/" target="_blank" rel="noopener">Cantrell Law Firm, "New SBA Rules Change How Businesses Sell" (SOP 50 10 8.1), 2026.</a></li>
+    <li id="s14"><a href="https://www.opsfi.co/insights/sba-acquisition-quality-of-earnings-sop-50-10-8-1" target="_blank" rel="noopener">OpsFi, "SBA SOP 50 10 8.1: Acquisition QoE and 1.25x Coverage," 2026.</a></li>
   </ol>
 </main>
 <footer>
-  General guidance for small business owners, checked against sba.gov in September 2026. It is not legal,
+  General guidance for small business owners, checked against sba.gov in September 2026. Rules as of SBA SOP 50 10 8.1, effective Oct 1, 2026. It is not legal,
   tax or lending advice, and program limits change, so confirm the current figures with your lender.
   Everything you enter on this page stays in your own browser and is not sent anywhere.
   <span style="display:block;margin-top:6px">dlerhetal.tech</span>
@@ -339,12 +353,13 @@
     }
     if (u === 're') { recs.push('<strong>504</strong> for the building, since it offers long fixed-rate terms (10, 20 or 25 years) and a 10 percent down payment is typical'); recs.push('<strong>7(a)</strong> if you also need working capital in the same loan'); }
     else if (u === 'equip') { recs.push('<strong>504</strong> if the equipment has a useful life of 10 years or more'); recs.push('<strong>7(a)</strong> for shorter-life equipment or a mix of equipment and working capital'); }
-    else if (u === 'buy') { recs.push('<strong>7(a)</strong>, the usual program for buying a business; plan on at least 10 percent of the project from your own cash and an independent business valuation'); }
+    else if (u === 'buy') { recs.push('<strong>7(a)</strong>, the usual program for buying a business. Plan on at least 10 percent of the project from your own cash, a debt service coverage of 1.25x on the business\'s historical results, an independent business valuation ordered by the lender, and a quality of earnings report if the price is $3 million or more'); }
     else if (u === 'wc') { recs.push('<strong>7(a)</strong>, including a line of credit through SBA Express or CAPLines'); }
     else if (u === 'start') { recs.push('<strong>7(a)</strong> with at least 10 percent owner equity and a strong plan with projections'); }
     else if (u === 'refi') { recs.push('<strong>7(a)</strong>, which allows refinancing of qualifying business debt; <strong>504</strong> can refinance some real estate and equipment debt'); }
     if (h === '50' && u !== 're' && u !== 'refi') recs.unshift('<strong>Microloan</strong> (up to $50,000 through a nonprofit intermediary), a good fit for startups');
-    if (h === '50' || h === '350') recs.push('At this size a <strong>7(a) small</strong> loan applies, which has simpler processing and a 1.10 coverage floor');
+    if ((h === '50' || h === '350') && u !== 'buy') recs.push('At this size a <strong>7(a) small</strong> loan applies, which has simpler processing and a 1.10 coverage floor');
+    if ((h === '50' || h === '350') && u === 'buy') recs.push('7(a) small loan processing is not allowed for buying a business, even at this size, so expect standard 7(a) underwriting');
     if (h === '500' || h === '50' || h === '350') { if (u === 'wc' || u === 'equip') recs.push('<strong>SBA Express</strong> (up to $500,000) if speed matters more than rate'); }
     out.innerHTML = '<strong>Ask your lender about:</strong><ul style="margin:6px 0 0;padding-left:20px"><li>' + recs.join('</li><li>') + '</li></ul>';
   }
@@ -412,8 +427,9 @@
     { title: 'Buying a business', when: 'buy', items: [
       { id: 'bLoi', name: 'Signed letter of intent or purchase agreement', why: 'States the price, what is included and the closing terms.' },
       { id: 'bSeller', name: "Seller's business tax returns (3 years) and year-to-date financials", why: 'The lender underwrites the business you are buying from its own history.' },
-      { id: 'bVal', name: 'Independent business valuation', why: 'Required on most business purchases. The lender orders it.' },
-      { id: 'bNote', name: 'Seller note terms, if the seller is financing part', why: 'A seller note counts toward your equity only in limited cases; your lender will explain.', cite: 's11' }
+      { id: 'bVal', name: 'Independent business valuation', why: 'Required for every business purchase. The lender orders it from a qualified appraiser, and total debt cannot exceed the value it supports.', cite: 's13' },
+      { id: 'bQoe', name: 'Quality of earnings report, if the price is $3 million or more', why: 'The lender orders it; one prepared for you or the seller does not count.', cite: 's14' },
+      { id: 'bNote', name: 'Seller note terms, if the seller is financing part', why: 'A seller note counts toward your equity only if it is on full standby for the life of the SBA loan.', cite: 's13' }
     ]},
     { title: 'New business', when: 'start', items: [
       { id: 'nEq', name: 'Proof of your equity injection', why: 'Bank or brokerage statements showing the cash you are putting in, and where it came from.' },
@@ -483,7 +499,7 @@
   $('resetChecks').addEventListener('click', function () { if (confirm('Clear every checkmark on this page?')) { state.checks = {}; save(); renderElig(); renderGroups(); } });
 
   /* ---------- Step 4 calculators ---------- */
-  var CALC = ['cLoan', 'cRate', 'cYears', 'cCash', 'cDraw', 'cOther', 'eProject', 'eOwn'];
+  var CALC = ['cType', 'cLoan', 'cRate', 'cYears', 'cCash', 'cDraw', 'cOther', 'eProject', 'eOwn'];
   CALC.forEach(function (id) {
     if (state.calc && state.calc[id] != null && state.calc[id] !== '') $(id).value = state.calc[id];
     $(id).addEventListener('input', function () { state.calc[id] = $(id).value; save(); calc(); });
@@ -500,11 +516,12 @@
       var ds = m * 12 + o * 12;
       var avail = c - d;
       var ratio = ds > 0 ? avail / ds : 0;
-      var cls = ratio >= 1.25 ? 'verdict-good' : (ratio >= 1.15 ? 'verdict-mid' : 'verdict-bad');
-      var msg = ratio >= 1.25 ? 'Comfortable. This clears the level most lenders like to see.'
-        : ratio >= 1.15 ? 'Meets the SBA floor for a standard 7(a) loan, with little cushion. Expect questions.'
-        : ratio >= 1.10 ? 'Meets the 7(a) small loan floor only. A smaller loan, a longer term or more equity would help.'
-        : 'Below the SBA floors. The loan payment is too large for this cash flow. Borrow less, stretch the term, or show more cash flow.';
+      var floor = parseFloat($('cType').value) || 1.15;
+      var floorName = floor >= 1.25 ? 'a business purchase or buyout' : (floor >= 1.15 ? 'a standard 7(a) loan' : 'a 7(a) small loan');
+      var cls = ratio >= 1.25 ? 'verdict-good' : (ratio >= floor ? 'verdict-mid' : 'verdict-bad');
+      var msg = ratio >= 1.25 ? 'Comfortable. This meets the SBA minimum for ' + floorName + ' and the level most lenders like to see.'
+        : ratio >= floor ? 'Meets the SBA minimum of ' + floor.toFixed(2) + 'x for ' + floorName + ', with little cushion. Many lenders want 1.25x, so expect questions.'
+        : 'Below the SBA minimum of ' + floor.toFixed(2) + 'x for ' + floorName + '. Borrow less, stretch the term, put in more equity, or show more cash flow.';
       out.innerHTML = 'Monthly payment on the new loan: <strong>' + money(m) + '</strong><br>' +
         'Total annual debt service: <strong>' + money(ds) + '</strong><br>' +
         'Cash available for debt service: <strong>' + money(avail) + '</strong><br>' +

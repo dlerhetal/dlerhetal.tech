@@ -193,9 +193,10 @@
     }
     if (step.id === 'financials' || step.id === 'debts') {
       if (!(r.years[0].revenue > 0)) return 'Enter first-month sales and your expenses to see year 1 results.';
-      var d = r.dscr[0].ratio, cls = d == null ? 'good' : (d >= r.dscrTarget ? 'good' : (d >= 1.15 ? 'warn' : 'bad'));
+      var d = r.dscr[0].ratio, cls = d == null ? 'good' : (d >= r.dscrTarget ? 'good' : (d >= r.sbaFloor ? 'warn' : 'bad'));
       return 'Year 1 sales <strong>' + money(r.years[0].revenue) + '</strong>, net income <strong>' + money(r.years[0].net) + '</strong>. ' +
-        'DSCR year 1: <span class="' + cls + '">' + ratio(d) + '</span> (target ' + r.dscrTarget.toFixed(2) + 'x). ' +
+        'DSCR year 1: <span class="' + cls + '">' + ratio(d) + '</span> (target ' + r.dscrTarget.toFixed(2) + 'x; ' + r.sba.label + ' ' + r.sbaFloor.toFixed(2) + 'x). ' +
+        (r.sba.notes.length ? '<br><small>' + r.sba.notes.join(' ') + ' ' + r.sba.source + '</small><br>' : '') +
         'Lowest month-end cash: <span class="' + (r.lowestCash >= 0 ? 'good' : 'bad') + '">' + money(r.lowestCash) + '</span>.';
     }
     if (step.id === 'pfs') {
@@ -259,7 +260,7 @@
       tile('Loan request', money(r.loan.amount), r.loan.amount > 0 ? money(r.loan.payment) + ' a month' : '');
       tile('Owner equity', pct(r.funds.equityPct), money(r.funds.owner) + ' of ' + money(r.funds.total));
       tile('Year 1 sales', money(r.years[0].revenue), 'Year 3: ' + money(r.years[2].revenue));
-      tile('DSCR year 1', ratio(r.dscr[0].ratio), 'Target ' + r.dscrTarget.toFixed(2) + 'x, SBA minimum 1.15x');
+      tile('DSCR year 1', ratio(r.dscr[0].ratio), 'Target ' + r.dscrTarget.toFixed(2) + 'x, SBA minimum ' + r.sbaFloor.toFixed(2) + 'x (' + r.sba.short + ')');
       tile('Break-even', money(r.breakeven.monthly), 'sales per month');
       tile('Lowest cash', money(r.lowestCash), 'month-end, year 1');
       card.appendChild(tiles);

@@ -19,7 +19,7 @@
         { id: 'owners', label: 'Owner name or names', type: 'text', req: true, example: 'Jordan Rivera' },
         { id: 'location', label: 'City and state', type: 'text', req: true, example: 'Springfield, Illinois' },
         { id: 'planType', label: 'Which describes you?', type: 'select', req: true,
-          options: ['Starting a new business', 'Growing an existing business', 'Buying an existing business'],
+          options: ['Starting a new business', 'Growing an existing business', 'Buying an existing business', 'Buying out a partner or owner'],
           example: 'Starting a new business' },
         { id: 'program', label: 'Which loan are you applying for?', type: 'select', req: false,
           options: ['SBA 7(a)', 'SBA 7(a) small', 'SBA Express', 'SBA 504', 'SBA Microloan', 'Conventional bank loan', 'Not sure yet'],
@@ -204,7 +204,7 @@
           help: 'Roughly equipment cost divided by years of useful life. Your accountant can refine it.', example: 14500 },
         { id: 'startCash', label: 'Business cash on hand before the loan', type: 'money', req: false, example: 0 },
         { id: 'dscrTarget', label: 'Lender coverage target (DSCR)', type: 'number', req: false,
-          help: 'SBA floor is 1.15 for standard 7(a) loans and 1.10 for 7(a) small loans. Many lenders want 1.25.', example: 1.25 },
+          help: 'SBA minimums (SOP 50 10 8.1, effective Oct 1, 2026): 1.25 for buying a business or buying out an owner, on historical results; otherwise 1.15 for a standard 7(a) loan and 1.10 for a 7(a) small loan. Many lenders want 1.25 either way.', example: 1.25 },
         { id: 'assumptions', label: 'How did you arrive at these numbers?', type: 'textarea', req: true,
           example: 'First-month sales assume 320 customers a week at an $18 average ticket plus three catering orders a week. Cost of goods is based on supplier quotes. Rent is from the signed lease.' }
       ]

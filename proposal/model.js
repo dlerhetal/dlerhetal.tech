@@ -15,6 +15,28 @@
   function pct(v) { return n(v) / 100; }
   function sum(a) { var t = 0; for (var i = 0; i < a.length; i++) t += a[i]; return t; }
 
+  /*
+   * SBA minimum debt service coverage for this plan, per SBA SOP 50 10 8.1 (effective Oct 1, 2026).
+   * Buying a business or buying out an owner: 1.25x, measured on historical results.
+   * Otherwise the per-loan-type minimum kept from SOP 50 10 8: 1.10x for a 7(a) small loan,
+   * 1.15x for a standard 7(a) loan (used as the reference for every other program).
+   */
+  var SOP_NOTE = 'Rules as of SBA SOP 50 10 8.1, effective Oct 1, 2026.';
+  function isPurchase(a) { return /^Buying/.test((a && a.planType) || ''); }
+  function sbaFloor(a) {
+    a = a || {};
+    var prog = a.program || '', notes = [];
+    if (isPurchase(a)) {
+      notes.push('For a business purchase or owner buyout the lender must see 1.25x on the business\'s historical results; projections alone cannot clear it.');
+      notes.push('The lender orders an independent business valuation for every change of ownership, and a quality of earnings report when the purchase price is $3 million or more.');
+      notes.push('You put in at least 10 percent of the total project cost. A seller note counts toward that only if it is on full standby for the life of the SBA loan, and standby debt plus outside investors can cover no more than half of it.');
+      if (prog === 'SBA 7(a) small') notes.push('7(a) small loan processing is not allowed for any change of ownership, so expect a standard 7(a) loan.');
+      return { floor: 1.25, label: 'SBA minimum for a business purchase or owner buyout', short: 'business purchase or buyout', notes: notes, source: SOP_NOTE };
+    }
+    if (prog === 'SBA 7(a) small') return { floor: 1.10, label: 'SBA minimum for a 7(a) small loan', short: '7(a) small loan', notes: notes, source: SOP_NOTE };
+    return { floor: 1.15, label: 'SBA minimum for a standard 7(a) loan', short: 'standard 7(a) loan', notes: notes, source: SOP_NOTE };
+  }
+
   function pmt(rate, periods, pv) {
     if (!(pv > 0) || !(periods > 0)) return 0;
     if (rate === 0) return pv / periods;
@@ -143,7 +165,8 @@
       firstMonth: (function () { for (var q = 0; q < 12; q++) if (m[q].revenue >= beAnnual / 12) return q + 1; return 0; })() };
 
     // DSCR
-    var target = a.dscrTarget === '' || a.dscrTarget == null ? 1.25 : n(a.dscrTarget);
+    var sf = sbaFloor(a);
+    var target = a.dscrTarget === '' || a.dscrTarget == null ? Math.max(1.25, sf.floor) : n(a.dscrTarget);
     r.dscr = [1, 2, 3].map(function (yr) {
       var y = r.years[yr - 1];
       var cads = y.ebitda - y.tax - draw * 12;
@@ -152,7 +175,8 @@
         ratio: ds > 0 ? cads / ds : null };
     });
     r.dscrTarget = target;
-    r.sbaFloor = 1.15;
+    r.sbaFloor = sf.floor;
+    r.sba = sf;
 
     r.loan = { amount: L, rate: rate, years: years, periods: periods, payment: payment,
       annual: payment * 12, totalInterest: sum(sched.map(function (s) { return s.interest; })) };
@@ -167,7 +191,7 @@
     return r;
   }
 
-  var api = { compute: compute, pmt: pmt, MAX_PERIODS: MAX_PERIODS };
+  var api = { compute: compute, pmt: pmt, sbaFloor: sbaFloor, SOP_NOTE: SOP_NOTE, MAX_PERIODS: MAX_PERIODS };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.BPW_Model = api;
 })(typeof window !== 'undefined' ? window : this);

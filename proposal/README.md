@@ -42,8 +42,10 @@ To change the questions, edit `questions.js`. To change the math, change `model.
 - Sales grow monthly in year 1, then by yearly rates. Cost of goods is a percent of sales.
 - The new loan funds in month 1 and pays monthly from month 1 (level payment, PMT).
 - DSCR = (EBITDA minus income tax minus owner draws) / (new loan payments + existing debt payments).
-- SBA SOP 50 10 sets 1.15x for standard 7(a) loans and 1.10x for 7(a) small loans; the
-  wizard defaults the lender target to 1.25x.
+- SBA minimum DSCR, per SOP 50 10 8.1 (effective Oct 1, 2026), from `BPW_Model.sbaFloor()`:
+  1.25x when the plan type is buying a business or buying out an owner (historical results);
+  otherwise 1.10x for a 7(a) small loan and 1.15x for a standard 7(a) loan. The lender target
+  defaults to 1.25x.
 
 ## Reuse
 

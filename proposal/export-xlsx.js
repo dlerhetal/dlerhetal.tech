@@ -56,6 +56,7 @@
   }
 
   function build(ExcelJS, a) {
+    var SF = (root.BPW_Model || require('./model.js')).sbaFloor(a);
     a = a || {};
     var wb = new ExcelJS.Workbook();
     wb.creator = 'Business Plan Wizard';
@@ -93,8 +94,8 @@
       [16, 'New loan amount', n(a.loanAmount), MONEY, ''],
       [17, 'Interest rate per year', n(a.loanRate) / 100, '0.00%', ''],
       [18, 'Term in years', n(a.loanYears), '0', 'Up to 25. The Loan sheet schedules up to 300 monthly payments.'],
-      [19, 'Lender DSCR target', a.dscrTarget === '' || a.dscrTarget == null ? 1.25 : n(a.dscrTarget), RATIO, 'Many lenders want 1.25x or better.'],
-      [20, 'SBA minimum DSCR, standard 7(a)', 1.15, RATIO, 'SBA SOP 50 10: 1.15x for standard 7(a) loans, 1.10x for 7(a) small loans.']
+      [19, 'Lender DSCR target', a.dscrTarget === '' || a.dscrTarget == null ? Math.max(1.25, SF.floor) : n(a.dscrTarget), RATIO, 'Many lenders want 1.25x or better.'],
+      [20, SF.label, SF.floor, RATIO, 'SOP 50 10 8.1 (effective Oct 1, 2026): 1.25x for a business purchase or owner buyout (historical results); otherwise 1.15x standard 7(a), 1.10x 7(a) small loan.']
     ];
     rows.forEach(function (r) {
       label(inp.getCell('A' + r[0]), r[1]);
@@ -309,7 +310,7 @@
     var PLC = ['N', 'O', 'P'];
     [[4, 'EBITDA'], [5, 'Less income tax'], [6, 'Less owner draws'], [7, 'Cash available for debt service'], [8, 'New loan payments'],
       [9, 'Existing debt payments'], [10, 'Total debt service'], [11, 'DSCR'], [12, 'Lender target'], [13, 'Meets lender target?'],
-      [14, 'SBA minimum (standard 7(a))'], [15, 'Meets SBA minimum?']].forEach(function (x) { label(dscr.getCell('A' + x[0]), x[1], [7, 10, 11].indexOf(x[0]) >= 0); });
+      [14, 'SBA minimum (' + SF.short + ')'], [15, 'Meets SBA minimum?']].forEach(function (x) { label(dscr.getCell('A' + x[0]), x[1], [7, 10, 11].indexOf(x[0]) >= 0); });
     ['B', 'C', 'D'].forEach(function (C7, i) {
       f(dscr.getCell(C7 + 4), 'PnL!' + PLC[i] + '9', MONEY);
       f(dscr.getCell(C7 + 5), '-PnL!' + PLC[i] + '13', MONEY);
@@ -324,8 +325,8 @@
       f(dscr.getCell(C7 + 14), 'Inputs!$B$20', RATIO);
       f(dscr.getCell(C7 + 15), 'IF(ISNUMBER(' + C7 + '11),IF(' + C7 + '11>=' + C7 + '14,"Yes","No"),"n/a")');
     });
-    dscr.getCell('A17').value = 'SBA SOP 50 10 sets a minimum DSCR of 1.15x for standard 7(a) loans and 1.10x for 7(a) small loans. Many lenders look for 1.25x.';
-    dscr.getCell('A18').value = 'Source: https://www.sba.gov/document/sop-50-10-lender-development-company-loan-programs';
+    dscr.getCell('A17').value = SF.source + ' Minimum DSCR: 1.25x for a business purchase or owner buyout, on historical results; otherwise 1.15x for a standard 7(a) loan and 1.10x for a 7(a) small loan. Many lenders look for 1.25x.' + (SF.notes.length ? ' ' + SF.notes.join(' ') : '');
+    dscr.getCell('A18').value = 'Source: SBA SOP 50 10 8.1, https://www.sba.gov/document/sop-50-10-lender-development-company-loan-programs';
     dscr.getCell('A17').font = dscr.getCell('A18').font = { italic: true, color: { argb: 'FF5B6777' } };
 
     /* ---------------- PFS ---------------- */

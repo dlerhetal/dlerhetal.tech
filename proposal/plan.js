@@ -184,7 +184,8 @@
         ['Existing debt payments'].concat(r.dscr.map(function (d) { return money(d.oldDebt); })),
         ['DSCR'].concat(r.dscr.map(function (d) { return ratio(d.ratio); }))
       ] });
-      p('Cash available for debt service is EBITDA less income tax and owner draws. The lender target used here is ' + r.dscrTarget.toFixed(2) + 'x; SBA sets a minimum of 1.15x for standard 7(a) loans.');
+      p('Cash available for debt service is EBITDA less income tax and owner draws. The lender target used here is ' + r.dscrTarget.toFixed(2) + 'x. The ' + r.sba.label + ' is ' + r.sbaFloor.toFixed(2) + 'x. ' + r.sba.source +
+        (r.sba.notes.length ? ' ' + r.sba.notes.join(' ') : ''));
       h2('Break-even');
       p('With a contribution margin of ' + pctf(r.breakeven.cm) + ', the business covers its year 1 fixed costs of ' + money(r.breakeven.fixed) +
         ' at ' + money(r.breakeven.monthly) + ' in monthly sales (' + money(r.breakeven.annual) + ' a year). Projected year 1 sales give a margin of safety of ' + pctf(r.breakeven.margin) +
