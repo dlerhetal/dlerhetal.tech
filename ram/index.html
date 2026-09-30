@@ -13,7 +13,7 @@
     <h1><span data-client-name>Client</span> tools</h1>
   </div>
   <div class="sub" id="appSub" hidden>
-    <span>Signed in</span>
+    <span class="saved">Signed in</span>
     <span class="links"><a href="#" data-action="signout">Sign out</a></span>
   </div>
 </header>
@@ -31,7 +31,7 @@
 
   <section id="app" hidden>
     <div class="tiles" id="tiles"></div>
-    <p class="pdesc center"><a href="#" data-action="advanced" id="advLink">Advanced map</a> (the full tool, for the office computer)</p>
+    <p class="pdesc center advline"><a href="#" data-action="advanced" id="advLink" class="advlink">Advanced map</a><span class="advnote">The full map, for the office computer.</span></p>
   </section>
 </main>
 
@@ -40,17 +40,31 @@
 <script>
 (function () {
   /* Tiles are generic tool entries; add more here as tools are added for a client.
-     Empty slots are simply not shown. */
+     Empty slots are simply not shown. A tile with "progress" shows how far the
+     answers have got, read from the API after sign-in. */
   var TILES = [
-    { title: "Process Map", desc: "Answer a few questions about how a job runs. The map builds itself as you go.", href: "map/" }
+    { title: "Process Map", desc: "Answer questions about how a well gets done; the map builds as you go. Come back any time, your answers are saved.", href: "map/", progress: true }
   ];
   RAM.gate(function (cfg) {
     document.getElementById("appSub").hidden = false;
     var box = document.getElementById("tiles"); box.innerHTML = "";
-    TILES.forEach(function (t) {
+    TILES.forEach(function (t, i) {
       if (!t || !t.title) return;
-      box.appendChild(RAM.el('<a class="tile" href="' + RAM.esc(t.href) + '"><span class="ttitle">' + RAM.esc(t.title) + '</span><span class="tdesc">' + RAM.esc(t.desc || "") + '</span></a>'));
+      box.appendChild(RAM.el('<a class="tile" href="' + RAM.esc(t.href) + '"><span class="ttitle">' + RAM.esc(t.title) + '</span><span class="tdesc">' + RAM.esc(t.desc || "") + '</span>' + (t.progress ? '<span class="tprog none" id="tprog' + i + '">Checking your answers</span>' : "") + '</a>'));
     });
+    if (TILES.some(function (t) { return t && t.progress; })) {
+      RAM.apiJSON("/answers").then(function (r) {
+        var c = RAM.progress(cfg, r.latest || {});
+        TILES.forEach(function (t, i) {
+          if (!t || !t.progress) return;
+          var e = document.getElementById("tprog" + i); if (!e) return;
+          e.textContent = c.n === 0 ? "Not started" : (c.n >= c.t ? "All " + c.t + " answered" : c.n + " of " + c.t + " answered");
+          e.className = "tprog" + (c.n === 0 ? " none" : "");
+        });
+      }).catch(function () {
+        Array.prototype.forEach.call(document.querySelectorAll(".tprog"), function (e) { e.textContent = ""; });
+      });
+    }
   });
 })();
 </script>

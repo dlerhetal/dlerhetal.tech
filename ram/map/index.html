@@ -18,7 +18,7 @@
   </div>
   <div class="sub" id="appSub" hidden>
     <span id="saveState" class="saved">Loading your answers</span>
-    <span class="links"><a href="../">Tools</a> &middot; <a href="admin/">Dale's view</a> &middot; <a href="#" data-action="advanced">Advanced</a> &middot; <a href="#" data-action="signout">Sign out</a></span>
+    <span class="links"><a href="../">Tools</a><a href="admin/">Dale's view</a><a href="#" data-action="advanced">Advanced</a><a href="#" data-action="signout">Sign out</a></span>
   </div>
 </header>
 
@@ -29,7 +29,7 @@
       <input id="gatePassword" type="password" class="bigin" autocomplete="current-password">
       <p class="err" id="gateError"></p>
       <button type="submit" class="btn pri wide" id="gateBtn">Sign in</button>
-      <p class="pdesc">Everything you answer is saved on the server as you go. Nothing is kept in this browser, so you can pick up on any phone or computer.</p>
+      <p class="pdesc">Your answers are saved as you go. Stop any time and pick up later on any phone or computer.</p>
     </form>
   </main>
 </section>
@@ -42,6 +42,7 @@
 
   <main class="narrow" id="main">
     <div class="card qcard" id="qcard">
+      <p class="resume" id="resumeCue" hidden></p>
       <div class="qhead">
         <span class="qstage" id="qStage"></span>
         <span class="qprog" id="qProg"></span>
@@ -51,11 +52,13 @@
       <div class="qbody" id="qBody"></div>
       <p class="qmeta" id="qMeta"></p>
     </div>
-    <div class="navrow">
-      <button type="button" class="btn big" id="btnBack">Back</button>
-      <button type="button" class="btn big pri" id="btnNext">Next</button>
+    <div class="navbar" id="navBar">
+      <div class="navrow">
+        <button type="button" class="btn big" id="btnBack">Back</button>
+        <button type="button" class="btn big pri" id="btnNext">Next</button>
+      </div>
+      <p class="pdesc center navhint" id="navHint"></p>
     </div>
-    <p class="pdesc center" id="navHint"></p>
   </main>
 </section>
 

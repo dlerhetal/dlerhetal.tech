@@ -4,8 +4,9 @@
 (function () {
   "use strict";
   var $ = RAM.$, esc = RAM.esc, el = RAM.el, fmtTs = RAM.fmtTs;
-  var Q = null, latest = {}, summary = [], seq = [], idx = 0, who = "", saving = false;
-  var AS = (location.search.match(/[?&]as=([^&]+)/) || [])[1] || "";
+  var Q = null, latest = {}, summary = [], seq = [], idx = 0, who = "", saving = false, resumeCue = "";
+  /* "?as=TEST" preselects the TEST answerer, but only on a URL that also carries ?test=1. */
+  var AS = RAM.TEST_MODE ? ((location.search.match(/[?&]as=([^&]+)/) || [])[1] || "") : "";
 
   /* ---------- sequence ---------- */
   function ans(stage, qid) { return (latest[stage] && latest[stage][qid]) ? latest[stage][qid].payload : null; }
@@ -36,6 +37,8 @@
   function pickOne(container) { container.addEventListener("click", function (e) { var t = e.target.closest(".chip,.opt"); if (!t) return; Array.prototype.forEach.call(this.children, function (c) { c.classList.remove("on"); }); t.classList.add("on"); container.dispatchEvent(new CustomEvent("pick", { detail: t.dataset.val })); }); }
   function render() {
     var it = seq[idx], q = it.q, a = ans(it.stage, q.id) || {};
+    /* The resume cue shows once, on the first screen after sign-in, then clears. */
+    $("resumeCue").hidden = !resumeCue; $("resumeCue").textContent = resumeCue; resumeCue = "";
     $("qStage").textContent = it.label;
     $("qStage").title = it.hint || "";
     var c = answeredCount();
@@ -125,6 +128,15 @@
         '<div class="sbar"><i style="width:' + Math.round(100 * st.answered / st.total) + '%"></i></div></div>'));
     });
     $("stripCount").textContent = "(" + done + " of " + summary.length + " stages done)";
+    scrollStripToCurrent();
+  }
+  /* Slide the strip so the current stage's box is in view (centred when there is room).
+     Touches only the strip's own scroll position, never the page's. */
+  function scrollStripToCurrent() {
+    var s = $("strip"), box = s.querySelector(".sbox.cur");
+    if (!box || !s.clientWidth) return;
+    var target = box.offsetLeft - Math.max(0, (s.clientWidth - box.offsetWidth) / 2);
+    s.scrollLeft = Math.max(0, Math.min(target, s.scrollWidth - s.clientWidth));
   }
   $("strip").addEventListener("click", function (e) {
     var t = e.target.closest(".sbox"); if (!t) return;
@@ -132,13 +144,14 @@
   });
   $("stripToggle").addEventListener("click", function () {
     var open = $("stripWrap").classList.toggle("closed") === false; this.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) scrollStripToCurrent();
   });
   if (window.innerWidth <= 700) { $("stripWrap").classList.add("closed"); $("stripToggle").setAttribute("aria-expanded", "false"); }
 
   /* ---------- who toggle ---------- */
   function buildWho() {
     var opts = (Q.answered_by_options || ["Owner", "Consultant"]).slice();
-    if (AS === "TEST") opts.push("TEST");
+    if (RAM.TEST_MODE) opts.push("TEST");
     var box = $("whoButtons"); box.innerHTML = "";
     opts.forEach(function (o, i) { box.appendChild(el('<button type="button" class="whobtn' + (i === 0 ? " on" : "") + '" data-who="' + esc(o) + '">' + esc(o) + '</button>')); });
     who = opts[0];
@@ -166,7 +179,7 @@
     RAM.apiJSON("/answers", { method: "POST", json: { stage: it.stage, question: it.q.id, payload: payload, answered_by: who } })
       .then(function (r) {
         saving = false; $("btnNext").disabled = false;
-        if (!r || !r.ok) { setSaved("Not saved: " + (r && r.error ? r.error : "server error") + ". Try again.", true); return; }
+        if (!r || !r.ok) { setSaved("Not saved: " + (r && r.error ? r.error : "something went wrong") + ". Try again.", true); return; }
         latest[it.stage] = latest[it.stage] || {};
         latest[it.stage][it.q.id] = { payload: payload, answered_by: who, ts_utc: new Date().toISOString() };
         summary = r.summary || summary;
@@ -189,7 +202,13 @@
     RAM.apiJSON("/answers").then(function (r) {
       latest = r.latest || {}; summary = r.summary || [];
       buildSeq(); idx = firstUnanswered();
-      var c = answeredCount(); setSaved(c.n ? "Picking up where you left off (" + c.n + " of " + c.t + " answered)" : "Nothing answered yet. Let us start.");
+      var c = answeredCount();
+      setSaved(c.n ? c.n + " of " + c.t + " answered so far" : "Nothing answered yet. Let us start.");
+      if (c.n && idx > 0) {
+        var it = seq[idx], where = it.kind === "done" ? "the last screen" : ("question " + (idx + 1));
+        var stage = it.kind === "stage" || it.kind === "gate" || it.kind === "branch" ? it.label.replace(/^\d+\.\s*/, "").replace(/ \(more\)$/, "") : it.label;
+        resumeCue = "Picking up at " + where + (stage ? ", " + stage : "") + (it.q.text && it.kind !== "done" ? ": " + it.q.text : "");
+      }
       render();
       window.RAMWIZ = { seq: function () { return seq; }, latest: function () { return latest; }, go: function (i) { idx = i; render(); }, idx: function () { return idx; } };
     }).catch(function (e) { if (e.message !== "signed out") setSaved("Could not load the answers: " + e.message, true); });

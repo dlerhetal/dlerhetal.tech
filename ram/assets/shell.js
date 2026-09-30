@@ -77,7 +77,7 @@
             err.textContent = (x.j && x.j.error) || "That password is not right.";
             $("gatePassword").value = ""; $("gatePassword").focus();
           })
-          .catch(function () { btn.disabled = false; err.textContent = "Could not reach the server. Check the connection and try again."; });
+          .catch(function () { btn.disabled = false; err.textContent = "Could not connect. Check the signal and try again."; });
       });
     }
     if (getToken()) { ready().catch(function (e) { if (e.message !== "signed out") showGate("Could not load: " + e.message); }); }
@@ -89,7 +89,7 @@
   /* The Advanced tool is a page on the API host; it is opened by a form POST that
      carries the token in the body (never the URL). */
   function openAdvanced() {
-    var f = document.createElement("form"); f.method = "post"; var asm = location.search.match(/[?&]as=([^&]+)/); f.action = API_ORIGIN + NS + "/map/advanced" + (asm ? "?as=" + asm[1] : ""); f.style.display = "none";
+    var f = document.createElement("form"); f.method = "post"; var asm = TEST_MODE ? location.search.match(/[?&]as=([^&]+)/) : null; f.action = API_ORIGIN + NS + "/map/advanced" + (asm ? "?as=" + asm[1] : ""); f.style.display = "none";
     var i = document.createElement("input"); i.type = "hidden"; i.name = "token"; i.value = getToken(); f.appendChild(i);
     document.body.appendChild(f); f.submit();
   }
@@ -101,11 +101,36 @@
     });
   }
 
+  /* progress(cfg, latest): answered and total question counts, by the same rules the
+     wizard uses to build its sequence (a branch's questions count only once its gate
+     is answered Yes). latest is the object GET /answers returns. */
+  function progress(cfg, latest) {
+    var n = 0, t = 0;
+    function has(stage, qid) { return !!(latest[stage] && latest[stage][qid]); }
+    function tally(stage, q) { t++; if (has(stage, q.id)) n++; }
+    (cfg.opening && cfg.opening.questions || []).forEach(function (q) { tally("opening", q); });
+    (cfg.stages || []).forEach(function (st) {
+      (cfg.per_stage || []).forEach(function (q) { tally(st.id, q); });
+      (cfg.branches || []).forEach(function (b) {
+        if (b.stage !== st.id) return;
+        tally(st.id, b.gate);
+        var g = latest[st.id] && latest[st.id][b.gate.id] ? latest[st.id][b.gate.id].payload : null;
+        if (g && g.choice === "Yes") b.questions.forEach(function (q) { tally(st.id, q); });
+      });
+    });
+    (cfg.closing && cfg.closing.questions || []).forEach(function (q) { tally("closing", q); });
+    return { n: n, t: t };
+  }
+
+  /* TEST_MODE: only a URL carrying ?test=1 shows anything test-related (the TEST
+     answering option). The client never sees it. */
+  var TEST_MODE = /[?&]test=1(&|$)/.test(location.search);
+
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[c]; }); }
   function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
   function fmtTs(ts) { try { var d = new Date(ts); return d.toLocaleDateString([], { month: "short", day: "numeric" }) + " " + d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); } catch (e) { return ts; } }
 
-  window.RAM = { API: API, api: api, apiJSON: apiJSON, gate: gate, signOut: signOut, openAdvanced: openAdvanced, download: download, getToken: getToken, $: $, esc: esc, el: el, fmtTs: fmtTs, showGate: showGate };
+  window.RAM = { API: API, api: api, apiJSON: apiJSON, gate: gate, signOut: signOut, openAdvanced: openAdvanced, download: download, getToken: getToken, progress: progress, TEST_MODE: TEST_MODE, $: $, esc: esc, el: el, fmtTs: fmtTs, showGate: showGate };
   document.addEventListener("click", function (e) {
     var t = e.target.closest("[data-action]"); if (!t) return;
     if (t.dataset.action === "signout") { e.preventDefault(); signOut(); }

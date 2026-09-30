@@ -9,11 +9,14 @@ header.top{background:var(--blue);color:#fff;padding:12px 16px}
 header.top h1{margin:0;font-size:22px;font-weight:600;letter-spacing:.2px}
 header.top .toprow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 header.top .sub{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:15px;color:#cfd9ea;margin-top:6px}
-header.top .links a{color:#fff;text-decoration:underline}
+header.top .links{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+header.top .links a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.14);color:#fff;text-decoration:none;font-size:16px}
+header.top .links a:active{background:rgba(255,255,255,.3)}
+.saved{align-self:center}
 .saved.bad{color:#ffd2cc;font-weight:600}
-.who{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border-radius:999px;padding:4px 6px 4px 12px}
-.wholbl{font-size:14px;color:#cfd9ea}
-.whobtn{border:0;background:transparent;color:#fff;font:inherit;font-size:16px;padding:6px 14px;border-radius:999px;cursor:pointer}
+.who{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.12);border-radius:999px;padding:3px 4px 3px 12px}
+.wholbl{font-size:14px;color:#cfd9ea;margin-right:4px}
+.whobtn{border:0;background:transparent;color:#fff;font:inherit;font-size:16px;min-height:44px;padding:8px 14px;border-radius:999px;cursor:pointer}
 .whobtn.on{background:var(--gold);color:var(--ink);font-weight:700}
 
 main.narrow{max-width:760px;margin:0 auto;padding:16px}
@@ -42,8 +45,15 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:24px 16px 32p
 .btn.flag{border-color:var(--red);color:var(--red);margin-top:12px;width:100%}
 .btn.flag.on{background:var(--red);color:#fff}
 .btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.navrow{display:flex;gap:12px;margin-top:8px}
+.btnrow .btn{min-height:44px}
+/* Back/Next sit in a bar that sticks to the bottom of the screen, so Next is never
+   below the fold however tall the question grows (flag panel, long text). */
+.navbar{position:sticky;bottom:0;background:var(--bg);margin:0 -16px;padding:10px 16px 8px;border-top:1px solid var(--line);z-index:5}
+.navrow{display:flex;gap:12px;flex-wrap:nowrap}
+.navrow .btn.big{min-height:56px;white-space:nowrap;min-width:0}
 .navrow .btn.big:disabled{opacity:.4;cursor:default}
+.navhint{margin:6px 0 0;font-size:14px}
+.resume{margin:0 0 12px;padding:10px 14px;background:var(--soft);border-left:4px solid var(--gold);border-radius:8px;font-size:16px;color:var(--blue)}
 
 /* question card */
 .qcard{padding:22px 20px 18px}
@@ -54,10 +64,10 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:24px 16px 32p
 .qmeta{margin:14px 0 0;font-size:14px;color:var(--muted)}
 .numrow{display:flex;align-items:center;gap:10px}
 .unit{font-size:20px;color:var(--muted)}
-.check{display:flex;align-items:center;gap:10px;font-size:20px;margin-top:14px}
-.check input{width:26px;height:26px}
+.check{display:flex;align-items:center;gap:12px;font-size:20px;margin-top:10px;min-height:48px;padding:4px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.check input{width:30px;height:30px;margin:0;font-size:16px;flex:0 0 30px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.chip{font:inherit;font-size:17px;padding:10px 14px;border-radius:999px;border:2px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.chip{font:inherit;font-size:17px;min-height:44px;padding:10px 14px;border-radius:999px;border:2px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
 .chip.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
 .options{display:flex;flex-direction:column;gap:10px;margin-top:8px}
 .btn.opt{font-size:21px;padding:16px 18px;text-align:left}
@@ -68,8 +78,9 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:24px 16px 32p
 /* map strip */
 .strip-wrap{background:#fff;border-bottom:1px solid var(--line)}
 .strip-toggle{display:none;width:100%;font:inherit;font-size:17px;font-weight:600;color:var(--blue);background:var(--soft);border:0;padding:12px 16px;text-align:left;cursor:pointer}
-.strip{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;scroll-snap-type:x proximity}
-.sbox{flex:0 0 150px;min-height:120px;border:2px solid var(--line);border-radius:12px;padding:8px 10px 6px;background:#fff;position:relative;cursor:pointer;scroll-snap-align:start;font-size:13px;line-height:1.3}
+.strip{position:relative;display:flex;gap:8px;overflow-x:auto;padding:12px 16px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+.strip-toggle{min-height:48px}
+.sbox{flex:0 0 150px;min-width:0;overflow:hidden;min-height:120px;border:2px solid var(--line);border-radius:12px;padding:8px 10px 6px;background:#fff;position:relative;cursor:pointer;scroll-snap-align:start;font-size:13px;line-height:1.3}
 .sbox.has{border-color:#b7c6df;background:#fbfcff}
 .sbox.cur{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,205,0,.35)}
 .sn{position:absolute;top:6px;right:8px;font-size:12px;color:var(--muted);font-weight:700}
@@ -102,12 +113,16 @@ tr.ude-row td:nth-child(3){font-weight:700;color:var(--red)}
 
 @media (max-width:700px){
   body{font-size:18px}
+  header.top{padding:10px 16px 12px}
   header.top h1{font-size:19px}
+  header.top .sub{margin-top:8px}
   .strip-toggle{display:block}
   .strip-wrap.closed .strip{display:none}
+  .qcard{padding:18px 16px 14px}
   .qtext{font-size:24px}
-  .btn.big{font-size:20px;padding:16px 10px}
+  .btn.big{font-size:20px;padding:14px 8px}
   .sbox{flex-basis:130px}
+  .navbar{padding:8px 16px 6px}
 }
 
 /* hub tiles */
@@ -115,6 +130,11 @@ tr.ude-row td:nth-child(3){font-weight:700;color:var(--red)}
 .tile{display:block;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:22px 20px;text-decoration:none;color:var(--ink);min-height:120px}
 .tile:hover{border-color:var(--blue2);box-shadow:0 2px 8px rgba(26,60,110,.12)}
 .ttitle{display:block;font-size:24px;font-weight:700;color:var(--blue);margin-bottom:6px}
-.tdesc{display:block;color:var(--muted);font-size:16px}
+.tdesc{display:block;color:var(--muted);font-size:17px;line-height:1.4}
+.tprog{display:inline-block;margin-top:12px;padding:6px 12px;border-radius:999px;background:var(--soft);color:var(--blue);font-size:15px;font-weight:600}
+.tprog.none{background:#f1f3f7;color:var(--muted);font-weight:400}
+.advline{margin-top:22px}
+.advlink{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);color:var(--muted);font-size:16px;text-decoration:none;background:#fff}
+.advnote{display:block;margin-top:6px;font-size:14px;color:var(--muted)}
 #gate main.narrow{margin-top:20px}
 [hidden]{display:none !important}
