@@ -36,7 +36,8 @@
 
 <section id="app" hidden>
   <section class="strip-wrap" id="stripWrap">
-    <button type="button" class="strip-toggle" id="stripToggle" aria-expanded="true">The map so far <span id="stripCount"></span></button>
+    <button type="button" class="strip-toggle" id="stripToggle" aria-expanded="true"><span id="stripCount"></span><span class="strip-hint">Tap to open the map</span></button>
+    <div class="strip-tally" id="stripTally"></div>
     <div class="strip" id="strip"></div>
   </section>
 
@@ -56,6 +57,23 @@
       <p class="qsub" id="qSub"></p>
       <div class="qbody" id="qBody"></div>
       <p class="qmeta" id="qMeta"></p>
+    </div>
+    <div class="card qcard" id="editcard" hidden>
+      <div class="qhead"><span class="qstage" id="editStage"></span></div>
+      <h2 class="qtext">This step</h2>
+      <p class="qsub">Change the words, move it, or take it out of the list.</p>
+      <textarea class="bigta" id="editText" rows="3"></textarea>
+      <div class="btnrow editrow">
+        <button type="button" class="btn pri" id="btnEditSave">Save the new name</button>
+        <button type="button" class="btn" id="btnEditUp">Move up</button>
+        <button type="button" class="btn" id="btnEditDown">Move down</button>
+        <button type="button" class="btn danger" id="btnEditDelete">Take this step out</button>
+      </div>
+      <p class="pdesc" id="editMsg"></p>
+      <div class="btnrow editrow">
+        <button type="button" class="btn pri" id="btnEditGo">Answer the questions about this step</button>
+        <button type="button" class="btn" id="btnEditBack">Back</button>
+      </div>
     </div>
     <div class="navbar" id="navBar">
       <div class="navrow">

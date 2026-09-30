@@ -31,6 +31,29 @@
 
 <section id="app" hidden>
 <main class="wide">
+  <div class="card" id="findingCard">
+    <h2>The finding</h2>
+    <p class="finding" id="findingLine"></p>
+    <div id="findingBody"></div>
+  </div>
+
+  <div class="card">
+    <h2>Checklist: what the owner says about the things I asked</h2>
+    <div id="candBox"></div>
+  </div>
+
+  <div class="card">
+    <h2>The map, in the owner's order</h2>
+    <div class="strip admin-strip" id="strip"></div>
+    <p class="pdesc" id="deletedNote"></p>
+  </div>
+
+  <div class="card">
+    <h2>Flagged money leaks (UDE candidates)</h2>
+    <div class="tablewrap"><table id="udeTable"><thead><tr><th>Step</th><th>What goes wrong</th><th>Dollar guess</th><th>How often</th><th>Who</th><th>When</th></tr></thead><tbody></tbody></table></div>
+    <p class="pdesc" id="udeEmpty"></p>
+  </div>
+
   <div class="card">
     <h2>Exports</h2>
     <div class="btnrow">
@@ -44,24 +67,18 @@
   </div>
 
   <div class="card">
-    <h2>The map</h2>
-    <div class="strip admin-strip" id="strip"></div>
-  </div>
-
-  <div class="card">
-    <h2>Flagged money leaks (UDE candidates)</h2>
-    <div class="tablewrap"><table id="udeTable"><thead><tr><th>Stage</th><th>What goes wrong</th><th>Dollar guess</th><th>How often</th><th>Who</th><th>When</th></tr></thead><tbody></tbody></table></div>
-    <p class="pdesc" id="udeEmpty"></p>
-  </div>
-
-  <div class="card">
     <h2>Every answer, latest per question</h2>
     <div id="latestBox"></div>
   </div>
 
   <div class="card">
-    <h2>Full history (every row ever saved, newest first)</h2>
-    <div class="tablewrap"><table id="histTable"><thead><tr><th>#</th><th>When (UTC)</th><th>Stage</th><th>Question</th><th>Who</th><th>IP hash</th><th>Answer</th></tr></thead><tbody></tbody></table></div>
+    <h2>Step events (every change to the list, newest first)</h2>
+    <div class="tablewrap"><table id="stepTable"><thead><tr><th>#</th><th>When (UTC)</th><th>Step</th><th>Event</th><th>Who</th><th>IP hash</th><th>Detail</th></tr></thead><tbody></tbody></table></div>
+  </div>
+
+  <div class="card">
+    <h2>Full answer history (every row ever saved, newest first)</h2>
+    <div class="tablewrap"><table id="histTable"><thead><tr><th>#</th><th>When (UTC)</th><th>Step</th><th>Question</th><th>Who</th><th>IP hash</th><th>Answer</th></tr></thead><tbody></tbody></table></div>
   </div>
 </main>
 </section>

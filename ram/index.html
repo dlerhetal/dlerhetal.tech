@@ -43,7 +43,7 @@
      Empty slots are simply not shown. A tile with "progress" shows how far the
      answers have got, read from the API after sign-in. */
   var TILES = [
-    { title: "Process Map", desc: "Answer questions about how a well gets done; the map builds as you go. Come back any time, your answers are saved.", href: "map/", progress: true }
+    { title: "Process Map", desc: "Walk me through one well in your own words; the map builds as you go. Come back any time, your answers are saved.", href: "map/", progress: true }
   ];
   RAM.gate(function (cfg) {
     document.getElementById("appSub").hidden = false;
@@ -54,12 +54,12 @@
     });
     if (TILES.some(function (t) { return t && t.progress; })) {
       RAM.apiJSON("/answers").then(function (r) {
-        var c = RAM.progress(cfg, r.latest || {});
+        var c = RAM.progress(r);
         TILES.forEach(function (t, i) {
           if (!t || !t.progress) return;
           var e = document.getElementById("tprog" + i); if (!e) return;
-          e.textContent = c.n === 0 ? "Not started" : (c.n >= c.t ? "All " + c.t + " answered" : c.n + " of " + c.t + " answered");
-          e.className = "tprog" + (c.n === 0 ? " none" : "");
+          e.textContent = c.line;
+          e.className = "tprog" + (c.started ? "" : " none");
         });
       }).catch(function () {
         Array.prototype.forEach.call(document.querySelectorAll(".tprog"), function (e) { e.textContent = ""; });

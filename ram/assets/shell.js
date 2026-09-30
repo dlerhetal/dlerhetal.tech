@@ -101,26 +101,12 @@
     });
   }
 
-  /* progress(cfg, latest): answered and total question counts, by the same rules the
-     wizard uses to build its sequence (a branch's questions count only once its gate
-     is answered Yes). latest is the object GET /answers returns. */
-  function progress(cfg, latest) {
-    var n = 0, t = 0;
-    /* A row whose payload is {cleared:true} is an explicit erase, not an answer. */
-    function has(stage, qid) { var r = latest[stage] && latest[stage][qid]; return !!(r && r.payload && !r.payload.cleared); }
-    function tally(stage, q) { t++; if (has(stage, q.id)) n++; }
-    (cfg.opening && cfg.opening.questions || []).forEach(function (q) { tally("opening", q); });
-    (cfg.stages || []).forEach(function (st) {
-      (cfg.per_stage || []).forEach(function (q) { tally(st.id, q); });
-      (cfg.branches || []).forEach(function (b) {
-        if (b.stage !== st.id) return;
-        tally(st.id, b.gate);
-        var g = latest[st.id] && latest[st.id][b.gate.id] ? latest[st.id][b.gate.id].payload : null;
-        if (g && g.choice === "Yes") b.questions.forEach(function (q) { tally(st.id, q); });
-      });
-    });
-    (cfg.closing && cfg.closing.questions || []).forEach(function (q) { tally("closing", q); });
-    return { n: n, t: t };
+  /* progress(r): the hub tile line from what GET /answers returns (v2: the server
+     counts the owner's steps and the per-step questions answered; "Not started"
+     until a step or an opening answer exists). */
+  function progress(r) {
+    var p = (r && r.progress) || {};
+    return { n: p.n || 0, t: p.t || 0, steps: p.steps || 0, line: p.line || "Not started", started: !!p.started };
   }
 
   /* TEST_MODE: only a URL carrying ?test=1 shows anything test-related (the TEST
