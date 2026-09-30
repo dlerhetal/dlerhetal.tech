@@ -16,6 +16,17 @@
   /* "?as=TEST" preselects the TEST answerer, but only on a URL that also carries ?test=1. */
   var AS = RAM.TEST_MODE ? ((location.search.match(/[?&]as=([^&]+)/) || [])[1] || "") : "";
   var WHO_KEY = RAM.NS.slice(1) + "_who";
+  /* PREVIEW (?preview=1, this page load only, never stored): the consultant rehearses
+     every screen in order. Nothing is validated, nothing is posted; a throwaway
+     in-memory demo (three sample steps) stands in for the record so the strip, the
+     list, the tally and the checklist look real. No page links here; URL only. */
+  var PREVIEW = /[?&]preview=1(&|$)/.test(location.search);
+  var DEMO_STEPS = ["I take the call", "I go look at the job site", "We drill the hole"];
+  var tour = [], tourIdx = 0, previewBuild = "";
+  /* A TEST walk (?test=1 with Answering = TEST) never dead-ends on Phase 1: an empty
+     "Then what?" moves on without saving and "That's it" works with zero steps. The
+     owner's own walk keeps the gate (a step needs words). */
+  function testWalk() { return RAM.TEST_MODE && who === "TEST"; }
 
   /* ---------- record helpers ---------- */
   function row(stage, qid) { return (latest[stage] && latest[stage][qid]) ? latest[stage][qid] : null; }
@@ -96,7 +107,7 @@
     $("qSub").textContent = q.sub || "";
     var b = $("qBody"); b.innerHTML = "";
     var meta = "", r = row(it.stage, q.id);
-    if (r && it.kind !== "build") { meta = (r.payload && r.payload.cleared ? "Cleared by " : "Answered by ") + r.answered_by + " on " + fmtTs(r.ts_utc) + ". Change it and tap Next to save a new answer."; }
+    if (r && it.kind !== "build" && !PREVIEW) { meta = (r.payload && r.payload.cleared ? "Cleared by " : "Answered by ") + r.answered_by + " on " + fmtTs(r.ts_utc) + ". Change it and tap Next to save a new answer."; }
     $("qMeta").textContent = meta;
     $("navBar").hidden = it.kind === "build";
     $("qcard").classList.toggle("buildcard", it.kind === "build");
@@ -151,11 +162,12 @@
     }
     if (it.kind === "stage") {
       b.appendChild(el('<p class="skipline"><a href="#" id="skipStep">' + esc(Q.skip_label || "Skip this step for now") + '</a></p>'));
-      $("skipStep").addEventListener("click", function (e) { e.preventDefault(); skipStep(); });
+      $("skipStep").addEventListener("click", function (e) { e.preventDefault(); if (PREVIEW) showStop(tourIdx + 1); else skipStep(); });
     }
     $("btnBack").disabled = idx === 0;
     $("btnNext").textContent = it.kind === "done" ? "Back to the top" : (idx === seq.length - 2 ? "Finish" : "Next");
     $("navHint").textContent = it.kind === "done" || it.kind === "candidate" ? (it.kind === "candidate" ? "Tap Next to save." : "") : (r && !(r.payload && r.payload.cleared) ? "Tap Next to save. Leave it blank to clear the earlier answer." : "Tap Next to save. Leave it blank to skip for now.");
+    if (PREVIEW) { $("navHint").textContent = it.kind === "done" ? "" : "Preview: Next moves to the next screen. Nothing is saved."; $("btnBack").disabled = tourIdx === 0; $("btnNext").textContent = it.kind === "done" ? "Back to the top" : "Next"; }
     var first = b.querySelector("input,textarea"); if (first && window.innerWidth > 700 && window.innerHeight > 500) first.focus();
     renderStrip();
     window.scrollTo(0, 0);
@@ -164,31 +176,44 @@
   /* Phase 1: the list builder. */
   function renderBuild(b) {
     var B = Q.build, last = steps.length ? steps[steps.length - 1] : null;
-    if (!steps.length) { $("qText").textContent = B.first_text; $("qSub").textContent = B.first_sub; }
-    else if (p1done) { $("qText").textContent = B.again_text; $("qSub").textContent = B.again_sub; }
+    /* In preview the same screen is shown twice: first as the opener (empty list), then
+       as the "Then what?" loop with the sample steps. */
+    var asFirst = previewBuild === "first" || !steps.length, asAgain = !asFirst && p1done && previewBuild !== "list";
+    var shown = asFirst ? [] : steps;
+    if (asFirst) { $("qText").textContent = B.first_text; $("qSub").textContent = B.first_sub; }
+    else if (asAgain) { $("qText").textContent = B.again_text; $("qSub").textContent = B.again_sub; }
     else { $("qText").textContent = B.next_text; $("qSub").textContent = 'After "' + last.title + '": ' + B.next_sub; }
     b.appendChild(el('<textarea class="bigta" id="inBuild" rows="3" placeholder="Type here"></textarea>'));
     b.appendChild(el('<button type="button" class="btn big pri wide" id="btnThen">' + esc(B.then_label) + '</button>'));
-    b.appendChild(el('<button type="button" class="btn big wide" id="btnBuildDone">' + esc(p1done ? B.done_again_label : B.done_label) + '</button>'));
+    b.appendChild(el('<button type="button" class="btn big wide" id="btnBuildDone">' + esc(asAgain ? B.done_again_label : B.done_label) + '</button>'));
     b.appendChild(el('<p class="pdesc" id="buildMsg"></p>'));
     var list = el('<ol class="steplist" id="stepList"></ol>');
-    steps.forEach(function (s) {
+    shown.forEach(function (s) {
       var sm = null; summary.forEach(function (x) { if (x.id === s.id) sm = x; });
       list.appendChild(el('<li><button type="button" class="steprow" data-edit="' + s.id + '"><span class="stepn">' + s.n + '</span><span class="steptitle">' + esc(s.title) + '</span><span class="stepmeta">' + (sm && sm.who.length ? esc(sm.who.map(shortName).join(", ")) : "") + '</span></button></li>'));
     });
-    b.appendChild(el('<p class="pdesc">' + esc(steps.length ? B.edit_hint : B.empty_hint) + '</p>'));
+    b.appendChild(el('<p class="pdesc">' + esc(shown.length ? B.edit_hint : B.empty_hint) + '</p>'));
     b.appendChild(list);
-    if (idx > 0) { b.appendChild(el('<p class="skipline"><a href="#" id="buildBack">Back</a></p>')); $("buildBack").addEventListener("click", function (e) { e.preventDefault(); advance(-1); }); }
+    if (idx > 0) { b.appendChild(el('<p class="skipline"><a href="#" id="buildBack">Back</a></p>')); $("buildBack").addEventListener("click", function (e) { e.preventDefault(); if (PREVIEW) showStop(tourIdx - 1); else advance(-1); }); }
     list.addEventListener("click", function (e) { var t = e.target.closest("[data-edit]"); if (t) renderEdit(t.dataset.edit); });
     $("btnThen").addEventListener("click", function () {
       var text = $("inBuild").value.trim();
-      if (!text) { $("buildMsg").textContent = "Type what happens, then tap the button."; $("inBuild").focus(); return; }
+      if (PREVIEW) { showStop(tourIdx + 1); return; }
+      if (!text) {
+        if (testWalk()) { $("buildMsg").textContent = "TEST walk: nothing added, moving on."; buildSeq(); idx = Math.min(idx + 1, seq.length - 1); render(); return; }
+        $("buildMsg").textContent = "Type what happens, then tap the button."; $("inBuild").focus(); return;
+      }
       postStep({ event: "create", payload: { text: text, after: "" } }, function () { render(); $("inBuild").focus(); });
     });
     $("btnBuildDone").addEventListener("click", function () {
       var text = $("inBuild").value.trim();
+      if (PREVIEW) { showStop(tourIdx + 1); return; }
       function finish() {
-        if (!steps.length) { $("buildMsg").textContent = "Add at least one step first."; return; }
+        if (!steps.length) {
+          if (!testWalk()) { $("buildMsg").textContent = "Add at least one step first."; return; }
+          /* TEST walk with no steps: straight to the checklist, nothing saved. */
+          p1done = true; buildSeq(); idx = Math.min(idx + 1, seq.length - 1); render(); return;
+        }
         if (p1done) { buildSeq(); idx = Math.min(idx + 1, seq.length - 1); render(); return; }
         saveAnswer("phase1", "done", { done: true }, function () { p1done = true; buildSeq(); idx = Math.min(idx + 1, seq.length - 1); render(); });
       }
@@ -214,22 +239,25 @@
     renderStrip();
     window.scrollTo(0, 0);
   }
+  var PREVIEW_EDIT_MSG = "Preview: nothing is saved. Tap the blue button to go on.";
   $("btnEditSave").addEventListener("click", function () {
     var text = $("editText").value.trim(), s = stepById(editing);
+    if (PREVIEW) { $("editMsg").textContent = PREVIEW_EDIT_MSG; return; }
     if (!text) { $("editMsg").textContent = "A step needs a name. To take it out, use the button below."; return; }
     if (s && text === (s.text || s.title)) { $("editMsg").textContent = "No change."; return; }
     postStep({ event: "rename", step_id: editing, payload: { text: text } }, function () { buildSeq(); renderEdit(editing); $("editMsg").textContent = "Renamed."; });
   });
-  $("btnEditUp").addEventListener("click", function () { postStep({ event: "move", step_id: editing, payload: { dir: "up" } }, function () { buildSeq(); renderEdit(editing); $("editMsg").textContent = "Moved up."; }); });
-  $("btnEditDown").addEventListener("click", function () { postStep({ event: "move", step_id: editing, payload: { dir: "down" } }, function () { buildSeq(); renderEdit(editing); $("editMsg").textContent = "Moved down."; }); });
+  $("btnEditUp").addEventListener("click", function () { if (PREVIEW) { $("editMsg").textContent = PREVIEW_EDIT_MSG; return; } postStep({ event: "move", step_id: editing, payload: { dir: "up" } }, function () { buildSeq(); renderEdit(editing); $("editMsg").textContent = "Moved up."; }); });
+  $("btnEditDown").addEventListener("click", function () { if (PREVIEW) { $("editMsg").textContent = PREVIEW_EDIT_MSG; return; } postStep({ event: "move", step_id: editing, payload: { dir: "down" } }, function () { buildSeq(); renderEdit(editing); $("editMsg").textContent = "Moved down."; }); });
   $("btnEditDelete").addEventListener("click", function () {
     var s = stepById(editing); if (!s) return;
+    if (PREVIEW) { $("editMsg").textContent = PREVIEW_EDIT_MSG; return; }
     if (!confirm('Take "' + s.title + '" out of the list? Its answers stay on record.')) return;
     var id = editing;
     postStep({ event: "delete", step_id: id }, function () { buildSeq(); if (seq[idx] && seq[idx].stage === id) idx = findIdx("phase1", "done"); else { var cur = seq[idx]; idx = Math.max(0, Math.min(idx, seq.length - 1)); if (cur) { var j = findIdx(cur.stage, cur.q.id); if (j >= 0) idx = j; } } render(); });
   });
-  $("btnEditGo").addEventListener("click", function () { var j = findIdx(editing, Q.per_stage[0].id); if (j >= 0) { idx = j; render(); } });
-  $("btnEditBack").addEventListener("click", function () { render(); });
+  $("btnEditGo").addEventListener("click", function () { if (PREVIEW) { showStop(tour[tourIdx].k === "edit" ? tourIdx + 1 : tourIdx); return; } var j = findIdx(editing, Q.per_stage[0].id); if (j >= 0) { idx = j; render(); } });
+  $("btnEditBack").addEventListener("click", function () { if (PREVIEW) { showStop(tour[tourIdx].k === "edit" ? tourIdx - 1 : tourIdx); return; } render(); });
 
   /* Phase 3: one checklist item. */
   function renderCandidate(b, it) {
@@ -299,7 +327,7 @@
     renderStrip();
     window.scrollTo(0, 0);
   }
-  $("btnStart").addEventListener("click", function () { idx = 0; render(); });
+  $("btnStart").addEventListener("click", function () { if (PREVIEW) { showStop(1); return; } idx = 0; render(); });
 
   function numVal(id) { var e = $(id); if (!e) return null; var v = e.value.trim(); return v === "" ? null : Number(v); }
   /* Anything that must not be saved, as a short reason (#6: no negative numbers). */
@@ -384,6 +412,7 @@
   function busy(on) { saving = on; ["btnNext", "btnThen", "btnBuildDone", "btnEditSave", "btnEditUp", "btnEditDown", "btnEditDelete"].forEach(function (id) { var b = $(id); if (b) b.disabled = on; }); }
   function stamp() { return new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); }
   function postStep(body, then) {
+    if (PREVIEW) { setSaved("Preview: nothing is saved"); return; }   /* never a write in preview */
     if (saving) return;
     body.answered_by = who;
     busy(true); setSaved("Saving");
@@ -398,6 +427,7 @@
       .catch(function (e) { busy(false); if (e.message !== "signed out") setSaved("Not saved: no connection. Check the signal and try again.", true); });
   }
   function saveAnswer(stage, qid, payload, then) {
+    if (PREVIEW) { setSaved("Preview: nothing is saved"); return; }   /* never a write in preview */
     if (saving) return;
     busy(true); setSaved("Saving");
     RAM.apiJSON("/answers", { method: "POST", json: { stage: stage, question: qid, payload: payload, answered_by: who } })
@@ -443,8 +473,96 @@
     while (i < seq.length - 1 && seq[i].stage === it.stage) i++;
     idx = i; render();
   }
-  $("btnNext").addEventListener("click", function () { if (seq[idx].kind === "done") { idx = 0; render(); return; } saveThen(function () { advance(1); }); });
-  $("btnBack").addEventListener("click", function () { saveThen(function () { advance(-1); }); });
+  $("btnNext").addEventListener("click", function () {
+    if (PREVIEW) { previewCapture(); showStop(seq[idx].kind === "done" ? 0 : tourIdx + 1); return; }
+    if (seq[idx].kind === "done") { idx = 0; render(); return; }
+    saveThen(function () { advance(1); });
+  });
+  $("btnBack").addEventListener("click", function () { if (PREVIEW) { previewCapture(); showStop(tourIdx - 1); return; } saveThen(function () { advance(-1); }); });
+
+  /* ---------- preview (URL only: ?preview=1) ---------- */
+  /* The demo record: three sample steps, no answers yet. The strip, the list, the tally
+     and the checklist are computed here, the same way the server does it, from whatever
+     the consultant types while rehearsing. Nothing leaves the page. */
+  function demoRecompute() {
+    var me = Q.me_name, base = Q.per_stage.map(function (q) { return q.id; });
+    summary = steps.map(function (s) {
+      var a = latest[s.id] || {};
+      function P(q) { var r = a[q]; return r && r.payload && !r.payload.cleared ? r.payload : null; }
+      var w = P("who"), whoNames = w ? (w.names || []).concat(w.other ? [w.other] : []) : [];
+      var hi = hoursInfo(s.id), hp = P("hours"), hours = "";
+      if (hp) {
+        if (hp.hours != null && hp.hours !== "" && !isNaN(Number(hp.hours))) { var fh = Number(hp.hours); hours = fh + " " + (fh === 1 && /s$/.test(hi.unit) ? hi.unit.slice(0, -1) : hi.unit); }
+        if (hp.depends) hours += (hours ? "; " : "") + "it depends" + (hp.why ? ": " + hp.why : "");
+      }
+      var wp = P("wrong"), okp = P("ok"), ok = okp ? okp.choice : "", bp = P("before");
+      return { id: s.id, n: s.n, name: s.title, short: s.title, text: s.text, source: s.source, candidate: s.candidate,
+        who: whoNames, hours: hours, before: bp ? bp.text : "", wrong: wp ? wp.text : "", flags: wp && wp.flag ? 1 : 0,
+        ok: ok, locked: ok === "Yes, always" || ok === "Sometimes", me_does: whoNames.indexOf(me) >= 0,
+        me_alone: whoNames.length === 1 && whoNames[0] === me, answered: base.filter(function (q) { return !!P(q); }).length, total: base.length };
+    });
+    var does = summary.filter(function (s) { return s.me_does; }), alone = summary.filter(function (s) { return s.me_alone; }), n = summary.length, mf = meFirst();
+    var line = n ? n + " step" + (n !== 1 ? "s" : "") + " so far. " + mf + " does " + does.length + " of " + n + "." + (alone.length ? " " + alone.length + " alone." : "") : "No steps yet.";
+    tallyObj = { me: mf, steps: n, me_does: does.length, me_alone: alone.length, line: line };
+    cands = Q.candidates.map(function (c) {
+      var m = null;
+      steps.forEach(function (s) { if (m) return; var hay = (s.title + " " + s.text).toLowerCase(); if ((c.keywords || []).some(function (k) { return hay.indexOf(String(k).toLowerCase()) >= 0; })) m = s; });
+      return { id: c.id, title: c.title, sub: c.sub, choice: "", matched: false, step: null, match: m ? { id: m.id, n: m.n, name: m.title } : null };
+    });
+  }
+  /* What the consultant typed on a question screen goes into the demo record (so the
+     tally and the strip move), never to the server. */
+  function previewCapture() {
+    var it = seq[idx]; if (!it || $("qcard").hidden) return;
+    if (it.kind !== "opening" && it.kind !== "stage" && it.kind !== "closing") return;
+    try { var p = readAnswer(); if (p) { latest[it.stage] = latest[it.stage] || {}; latest[it.stage][it.q.id] = { payload: p, answered_by: "Preview", ts_utc: new Date().toISOString() }; demoRecompute(); } } catch (e) { }
+  }
+  /* The tour: every screen type in order. Each stop renders one screen. */
+  function buildTour() {
+    var t = [{ k: "intro" }];
+    seq.forEach(function (it, i) { if (it.kind === "opening") t.push({ k: "seq", i: i }); });
+    t.push({ k: "build", mode: "first" });
+    t.push({ k: "build", mode: "list" });
+    t.push({ k: "edit", id: steps[0].id });
+    Q.per_stage.forEach(function (q) { t.push({ k: "seq", i: findIdx(steps[0].id, q.id), open: q.type === "problem" ? "flag" : (q.type === "approval" ? "ok" : "") }); });
+    var matched = "", cold = "";
+    cands.forEach(function (c) { if (c.match && !matched) matched = c.id; if (!c.match && !cold) cold = c.id; });
+    if (matched) t.push({ k: "seq", i: findIdx("candidates", matched) });
+    if (cold) { t.push({ k: "seq", i: findIdx("candidates", cold) }); t.push({ k: "seq", i: findIdx("candidates", cold), open: "place" }); }
+    Q.closing.questions.forEach(function (q) { t.push({ k: "seq", i: findIdx("closing", q.id) }); });
+    t.push({ k: "seq", i: seq.length - 1 });
+    tour = t.filter(function (s) { return s.k !== "seq" || s.i >= 0; });
+  }
+  function showStop(n) {
+    tourIdx = Math.max(0, Math.min(tour.length - 1, n));
+    var s = tour[tourIdx];
+    if (s.k === "intro") renderIntro();
+    else if (s.k === "build") { previewBuild = s.mode; idx = findIdx("phase1", "done"); render(); previewBuild = ""; }
+    else if (s.k === "edit") renderEdit(s.id);
+    else {
+      idx = s.i; render();
+      var opt;
+      if (s.open === "flag" && $("btnFlag") && !$("btnFlag").classList.contains("on")) $("btnFlag").click();
+      if (s.open === "ok") { opt = document.querySelector('#opts .opt[data-val="' + esc(Q.approval_options[0]) + '"]'); if (opt && !opt.classList.contains("on")) opt.click(); }
+      if (s.open === "place") { opt = document.querySelector('#opts .opt[data-val="' + esc(Q.candidates_screen.options[0]) + '"]'); if (opt && !opt.classList.contains("on")) opt.click(); }
+    }
+    var lbl = $("previewStop"); if (lbl) lbl.textContent = "Screen " + (tourIdx + 1) + " of " + tour.length;
+  }
+  function leaveHref() {
+    var q = location.search.replace(/([?&])preview=1(&|$)/, function (m, p, e) { return e ? p : ""; }).replace(/[?&]$/, "");
+    return location.pathname + (q && q !== "?" ? q : "");
+  }
+  function startPreview() {
+    steps = DEMO_STEPS.map(function (t, i) { return { id: "s0" + (i + 1), n: i + 1, title: t, text: t, source: "own", candidate: "", created_by: "Preview" }; });
+    latest = {}; p1done = true; who = "Preview";
+    demoRecompute(); buildSeq();
+    $("whoToggle").hidden = true;
+    var band = el('<div class="preview-band" id="previewBand"><div class="preview-row"><strong>PREVIEW.</strong> Nothing you do here is saved. <a href="' + esc(leaveHref()) + '" id="leavePreview">Leave preview</a></div><div class="preview-hint">Next always moves to the next screen, in the order the owner will see them. <span id="previewStop"></span></div></div>');
+    document.body.insertBefore(band, document.body.firstChild);
+    setSaved("Preview: nothing is saved");
+    buildTour(); showStop(0);
+    window.RAMWIZ = { seq: function () { return seq; }, latest: function () { return latest; }, steps: function () { return steps; }, tally: function () { return tallyObj; }, go: function (i) { idx = i; render(); }, idx: function () { return idx; }, edit: renderEdit, preview: true, tour: function () { return tour; }, stop: function () { return tourIdx; } };
+  }
   document.addEventListener("keydown", function (e) { if (e.key === "Enter" && e.target && e.target.tagName === "INPUT" && e.target.id !== "gatePassword" && !$("qcard").hidden && !$("navBar").hidden) { e.preventDefault(); $("btnNext").click(); } });
 
   /* ---------- boot ---------- */
@@ -452,6 +570,7 @@
     Q = cfg;
     $("appSub").hidden = false;
     if ($("h1sub")) $("h1sub").hidden = false;
+    if (PREVIEW) { startPreview(); return; }   /* no record read, no record write */
     buildWho();
     RAM.apiJSON("/answers").then(function (r) {
       absorb(r);

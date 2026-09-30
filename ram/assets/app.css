@@ -127,6 +127,12 @@ select.bigin{-webkit-appearance:none;appearance:none;background:#fff url("data:i
 .admin-strip .sbox{flex:1 1 200px;font-size:14px}
 .admin-strip .sline{white-space:normal}
 
+/* preview band (injected by wizard.js only on a ?preview=1 load) */
+.preview-band{background:var(--gold);color:var(--ink);padding:10px 16px;border-bottom:2px solid #d9ae00;font-size:17px}
+.preview-band .preview-row{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.preview-band a{color:var(--blue);font-weight:700;text-decoration:underline;text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center}
+.preview-band .preview-hint{font-size:14px;color:#4a3b00;margin-top:2px}
+
 /* tables */
 .tablewrap{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:15px}
