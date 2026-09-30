@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Process Map</title>
+<link rel="stylesheet" href="../assets/app.css">
+</head>
+<body>
+<header class="top">
+  <div class="toprow">
+    <h1><span data-client-name=", process map">Process Map</span></h1>
+    <div class="who" id="whoToggle" title="Who is answering" hidden>
+      <span class="wholbl">Answering:</span>
+      <span id="whoButtons"></span>
+    </div>
+  </div>
+  <div class="sub" id="appSub" hidden>
+    <span id="saveState" class="saved">Loading your answers</span>
+    <span class="links"><a href="../">Tools</a> &middot; <a href="admin/">Dale's view</a> &middot; <a href="#" data-action="advanced">Advanced</a> &middot; <a href="#" data-action="signout">Sign out</a></span>
+  </div>
+</header>
+
+<section id="gate" hidden>
+  <main class="narrow">
+    <form id="gateForm" class="card login-card" autocomplete="off">
+      <label for="gatePassword" class="biglabel">Password</label>
+      <input id="gatePassword" type="password" class="bigin" autocomplete="current-password">
+      <p class="err" id="gateError"></p>
+      <button type="submit" class="btn pri wide" id="gateBtn">Sign in</button>
+      <p class="pdesc">Everything you answer is saved on the server as you go. Nothing is kept in this browser, so you can pick up on any phone or computer.</p>
+    </form>
+  </main>
+</section>
+
+<section id="app" hidden>
+  <section class="strip-wrap" id="stripWrap">
+    <button type="button" class="strip-toggle" id="stripToggle" aria-expanded="true">The map so far <span id="stripCount"></span></button>
+    <div class="strip" id="strip"></div>
+  </section>
+
+  <main class="narrow" id="main">
+    <div class="card qcard" id="qcard">
+      <div class="qhead">
+        <span class="qstage" id="qStage"></span>
+        <span class="qprog" id="qProg"></span>
+      </div>
+      <h2 class="qtext" id="qText"></h2>
+      <p class="qsub" id="qSub"></p>
+      <div class="qbody" id="qBody"></div>
+      <p class="qmeta" id="qMeta"></p>
+    </div>
+    <div class="navrow">
+      <button type="button" class="btn big" id="btnBack">Back</button>
+      <button type="button" class="btn big pri" id="btnNext">Next</button>
+    </div>
+    <p class="pdesc center" id="navHint"></p>
+  </main>
+</section>
+
+<footer data-consultant></footer>
+<script src="../assets/shell.js"></script>
+<script src="../assets/wizard.js"></script>
+</body>
+</html>

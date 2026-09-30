@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Process Map</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<header class="top">
+  <div class="toprow">
+    <h1><span data-client-name>Client</span> tools</h1>
+  </div>
+  <div class="sub" id="appSub" hidden>
+    <span>Signed in</span>
+    <span class="links"><a href="#" data-action="signout">Sign out</a></span>
+  </div>
+</header>
+
+<main class="narrow">
+  <section id="gate" hidden>
+    <form id="gateForm" class="card login-card" autocomplete="off">
+      <label for="gatePassword" class="biglabel">Password</label>
+      <input id="gatePassword" type="password" class="bigin" autocomplete="current-password">
+      <p class="err" id="gateError"></p>
+      <button type="submit" class="btn pri wide" id="gateBtn">Sign in</button>
+      <p class="pdesc">One password opens every tool on this page. You stay signed in on this device for thirty days.</p>
+    </form>
+  </section>
+
+  <section id="app" hidden>
+    <div class="tiles" id="tiles"></div>
+    <p class="pdesc center"><a href="#" data-action="advanced" id="advLink">Advanced map</a> (the full tool, for the office computer)</p>
+  </section>
+</main>
+
+<footer data-consultant></footer>
+<script src="assets/shell.js"></script>
+<script>
+(function () {
+  /* Tiles are generic tool entries; add more here as tools are added for a client.
+     Empty slots are simply not shown. */
+  var TILES = [
+    { title: "Process Map", desc: "Answer a few questions about how a job runs. The map builds itself as you go.", href: "map/" }
+  ];
+  RAM.gate(function (cfg) {
+    document.getElementById("appSub").hidden = false;
+    var box = document.getElementById("tiles"); box.innerHTML = "";
+    TILES.forEach(function (t) {
+      if (!t || !t.title) return;
+      box.appendChild(RAM.el('<a class="tile" href="' + RAM.esc(t.href) + '"><span class="ttitle">' + RAM.esc(t.title) + '</span><span class="tdesc">' + RAM.esc(t.desc || "") + '</span></a>'));
+    });
+  });
+})();
+</script>
+</body>
+</html>

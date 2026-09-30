@@ -21,6 +21,10 @@ Disallow: /cfm/
 # QuickBooks wizards (added 2026-09-24). Same treatment as /cfm/.
 Disallow: /qbo/
 
+# Process-map hub (added 2026-09-29). Password-gated shell with no client content in
+# source; reached by direct link only and never linked from the index.
+Disallow: /ram/
+
 # --- Everything else is deliberately public and stays crawlable ---
 # /                        the site index
 # /tutorials/  /setup/     published how-to material

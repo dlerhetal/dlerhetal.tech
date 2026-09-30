@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Process Map</title>
+<link rel="stylesheet" href="../../assets/app.css">
+</head>
+<body>
+<header class="top">
+  <div class="toprow">
+    <h1><span data-client-name=", process map: consultant view">Process Map</span></h1>
+  </div>
+  <div class="sub" id="appSub" hidden>
+    <span id="adminState" class="saved">Loading</span>
+    <span class="links"><a href="../">Wizard</a> &middot; <a href="#" data-action="advanced">Advanced</a> &middot; <a href="#" data-action="signout">Sign out</a></span>
+  </div>
+</header>
+
+<section id="gate" hidden>
+  <main class="narrow">
+    <form id="gateForm" class="card login-card" autocomplete="off">
+      <label for="gatePassword" class="biglabel">Password</label>
+      <input id="gatePassword" type="password" class="bigin" autocomplete="current-password">
+      <p class="err" id="gateError"></p>
+      <button type="submit" class="btn pri wide" id="gateBtn">Sign in</button>
+    </form>
+  </main>
+</section>
+
+<section id="app" hidden>
+<main class="wide">
+  <div class="card">
+    <h2>Exports</h2>
+    <div class="btnrow">
+      <button type="button" class="btn pri" id="btnExport">Export JSON (loads in Advanced)</button>
+      <button type="button" class="btn" id="btnCsv">Download record (raw rows CSV)</button>
+      <button type="button" class="btn danger" id="btnClearTest">Clear test rows (answered_by = TEST)</button>
+    </div>
+    <p class="pdesc" id="exportMsg"></p>
+  </div>
+
+  <div class="card">
+    <h2>The map</h2>
+    <div class="strip admin-strip" id="strip"></div>
+  </div>
+
+  <div class="card">
+    <h2>Flagged money leaks (UDE candidates)</h2>
+    <div class="tablewrap"><table id="udeTable"><thead><tr><th>Stage</th><th>What goes wrong</th><th>Dollar guess</th><th>How often</th><th>Who</th><th>When</th></tr></thead><tbody></tbody></table></div>
+    <p class="pdesc" id="udeEmpty"></p>
+  </div>
+
+  <div class="card">
+    <h2>Every answer, latest per question</h2>
+    <div id="latestBox"></div>
+  </div>
+
+  <div class="card">
+    <h2>Full history (every row ever saved, newest first)</h2>
+    <div class="tablewrap"><table id="histTable"><thead><tr><th>#</th><th>When (UTC)</th><th>Stage</th><th>Question</th><th>Who</th><th>IP hash</th><th>Answer</th></tr></thead><tbody></tbody></table></div>
+  </div>
+</main>
+</section>
+
+<footer data-consultant></footer>
+<script src="../../assets/shell.js"></script>
+<script src="../../assets/admin.js"></script>
+</body>
+</html>
