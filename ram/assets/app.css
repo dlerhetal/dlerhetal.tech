@@ -7,6 +7,8 @@ html,body{margin:0;padding:0}
 body{font-family:Calibri,"Segoe UI",Arial,sans-serif;font-size:19px;line-height:1.4;color:var(--ink);background:var(--bg);-webkit-text-size-adjust:100%}
 header.top{background:var(--blue);color:#fff;padding:12px 16px}
 header.top h1{margin:0;font-size:22px;font-weight:600;letter-spacing:.2px}
+header.top h1 .h1sub{font-size:17px;font-weight:400;color:#cfd9ea;white-space:nowrap}
+header.top h1 .h1sub::before{content:", "}
 header.top .toprow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 header.top .sub{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:15px;color:#cfd9ea;margin-top:6px}
 header.top .links{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
@@ -52,7 +54,9 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:24px 16px 32p
 .navrow{display:flex;gap:12px;flex-wrap:nowrap}
 .navrow .btn.big{min-height:56px;white-space:nowrap;min-width:0}
 .navrow .btn.big:disabled{opacity:.4;cursor:default}
-.navhint{margin:6px 0 0;font-size:14px}
+.navmeta{display:flex;justify-content:center;flex-wrap:wrap;gap:4px 14px;margin:6px 0 0;font-size:14px;color:var(--muted)}
+.navstate{display:none}
+.navstate.bad{color:var(--red);font-weight:600}
 .resume{margin:0 0 12px;padding:10px 14px;background:var(--soft);border-left:4px solid var(--gold);border-radius:8px;font-size:16px;color:var(--blue)}
 
 /* question card */
@@ -123,6 +127,24 @@ tr.ude-row td:nth-child(3){font-weight:700;color:var(--red)}
   .btn.big{font-size:20px;padding:14px 8px}
   .sbox{flex-basis:130px}
   .navbar{padding:8px 16px 6px}
+}
+
+/* phone header (under 600px): title with a small subtitle, then a row of plain text
+   links, then the Answering toggle; save status moves to the Back/Next bar; the
+   Advanced link is hidden (it is for the office computer, the hub says so). */
+@media (max-width:600px){
+  header.top{display:flex;flex-direction:column;padding:6px 16px 6px}
+  header.top .toprow{display:contents}
+  header.top h1{order:1;font-size:20px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  header.top h1 .h1sub{font-size:15px}
+  header.top .sub{order:2;margin:0;display:block}
+  header.top .sub .saved{display:none}
+  header.top .links{gap:0;margin:0 -8px -2px}
+  header.top .links a{background:none;min-height:44px;padding:0 8px;font-size:16px;text-decoration:underline;text-underline-offset:3px}
+  header.top .links a.advonly{display:none}
+  header.top .who{order:3;align-self:flex-start;margin-top:0;padding:0 2px 0 12px}
+  header.top .whobtn{min-height:44px;padding:6px 12px}
+  .navstate{display:inline}
 }
 
 /* hub tiles */

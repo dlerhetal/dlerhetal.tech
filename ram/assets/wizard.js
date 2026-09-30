@@ -164,7 +164,9 @@
   });
 
   /* ---------- nav ---------- */
-  function setSaved(msg, bad) { var e = $("saveState"); e.textContent = msg; e.className = "saved" + (bad ? " bad" : ""); }
+  /* Save status lives in the header on wide screens and in the Back/Next bar on phones
+     (the phone header has no room for it); both elements get the same text. */
+  function setSaved(msg, bad) { var e = $("saveState"); e.textContent = msg; e.className = "saved" + (bad ? " bad" : ""); var n = $("navState"); if (n) { n.textContent = msg; n.className = "navstate" + (bad ? " bad" : ""); } }
   function advance(dir) { idx = Math.max(0, Math.min(seq.length - 1, idx + dir)); render(); }
   function saveThen(then) {
     var it = seq[idx];
@@ -198,6 +200,7 @@
     Q = cfg;
     Q.me_short = (Q.me_name || "").split(" ")[0] ? (Q.me_name.split(" ")[0] + " OK") : "OK";
     $("appSub").hidden = false;
+    if ($("h1sub")) $("h1sub").hidden = false;
     buildWho();
     RAM.apiJSON("/answers").then(function (r) {
       latest = r.latest || {}; summary = r.summary || [];

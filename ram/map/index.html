@@ -10,7 +10,7 @@
 <body>
 <header class="top">
   <div class="toprow">
-    <h1><span data-client-name=", process map">Process Map</span></h1>
+    <h1><span data-client-name>Process Map</span><small class="h1sub" id="h1sub" hidden>Process map</small></h1>
     <div class="who" id="whoToggle" title="Who is answering" hidden>
       <span class="wholbl">Answering:</span>
       <span id="whoButtons"></span>
@@ -18,7 +18,7 @@
   </div>
   <div class="sub" id="appSub" hidden>
     <span id="saveState" class="saved">Loading your answers</span>
-    <span class="links"><a href="../">Tools</a><a href="admin/">Dale's view</a><a href="#" data-action="advanced">Advanced</a><a href="#" data-action="signout">Sign out</a></span>
+    <span class="links"><a href="../">Tools</a><a href="admin/">Dale's view</a><a href="#" data-action="advanced" class="advonly">Advanced</a><a href="#" data-action="signout">Sign out</a></span>
   </div>
 </header>
 
@@ -57,7 +57,7 @@
         <button type="button" class="btn big" id="btnBack">Back</button>
         <button type="button" class="btn big pri" id="btnNext">Next</button>
       </div>
-      <p class="pdesc center navhint" id="navHint"></p>
+      <p class="navmeta"><span id="navState" class="navstate"></span><span class="navhint" id="navHint"></span></p>
     </div>
   </main>
 </section>
