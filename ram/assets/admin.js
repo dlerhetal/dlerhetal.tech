@@ -16,6 +16,7 @@
     if ("flag" in p) { var t = p.text || ""; if (p.flag) t = "[FLAG " + (p.dollars != null ? money(p.dollars) : "") + (p.how_often ? ", " + p.how_often : "") + "] " + t; return t; }
     if ("choice" in p) { return p.choice + (p.who ? " (could decide instead: " + p.who + ")" : "") + (p.step_id ? (p.matched ? " (already step " : " (became step ") + stepLabel(p.step_id) + ")" : ""); }
     if ("done" in p) return p.done ? "Finished the list" : "";
+    if ("list" in p) return (p.list || []).length ? (p.list || []).join("; ") : "(none)";
     if ("value" in p) { return (p.value == null ? "" : p.value) + (p.high != null ? " to " + p.high : "") + (p.note ? " (" + p.note + ")" : ""); }
     if ("text" in p) return p.text;
     if ("title" in p) return p.title + (p.after ? " (after " + (p.after === "first" ? "nothing, first" : stepLabel(p.after)) + ")" : "") + (p.candidate ? " [from the checklist]" : "");
@@ -25,6 +26,7 @@
   function stepLabel(id) { for (var i = 0; i < STEPS.length; i++) if (STEPS[i].id === id) return STEPS[i].n + ". " + STEPS[i].title; if (DELETED[id]) return id + " (" + DELETED[id].title + ", taken out)"; return id; }
   function qText(stage, qid) {
     var pool = [];
+    if (stage === "opening" && qid === "other_starts") return (Q.build.other_starts || {}).text || "Other ways a job starts";
     if (stage === "opening") pool = Q.opening.questions; else if (stage === "closing") pool = Q.closing.questions;
     else if (stage === "candidates") pool = Q.candidates.map(function (c) { return { id: c.id, text: "Checklist: " + c.title }; });
     else if (stage === "phase1") pool = [{ id: "done", text: "Finished the list of steps" }];
@@ -34,7 +36,7 @@
   }
   function stageName(id) { if (id === "opening") return "Opening"; if (id === "closing") return "Closing"; if (id === "candidates") return "Checklist"; if (id === "phase1") return "The list"; return stepLabel(id); }
 
-  function renderStrip(summary) {
+  function renderStrip(summary, starts) {
     var s = $("strip"); s.innerHTML = "";
     summary.forEach(function (st) {
       s.insertAdjacentHTML("beforeend", '<div class="sbox' + (st.answered ? " has" : "") + (st.me_alone ? " alone" : "") + '"><div class="sn">' + st.n + '</div><div class="sname">' + esc(st.name) + '</div>' +
@@ -45,6 +47,7 @@
         (st.wrong ? '<div class="sline pain">' + esc(st.wrong) + '</div>' : "") +
         '<div class="sicons">' + (st.me_alone ? '<span class="salone">alone</span>' : "") + (st.flags ? '<span class="sflag">' + st.flags + '</span>' : "") + (st.locked ? '<span class="slock">&#128274; ' + esc(st.ok) + '</span>' : (st.ok ? '<span class="sok">' + esc(st.ok) + '</span>' : "")) + '</div>' +
         '<div class="sbar"><i style="width:' + Math.round(100 * st.answered / st.total) + '%"></i></div></div>');
+      if (st.n === 1) (starts || []).forEach(function (t) { s.insertAdjacentHTML("beforeend", '<div class="sbox sstart"><div class="sname">' + esc((Q.build.other_starts || {}).strip_label || "also starts as:") + '</div><div class="sline sstarttext">' + esc(t) + '</div></div>'); });
     });
     if (!summary.length) s.innerHTML = '<p class="pdesc">No steps yet.</p>';
   }
@@ -65,6 +68,65 @@
     $("findingBody").innerHTML = html;
   }
 
+  /* How work arrives: step 1 in his words, then the other ways a job starts. */
+  function renderArrives(A) {
+    var OS = Q.build.other_starts || {}, r = (A.latest && A.latest.opening && A.latest.opening.other_starts) || null;
+    var list = r && r.payload && !r.payload.cleared && r.payload.list ? r.payload.list : [];
+    var s1 = (A.steps || [])[0];
+    $("arrivesTitle").textContent = OS.admin_title || "How work arrives";
+    var html = s1 ? '<p class="finding-line">Step 1, in the owner\'s words: <strong>' + esc(s1.title) + '</strong></p>' : '<p class="pdesc">No first step yet.</p>';
+    if (list.length) html += '<h3>Also starts as (' + list.length + ')</h3><ol class="finding-list" id="arrivesList">' + list.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ol><p class="pdesc">' + esc(r.answered_by) + ', ' + esc(fmtTs(r.ts_utc)) + '</p>';
+    else html += '<p class="pdesc">No other way in named' + (s1 ? ' (asked once, right after step 1)' : '') + '.</p>';
+    $("arrivesBody").innerHTML = html;
+  }
+
+  /* The script: every screen the wizard shows, in order, numbered, from the config. */
+  function renderScript() {
+    var n = 0, out = [], B = Q.build, OS = B.other_starts || {}, C = Q.candidates_screen, hq = null;
+    Q.per_stage.forEach(function (q) { if (q.id === "hours") hq = q; });
+    function screen(title, lines) { n++; out.push('<section class="scr"><h3><span class="scrn">' + n + '.</span> ' + esc(title) + '</h3>' + lines.join("") + '</section>'); }
+    function say(t) { return '<p class="say">' + esc(t) + '</p>'; }
+    function sub(t) { return t ? '<p class="saysub">' + esc(t) + '</p>' : ""; }
+    function btns(list) { return '<p class="saybtn">Buttons: ' + list.map(function (b) { return '<span class="pill">' + esc(b) + '</span>'; }).join(" ") + '</p>'; }
+    function note(t) { return '<p class="saynote">' + esc(t) + '</p>'; }
+    screen("Before we start", [say(Q.intro || ""), btns(["Let's start"])]);
+    Q.opening.questions.forEach(function (q, i) {
+      var l = [note(Q.opening.title + ". Question " + (i + 1) + " of " + Q.opening.questions.length), say(q.text), sub(q.sub)];
+      l.push(note(q.range ? "Two number boxes, Low and High, in " + q.unit + (q.note ? ", and a note box." : ".") : "A number box in " + q.unit + (q.note ? ", and a note box." : ".")));
+      l.push(btns(["Back", "Next"]));
+      screen(q.text, l);
+    });
+    screen(B.title + ": the first step", [note(B.title), say(B.first_text), sub(B.first_sub), note("One text box. Enter is the same as tapping " + B.then_label), btns([B.then_label, B.done_label])]);
+    if (OS.text) screen(OS.text, [note("Shown once, right after step 1 is saved."), say(OS.text), sub(OS.sub), note("A text box; each entry shows as a chip above it."), btns([OS.add_label || "Add another way", OS.then_label || "Then what?"])]);
+    screen(B.title + ": the loop", [say(B.next_text), sub('After "<the last step>": ' + B.next_sub), note("The list of his steps grows under the buttons, numbered, in his order. " + B.edit_hint), btns([B.then_label, B.done_label]), note("Coming back later: " + B.again_text + " / " + B.again_sub + " / button: " + B.done_again_label)]);
+    screen("This step (tap a step in the list or the map)", [say("This step"), sub("Change the words, move it, or take it out of the list."), btns(["Save the new name", "Move up", "Move down", "Take this step out", "Answer the questions about this step", "Back"]), note("Take this step out asks first; its answers stay on record.")]);
+    Q.per_stage.forEach(function (q, i) {
+      var l = [note("Step n of N: <his title>. Question " + (i + 1) + " of " + Q.per_stage.length + " about this step"), say(q.text), sub(q.sub)];
+      if (q.type === "people") l.push(note("Chips: " + (Q.who_extra || []).concat(Q.roster.map(function (r) { return r === Q.me_name ? "Me (" + r + ")" : r; })).join(", ") + ". Plus an Other box."));
+      if (q.type === "hours") { l.push(note("Unit: " + q.unit + ". Plus an It depends box with On what? One line.")); l.push(note("Office wording, when everyone named is in the office (" + (Q.office_names || []).join(", ") + "): " + q.sub_office + " Unit: " + q.unit_office + ".")); }
+      if (q.type === "problem") l.push(note("Button: Flag it: this costs real money. Opens: Rough guess, dollars each time it happens ($ box), How often? " + Q.how_often_options.join(" / ") + ". Flagged reads: Flagged as a money leak (tap to unflag)."));
+      if (q.type === "approval") { l.push(btns(Q.approval_options)); l.push(note("Follow-up unless No: " + Q.approval_followup.text + " " + (Q.approval_followup.sub || ""))); }
+      l.push(note("Link: " + (Q.skip_label || "Skip this step for now"))); l.push(btns(["Back", "Next"]));
+      screen(q.text, l);
+    });
+    var cl = [note("Shown once the list is finished. Counter: Checklist i of " + Q.candidates.length), sub(C.intro), say(C.question), btns(C.options),
+      note("Already covered by a step he named (keyword match): " + C.matched_text.replace("{n}", "n").replace("{title}", "<his title>")), btns(C.matched_options),
+      note("Reopened later: This is step n in your list. with " + C.options.join(" / ") + "; changing to No takes the step out of the list."),
+      '<ol class="scritems">' + Q.candidates.map(function (c, i) { return '<li><span class="scrn">' + n + "." + (i + 1) + '</span> <strong>' + esc(c.title) + '</strong><br><span class="saysub">' + esc(c.sub) + '</span></li>'; }).join("") + '</ol>'];
+    screen(C.title + " (" + Q.candidates.length + " items)", cl);
+    screen(C.place_text, [note("After Yes or Sometimes on a checklist item, or It is a separate step."), say(C.place_text), sub(C.place_sub), note("Picker: " + C.place_first + "; " + C.place_after.replace("{n}", "n").replace("{title}", "<his title>") + " for every step (the last one preselected). Next puts the step there and opens its five questions, then returns to the checklist.")]);
+    Q.closing.questions.forEach(function (q) { screen(q.text, [note(Q.closing.title), say(q.text), sub(q.sub), btns(["Back", "Finish"])]); });
+    screen("Done", [say("That is everything I have for now."), sub(Q.closing.done_text), note("<the tally line> You have answered n of t questions. Tap Back, or tap any step in the map above, to fill in the rest."), btns([Q.closing.done_label, "Back to the top"]), note("After the button: Saved. You can close this page. Open the same link any time to come back.")]);
+    $("scriptBody").innerHTML = out.join("");
+  }
+  $("btnPrintScript").addEventListener("click", function () {
+    document.body.classList.add("print-script");
+    var off = function () { document.body.classList.remove("print-script"); window.removeEventListener("afterprint", off); };
+    window.addEventListener("afterprint", off);
+    window.print();
+    setTimeout(off, 2000);
+  });
+
   function renderCandidates(A) {
     var rows = A.candidates || [], me = (A.tally && A.tally.me) || "The owner";
     var rej = rows.filter(function (c) { return c.choice === "No"; }), yes = rows.filter(function (c) { return c.choice === "Yes" || c.choice === "Sometimes"; }), open = rows.filter(function (c) { return !c.choice; });
@@ -80,8 +142,10 @@
       var A = res[0], H = res[1];
       STEPS = A.steps || []; DELETED = A.deleted || {};
       renderFinding(A);
+      renderArrives(A);
       renderCandidates(A);
-      renderStrip(A.summary || []);
+      var osr = (A.latest && A.latest.opening && A.latest.opening.other_starts) || null;
+      renderStrip(A.summary || [], osr && osr.payload && !osr.payload.cleared ? (osr.payload.list || []) : []);
       var dk = Object.keys(DELETED);
       $("deletedNote").textContent = dk.length ? "Taken out of the list: " + dk.map(function (k) { return DELETED[k].title + " (" + DELETED[k].deleted_by + ")"; }).join("; ") : "";
       var tb = $("udeTable").querySelector("tbody"); tb.innerHTML = "";
@@ -123,5 +187,5 @@
     });
   });
 
-  RAM.gate(function (cfg) { Q = cfg; $("appSub").hidden = false; load(); });
+  RAM.gate(function (cfg) { Q = cfg; $("appSub").hidden = false; renderScript(); load(); });
 })();

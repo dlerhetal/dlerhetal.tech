@@ -133,6 +133,36 @@ select.bigin{-webkit-appearance:none;appearance:none;background:#fff url("data:i
 .preview-band a{color:var(--blue);font-weight:700;text-decoration:underline;text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center}
 .preview-band .preview-hint{font-size:14px;color:#4a3b00;margin-top:2px}
 
+/* the other ways a job starts: small entry boxes after step 1 in the strip */
+.sbox.sstart{flex-basis:120px;min-height:0;border-style:dashed;border-color:#c9b56a;background:#fffbea;cursor:default;align-self:flex-start}
+.sbox.sstart .sname{font-size:11px;color:#7a5a00;text-transform:uppercase;letter-spacing:.3px;padding-right:0;margin-bottom:2px}
+.sbox.sstart .sstarttext{white-space:normal;font-size:13px}
+.admin-strip .sbox.sstart{flex:0 1 160px}
+.finding-line{font-size:18px;margin:0 0 6px}
+
+/* the script (admin): every screen numbered, printable on its own */
+.scripthead{justify-content:space-between}
+.scripthead h2{margin:0;flex:1 1 auto}
+.script .scr{border-top:1px solid var(--line);padding:12px 0 6px}
+.script .scr h3{margin:0 0 6px;font-size:19px}
+.script .scrn{color:var(--muted);font-weight:700;margin-right:4px}
+.script .say{font-size:20px;font-weight:600;margin:6px 0 2px}
+.script .saysub{color:var(--muted);font-size:16px;margin:0 0 6px}
+.script .saynote{font-size:15px;color:#4a5263;margin:4px 0}
+.script .saybtn{font-size:15px;margin:6px 0}
+.script .pill{display:inline-block;border:1px solid var(--blue);border-radius:999px;padding:1px 10px;color:var(--blue);font-size:14px;margin:2px 2px 2px 0}
+.script .scritems{margin:8px 0 0;padding-left:0;list-style:none}
+.script .scritems li{margin:8px 0;padding-left:8px;border-left:3px solid var(--soft)}
+@media print{
+  body.print-script header.top,body.print-script footer,body.print-script main.wide>.card:not(#scriptCard),body.print-script .noprint,body.print-script #btnPrintScript{display:none !important}
+  body.print-script{background:#fff;font-size:13px}
+  body.print-script #scriptCard{border:0;box-shadow:none;padding:0;margin:0}
+  body.print-script .script .scr{break-inside:avoid;padding:8px 0 2px}
+  body.print-script .script .say{font-size:15px}
+  body.print-script .script .saysub,body.print-script .script .saynote,body.print-script .script .saybtn{font-size:12px}
+  body.print-script .script .scr h3{font-size:14px}
+}
+
 /* tables */
 .tablewrap{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:15px}

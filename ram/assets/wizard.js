@@ -1,7 +1,8 @@
 /* Process-map wizard, v2: the owner builds the list of steps himself.
-   Phase 1  "The phone rings. What happens first?" then "Then what?" until he says the
-            job is done. Each answer is a step (server-assigned id), in his order and his
-            words; any step can be renamed, moved or taken out.
+   Phase 1  "A new job. How does it start?" (no trigger assumed), then once "Does a job
+            ever start some other way?", then "Then what?" until he says the job is done.
+            Each answer is a step (server-assigned id), in his order and his words; any
+            step can be renamed, moved or taken out.
    Phase 2  five questions about each of HIS steps.
    Phase 3  "Did I miss anything?": a checklist of things drillers sometimes do; Yes or
             Sometimes puts it into his list where he says, No is recorded as a No.
@@ -194,7 +195,10 @@
     });
     b.appendChild(el('<p class="pdesc">' + esc(shown.length ? B.edit_hint : B.empty_hint) + '</p>'));
     b.appendChild(list);
-    if (idx > 0) { b.appendChild(el('<p class="skipline"><a href="#" id="buildBack">Back</a></p>')); $("buildBack").addEventListener("click", function (e) { e.preventDefault(); if (PREVIEW) showStop(tourIdx - 1); else advance(-1); }); }
+    var links = '<p class="skipline">' + (shown.length && B.other_starts ? '<a href="#" id="startsLink">' + esc(B.other_starts.link_label || "Other ways a job starts") + (otherStarts().length ? " (" + otherStarts().length + ")" : "") + '</a> ' : "") + (idx > 0 ? '<a href="#" id="buildBack">Back</a>' : "") + '</p>';
+    b.appendChild(el(links));
+    if ($("buildBack")) $("buildBack").addEventListener("click", function (e) { e.preventDefault(); if (PREVIEW) showStop(tourIdx - 1); else advance(-1); });
+    if ($("startsLink")) $("startsLink").addEventListener("click", function (e) { e.preventDefault(); renderStarts(); });
     list.addEventListener("click", function (e) { var t = e.target.closest("[data-edit]"); if (t) renderEdit(t.dataset.edit); });
     $("btnThen").addEventListener("click", function () {
       var text = $("inBuild").value.trim();
@@ -203,7 +207,12 @@
         if (testWalk()) { $("buildMsg").textContent = "TEST walk: nothing added, moving on."; buildSeq(); idx = Math.min(idx + 1, seq.length - 1); render(); return; }
         $("buildMsg").textContent = "Type what happens, then tap the button."; $("inBuild").focus(); return;
       }
-      postStep({ event: "create", payload: { text: text, after: "" } }, function () { render(); $("inBuild").focus(); });
+      var wasEmpty = !steps.length;
+      postStep({ event: "create", payload: { text: text, after: "" } }, function () {
+        /* Right after step 1, once: does a job ever start some other way? */
+        if (wasEmpty && B.other_starts && !otherStarts().length) { renderStarts(); return; }
+        render(); $("inBuild").focus();
+      });
     });
     $("btnBuildDone").addEventListener("click", function () {
       var text = $("inBuild").value.trim();
@@ -224,6 +233,49 @@
   function buildEnter(e) {
     var ta = $("inBuild"); if (!ta || e.target !== ta || e.key !== "Enter" || e.shiftKey) { if (!ta) document.removeEventListener("keydown", buildEnter); return; }
     e.preventDefault(); $("btnThen").click();
+  }
+
+  /* The other ways a job starts (stage "opening", question "other_starts", payload
+     {list: [...]}). Shown once, right after step 1 is saved; reachable again from the
+     list screen. Each Add saves the whole list as a new row (append-only holds). */
+  function otherStarts() { var a = ans("opening", "other_starts"); return a && a.list ? a.list.slice() : []; }
+  function renderStarts() {
+    var OS = Q.build.other_starts || {}, list = otherStarts();
+    editing = "";
+    showCard();
+    $("resumeCue").hidden = true;
+    $("qStage").textContent = Q.build.title; $("qProg").textContent = "";
+    $("qText").textContent = OS.text || "Does a job ever start some other way?";
+    $("qSub").textContent = OS.sub || "";
+    $("qMeta").textContent = "";
+    $("navBar").hidden = true; $("qcard").classList.add("buildcard");
+    var b = $("qBody"); b.innerHTML = "";
+    var chips = el('<div class="chips" id="startChips"></div>');
+    list.forEach(function (t, i) { chips.appendChild(el(chip(t, true, ' data-rm="' + i + '" title="Tap to take this one out"'))); });
+    b.appendChild(chips);
+    b.appendChild(el('<input type="text" class="bigin" id="inStart" placeholder="Type here">'));
+    b.appendChild(el('<button type="button" class="btn big wide" id="btnStartAdd">' + esc(OS.add_label || "Add another way") + '</button>'));
+    b.appendChild(el('<button type="button" class="btn big pri wide" id="btnStartThen">' + esc(OS.then_label || "Then what?") + '</button>'));
+    b.appendChild(el('<p class="pdesc" id="startMsg">' + (list.length ? esc(list.length + (list.length === 1 ? " other way" : " other ways") + " on record. Tap one to take it out.") : "") + '</p>'));
+    function save(newList, msg) {
+      if (PREVIEW) { latest.opening = latest.opening || {}; latest.opening.other_starts = { payload: { list: newList }, answered_by: "Preview", ts_utc: new Date().toISOString() }; renderStarts(); $("startMsg").textContent = msg; return; }
+      saveAnswer("opening", "other_starts", { list: newList }, function () { renderStarts(); $("startMsg").textContent = msg; });
+    }
+    $("btnStartAdd").addEventListener("click", function () {
+      var t = $("inStart").value.trim();
+      if (!t) { $("startMsg").textContent = "Type the other way a job starts, then tap Add."; $("inStart").focus(); return; }
+      save(list.concat([t]), "Added. Another one, or tap Then what?");
+    });
+    $("inStart").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("btnStartAdd").click(); } });
+    chips.addEventListener("click", function (e) {
+      var t = e.target.closest("[data-rm]"); if (!t) return;
+      var i = Number(t.dataset.rm); if (!confirm('Take "' + list[i] + '" out?')) return;
+      save(list.slice(0, i).concat(list.slice(i + 1)), "Taken out.");
+    });
+    $("btnStartThen").addEventListener("click", function () { if (PREVIEW) { showStop(tourIdx + 1); return; } idx = findIdx("phase1", "done"); render(); $("inBuild").focus(); });
+    renderStrip();
+    window.scrollTo(0, 0);
+    if (window.innerWidth > 700 && window.innerHeight > 500) $("inStart").focus();
   }
 
   /* One step's own screen: rename, move, take out, or go to its questions. */
@@ -367,6 +419,8 @@
         (st.before ? '<div class="sline wait" title="' + esc(st.before) + '">Waiting on: ' + esc(st.before.length > 40 ? st.before.slice(0, 40) + "..." : st.before) + '</div>' : "") +
         '<div class="sicons">' + (st.me_alone ? '<span class="salone">' + esc(meFirst()) + ' alone</span>' : "") + (st.flags ? '<span class="sflag" title="Flagged as a money leak">' + st.flags + '</span>' : "") + (st.locked ? '<span class="slock" title="Needs the owner\'s OK">&#128274; ' + esc(meFirst()) + ' OK</span>' : "") + '</div>' +
         '<div class="sbar"><i style="width:' + Math.round(100 * st.answered / st.total) + '%"></i></div></div>'));
+      /* The other ways a job starts sit as small entry boxes right after step 1. */
+      if (st.n === 1) otherStarts().forEach(function (t) { s.appendChild(el('<div class="sbox sstart"><div class="sname">' + esc((Q.build.other_starts || {}).strip_label || "also starts as:") + '</div><div class="sline sstarttext">' + esc(t) + '</div></div>')); });
     });
     if (!summary.length) s.appendChild(el('<div class="sempty">' + esc(Q.build.empty_hint) + '</div>'));
     $("stripCount").textContent = tallyLine();
@@ -380,7 +434,7 @@
     s.scrollLeft = Math.max(0, Math.min(target, s.scrollWidth - s.clientWidth));
   }
   /* Tap a box: rename it, move it, take it out, or go to its questions. */
-  $("strip").addEventListener("click", function (e) { var t = e.target.closest(".sbox"); if (t) renderEdit(t.dataset.stage); });
+  $("strip").addEventListener("click", function (e) { var t = e.target.closest(".sbox"); if (t && t.dataset.stage) renderEdit(t.dataset.stage); });
   /* The strip starts closed on a narrow screen or a short one (phone held sideways, #1);
      it follows a rotation until the user has toggled it by hand. */
   var stripTouched = false;
@@ -522,6 +576,7 @@
     var t = [{ k: "intro" }];
     seq.forEach(function (it, i) { if (it.kind === "opening") t.push({ k: "seq", i: i }); });
     t.push({ k: "build", mode: "first" });
+    if (Q.build.other_starts) t.push({ k: "starts" });
     t.push({ k: "build", mode: "list" });
     t.push({ k: "edit", id: steps[0].id });
     Q.per_stage.forEach(function (q) { t.push({ k: "seq", i: findIdx(steps[0].id, q.id), open: q.type === "problem" ? "flag" : (q.type === "approval" ? "ok" : "") }); });
@@ -539,6 +594,7 @@
     if (s.k === "intro") renderIntro();
     else if (s.k === "build") { previewBuild = s.mode; idx = findIdx("phase1", "done"); render(); previewBuild = ""; }
     else if (s.k === "edit") renderEdit(s.id);
+    else if (s.k === "starts") renderStarts();
     else {
       idx = s.i; render();
       var opt;
