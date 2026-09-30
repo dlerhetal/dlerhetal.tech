@@ -106,7 +106,8 @@
      is answered Yes). latest is the object GET /answers returns. */
   function progress(cfg, latest) {
     var n = 0, t = 0;
-    function has(stage, qid) { return !!(latest[stage] && latest[stage][qid]); }
+    /* A row whose payload is {cleared:true} is an explicit erase, not an answer. */
+    function has(stage, qid) { var r = latest[stage] && latest[stage][qid]; return !!(r && r.payload && !r.payload.cleared); }
     function tally(stage, q) { t++; if (has(stage, q.id)) n++; }
     (cfg.opening && cfg.opening.questions || []).forEach(function (q) { tally("opening", q); });
     (cfg.stages || []).forEach(function (st) {
@@ -126,14 +127,37 @@
      answering option). The client never sees it. */
   var TEST_MODE = /[?&]test=1(&|$)/.test(location.search);
 
+  /* DALE_MODE: the consultant's links (Dale's view, Advanced map) are not in the
+     page at all unless the URL once carried ?dale=1 on this browser. The flag is
+     kept in localStorage under the namespace key so it is set once per browser;
+     the consultant view has a "Consultant links off" control that clears it. The
+     admin and Advanced URLs keep working directly whatever the flag says. */
+  var DALE_KEY = NS.slice(1) + "_dale";
+  function readDale() { try { return localStorage.getItem(DALE_KEY) === "1"; } catch (e) { return false; } }
+  function setDale(on) { try { if (on) localStorage.setItem(DALE_KEY, "1"); else localStorage.removeItem(DALE_KEY); } catch (e) { } }
+  if (/[?&]dale=1(&|$)/.test(location.search)) setDale(true);
+  var DALE_MODE = readDale();
+  /* Slots: <span data-dale-slot="wizard"> in the wizard header, <div data-dale-slot="hub">
+     on the hub. Filled only in DALE_MODE, so a fetch of the page never shows them. */
+  function applyDale() {
+    if (!DALE_MODE) return;
+    Array.prototype.forEach.call(document.querySelectorAll("[data-dale-slot]"), function (slot) {
+      var kind = slot.dataset.daleSlot;
+      if (kind === "wizard") slot.innerHTML = '<a href="admin/" class="daleonly">Dale\'s view</a><a href="#" data-action="advanced" class="advonly daleonly">Advanced</a>';
+      if (kind === "hub") slot.innerHTML = '<p class="pdesc center advline daleonly"><a href="#" data-action="advanced" id="advLink" class="advlink">Advanced map</a><a href="map/admin/" class="advlink">Dale\'s view</a><span class="advnote">Consultant links are on for this browser. Turn them off from Dale\'s view.</span></p>';
+    });
+  }
+
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[c]; }); }
   function el(html) { var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
   function fmtTs(ts) { try { var d = new Date(ts); return d.toLocaleDateString([], { month: "short", day: "numeric" }) + " " + d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); } catch (e) { return ts; } }
 
-  window.RAM = { API: API, api: api, apiJSON: apiJSON, gate: gate, signOut: signOut, openAdvanced: openAdvanced, download: download, getToken: getToken, progress: progress, TEST_MODE: TEST_MODE, $: $, esc: esc, el: el, fmtTs: fmtTs, showGate: showGate };
+  window.RAM = { API: API, NS: NS, api: api, apiJSON: apiJSON, gate: gate, signOut: signOut, openAdvanced: openAdvanced, download: download, getToken: getToken, progress: progress, TEST_MODE: TEST_MODE, DALE_MODE: DALE_MODE, setDale: setDale, $: $, esc: esc, el: el, fmtTs: fmtTs, showGate: showGate };
   document.addEventListener("click", function (e) {
     var t = e.target.closest("[data-action]"); if (!t) return;
     if (t.dataset.action === "signout") { e.preventDefault(); signOut(); }
     if (t.dataset.action === "advanced") { e.preventDefault(); openAdvanced(); }
+    if (t.dataset.action === "dale-off") { e.preventDefault(); setDale(false); RAM.DALE_MODE = false; t.textContent = "Consultant links are off for this browser"; t.disabled = true; }
   });
+  applyDale();
 })();

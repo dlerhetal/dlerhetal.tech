@@ -14,6 +14,7 @@ header.top .sub{display:flex;justify-content:space-between;gap:12px;flex-wrap:wr
 header.top .links{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 header.top .links a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.14);color:#fff;text-decoration:none;font-size:16px}
 header.top .links a:active{background:rgba(255,255,255,.3)}
+[data-dale-slot="wizard"]{display:contents}
 .saved{align-self:center}
 .saved.bad{color:#ffd2cc;font-weight:600}
 .who{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.12);border-radius:999px;padding:3px 4px 3px 12px}
@@ -67,6 +68,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:24px 16px 32p
 .qsub{margin:0 0 12px;color:var(--muted);font-size:17px}
 .qmeta{margin:14px 0 0;font-size:14px;color:var(--muted)}
 .numrow{display:flex;align-items:center;gap:10px}
+.rangelbl{font-size:18px;font-weight:600;margin-top:8px;min-width:46px}
 .unit{font-size:20px;color:var(--muted)}
 .check{display:flex;align-items:center;gap:12px;font-size:20px;margin-top:10px;min-height:48px;padding:4px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .check input{width:30px;height:30px;margin:0;font-size:16px;flex:0 0 30px}
@@ -115,18 +117,34 @@ td.qcol{width:34%;color:var(--muted)}
 table.latest{margin-bottom:6px}
 tr.ude-row td:nth-child(3){font-weight:700;color:var(--red)}
 
+/* The strip collapses behind its toggle on a narrow screen AND on a short one (a phone
+   held sideways is 844x390: header plus an open strip would fill the whole height). */
+@media (max-width:700px), (max-height:500px){
+  .strip-toggle{display:block}
+  .strip-wrap.closed .strip{display:none}
+}
 @media (max-width:700px){
   body{font-size:18px}
   header.top{padding:10px 16px 12px}
   header.top h1{font-size:19px}
   header.top .sub{margin-top:8px}
-  .strip-toggle{display:block}
-  .strip-wrap.closed .strip{display:none}
   .qcard{padding:18px 16px 14px}
   .qtext{font-size:24px}
   .btn.big{font-size:20px;padding:14px 8px}
   .sbox{flex-basis:130px}
   .navbar{padding:8px 16px 6px}
+}
+/* landscape phone: trim the vertical padding so the question sits above the fold */
+@media (max-height:500px){
+  header.top{padding:6px 16px}
+  header.top .sub{margin-top:2px}
+  .strip-toggle{padding:8px 16px}
+  main.narrow{padding:10px 16px}
+  .qcard{padding:12px 16px 10px}
+  .qtext{font-size:24px;margin-top:6px}
+  .navrow .btn.big{min-height:48px;padding:10px 20px}
+  .navbar{padding:6px 16px 4px}
+  .navmeta{margin-top:4px}
 }
 
 /* phone header (under 600px): title with a small subtitle, then a row of plain text

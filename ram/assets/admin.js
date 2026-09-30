@@ -8,11 +8,12 @@
   function describe(p) {
     if (p == null) return "";
     if (typeof p !== "object") return String(p);
+    if (p.cleared) return "(cleared)";
     if ("names" in p) { var n = (p.names || []).slice(); if (p.other) n.push(p.other); return n.join(", "); }
-    if ("hours" in p) { var s = p.hours != null ? p.hours + " crew hours" : ""; if (p.depends) s += (s ? "; " : "") + "it depends" + (p.why ? ": " + p.why : ""); return s; }
+    if ("hours" in p) { var s = p.hours != null ? p.hours + " hours" : ""; if (p.depends) s += (s ? "; " : "") + "it depends" + (p.why ? ": " + p.why : ""); return s; }
     if ("flag" in p) { var t = p.text || ""; if (p.flag) t = "[FLAG " + (p.dollars != null ? money(p.dollars) : "") + (p.how_often ? ", " + p.how_often : "") + "] " + t; return t; }
     if ("choice" in p) { return p.choice + (p.who ? " (could decide instead: " + p.who + ")" : ""); }
-    if ("value" in p) { return (p.value == null ? "" : p.value) + (p.note ? " (" + p.note + ")" : ""); }
+    if ("value" in p) { return (p.value == null ? "" : p.value) + (p.high != null ? " to " + p.high : "") + (p.note ? " (" + p.note + ")" : ""); }
     if ("text" in p) return p.text;
     return JSON.stringify(p);
   }

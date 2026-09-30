@@ -18,7 +18,7 @@
   </div>
   <div class="sub" id="appSub" hidden>
     <span id="saveState" class="saved">Loading your answers</span>
-    <span class="links"><a href="../">Tools</a><a href="admin/">Dale's view</a><a href="#" data-action="advanced" class="advonly">Advanced</a><a href="#" data-action="signout">Sign out</a></span>
+    <span class="links"><a href="../">Home</a><span data-dale-slot="wizard"></span><a href="#" data-action="signout">Sign out</a></span>
   </div>
 </header>
 
@@ -41,6 +41,11 @@
   </section>
 
   <main class="narrow" id="main">
+    <div class="card qcard" id="intro" hidden>
+      <p class="qsub" id="introStage"></p>
+      <p class="donetext" id="introText"></p>
+      <button type="button" class="btn big pri wide" id="btnStart">Let's start</button>
+    </div>
     <div class="card qcard" id="qcard">
       <p class="resume" id="resumeCue" hidden></p>
       <div class="qhead">
