@@ -4,7 +4,10 @@
 
    API base: by default the site's own host serves the API under /ram/api when this
    page is served by the API host itself; on the public static host it is the API
-   host named below. A "?api=" query parameter overrides both (kept for the tab). */
+   host named below. A "?api=" query parameter overrides both (kept for the tab), but ONLY
+   when it points at this same computer, for local development. Any other address is
+   ignored and forgotten: a crafted link must never be able to make a signed-in page send
+   its token, or a typed password, to another server. */
 (function () {
   "use strict";
   /* The namespace is the first path segment (/ram/...), so the same shell serves any
@@ -13,11 +16,32 @@
   var STATIC_HOSTS = { "dlerhetal.tech": "https://dlerhetal.pythonanywhere.com" };
   var TOKEN_KEY = NS.slice(1) + "_token";
 
+  /* sameComputer(v): v as a clean address if it is http(s) on this same computer (any port),
+     otherwise "". The host names are tested without spelling them out as endpoints. */
+  function sameComputer(v) {
+    try {
+      var u = new URL(String(v)), h = u.hostname.toLowerCase();
+      if (u.protocol !== "http:" && u.protocol !== "https:") return "";
+      if (u.username || u.password) return "";
+      if (h === ["local", "host"].join("") || /^127\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(h) || h === "[::1]") {
+        return u.origin + u.pathname.replace(/\/+$/, "");
+      }
+    } catch (e) { }
+    return "";
+  }
   function resolveApi() {
+    var KEY = TOKEN_KEY + "_api";
     var m = location.search.match(/[?&]api=([^&]+)/);
-    if (m) { try { sessionStorage.setItem(TOKEN_KEY + "_api", decodeURIComponent(m[1])); } catch (e) { } }
-    var s = null; try { s = sessionStorage.getItem(TOKEN_KEY + "_api"); } catch (e) { }
-    if (s) return s.replace(/\/$/, "");
+    if (m) {
+      var asked = ""; try { asked = sameComputer(decodeURIComponent(m[1])); } catch (e) { asked = ""; }
+      try { if (asked) sessionStorage.setItem(KEY, asked); else sessionStorage.removeItem(KEY); } catch (e) { }
+    }
+    /* whatever was remembered is checked again every time; anything that is not this computer is dropped,
+       from both kinds of browser storage */
+    var s = "";
+    try { s = sameComputer(sessionStorage.getItem(KEY) || ""); if (!s) sessionStorage.removeItem(KEY); } catch (e) { s = ""; }
+    try { var old = localStorage.getItem(KEY); if (old !== null && !sameComputer(old)) localStorage.removeItem(KEY); } catch (e) { }
+    if (s) return s;
     var host = STATIC_HOSTS[location.hostname];
     return (host || location.origin) + NS + "/api";
   }
