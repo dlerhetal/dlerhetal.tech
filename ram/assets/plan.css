@@ -1,0 +1,120 @@
+/* Engagement plan page (agenda + syllabus). Generic: no client content in this file. */
+.planmain{max-width:1000px;margin:0 auto;padding:12px 16px 24px}
+.plantools{position:sticky;top:0;z-index:20;background:#fff;border-bottom:2px solid var(--gold);box-shadow:0 2px 6px rgba(0,0,0,.06);padding:8px 16px}
+.printrow{display:flex;flex-wrap:wrap;gap:8px;max-width:1000px;margin:0 auto}
+.pbtn{font-size:16px;padding:10px 14px;min-height:44px;flex:1 1 140px}
+.jumprow{display:flex;gap:16px;max-width:1000px;margin:6px auto 0;font-size:15px}
+.jumprow a{color:var(--blue);min-height:32px;display:inline-flex;align-items:center}
+.psec{scroll-margin-top:120px}
+.psec>h2{color:var(--blue);font-size:26px;margin:22px 0 6px;border-bottom:3px solid var(--gold);padding-bottom:4px}
+.lead{color:var(--muted);font-size:16px;margin:4px 0 12px}
+.blk{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 12px;break-inside:avoid;page-break-inside:avoid}
+.blk h3{margin:0 0 4px;font-size:20px;color:var(--blue)}
+.blk h4{margin:10px 0 4px;font-size:16px;color:var(--ink);text-transform:uppercase;letter-spacing:.4px}
+.blk ul,.blk ol{margin:4px 0 4px 22px;padding:0}
+.blk li{margin:2px 0}
+.blk p{margin:4px 0}
+.timepill{display:inline-block;background:var(--blue);color:#fff;border-radius:999px;padding:2px 12px;font-size:15px;font-weight:600;margin-bottom:6px}
+.bwho{display:block;font-size:15px;color:var(--muted)}
+.goal{font-size:17px}
+.dayhead{background:var(--blue);color:#fff;border-radius:12px;padding:10px 16px;margin:20px 0 10px;font-size:22px;font-weight:700;break-after:avoid;page-break-after:avoid}
+.rulings{border-left:6px solid var(--gold)}
+.flag{border:2px solid var(--red);border-left-width:8px}
+.flag h3{color:var(--red);font-size:18px}
+.flag .ftag{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:var(--red);border-radius:6px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+.links a,.doclink{color:var(--blue2);word-break:break-word}
+.links li{margin:4px 0}
+.doclink{font-weight:600}
+.checks{list-style:none;margin-left:0 !important}
+.checks li{position:relative;padding-left:30px;margin:6px 0}
+.checks li::before{content:"";position:absolute;left:2px;top:3px;width:16px;height:16px;border:2px solid var(--blue);border-radius:3px;background:#fff}
+.ptable{width:100%;border-collapse:collapse;font-size:15px;margin:6px 0}
+.ptable th{background:var(--soft);color:var(--blue);text-align:left;padding:6px 8px;border:1px solid var(--line);font-size:14px}
+.ptable td{padding:6px 8px;border:1px solid var(--line);vertical-align:top}
+.ptable tr{break-inside:avoid;page-break-inside:avoid}
+.ptable thead{display:table-header-group}
+.ptable .idc{white-space:nowrap;font-family:Consolas,monospace;font-size:13px}
+.st{display:inline-block;border-radius:999px;padding:1px 10px;font-size:13px;font-weight:700;white-space:nowrap}
+.st.done{background:#e3f1e4;color:var(--green)}
+.st.started{background:#fff4c2;color:#7a5a00}
+.st.not{background:#eef1f6;color:var(--muted)}
+.counts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.counts span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:15px}
+.cal td.kflag{color:var(--red);font-weight:600}
+.cal td.kaway{color:var(--muted)}
+.cal td.kend{font-weight:700;color:var(--blue)}
+.phasehead{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.phasen{background:var(--gold);color:var(--ink);font-weight:800;border-radius:8px;padding:0 10px}
+.why{background:var(--soft);border-radius:8px;padding:8px 10px;font-size:15px;margin:6px 0}
+.when{font-size:15px;color:var(--muted)}
+.keep{break-inside:avoid;page-break-inside:avoid}
+.subh{color:var(--blue);font-size:22px;margin:22px 0 6px;border-bottom:3px solid var(--gold);padding-bottom:4px;break-after:avoid;page-break-after:avoid}
+.sofmtable{margin-top:14px}
+.ptable tr.grow th{background:#fff;border:0;border-bottom:2px solid var(--blue);padding:4px 0}
+.grouphead{margin:0}
+.grouphead .lead{margin:2px 0 0;font-weight:400}
+.grouphead h3{margin:0;color:var(--blue);font-size:21px}
+.grouphead .sofm{font-size:15px;color:var(--muted)}
+.printhead,.printfoot{display:none}
+.notesform label{display:block;font-weight:600;margin:10px 0 4px;font-size:16px}
+.notesform select{font:inherit;font-size:17px;padding:8px 10px;border:2px solid var(--line);border-radius:10px;min-height:44px;max-width:100%}
+.notesform textarea{width:100%;font:inherit;font-size:18px;padding:10px 12px;border:2px solid var(--line);border-radius:10px;min-height:110px}
+.notesform .row{display:flex;gap:12px;flex-wrap:wrap}
+.notesform .row>div{flex:1 1 200px}
+.notestate{margin-left:10px;font-size:15px;color:var(--green);font-weight:600}
+.notestate.bad{color:var(--red)}
+.notelist{list-style:none;margin:10px 0 0;padding:0}
+.notelist li{border-top:1px solid var(--line);padding:8px 0;font-size:15px}
+.notelist .meta{color:var(--muted);font-size:13px}
+.err2{color:var(--red);font-weight:600}
+
+/* phone: tables become stacked cards */
+@media screen and (max-width:700px){
+  body{font-size:17px}
+  .psec>h2{font-size:22px}
+  .ptable thead tr:not(.grow){display:none}
+  .ptable thead,.ptable thead tr.grow,.ptable thead tr.grow th{display:block;width:100%}
+  .ptable,.ptable tbody,.ptable tr,.ptable td{display:block;width:100%}
+  .ptable tr{border:1px solid var(--line);border-radius:8px;margin:0 0 8px;padding:4px 0}
+  .ptable td{border:0;padding:3px 10px}
+  .ptable td[data-l]::before{content:attr(data-l) ": ";font-weight:700;color:var(--blue);font-size:13px}
+  .pbtn{font-size:15px;padding:8px 10px;flex:1 1 30%}
+}
+
+/* print: letter portrait, half-inch margins, points, colors kept, no screen chrome */
+@page{size:letter portrait;margin:.5in}
+@media print{
+  body{background:#fff !important;font-size:10pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  header.top,.plantools,footer,.noprint,#gate{display:none !important}
+  .planmain{max-width:none;padding:0;margin:0}
+  .blk{box-shadow:none;border-radius:6px;padding:6pt 8pt;margin:0 0 6pt;break-inside:avoid;page-break-inside:avoid}
+  .blk h3{font-size:12pt}
+  .blk h4{font-size:9pt;margin:5pt 0 2pt}
+  .goal{font-size:10pt}
+  .bwho,.when,.lead,.why{font-size:9pt}
+  .timepill{font-size:9pt;padding:0 8pt}
+  .dayhead{font-size:13pt;padding:4pt 8pt;margin:8pt 0 6pt;border-radius:6px}
+  .psec>h2{font-size:16pt;margin:0 0 4pt}
+  .ptable{font-size:8.5pt}
+  .ptable th{font-size:8.5pt;padding:3pt 4pt}
+  .ptable td{padding:3pt 4pt}
+  .ptable .idc{font-size:8pt}
+  .st{font-size:8pt;padding:0 5pt}
+  .counts span{font-size:9pt;padding:1pt 8pt}
+  .flag h3{font-size:10.5pt}
+  .grouphead h3{font-size:12pt}
+  .grouphead .sofm{font-size:9pt}
+  .subh{font-size:13pt;margin:4pt 0 4pt}
+  body{font-size:9.5pt}
+  .blk li{margin:1pt 0}
+  .links a,.doclink{color:#1A3C6E;text-decoration:none}
+  .checks li::before{width:9pt;height:9pt;top:2pt}
+  .checks li{padding-left:16pt}
+  .printhead{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2pt solid #FFCD00;margin:0 0 6pt;padding-bottom:3pt;font-size:9pt;color:#5b6475}
+  .printhead b{font-size:13pt;color:#1A3C6E}
+  .printfoot{display:flex;justify-content:space-between;align-items:center;border-top:1pt solid #d5dbe6;margin-top:8pt;padding-top:3pt;font-size:8pt;color:#5b6475;break-inside:avoid;page-break-inside:avoid}
+  .printfoot img{height:26pt;opacity:.35}
+  body.print-agenda #syllabus,body.print-syllabus #agenda{display:none !important}
+  body.print-both #syllabus{break-before:page;page-break-before:always}
+  .ptable td[data-l]::before{content:none}
+}

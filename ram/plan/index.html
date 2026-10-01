@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Engagement Plan</title>
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="../assets/plan.css">
+</head>
+<body>
+<header class="top">
+  <div class="toprow">
+    <h1><span data-client-name>Engagement Plan</span><small class="h1sub" id="h1sub" hidden>engagement plan</small></h1>
+  </div>
+  <div class="sub" id="appSub" hidden>
+    <span class="saved" id="builtLine">Signed in</span>
+    <span class="links"><a href="../">Home</a><a href="#" data-action="signout">Sign out</a></span>
+  </div>
+</header>
+
+<section id="gate" hidden>
+  <main class="narrow">
+    <form id="gateForm" class="card login-card" autocomplete="off">
+      <label for="gatePassword" class="biglabel">Password</label>
+      <input id="gatePassword" type="password" class="bigin" autocomplete="current-password">
+      <p class="err" id="gateError"></p>
+      <button type="submit" class="btn pri wide" id="gateBtn">Sign in</button>
+      <p class="pdesc">The same password as the other tools on this site.</p>
+    </form>
+  </main>
+</section>
+
+<section id="app" hidden>
+  <nav class="plantools" id="planTools" aria-label="Print and jump">
+    <div class="printrow">
+      <button type="button" class="btn pri pbtn" data-print="agenda">Print agenda</button>
+      <button type="button" class="btn pri pbtn" data-print="syllabus">Print syllabus</button>
+      <button type="button" class="btn pri pbtn" data-print="both">Print both</button>
+    </div>
+    <div class="jumprow">
+      <a href="#agenda">Agenda</a><a href="#syllabus">Syllabus</a><a href="#notes">Talk back</a>
+    </div>
+  </nav>
+  <main class="planmain" id="planMain">
+    <div class="printhead" id="printHead"></div>
+    <section id="agenda" class="psec"></section>
+    <section id="syllabus" class="psec"></section>
+    <section id="notes" class="psec noprint"></section>
+    <div class="printfoot" id="printFoot"></div>
+  </main>
+</section>
+
+<footer data-consultant class="noprint"></footer>
+<script src="../assets/shell.js"></script>
+<script src="../assets/plan.js"></script>
+</body>
+</html>
