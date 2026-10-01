@@ -29,7 +29,7 @@
       '<span class="sumpill done"><b>' + s.done + "</b> done</span>" +
       '<span class="sumpill"><b>' + s.working + "</b> in progress</span>" +
       '<span class="sumpill"><b>' + s.not_started + "</b> not started</span>" +
-      '<span class="sumpill wait"><b>' + s.waiting + "</b> waiting (" + s.waiting_owner + " owner, " + s.waiting_cpa + " CPA)</span>" +
+      '<span class="sumpill wait"><b>' + s.waiting + "</b> waiting (" + s.waiting_owner + " owner, " + s.waiting_cpa + " tax preparer)</span>" +
       '<span class="sumpill"><b>' + s.open_asks + "</b> open questions</span>";
   }
 

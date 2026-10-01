@@ -28,7 +28,7 @@
     return esc(s).replace(/\[\[(.+?)\]\]/g, '<span class="path">$1</span>').replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
   }
   function owner() { return (data && data.owner) || "the owner"; }
-  function cpa() { return (data && data.cpa) || "the CPA"; }
+  function cpa() { return (data && data.cpa) || "the tax preparer"; }
   function card(id) { return data.cards.find(function (c) { return c.id === id; }); }
   function scen(c, sid) { return c.scenarios.find(function (s) { return s.id === sid; }); }
   function stOf(id) { return (view && view.state[id]) || { status: "new", asks: [], issues: [] }; }
