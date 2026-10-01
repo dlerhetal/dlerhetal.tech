@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Who has been on the site</title>
+<link rel="icon" type="image/svg+xml" href="/brand/claude/favicon/favicon-source.svg">
+<style>
+  :root { --base:#E6E9EE; --surface:#F2F4F7; --navy:#1A3C6E; --lava:#CF2A27; --lava-dark:#A11F1C; --olive:#556B2F; --text:#14213D; --muted:#5B6777; --border:rgba(26,60,110,.22); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--base); color: var(--text); font: 16px/1.5 'Inter','Segoe UI',system-ui,-apple-system,sans-serif; }
+  a { color: var(--lava); }
+  nav.topbar { background: var(--navy); color: #fff; border-bottom: 3px solid var(--olive); }
+  .topbar-inner { max-width: 1100px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .topbar .brand { font-weight: 700; font-size: 17px; color: #fff; text-decoration: none; }
+  .topbar .brand .dot { color: var(--lava); }
+  main { max-width: 1100px; margin: 0 auto; padding: 26px 20px 80px; }
+  h1 { font-size: 26px; color: var(--navy); margin: 0 0 4px; }
+  h2 { font-size: 19px; color: var(--navy); margin: 0 0 10px; }
+  .lede { color: var(--muted); margin: 0 0 18px; }
+  .box { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--navy); border-radius: 6px; padding: 18px 20px; margin: 0 0 18px; }
+  .box.narrow { max-width: 520px; }
+  label { display: block; font-weight: 700; font-size: 14px; margin: 10px 0 4px; }
+  input[type=email], input[type=text] { width: 100%; font: inherit; font-size: 17px; padding: 10px 12px; border: 2px solid var(--navy); border-radius: 6px; background: #fff; color: var(--text); }
+  button { font: inherit; }
+  .btn { font-weight: 700; padding: 9px 14px; border-radius: 6px; border: 2px solid var(--navy); background: #fff; color: var(--navy); cursor: pointer; min-height: 44px; }
+  .btn.pri { background: var(--navy); color: #fff; }
+  .btn.warn { border-color: var(--lava-dark); color: var(--lava-dark); }
+  .btn.on { background: var(--navy); color: #fff; }
+  .btn:disabled { opacity: .55; cursor: default; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .err { color: var(--lava-dark); font-weight: 600; min-height: 1.4em; margin: 8px 0 0; }
+  .ok { color: var(--olive); font-weight: 600; }
+  .muted { color: var(--muted); font-size: 14px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 0 0 18px; }
+  .tile { background: var(--surface); border: 1px solid var(--border); border-top: 4px solid var(--lava); border-radius: 6px; padding: 14px 16px; text-align: left; cursor: pointer; color: var(--text); }
+  .tile b { display: block; font-size: 30px; line-height: 1.1; color: var(--navy); }
+  .tile span { font-size: 13px; color: var(--muted); }
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--olive); white-space: nowrap; }
+  td.num { white-space: nowrap; }
+  .link { background: none; border: 0; padding: 0; color: var(--lava-dark); text-decoration: underline; cursor: pointer; font-weight: 600; text-align: left; }
+  .pill { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; background: rgba(85,107,47,.14); color: var(--olive); margin-left: 6px; }
+  .pill.red { background: rgba(207,42,39,.12); color: var(--lava-dark); }
+  .code { font: 700 34px/1.2 Consolas, 'Courier New', monospace; letter-spacing: .08em; color: var(--navy); margin: 8px 0; }
+  pre { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px; overflow: auto; max-height: 520px; font-size: 13px; }
+  [hidden] { display: none !important; }
+  @media (max-width: 560px) { main { padding: 18px 14px 60px; } th, td { padding: 6px 6px; } }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="brand">dlerhetal<span class="dot">.</span>tech</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Who has been on the site</h1>
+  <p class="lede" id="lede">Checking this device.</p>
+
+  <!-- First time on a device: the setup link, or a code from a device already set up -->
+  <section class="box narrow" id="setup" hidden>
+    <h2 id="setupTitle">Set up this device</h2>
+    <p id="setupText"></p>
+    <form id="setupForm" novalidate>
+      <div id="setupCodeWrap" hidden>
+        <label for="setupCode">Device code</label>
+        <input type="text" id="setupCode" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD-EFGH">
+      </div>
+      <div id="setupEmailWrap">
+        <label for="setupEmail">Your email</label>
+        <input type="email" id="setupEmail" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false">
+      </div>
+      <p class="err" id="setupErr" role="alert"></p>
+      <button type="submit" class="btn pri" id="setupBtn">Set up this device</button>
+    </form>
+  </section>
+
+  <!-- The view itself. Empty until the site answers for a device that is set up. -->
+  <section id="view" hidden>
+    <div class="row" style="margin-bottom:14px" id="ranges">
+      <button type="button" class="btn" data-range="today">Today</button>
+      <button type="button" class="btn" data-range="week">Last 7 days</button>
+      <button type="button" class="btn" data-range="all">All time</button>
+      <span class="muted" id="asOf"></span>
+    </div>
+
+    <div class="tiles" id="tiles"></div>
+
+    <section class="box" id="rowsBox" hidden>
+      <div class="row" style="justify-content:space-between">
+        <h2 id="rowsTitle"></h2>
+        <button type="button" class="btn" id="rowsClose">Close</button>
+      </div>
+      <p class="muted" id="rowsNote"></p>
+      <div class="scroll"><table id="rowsTable"></table></div>
+    </section>
+
+    <section class="box" id="personBox" hidden>
+      <div class="row" style="justify-content:space-between">
+        <h2 id="personTitle"></h2>
+        <button type="button" class="btn" id="personClose">Close</button>
+      </div>
+      <p class="muted" id="personNote"></p>
+      <h2>Devices</h2>
+      <div class="scroll"><table id="personDevices"></table></div>
+      <h2 style="margin-top:16px">Saved work</h2>
+      <div class="scroll"><table id="personItems"></table></div>
+      <div id="itemBox" hidden>
+        <h2 style="margin-top:16px" id="itemTitle"></h2>
+        <p class="muted" id="itemNote"></p>
+        <div class="row" id="itemVersions"></div>
+        <pre id="itemBody"></pre>
+      </div>
+      <h2 style="margin-top:16px">What they did</h2>
+      <div class="scroll"><table id="personVisits"></table></div>
+    </section>
+
+    <section class="box">
+      <h2>People who signed in</h2>
+      <p class="muted" id="peopleNote"></p>
+      <div class="scroll"><table id="people"></table></div>
+    </section>
+
+    <section class="box">
+      <h2>Visitors who did not sign in</h2>
+      <p class="muted">Counted by page. A visitor is one browser.</p>
+      <div class="scroll"><table id="unknown"></table></div>
+    </section>
+
+    <section class="box">
+      <h2>Worth a look</h2>
+      <h3 style="margin:8px 0 4px;font-size:15px">A known address on a new device</h3>
+      <div class="scroll"><table id="newDevices"></table></div>
+      <h3 style="margin:16px 0 4px;font-size:15px">Addresses that look like a typo of another</h3>
+      <p class="muted">Merging moves the saved work to the right address and sends later sign-ins there. Nothing is deleted.</p>
+      <div class="scroll"><table id="twins"></table></div>
+      <p class="err" id="flagErr" role="alert"></p>
+    </section>
+
+    <section class="box">
+      <h2>Set up another device</h2>
+      <p>Get a code here, then open this page on the other device and type the code there.</p>
+      <button type="button" class="btn pri" id="codeBtn">Get a device code</button>
+      <div id="codeOut" hidden>
+        <p class="code" id="codeText"></p>
+        <p class="muted" id="codeNote"></p>
+      </div>
+    </section>
+
+    <section class="box">
+      <h2>The record</h2>
+      <div class="row">
+        <button type="button" class="btn" id="csvBtn">Download the visit record (CSV)</button>
+        <button type="button" class="btn warn" id="clearTestBtn" hidden>Remove test rows</button>
+        <span class="muted" id="recordNote"></span>
+      </div>
+    </section>
+
+    <section class="box">
+      <h2>Settings</h2>
+      <p class="muted">Each change takes effect as soon as it is saved.</p>
+      <div class="scroll"><table id="settings"></table></div>
+    </section>
+  </section>
+</main>
+
+<script src="/assets/site.js"></script>
+<script src="who.js"></script>
+</body>
+</html>

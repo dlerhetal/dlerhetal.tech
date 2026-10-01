@@ -25,6 +25,10 @@ Disallow: /qbo/
 # source; reached by direct link only and never linked from the index.
 Disallow: /ram/
 
+# Site owner's visitor view (added 2026-10-01). An empty shell: it shows nothing until the
+# site service answers for a device the owner has set up. Reached by direct link only.
+Disallow: /who/
+
 # --- Everything else is deliberately public and stays crawlable ---
 # /                        the site index
 # /tutorials/  /setup/     published how-to material
