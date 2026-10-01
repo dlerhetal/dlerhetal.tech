@@ -43,14 +43,24 @@
      Empty slots are simply not shown. A tile with "progress" shows how far the
      answers have got, read from the API after sign-in. */
   var TILES = [
-    { title: "Process Map", desc: "Walk me through one well in your own words; the map builds as you go. Come back any time, your answers are saved.", href: "map/", progress: true }
+    { title: "Process Map", desc: "Walk me through one well in your own words; the map builds as you go. Come back any time, your answers are saved.", href: "map/", progress: true },
+    { title: "QuickBooks fixes", desc: "One card for each problem in the QuickBooks file, with step by step fixes. Every choice is saved as you go.", href: "qb/", qbprogress: true }
   ];
   RAM.gate(function (cfg) {
     document.getElementById("appSub").hidden = false;
     var box = document.getElementById("tiles"); box.innerHTML = "";
     TILES.forEach(function (t, i) {
       if (!t || !t.title) return;
-      box.appendChild(RAM.el('<a class="tile" href="' + RAM.esc(t.href) + '"><span class="ttitle">' + RAM.esc(t.title) + '</span><span class="tdesc">' + RAM.esc(t.desc || "") + '</span>' + (t.progress ? '<span class="tprog none" id="tprog' + i + '">Checking your answers</span>' : "") + '</a>'));
+      box.appendChild(RAM.el('<a class="tile" href="' + RAM.esc(t.href) + '"><span class="ttitle">' + RAM.esc(t.title) + '</span><span class="tdesc">' + RAM.esc(t.desc || "") + '</span>' + ((t.progress || t.qbprogress) ? '<span class="tprog none" id="tprog' + i + '">Checking your answers</span>' : "") + '</a>'));
+    });
+    TILES.forEach(function (t, i) {
+      if (!t || !t.qbprogress) return;
+      RAM.apiJSON("/qb/state").then(function (r) {
+        var e = document.getElementById("tprog" + i); if (!e || !r || !r.summary) return;
+        var s = r.summary;
+        e.textContent = s.done + " of " + s.cards + " done" + (s.open_asks ? ", " + s.open_asks + " questions open" : "");
+        e.className = "tprog" + ((s.done || s.working) ? "" : " none");
+      }).catch(function () { var e = document.getElementById("tprog" + i); if (e) e.textContent = ""; });
     });
     if (TILES.some(function (t) { return t && t.progress; })) {
       RAM.apiJSON("/answers").then(function (r) {

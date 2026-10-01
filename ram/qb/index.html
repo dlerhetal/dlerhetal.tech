@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Fix List</title>
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="../assets/qb.css">
+</head>
+<body>
+<header class="top">
+  <div class="toprow">
+    <h1><span data-client-name>Fix List</span><small class="h1sub" id="h1sub" hidden>QuickBooks fixes</small></h1>
+    <div class="who" id="whoToggle" title="Who is working" hidden>
+      <span class="wholbl">Working:</span>
+      <span id="whoButtons"></span>
+    </div>
+  </div>
+  <div class="sub" id="appSub" hidden>
+    <span id="saveState" class="saved">Loading</span>
+    <span class="links"><a href="../">Home</a><span data-dale-slot="qb"></span><a href="#" data-action="signout">Sign out</a></span>
+  </div>
+</header>
+
+<section id="gate" hidden>
+  <main class="narrow">
+    <form id="gateForm" class="card login-card" autocomplete="off">
+      <label for="gatePassword" class="biglabel">Password</label>
+      <input id="gatePassword" type="password" class="bigin" autocomplete="current-password">
+      <p class="err" id="gateError"></p>
+      <button type="submit" class="btn pri wide" id="gateBtn">Sign in</button>
+      <p class="pdesc">Every choice and note is saved as you go. Stop any time and pick up later on any computer.</p>
+    </form>
+  </main>
+</section>
+
+<section id="app" hidden>
+  <main class="narrow" id="main">
+    <div class="card qbsum" id="summary">
+      <p class="qbintro" id="intro"></p>
+      <p class="sumline" id="sumLine"></p>
+      <div class="qbbar" aria-hidden="true"><i id="sumBar" style="width:0%"></i></div>
+      <p class="qbbarlbl" id="sumBarLbl"></p>
+      <div class="sumgrid" id="sumGrid"></div>
+    </div>
+    <div id="sections"></div>
+  </main>
+</section>
+
+<footer data-consultant></footer>
+<script src="../assets/shell.js"></script>
+<script src="../assets/ask.js"></script>
+<script src="../assets/qb.js"></script>
+</body>
+</html>
