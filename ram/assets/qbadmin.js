@@ -7,7 +7,9 @@
   var R = window.RAM, esc = R.esc;
   var data = null, view = null;
   var KIND = { pick: "Picked", step: "Moved to step", done: "Marked done", undone: "Undid done", note: "Saved a note",
-    ask: "Asked the owner", answer: "Recorded an answer", issue: "Step did not match", reset: "Cleared the pick" };
+    ask: "Asked the owner", answer: "Recorded an answer", issue: "Step did not match", reset: "Cleared the pick", reply: "Replied on the card" };
+  var TESTQ = (R.TEST_MODE && /[?&]as=TEST(&|$)/.test(location.search)) ? "?as=TEST" : "";
+  var replyDrafts = {};   // card id -> reply text typed but not sent, kept across a refresh
 
   function msg(t, bad) { var e = R.$("toolMsg"); e.textContent = t || ""; e.style.color = bad ? "var(--red)" : ""; }
   function card(id) { return data.cards.find(function (c) { return c.id === id; }) || { n: "?", title: id, scenarios: [] }; }
@@ -45,13 +47,14 @@
   }
 
   function renderCards() {
-    var tb = R.$("cardTable").querySelector("tbody"); tb.innerHTML = "";
+    var tb = R.$("cardTable").querySelector("tbody");
+    Array.prototype.forEach.call(tb.querySelectorAll("textarea[data-reply-text]"), function (t) { replyDrafts[t.dataset.replyText] = t.value; });
+    tb.innerHTML = "";
     data.cards.forEach(function (c) {
       var st = view.state[c.id] || {};
       var sc = c.scenarios.find(function (x) { return x.id === st.scenario; });
       var step = sc ? ((st.step || 0) >= sc.steps.length ? "check" : (st.step + 1) + " of " + sc.steps.length) : "";
       var bits = [];
-      if (st.note) bits.push("<b>Note</b> (" + esc(st.note_by) + " " + esc(R.fmtTs(st.note_ts)) + "): " + esc(st.note));
       (st.issues || []).forEach(function (x) {
         bits.push('<span class="issueline">Step ' + (Number(x.i) + 1) + " of " + esc(scenLabel(c, x.scenario)) + " did not match (" + esc(x.by) + " " + esc(R.fmtTs(x.ts)) + "): " + esc(x.text) + "</span>");
       });
@@ -64,7 +67,12 @@
         "<td>" + esc(scenLabel(c, st.scenario)) + (st.picked_by ? '<br><span class="meta">' + esc(st.picked_by) + "</span>" : "") + "</td>" +
         '<td class="meta">' + esc(step) + "</td>" +
         '<td class="meta">' + (st.done ? esc(st.done.by) + "<br>" + esc(R.fmtTs(st.done.ts)) : "") + "</td>" +
-        '<td class="note">' + bits.join("<br>") + "</td>" +
+        '<td class="note">' + bits.join("<br>") + '<div class="thread">' + (st.thread || []).map(function (t) {
+          return t.t === "reply"
+            ? '<div class="titem treply"><span class="tlabel">Reply</span><span class="tmeta">from ' + esc(t.from || "") + ", " + esc(R.fmtTs(t.ts)) + '</span><div class="ttext">' + esc(t.text) + "</div></div>"
+            : '<div class="titem tnote"><span class="tmeta">Note saved by ' + esc(t.by) + ", " + esc(R.fmtTs(t.ts)) + '</span><div class="ttext">' + esc(t.text) + "</div></div>";
+        }).join("") + '</div><div class="replybox"><textarea rows="2" data-reply-text="' + esc(c.id) + '" placeholder="Reply on this card">' + esc(replyDrafts[c.id] || "") +
+        '</textarea><div class="rowbtns"><button type="button" class="btn" data-reply="' + esc(c.id) + '">Send reply</button></div></div></td>' +
         '<td class="meta">' + (st.last_ts ? esc(st.last_by) + "<br>" + esc(R.fmtTs(st.last_ts)) : "") + "</td>";
       tb.appendChild(tr);
     });
@@ -90,14 +98,27 @@
 
   function load() {
     R.$("adminState").textContent = "Loading";
-    return Promise.all([R.apiJSON("/qb/state"), R.apiJSON("/qb/history")]).then(function (res) {
+    return Promise.all([R.apiJSON("/qb/state" + TESTQ), R.apiJSON("/qb/history")]).then(function (res) {
       view = res[0];
-      renderSummary(); renderAsks(); renderCards(); renderHistory(res[1].rows || []);
+      var rows = (res[1].rows || []).filter(function (r) { return TESTQ || r.answered_by !== "TEST"; });
+      renderSummary(); renderAsks(); renderCards(); renderHistory(rows);
       R.$("adminState").textContent = "Updated " + new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
     });
   }
 
   document.addEventListener("click", function (e) {
+    var rb = e.target.closest("[data-reply]");
+    if (rb) {
+      var cid = rb.dataset.reply, box = document.querySelector('textarea[data-reply-text="' + cid + '"]');
+      var words = (box && box.value || "").trim(); if (!words) { msg("Type the reply first.", true); return; }
+      rb.disabled = true;
+      var rby = TESTQ ? "TEST" : "Dale";
+      var payload = { text: words }; if (data.reply_from) payload.from = data.reply_from;
+      R.apiJSON("/qb/event", { method: "POST", json: { card: cid, kind: "reply", payload: payload, answered_by: rby } })
+        .then(function (r) { if (!r.ok) throw new Error(r.error || "not sent"); replyDrafts[cid] = ""; box.value = ""; msg("Reply sent. It shows on the card."); return load(); })
+        .catch(function (err) { rb.disabled = false; msg("Not sent: " + err.message, true); });
+      return;
+    }
     var b = e.target.closest("[data-save-ans]"); if (!b) return;
     var id = b.dataset.saveAns, t = document.querySelector('textarea[data-ask="' + id + '"]');
     var txt = (t && t.value || "").trim(); if (!txt) { msg("Type the answer first.", true); return; }

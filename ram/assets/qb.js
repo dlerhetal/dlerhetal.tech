@@ -1,7 +1,10 @@
 /* Fix-list wizard (front end). Generic: every card, name, amount and step arrives from
    the API after sign-in (GET /qb/cards, GET /qb/state). Every pick, step, done mark,
    note and question is POSTed to /qb/event and kept on the server; this page keeps only
-   UI conveniences in localStorage (which card is open, who is working). */
+   UI conveniences in localStorage (which card is open, who is working, which replies this
+   browser has already shown). The page asks the server for the current state again every
+   30 seconds and when the tab regains focus, and puts what changed on screen without
+   re-drawing the open card, so nothing being typed is disturbed. */
 (function () {
   "use strict";
   var R = window.RAM, esc = R.esc;
@@ -13,6 +16,12 @@
 
   function lsGet(k) { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } }
   function lsSet(k, v) { try { if (v) localStorage.setItem(k, v); else localStorage.removeItem(k); } catch (e) { } }
+  var K_SEEN = NSK + "_qb_seen";
+  var TESTQ = (R.TEST_MODE && /[?&]as=TEST(&|$)/.test(location.search)) ? "?as=TEST" : "";
+  var seen = {};        // card id -> id of the newest reply already looked at in this browser
+  var headCache = {};   // card id -> the head markup last drawn, so a poll only touches what changed
+  var gen = 0;          // bumped by every save: a poll that started before a save is thrown away
+  try { seen = JSON.parse(lsGet(K_SEEN) || "{}") || {}; } catch (e) { seen = {}; }
 
   /* tiny markup: [[menu path]] -> path chip, **bold** -> bold. Escaped first. */
   function fmt(s) {
@@ -35,13 +44,34 @@
 
   /* ---------------------------------------------------------------- server */
   function post(cardId, kind, payload) {
-    setSaved("Saving");
+    setSaved("Saving"); gen++;
     return R.apiJSON("/qb/event", { method: "POST", json: { card: cardId, kind: kind, payload: payload || {}, answered_by: who } })
       .then(function (r) {
+        gen++;
         if (!r || !r.ok) throw new Error((r && r.error) || "not saved");
         view = r; setSaved("Saved " + nowLabel()); return r;
       })
-      .catch(function (e) { setSaved("Not saved: " + (e.message === "Failed to fetch" ? "no connection" : e.message), true); throw e; });
+      .catch(function (e) { gen++; setSaved("Not saved: " + (e.message === "Failed to fetch" ? "no connection" : e.message), true); throw e; });
+  }
+
+  /* ---------------------------------------------------------------- replies on a card */
+  function lastReply(id) { return stOf(id).last_reply_id || 0; }
+  function isNew(id) { return lastReply(id) > (seen[id] || 0); }
+  function countNew() { return data.cards.filter(function (c) { return isNew(c.id); }).length; }
+  function markSeen(id) {
+    if (!isNew(id)) return false;
+    seen[id] = lastReply(id); lsSet(K_SEEN, JSON.stringify(seen)); return true;
+  }
+  function threadHTML(id) {
+    var mark = seen[id] || 0;
+    return (stOf(id).thread || []).map(function (t) {
+      if (t.t === "reply") {
+        return '<div class="titem treply' + (t.id > mark ? " fresh" : "") + '" data-tid="' + t.id + '"><span class="tlabel">Reply</span><span class="tmeta">from ' +
+          esc(t.from || "") + ", " + esc(R.fmtTs(t.ts)) + '</span><div class="ttext">' + esc(t.text) + "</div></div>";
+      }
+      return '<div class="titem tnote" data-tid="' + t.id + '"><span class="tmeta">Note saved by ' + esc(t.by) + ", " + esc(R.fmtTs(t.ts)) +
+        '</span><div class="ttext">' + esc(t.text) + "</div></div>";
+    }).join("");
   }
 
   /* ---------------------------------------------------------------- who */
@@ -73,6 +103,8 @@
       '<span class="sumpill"><b>' + s.working + "</b> in progress</span>" +
       '<span class="sumpill wait"><b>' + s.waiting + "</b> waiting on someone (" + s.waiting_owner + " on " + esc(owner()) + ", " + s.waiting_cpa + " on " + esc(cpa()) + ")</span>" +
       '<span class="sumpill"><b>' + s.open_asks + "</b> open questions for " + esc(owner()) + "</span>";
+    var nNew = countNew();
+    if (nNew) g.innerHTML += '<span class="sumpill reply" id="sumReplies"><b>' + nNew + "</b> new " + (nNew === 1 ? "reply" : "replies") + "</span>";
   }
 
   /* ---------------------------------------------------------------- cards */
@@ -81,7 +113,8 @@
     return '<button type="button" class="qbhead" aria-expanded="' + (openId === c.id) + '" data-open="' + esc(c.id) + '">' +
       '<span class="qbnum">' + (st.status === "done" ? "&#10003;" : c.n) + "</span>" +
       '<span class="qbht"><span class="qbtitle">' + esc(c.title) + "</span>" +
-      '<span class="qbpills">' + (c.urgent && st.status !== "done" ? '<span class="pill urgentpill">Urgent</span>' : "") +
+      '<span class="qbpills">' + (isNew(c.id) ? '<span class="pill newreply">New reply</span>' : "") +
+      (c.urgent && st.status !== "done" ? '<span class="pill urgentpill">Urgent</span>' : "") +
       '<span class="pill tag-' + esc(c.tag) + '">' + esc(c.tag_label) + "</span>" +
       '<span class="pill st-' + esc(st.status) + '">' + esc(statusLabel(st.status)) + "</span></span></span>" +
       '<span class="qbchev" aria-hidden="true">&#8250;</span></button>';
@@ -170,7 +203,9 @@
     h += '<div class="notebox"><label for="ta-' + nk + '">Notes for Dale</label>' +
       '<textarea id="ta-' + nk + '" data-draft="' + nk + '" rows="3" placeholder="What you found, what you changed, anything odd.">' + esc(noteVal) + "</textarea>" +
       '<div class="rowbtns"><button type="button" class="btn" data-act="savenote">Save note</button><span class="savedmsg">' +
-      (st.note_ts ? "Last saved by " + esc(st.note_by) + " " + esc(R.fmtTs(st.note_ts)) : "Not saved yet") + "</span></div></div>";
+      (st.note_ts ? "Last saved by " + esc(st.note_by) + " " + esc(R.fmtTs(st.note_ts)) : "Not saved yet") + "</span></div>" +
+      (st.note_ts && data.note_saved_line ? '<p class="notehint">' + esc(data.note_saved_line) + "</p>" : "") + "</div>";
+    h += '<div class="thread" id="thread-' + esc(c.id) + '" data-sig="' + threadSig(c.id) + '">' + threadHTML(c.id) + "</div>";
     var next = data.cards[data.cards.indexOf(c) + 1];
     if (next) h += '<p class="nextcard"><button type="button" class="btn" data-open="' + esc(next.id) + '">Next card: ' + esc(next.n + ". " + next.title) + "</button></p>";
     return h + "</div>";
@@ -181,9 +216,40 @@
     var el = document.createElement("article");
     el.className = "qbcard" + (openId === c.id ? " open" : "") + (st.status === "done" ? " isdone" : "") + (c.urgent ? " urgent" : "");
     el.id = "card-" + c.id; el.dataset.card = c.id;
-    el.innerHTML = headHTML(c) + (openId === c.id ? bodyHTML(c) : "");
+    headCache[c.id] = headHTML(c);
+    el.innerHTML = headCache[c.id] + (openId === c.id ? bodyHTML(c) : "");
     return el;
   }
+  function threadSig(id) { var t = stOf(id).thread || []; return t.length + "-" + (t.length ? t[t.length - 1].id : 0) + "-" + (seen[id] || 0); }
+
+  /* After a poll: the summary, the head of every card and the thread of the open card, in place.
+     The body of the open card is never re-drawn here, so a half-typed note keeps its words and its cursor. */
+  function softUpdate() {
+    renderSummary();
+    data.cards.forEach(function (c) {
+      var el = R.$("card-" + c.id); if (!el) return;
+      var html = headHTML(c);
+      if (headCache[c.id] !== html) {
+        var head = el.querySelector(".qbhead");
+        if (head) { head.outerHTML = html; headCache[c.id] = html; }
+        el.classList.toggle("isdone", stOf(c.id).status === "done");
+      }
+      var th = R.$("thread-" + c.id);
+      if (th && th.dataset.sig !== threadSig(c.id)) { th.innerHTML = threadHTML(c.id); th.dataset.sig = threadSig(c.id); }
+    });
+  }
+  var polling = false, lastPoll = 0;
+  function refresh() {
+    if (!data || !view || polling) return Promise.resolve(false);
+    polling = true; lastPoll = Date.now();
+    var g = gen;
+    return R.apiJSON("/qb/state" + TESTQ).then(function (r) {
+      polling = false;
+      if (!r || !r.ok || g !== gen) return false;
+      view = r; softUpdate(); return true;
+    }).catch(function () { polling = false; return false; });
+  }
+  function refreshSoon() { if (!document.hidden && Date.now() - lastPoll > 3000) refresh(); }
 
   function captureDrafts() {
     Array.prototype.forEach.call(document.querySelectorAll("textarea[data-draft]"), function (t) { drafts[t.dataset.draft] = t.value; });
@@ -217,6 +283,7 @@
     var prev = openId;
     openId = (openId === id && !scroll) ? "" : id;
     lsSet(K_OPEN, openId);
+    if (openId) markSeen(openId);
     if (prev && prev !== openId) rerenderCard(prev);
     if (id) rerenderCard(id);
     if (openId && scroll !== false) {
@@ -231,6 +298,7 @@
     if (o) { e.preventDefault(); var id = o.dataset.open; openCard(id, o.classList.contains("qbhead") ? false : true); return; }
     var host = e.target.closest("[data-card]"); if (!host) return;
     var id = host.dataset.card, c = card(id), st = stOf(id);
+    if (id === openId && markSeen(id)) softUpdate();   // a click inside the open card counts as having looked
     var sb = e.target.closest("[data-scen]");
     if (sb) {
       var sid = sb.dataset.scen;
@@ -306,7 +374,7 @@
 
   /* ---------------------------------------------------------------- boot */
   R.gate(function () {
-    Promise.all([R.apiJSON("/qb/cards"), R.apiJSON("/qb/state")]).then(function (res) {
+    Promise.all([R.apiJSON("/qb/cards"), R.apiJSON("/qb/state" + TESTQ)]).then(function (res) {
       data = res[0]; view = res[1];
       document.title = data.client_name + ", " + (data.title || "QuickBooks fixes");
       var sub = R.$("h1sub"); if (sub) { sub.textContent = data.title || "QuickBooks fixes"; sub.hidden = false; }
@@ -323,10 +391,13 @@
         window.RAMASK.start();
       }
       if (openId) { var el = R.$("card-" + openId); if (el) el.scrollIntoView({ block: "start" }); }
+      setInterval(function () { if (!document.hidden) refresh(); }, 30000);
+      window.addEventListener("focus", refreshSoon);
+      document.addEventListener("visibilitychange", refreshSoon);
     }).catch(function (e) {
       if (e && e.message === "signed out") return;
       setSaved("Could not load the fix list. Check the connection and reload.", true);
     });
   });
-  window.RAMQB = { askContext: askContext };
+  window.RAMQB = { askContext: askContext, refresh: refresh };
 })();

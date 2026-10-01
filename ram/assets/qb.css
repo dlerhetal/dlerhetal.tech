@@ -109,3 +109,19 @@
   .qbbody{padding:2px 12px 14px}
 }
 @media print{#askBtn,#askPanel,.walknav,.rowbtns{display:none !important}}
+
+/* the thread under a card's notes box: saved notes and the replies to them, oldest first */
+.notehint{font-size:15px;color:var(--muted);margin:8px 0 0}
+.thread{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.thread:empty{display:none}
+.thread .titem{border:1px solid var(--line);border-left:5px solid #c5cedc;border-radius:8px;padding:8px 12px;background:#fff}
+.thread .treply{border-left-color:var(--blue);background:#f2f6fc}
+.thread .treply.fresh{box-shadow:0 0 0 2px var(--blue)}
+.thread .tlabel{display:inline-block;font-size:13px;font-weight:700;color:#fff;background:var(--blue);border-radius:999px;padding:2px 10px;margin-right:8px}
+.thread .tmeta{font-size:14px;color:var(--muted)}
+.thread .ttext{white-space:pre-wrap;margin-top:4px;font-size:17px;line-height:1.45}
+.pill.newreply{background:var(--blue);color:#fff}
+.qbsum .sumpill.reply{background:var(--blue);color:#fff}
+.replybox{margin-top:8px}
+.replybox textarea{width:100%;font:inherit;font-size:15px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;min-height:44px;resize:vertical}
+.qbadmin .thread .ttext{font-size:15px}
