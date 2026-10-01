@@ -29,6 +29,7 @@
 .tag-owner{background:#fff1c9;color:#6b4e00}
 .tag-cpa{background:#efe5f7;color:#5a2d82}
 .tag-qbo{background:#eceff3;color:#4a5263}
+:where(.pill[class*="tag-"]){background:#dff3ee;color:#0d5c4d} /* any other tag the content defines; zero specificity, so the four above win */
 .st-done{background:#e2f2e4;color:var(--green)}
 .st-waiting_owner{background:#fde7e4;color:var(--red)}
 .st-working{background:var(--soft);color:var(--blue2)}

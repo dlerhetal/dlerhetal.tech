@@ -72,7 +72,7 @@
     function setStored(v) { try { if (v) localStorage.setItem(CODE_KEY, v); else localStorage.removeItem(CODE_KEY); } catch (e) { } }
     function getCode() { return memCode || stored(); }
     function say(el, text, kind) { el.className = "askmsg" + (kind ? " " + kind : ""); el.textContent = text || ""; }
-    function context() { var c = {}; try { c = ctxFn() || {}; } catch (e) { c = {}; } return { page: String(c.page || "").slice(0, 160), step: String(c.step || "").slice(0, 240) }; }
+    function context() { var c = {}; try { c = ctxFn() || {}; } catch (e) { c = {}; } return { page: String(c.page || "").slice(0, 160), step: String(c.step || "").slice(0, 240), extra: String(c.extra || "") }; }
     function addTurn(who, text) {
       var w = document.createElement("div"); w.className = "turn " + (who === "You" ? "me" : "them");
       var t = document.createElement("span"); t.className = "who"; t.textContent = who; w.appendChild(t);
@@ -118,10 +118,14 @@
       busy = true; sendBtn.disabled = true; say(msg, "Sending your question.", "work");
       addTurn("You", q); input.value = "";
       var c = context();
+      /* Optional page background goes in front of the typed question, inside the same message field.
+         The service reads a limited length of message: the question is kept whole, the background is trimmed. */
+      var pre = c.extra ? c.extra.slice(0, Math.max(0, Math.min(2400, 3900 - q.length))) : "";
+      var outMsg = pre ? pre + "\n\nThe question typed: " + q : q;
       fetch(ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: code, message: q, page: c.page, step: c.step, history: history.slice(-12) })
+        body: JSON.stringify({ code: code, message: outMsg, page: c.page, step: c.step, history: history.slice(-12) })
       }).then(function (res) {
         say(msg, "Working on an answer.", "work");
         return res.json().catch(function () { return {}; }).then(function (d) { return { status: res.status, data: d }; });

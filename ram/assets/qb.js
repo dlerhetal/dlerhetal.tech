@@ -291,7 +291,17 @@
       step = "Picked: " + s.label + ". " + (i < n ? "Step " + (i + 1) + " of " + n + ": " + s.steps[i].replace(/^!\s*/, "") : "Checking it worked: " + s.check.join(" "));
     }
     step = step.replace(/\[\[|\]\]|\*\*/g, "");
-    return { page: page.slice(0, 160), step: step.slice(0, 240) };
+    /* A card that carries ask_note (set in the served content) also hands the helper the card's own
+       text: what it asks, the answers it offers, the one picked, and the note. All of it comes from
+       the API after sign-in; the Ask panel puts it in front of the typed question. */
+    var extra = "";
+    if (c.ask_note) {
+      var offered = c.scenarios.filter(function (x) { return x.id !== "other"; }).map(function (x, k) { return "(" + (k + 1) + ") " + x.label; }).join(" ");
+      var picked = !st.scenario ? "none yet" : (st.scenario === "ask" ? (data.ask_label || "save it for the owner") : s.label);
+      extra = ("Background from the card on screen (not typed by the person). What the card asks: " + String(c.what || "").slice(0, 900) +
+        " Answers the card offers: " + offered + " Answer picked: " + picked + ". " + c.ask_note).replace(/\[\[|\]\]|\*\*/g, "");
+    }
+    return { page: page.slice(0, 160), step: step.slice(0, 240), extra: extra };
   }
 
   /* ---------------------------------------------------------------- boot */
