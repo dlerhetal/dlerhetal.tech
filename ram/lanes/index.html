@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Process map</title>
+<link rel="stylesheet" href="../assets/app.css" id="gateCss">
+</head>
+<body>
+<section id="gate" hidden>
+  <main class="narrow">
+    <form id="gateForm" class="card login-card" autocomplete="off">
+      <label for="gatePassword" class="biglabel">Password</label>
+      <input id="gatePassword" type="password" class="bigin" autocomplete="current-password">
+      <p class="err" id="gateError"></p>
+      <button type="submit" class="btn pri wide" id="gateBtn">Sign in</button>
+      <p class="pdesc">The same password as the other tools on this site.</p>
+    </form>
+  </main>
+</section>
+<div id="app" hidden></div>
+<script src="../assets/shell.js"></script>
+<script src="../assets/lanes.js"></script>
+</body>
+</html>
