@@ -76,7 +76,15 @@
     function addTurn(who, text) {
       var w = document.createElement("div"); w.className = "turn " + (who === "You" ? "me" : "them");
       var t = document.createElement("span"); t.className = "who"; t.textContent = who; w.appendChild(t);
-      String(text).split("\n").forEach(function (line, i) { if (i) w.appendChild(document.createElement("br")); w.appendChild(document.createTextNode(line)); });
+      /* the helper writes **bold**; show it as bold using text nodes only (never innerHTML) */
+      String(text).split("\n").forEach(function (line, i) {
+        if (i) w.appendChild(document.createElement("br"));
+        line.split(/\*\*(.+?)\*\*/).forEach(function (part, j) {
+          if (!part) return;
+          if (j % 2) { var bb = document.createElement("b"); bb.textContent = part; w.appendChild(bb); }
+          else w.appendChild(document.createTextNode(part));
+        });
+      });
       log.appendChild(w); log.scrollTop = log.scrollHeight;
     }
     function showGate(show) { gate.hidden = !show; log.hidden = show; ctx.hidden = show; form.hidden = show; forgetBtn.hidden = !!memCode; }
