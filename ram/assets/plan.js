@@ -54,8 +54,8 @@
   function renderSyllabus() {
     var s = D.syllabus, h = '<h2>' + E(s.title) + '</h2><p class="lead">' + E(s.intro) + '</p>';
     h += '<div class="counts"><span><b>' + s.total + '</b> deliverables in the signed VEP</span><span>' + st("done") + ' ' + s.counts.done + '</span><span>' + st("started") + ' ' + s.counts.started + '</span><span>' + st("not") + ' ' + s.counts.not + '</span></div>';
-    h += '<div class="blk"><h3>What changed at signing</h3><p>' + E(s.vep_change) + '</p></div>';
-    h += '<div class="blk"><h3>The only dates on this page, and where they come from</h3>' + list(s.math) + '</div>';
+    if (s.vep_change) h += '<div class="blk"><h3>What changed at signing</h3><p>' + E(s.vep_change) + '</p></div>';
+    if (s.math && s.math.length) h += '<div class="blk"><h3>The only dates on this page, and where they come from</h3>' + list(s.math) + '</div>';
     h += '<div class="blk"><h3>Calendar anchors</h3><table class="ptable cal"><thead><tr><th style="width:26%">Date</th><th>What</th></tr></thead><tbody>' +
       s.calendar.map(function (c) { return '<tr><td data-l="Date" class="k' + E(c.kind || "") + '"><b>' + E(c.date) + '</b></td><td data-l="What" class="k' + E(c.kind || "") + '">' + E(c.text) + '</td></tr>'; }).join("") + '</tbody></table></div>';
     s.phases.forEach(function (p, pi) {
