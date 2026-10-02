@@ -1,0 +1,105 @@
+/* Problem-card page: screen, phone and print. Generic; no wording lives here. */
+:root{--ink:#1b2430;--muted:#5b6675;--line:#c9d0da;--blue:#1A3C6E;--red:#9b1c1c;--go:#1d6b3a;--paper:#fff;--bg:#f4f5f7;--warn:#fff4d6}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 Calibri,"Segoe UI",Arial,sans-serif;overflow-wrap:anywhere}
+button,input,textarea{font:inherit}
+.cfail{max-width:640px;margin:40px auto;padding:16px;color:var(--red)}
+
+/* top bar */
+.cnav{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;max-width:900px;margin:0 auto;padding:8px 16px;background:var(--bg);border-bottom:1px solid var(--line);font-size:.92rem}
+.cnav a{color:var(--blue)}
+.cnav .cmode{margin-right:auto;color:var(--muted);font-weight:700}
+.cnotice{max-width:900px;margin:10px auto;padding:10px 16px;background:var(--warn);border-left:4px solid var(--red);font-weight:700}
+.cpick{max-width:900px;margin:10px auto;padding:12px 16px;background:var(--paper);border:2px solid var(--blue);border-radius:8px}
+.cpicktitle{margin:0 0 8px;font-weight:700;font-size:1.1rem}
+.crow{display:flex;flex-wrap:wrap;gap:10px}
+
+/* buttons */
+.cbtn{min-height:44px;padding:6px 14px;border-radius:6px;border:2px solid var(--blue);background:var(--paper);color:var(--blue);font-weight:700;cursor:pointer}
+.cbtn.cpri{background:var(--blue);color:#fff}
+.cbtn.cgo{background:var(--go);border-color:var(--go);color:#fff}
+.cbtn:disabled{opacity:.45;cursor:default}
+
+/* page */
+.cmain{max-width:900px;margin:0 auto;padding:8px 16px 60px}
+.cintro h1{margin:14px 0 6px;font-size:1.7rem;color:var(--blue)}
+.crule{margin:0 0 8px;font-weight:700}
+.chelp{margin:0 0 8px;color:var(--muted)}
+.ctally{margin:6px 0 14px;font-weight:700}
+
+/* a card */
+.ccard{background:var(--paper);border:1px solid var(--line);border-top:6px solid var(--red);border-radius:8px;padding:16px;margin:0 0 22px;box-shadow:0 1px 3px rgba(0,0,0,.06);scroll-margin-top:64px}
+.ccard[data-status="starter"]{border-top-color:#c58a00}
+.ccard.cnew{outline:3px dashed #c58a00;outline-offset:2px}
+.ccard.cdirty .cstat{color:#8a5a00}
+.cbadges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.cbadge,.cnum,.cadded,.ctag{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.82rem;font-weight:700;line-height:1.6}
+.cbadge.cset{background:var(--red);color:#fff}
+.cbadge.cstarter{background:#fff1c7;color:#6b4a00;border:1px solid #c58a00}
+.cnum{background:var(--ink);color:#fff}
+.cadded{background:#e7eefb;color:var(--blue)}
+.ctag{background:#eceff3;color:var(--ink);font-weight:400}
+.ctitle{margin:4px 0 2px;font-size:1.45rem;line-height:1.25;color:var(--ink)}
+.cwhere{margin:0 0 10px;color:var(--muted)}
+.cwl{font-weight:700}
+.cgrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px 14px}
+.cf{grid-column:span 2;min-width:0}
+.cf.clong,.cf[data-f="owner"]{grid-column:1 / -1}
+.cf[data-f="dueDate"],.cf[data-f="cashDate"],.cf[data-f="weekly"],.cf[data-f="annual"]{grid-column:span 3}
+.cl{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--red)}
+.cv{white-space:pre-wrap}
+.cval{font-size:1.02rem}
+.cblank{display:inline-block;min-width:4.5em;height:1.05em;border-bottom:1.5px solid var(--ink);vertical-align:baseline;margin:0 2px}
+.cline{display:block;height:1.7em;border-bottom:1.5px solid var(--ink)}
+.ci{display:block;width:100%;max-width:100%;margin:4px 0 0;padding:8px 10px;border:2px solid #9aa7ba;border-radius:6px;background:#fff;color:var(--ink);font-size:16px;line-height:1.4;resize:vertical}
+input.ci{min-height:44px}
+.ci:focus{outline:3px solid #8fb3ea;border-color:var(--blue)}
+.chead .ci{margin-bottom:6px}
+body.ed .cv{display:none}
+body.ed .cwhere{display:none}
+.cfoot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px;padding-top:10px;border-top:1px solid var(--line)}
+.cstat{flex:1 1 100%;min-height:1.3em;font-size:.9rem;font-weight:700;color:var(--muted)}
+.cstat.cbad{color:var(--red)}
+.cmeta{margin:8px 0 0;font-size:.82rem;color:var(--muted)}
+
+/* prompts for topics with no card yet */
+.cneeds{margin-top:30px}
+.cneeds h2{font-size:1.3rem;color:var(--blue);margin:0 0 6px}
+.cneed{background:var(--paper);border:1px dashed #9aa7ba;border-radius:8px;padding:12px 14px;margin:0 0 12px}
+.cprompt{margin:8px 0 10px}
+
+/* phone */
+@media (max-width:600px){
+  body{font-size:16px}
+  .cnav{padding:8px 16px}
+  .cmain{padding:8px 16px 48px}
+  .ccard{padding:12px}
+  .cgrid{grid-template-columns:minmax(0,1fr)}
+  .cf,.cf[data-f]{grid-column:1 / -1}
+  .ctitle{font-size:1.25rem}
+}
+
+/* paper: one card per page, big type, every blank a line to write on */
+@page{margin:.5in}
+@media print{
+  html,body{background:#fff!important}
+  body{font-size:16pt;color:#000}
+  .noprint,.cnav,.cnotice,.cpick,.cintro,.cneeds,.cfoot,.cmeta,.ci{display:none!important}
+  body.ed .cv{display:block!important}
+  body.ed .cwhere{display:block!important}
+  .cmain{max-width:none;padding:0;margin:0}
+  .ccard{border:2px solid #000;border-top:10px solid #000;border-radius:0;box-shadow:none;outline:none;margin:0;padding:.25in;
+         break-inside:avoid;page-break-inside:avoid;break-after:page;page-break-after:always}
+  .clist .ccard:last-child{break-after:auto;page-break-after:auto}
+  body.cprintone .ccard:not(.cprintthis){display:none!important}
+  body.cprintone .ccard.cprintthis{break-after:auto;page-break-after:auto}
+  .cbadge,.cnum,.cadded,.ctag{border:1px solid #000;background:#fff!important;color:#000!important;font-size:11pt}
+  .ctitle{font-size:26pt;margin:8px 0 4px}
+  .cwhere{font-size:14pt;color:#000;margin-bottom:12px}
+  .cgrid{gap:12pt 16pt}
+  .cl{color:#000;font-size:11pt}
+  .cval{font-size:16pt}
+  .cline{height:28pt;border-bottom:1.5px solid #000}
+  .cblank{min-width:6em;border-bottom:1.5px solid #000}
+}
