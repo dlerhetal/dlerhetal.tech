@@ -2,19 +2,34 @@
    Generic: nothing in this file names a client or a person. The lanes, the steps, the hand-offs and every word
    on the page arrive from the API after sign-in. An editor (the consultant's browser, the same once-per-browser
    flag the other pages use) gets the editable board, saved to the API as append-only snapshots. Everyone else
-   gets the same board read-only, the print controls, the info markers and one comment box. */
+   gets the same board read-only, the print controls, the info markers and one comment box, plus an "Edit this map"
+   button when the API names client editors: it asks who is editing (remembered in this browser), then opens the
+   page with ?edit=<name> and every save carries that name. Every save says which snapshot it started from; when a
+   newer one exists the server refuses it and the page reloads the latest board with a plain message. */
 (function () {
   "use strict";
   var R = window.RAM;
   var TEST = R.TEST_MODE && /[?&]as=TEST(&|$)/.test(location.search);
-  var EDIT = !!R.DALE_MODE;
+  var DALE = !!R.DALE_MODE;
+  var EDIT = DALE;                       /* a client editor is decided in start(), from ?edit= and the API's list */
   var Q = TEST ? "?as=TEST" : "";
   var who = "";
+  var EDITOR_KEY = "lanes_editor" + (R.NS || "");
+  var NEWER_TEXT = "Someone else saved a newer version. The latest map is loaded; please redo your last change.";
 
   function $(id) { return document.getElementById(id); }
   function mk(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined && text !== null) n.textContent = text; return n; }
   function each(sel, fn) { Array.prototype.forEach.call(document.querySelectorAll(sel), fn); }
   function fail(text) { var p = mk("p", "lfail", text); document.body.insertBefore(p, document.body.firstChild); }
+  function recall() { try { return localStorage.getItem(EDITOR_KEY) || ""; } catch (e) { return ""; } }
+  function remember(name) { try { if (name) localStorage.setItem(EDITOR_KEY, name); else localStorage.removeItem(EDITOR_KEY); } catch (e) { } }
+  function param(name) { try { return new URL(location.href).searchParams.get(name) || ""; } catch (e) { return ""; } }
+  function urlWith(set) {
+    var u = new URL(location.href);
+    Object.keys(set).forEach(function (k) { if (set[k]) u.searchParams.set(k, set[k]); else u.searchParams.delete(k); });
+    return u.toString();
+  }
+  function lastSavedText(s) { return s ? "Last saved " + R.fmtTs(s.ts_utc) + " by " + s.saved_by + "." : "Not saved yet. This is the draft."; }
 
   R.gate(function () {
     R.apiJSON("/lanes/board" + Q).then(function (d) {
@@ -25,7 +40,15 @@
 
   function start(d) {
     var C = d.content;
-    who = TEST ? "TEST" : (EDIT ? ((d.editors || [])[0] || "") : "");
+    var names = d.client_editors || [];
+    var asked = param("edit");
+    if (!DALE && asked) {
+      if (names.indexOf(asked) >= 0) { EDIT = true; remember(asked); }
+      else { remember(""); try { history.replaceState(null, "", urlWith({ edit: "" })); } catch (e) { } }
+    }
+    var notice = param("notice") === "newer";
+    if (notice) { try { history.replaceState(null, "", urlWith({ notice: "" })); } catch (e) { } }
+    who = TEST ? "TEST" : (DALE ? ((d.editors || [])[0] || "") : (EDIT ? asked : ""));
     ["gate", "app", "gateCss"].forEach(function (id) { var n = $(id); if (n) n.parentNode.removeChild(n); });
     var css = document.createElement("link");
     css.rel = "stylesheet"; css.href = "../assets/lanes.css";
@@ -33,17 +56,37 @@
       go = function () { };
       document.title = C.title || document.title;
       document.body.classList.add(EDIT ? "ed" : "ro");
+      if (EDIT && !DALE) document.body.classList.add("ced");   /* a client editor: no reset-to-draft button, no draft-changed note */
       var holder = document.createElement("template");
       holder.innerHTML = C.body_html;
       document.body.insertBefore(holder.content, document.body.querySelector("script"));
       var nav = mk("div", "lnav");
-      nav.appendChild(mk("span", "lmode", EDIT ? "Editing: changes save as you make them" : "Read only"));
+      nav.appendChild(mk("span", "lmode", !EDIT ? "Read only" : (DALE ? "Editing: changes save as you make them" : "Editing as " + asked + ": changes save as you make them")));
+      var last = mk("span", "lsaved", lastSavedText(d.saved)); last.id = "lvLastSaved"; nav.appendChild(last);
+      if (!DALE && names.length) {
+        if (EDIT) {
+          var change = mk("button", "lnavbtn", "Change name"); change.type = "button"; change.id = "lvChangeName";
+          change.addEventListener("click", function () { showPicker(names); });
+          nav.appendChild(change);
+          var done = mk("button", "lnavbtn", "Done editing"); done.type = "button"; done.id = "lvDoneEditing";
+          done.addEventListener("click", function () { location.assign(urlWith({ edit: "" })); });
+          nav.appendChild(done);
+        } else {
+          var eb = mk("button", "lnavbtn ledit", "Edit this map"); eb.type = "button"; eb.id = "lvEditBtn";
+          eb.addEventListener("click", function () {
+            var r = recall();
+            if (names.indexOf(r) >= 0) location.assign(urlWith({ edit: r })); else showPicker(names);
+          });
+          nav.appendChild(eb);
+        }
+      }
       var home = mk("a", null, "Home"); home.href = "../"; nav.appendChild(home);
       var out = mk("a", null, "Sign out"); out.href = "#"; out.setAttribute("data-action", "signout"); nav.appendChild(out);
       document.body.insertBefore(nav, document.body.firstChild);
-      var env = makeEnv(d);
+      var env = makeEnv(d, notice);
       try { PAGE(C, d.board, env); } catch (e) { fail("The map could not be drawn: " + e.message); throw e; }
-      if (EDIT) editorExtras(d, env); else { lockBoard(); viewerExtras(C); }
+      if (EDIT) { editorExtras(d, env); if (!DALE) viewerExtras(C); } else { lockBoard(); viewerExtras(C); }
+      if (notice) showNotice(NEWER_TEXT);
       document.body.setAttribute("data-lanes-ready", EDIT ? "edit" : "view");
     };
     css.onload = function () { go(); };
@@ -51,25 +94,65 @@
     document.head.appendChild(css);
   }
 
+  /* ---------- who is editing: one question, the answer remembered in this browser ---------- */
+  function showPicker(names) {
+    var old = $("lvPick"); if (old) { old.parentNode.removeChild(old); }
+    var box = mk("div", "lpick"); box.id = "lvPick"; box.setAttribute("role", "dialog"); box.setAttribute("aria-labelledby", "lvPickTitle");
+    var h = mk("p", "lpicktitle", "Who is editing?"); h.id = "lvPickTitle"; box.appendChild(h);
+    var row = mk("div", "lrow");
+    names.forEach(function (n) {
+      var b = mk("button", "lnavbtn ledit", n); b.type = "button"; b.setAttribute("data-name", n);
+      b.addEventListener("click", function () { remember(n); location.assign(urlWith({ edit: n })); });
+      row.appendChild(b);
+    });
+    var cancel = mk("button", "lnavbtn", "Cancel"); cancel.type = "button"; cancel.id = "lvPickCancel";
+    cancel.addEventListener("click", function () { box.parentNode.removeChild(box); });
+    row.appendChild(cancel);
+    box.appendChild(row);
+    box.appendChild(mk("p", "lmsg", "Your changes are saved under this name. This browser remembers it."));
+    var nav = document.querySelector(".lnav");
+    nav.parentNode.insertBefore(box, nav.nextSibling);
+    var first = box.querySelector("button"); if (first) first.focus();
+  }
+
+  function showNotice(text) {
+    var old = $("lvNotice"); if (old) old.parentNode.removeChild(old);
+    var p = mk("p", "lnotice", text); p.id = "lvNotice"; p.setAttribute("role", "alert");
+    var nav = document.querySelector(".lnav");
+    nav.parentNode.insertBefore(p, nav.nextSibling);
+  }
+
   /* ---------- saving: every save is one more full snapshot on the server; nothing is overwritten ---------- */
-  function makeEnv(d) {
-    var timer = null, pending = null, busy = false, listeners = [];
+  function makeEnv(d, notice) {
+    var timer = null, pending = null, busy = false, listeners = [], stale = false;
+    var base = d.saved ? d.saved.id : null;    /* the snapshot this screen's board started from */
     function note(text, bad) { var n = $("saveNote"); if (n) { n.textContent = text; n.style.color = bad ? "#b3261e" : ""; n.setAttribute("data-state", bad ? "bad" : "ok"); } }
+    function setLast(s) { var n = $("lvLastSaved"); if (n) n.textContent = lastSavedText(s); }
+    function conflict() {
+      stale = true; pending = null; clearTimeout(timer);
+      note(NEWER_TEXT, true);
+      showNotice(NEWER_TEXT.replace(" The latest map is loaded;", " Loading the latest map now;"));
+      setTimeout(function () { location.assign(urlWith({ notice: "newer" })); }, 1500);
+    }
     function flush() {
       clearTimeout(timer); timer = null;
-      if (!pending || busy) return;
+      if (!pending || busy || stale) return;
       var st = pending; pending = null; busy = true;
       var board = { steps: st.steps, handoffs: st.handoffs, text: st.text || {}, draftHash: st.draftHash || "" };
       fetch(R.API + "/lanes/save", { method: "POST", keepalive: true,
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + R.getToken() },
-        body: JSON.stringify({ board: board, saved_by: who }) })
+        body: JSON.stringify({ board: board, saved_by: who, base_id: base }) })
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { s: r.status, j: j }; }); })
         .then(function (x) {
           busy = false;
           if (x.s === 200 && x.j && x.j.ok) {
-            note("Saved " + new Date().toLocaleTimeString() + ".");
+            base = x.j.saved.id;
+            note("Saved " + new Date().toLocaleTimeString() + " by " + x.j.saved.saved_by + ".");
+            setLast(x.j.saved);
             document.body.setAttribute("data-saved-id", String(x.j.saved.id));
             listeners.forEach(function (fn) { fn(x.j.saved); });
+          } else if (x.s === 409 && x.j && x.j.conflict) {
+            conflict(); return;
           } else if (x.s === 401) {
             note("Not saved: signed out. Reload the page and enter the password again.", true);
           } else {
@@ -86,13 +169,16 @@
     window.addEventListener("pagehide", function () { if (pending) flush(); });
     return {
       readonly: !EDIT,
-      save: function (state) { if (!EDIT) return; pending = state; note("Saving..."); clearTimeout(timer); timer = setTimeout(flush, 900); },
+      save: function (state) { if (!EDIT || stale) return; pending = state; note("Saving..."); clearTimeout(timer); timer = setTimeout(flush, 900); },
       ready: function () {
         if (!EDIT) return;
-        note(d.saved ? "This is the board saved " + R.fmtTs(d.saved.ts_utc) + ". Changes save as you make them." : "Changes save as you make them.");
+        if (notice) { note(NEWER_TEXT, true); return; }
+        note(d.saved ? "This is the board saved " + R.fmtTs(d.saved.ts_utc) + " by " + d.saved.saved_by + ". Changes save as you make them." : "Changes save as you make them.");
       },
       onSaved: function (fn) { listeners.push(fn); },
-      idle: function () { return !pending && !busy; }
+      idle: function () { return !pending && !busy && !stale; },
+      base: function () { return base; },
+      conflict: conflict
     };
   }
 
@@ -143,7 +229,7 @@
       var text = ta.value.trim();
       if (!text) { msg.className = "lmsg bad"; msg.textContent = "Type something first."; return; }
       b.disabled = true; msg.className = "lmsg"; msg.textContent = "Sending...";
-      R.apiJSON("/lanes/comment", { method: "POST", json: { text: text, answered_by: TEST ? "TEST" : "" } }).then(function (j) {
+      R.apiJSON("/lanes/comment", { method: "POST", json: { text: text, answered_by: who } }).then(function (j) {
         b.disabled = false;
         if (j && j.ok) { ta.value = ""; msg.className = "lmsg"; msg.textContent = "Sent " + new Date().toLocaleTimeString() + ". Thank you."; }
         else { msg.className = "lmsg bad"; msg.textContent = "Not sent: " + ((j && j.error) || "please try again") + "."; }
@@ -157,8 +243,8 @@
     vs.appendChild(mk("p", "lmsg", "Every save is kept. Making an earlier version current adds it again as the newest one; nothing is deleted."));
     var vmsg = mk("p", "lmsg"); vmsg.id = "lvVersionMsg"; vs.appendChild(vmsg);
     var vlist = mk("ul"); vlist.id = "lvVersionList"; vs.appendChild(vlist);
-    var cs = addSection("lvComments", "Comments received");
-    var clist = mk("ul"); clist.id = "lvCommentList"; cs.appendChild(clist);
+    var clist = mk("ul");    /* comments received: consultant mode only; a client editor has the comment box instead */
+    if (DALE) { var cs = addSection("lvComments", "Comments received"); clist.id = "lvCommentList"; cs.appendChild(clist); }
     var refreshTimer = null;
 
     function restore(v, b) {
@@ -166,8 +252,9 @@
       b.disabled = true; vmsg.className = "lmsg"; vmsg.textContent = "Making version " + v.id + " the current board...";
       R.apiJSON("/lanes/history?id=" + v.id).then(function (h) {
         if (!h || !h.ok || !h.board) throw new Error((h && h.error) || "that version could not be read");
-        return R.apiJSON("/lanes/save", { method: "POST", json: { board: h.board, saved_by: who, note: "Restored version " + v.id } });
+        return R.apiJSON("/lanes/save", { method: "POST", json: { board: h.board, saved_by: who, base_id: env.base(), note: "Restored version " + v.id } });
       }).then(function (j) {
+        if (j && j.conflict) { env.conflict(); return new Promise(function () { }); }
         if (!j || !j.ok) throw new Error((j && j.error) || "the server did not save it");
         location.reload();
       }).catch(function (e) { b.disabled = false; vmsg.className = "lmsg bad"; vmsg.textContent = "Not done: " + e.message + "."; });

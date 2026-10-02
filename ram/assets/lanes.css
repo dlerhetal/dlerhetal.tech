@@ -238,4 +238,15 @@ footer{font-size:15px;color:#4a5566;margin-top:24px}
 .ro .card,.ro .card *,.ro #hoTable *{cursor:default !important}
 .ro .card .infobtn{cursor:pointer !important}
 @media (max-width:640px){#handoffs{overflow-x:auto}.tallyrow{grid-template-columns:84px 1fr}.track{flex-wrap:wrap;gap:4px 10px}.tallytext{white-space:normal;font-size:15px}}
-@media print{.lnav,.lrun,.lfail{display:none !important}}
+.lnav{flex-wrap:wrap}
+.lnav .lsaved{color:#4a5566}
+.lnavbtn{font:inherit;font-size:16px;min-height:44px;padding:6px 16px;cursor:pointer;border:1px solid #1A3C6E;border-radius:6px;background:#fff;color:#1A3C6E}
+.lnavbtn.ledit{background:#1A3C6E;color:#fff;font-weight:bold}
+.lpick{max-width:640px;margin:12px auto;padding:16px;border:2px solid #1A3C6E;border-radius:8px;background:#fff;font-size:16px}
+.lpick .lpicktitle{font-size:20px;font-weight:bold;margin:0 0 8px}
+.lpick .lrow{display:flex;flex-wrap:wrap;gap:10px}
+.lpick .lmsg{color:#4a5566;margin:10px 0 0}
+.lnotice{max-width:900px;margin:10px auto;padding:12px 16px;border:2px solid #b3261e;border-radius:8px;background:#fdecea;color:#7a1712;font-size:17px}
+@media (max-width:640px){.lnav .lmode{flex:1 1 100%}}
+.ced #resetBoard,.ced #staleNote{display:none !important}
+@media print{.lnav,.lrun,.lfail,.lpick,.lnotice{display:none !important}}
