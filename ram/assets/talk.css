@@ -1,0 +1,68 @@
+/* Guide page with the reader's own entries. Generic styles only. */
+:root{--bg:#fff;--fg:#1b1f24;--muted:#5a6370;--blue:#1A3C6E;--gold:#FFCD00;--card:#f4f6fa;--line:#d9dee7;--bad:#a4262c;--on:#eef3fb;--warn:#7a5a00}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#14171c;--fg:#e8ebf0;--muted:#a3acb9;--blue:#8fb3ec;--card:#1e232b;--line:#2f3642;--bad:#ff8a8a;--on:#22304a;--warn:#ffd36b}}
+:root[data-theme="dark"]{--bg:#14171c;--fg:#e8ebf0;--muted:#a3acb9;--blue:#8fb3ec;--card:#1e232b;--line:#2f3642;--bad:#ff8a8a;--on:#22304a;--warn:#ffd36b}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{margin:0;color:var(--fg);font:17px/1.5 Calibri,"Segoe UI",Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;overflow-wrap:anywhere}
+.tnav{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:8px 16px;background:var(--card);border-bottom:1px solid var(--line);font-size:15px}
+.tnav a{color:var(--blue)}
+.tmode{color:var(--muted)}
+.tstatus{flex:1 1 auto;min-width:8em;color:var(--muted)}
+.tstatus.bad{color:var(--bad);font-weight:bold}
+.tbtn{font:inherit;padding:6px 14px;border-radius:6px;border:1px solid var(--blue);background:var(--blue);color:#fff;cursor:pointer}
+.tfail{margin:16px;padding:12px;border:2px solid var(--bad);color:var(--bad)}
+main.tmain{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+.tmain h1{color:var(--blue);font-size:26px;margin:0 0 4px}
+.tmain h2{color:var(--blue);font-size:20px;margin:28px 0 8px;border-bottom:3px solid var(--gold);padding-bottom:4px}
+.tmain h3{color:var(--blue);font-size:18px;margin:20px 0 4px}
+.sub{color:var(--muted);margin:0 0 16px}
+.why{font-weight:bold}
+.box{background:var(--card);border-left:6px solid var(--gold);padding:12px 14px;border-radius:6px;margin:10px 0}
+.move{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0}
+.move b.n{display:inline-block;background:var(--blue);color:#fff;border-radius:50%;width:28px;height:28px;text-align:center;line-height:28px;margin-right:8px}
+.say{font-style:italic;color:var(--blue)}
+ol li,ul li{margin:7px 0}
+.remind{font-size:22px;font-weight:bold;text-align:center;color:var(--blue);margin:24px 0 8px}
+/* the options */
+.tgoals{margin:8px 0 4px}
+.tg{border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:8px 0;background:var(--bg)}
+.tg.on{background:var(--on);border-color:var(--blue)}
+.tg.main{border-width:3px;border-color:var(--blue)}
+.tghead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px 14px}
+.tgpick,.tgmain,.tradio{display:flex;align-items:center;gap:8px;cursor:pointer}
+.tgpick input,.tgmain input{width:22px;height:22px;margin:0;flex:none;accent-color:var(--blue)}
+.tgtitle{font-weight:bold;font-size:18px}
+.tgmain{font-size:15px;color:var(--muted)}
+.tg.main .tgmain{color:var(--blue);font-weight:bold}
+.tgline{margin:6px 0 0;font-size:16px}
+/* the boxes */
+.tfield{margin:16px 0}
+.tlabel{display:block;font-weight:bold;color:var(--blue);margin:0 0 6px}
+.tta,.ttext,.tdate{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--muted);border-radius:6px;padding:10px}
+.tta{min-height:96px;resize:vertical}
+.tdate{max-width:240px}
+.tnote{color:var(--muted);font-size:15px;margin:6px 0 0}
+.twarn{color:var(--warn);font-weight:bold;margin:6px 0 0}
+.tmeta{color:var(--muted);font-size:13px;margin:4px 0 0;min-height:1em}
+.tcover{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.techo{font-weight:bold}
+.tunset{color:var(--muted);font-weight:normal}
+.caution{border:2px solid var(--blue);border-radius:8px;padding:6px 14px 4px;margin:20px 0}
+.caution h3{margin-top:6px}
+.printonly{display:none}
+@page{size:letter portrait;margin:.5in}
+@media print{
+  body{font-size:11.5pt;background:#fff;color:#000}
+  .noprint,.tnav,.tmeta,.tnote{display:none!important}
+  .printonly{display:block}
+  .tpv{white-space:pre-wrap;border:1px solid #999;border-radius:4px;padding:6pt 8pt;min-height:28pt}
+  main.tmain{max-width:none;padding:0}
+  .box{border-left-color:#999}
+  .tmain h2,.tmain h3{break-after:avoid}
+  .move,.box,.tg,.tfield,.caution{break-inside:avoid;page-break-inside:avoid}
+  .tg{padding:5pt 8pt;margin:4pt 0}
+  .tg:not(.on){opacity:.6}
+  .ttext{border:1px solid #999}
+}
+@media (max-width:480px){.tmain h1{font-size:23px}.tgtitle{font-size:17px}}
