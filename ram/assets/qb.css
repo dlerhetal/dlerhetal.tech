@@ -125,3 +125,5 @@
 .replybox{margin-top:8px}
 .replybox textarea{width:100%;font:inherit;font-size:15px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;min-height:44px;resize:vertical}
 .qbadmin .thread .ttext{font-size:15px}
+.qbfold{margin:32px 0 8px;border-top:2px solid var(--line,#ccc);padding-top:8px}
+.qbfold>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-size:20px;font-weight:600;color:var(--muted)}

@@ -11,6 +11,7 @@
   var NSK = R.NS.slice(1);
   var K_OPEN = NSK + "_qb_open", K_WHO = NSK + "_qb_who";
   var data = null, view = null, who = "", openId = "";
+  var foldOpen = false;  // the "not today" fold: closed on every load, remembered across re-draws
   var issueOpen = {};   // card id -> true while the "does not match" box is open
   var drafts = {};      // unsaved textarea text, kept across re-renders
 
@@ -258,14 +259,22 @@
   function renderAll() {
     captureDrafts();
     var box = R.$("sections"); box.innerHTML = "";
+    var target = box;
     data.sections.forEach(function (sec) {
       var cards = data.cards.filter(function (c) { return c.section === sec.id; });
       if (!cards.length) return;
+      if (sec.fold && target === box) {   // this section and every one after it sit in a closed fold (content-defined)
+        var d = document.createElement("details");
+        d.className = "qbfold"; d.open = foldOpen;
+        d.innerHTML = "<summary>" + esc(sec.fold) + "</summary>";
+        d.addEventListener("toggle", function () { foldOpen = d.open; });
+        box.appendChild(d); target = d;
+      }
       var s = document.createElement("section");
       s.className = "qbsec";
       s.innerHTML = "<h2>" + esc(sec.title) + "</h2>" + (sec.sub ? "<p>" + esc(sec.sub) + "</p>" : "");
-      box.appendChild(s);
-      cards.forEach(function (c) { box.appendChild(cardEl(c)); });
+      target.appendChild(s);
+      cards.forEach(function (c) { target.appendChild(cardEl(c)); });
     });
     renderSummary();
     if (window.RAMASK) window.RAMASK.refresh();
@@ -279,7 +288,15 @@
     if (window.RAMASK) window.RAMASK.refresh();
   }
 
+  function inFold(id) {   // true when the card's section is at or after the first section with a fold label
+    var c = card(id), seen = false, hit = false;
+    if (!c || !data) return false;
+    data.sections.forEach(function (sec) { if (sec.fold) seen = true; if (sec.id === c.section) hit = seen; });
+    return hit;
+  }
+
   function openCard(id, scroll) {
+    if (inFold(id) && !foldOpen) { foldOpen = true; var f = document.querySelector("details.qbfold"); if (f) f.open = true; }
     var prev = openId;
     openId = (openId === id && !scroll) ? "" : id;
     lsSet(K_OPEN, openId);
@@ -382,7 +399,7 @@
       if (R.DALE_MODE) { var slot = document.querySelector('[data-dale-slot="qb"]'); if (slot) slot.innerHTML = '<a href="admin/" class="daleonly">Dale\'s view</a>'; }
       renderWho();
       var saved = lsGet(K_OPEN);
-      openId = saved && card(saved) ? saved : "";
+      openId = saved && card(saved) && !inFold(saved) ? saved : "";   // a reload never lands inside the fold
       renderAll();
       setSaved(view.summary.done + " of " + view.summary.cards + " done");
       if (window.RAMASK) {
