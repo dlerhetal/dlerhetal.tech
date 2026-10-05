@@ -137,7 +137,7 @@
      answering option). The client never sees it. */
   var TEST_MODE = /[?&]test=1(&|$)/.test(location.search);
 
-  /* DALE_MODE: the consultant's links (Dale's view, Advanced map) are not in the
+  /* DALE_MODE: the consultant's links (the admin view and the full map tool) are not in the
      page at all unless the URL once carried ?dale=1 on this browser. The flag is
      kept in localStorage under the namespace key so it is set once per browser;
      the consultant view has a "Consultant links off" control that clears it. The
@@ -153,8 +153,9 @@
     if (!DALE_MODE) return;
     Array.prototype.forEach.call(document.querySelectorAll("[data-dale-slot]"), function (slot) {
       var kind = slot.dataset.daleSlot;
-      if (kind === "wizard") slot.innerHTML = '<a href="admin/" class="daleonly">Dale\'s view</a><a href="#" data-action="advanced" class="advonly daleonly">Advanced</a>';
-      if (kind === "hub") slot.innerHTML = '<p class="pdesc center advline daleonly"><a href="#" data-action="advanced" id="advLink" class="advlink">Advanced map</a><a href="map/admin/" class="advlink">Dale\'s view</a><span class="advnote">Consultant links are on for this browser. Turn them off from Dale\'s view.</span></p>';
+      /* 2026-10-05: the "wizard" and "hub" slots no longer get the consultant links; they did not
+         connect to the current process map. The admin and Advanced pages still open by their own address. */
+      void kind;
     });
   }
 
