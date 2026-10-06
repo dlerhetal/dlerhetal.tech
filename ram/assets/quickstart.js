@@ -18,7 +18,9 @@
   var DRAFT_KEY = NSK + "_" + SLUG + "_draft" + (TEST ? "_test" : "");
   var TAB_KEY = NSK + "_" + SLUG + "_tab";
   var L = null, LOGO = "", TODAY = "", LOG = null, who = "", tab = "today";
-  var draft = null, editing = null, busy = false, confirmVoid = null;
+  var draft = null, busy = false, confirmVoid = null;
+  var editMode = false, menuOpen = null, flash = null, pending = [], queue = Promise.resolve(), inflight = 0;
+  var redrawing = false, keepAfter = null, openHidden = {};
 
   function $(id) { return document.getElementById(id); }
   function mk(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined && text !== null) n.textContent = text; return n; }
@@ -55,7 +57,7 @@
     who = TEST ? "TEST" : readWho();
     ["gate", "app", "gateCss"].forEach(function (id) { var n = $(id); if (n) n.parentNode.removeChild(n); });
     var css = document.createElement("link");
-    css.rel = "stylesheet"; css.href = "../assets/quickstart.css?v=1";
+    css.rel = "stylesheet"; css.href = "../assets/quickstart.css?v=2";
     var go = function () {
       go = function () { };
       document.title = doc().title || "Working page";
@@ -67,6 +69,7 @@
       loadLog();
       setInterval(poll, 30000);
       window.addEventListener("focus", poll);
+      window.addEventListener("resize", fitAll);
       window.addEventListener("beforeprint", function () { if (!document.body.getAttribute("data-print")) prepPrint("letter"); });
       window.addEventListener("afterprint", function () { document.body.removeAttribute("data-print"); });
       document.body.setAttribute("data-qs-ready", TEST ? "test" : "yes");
@@ -87,7 +90,9 @@
     wi.addEventListener("change", function () {
       who = wi.value.replace(/\s+/g, " ").trim(); wi.value = who; store(WHO_KEY, who || null);
       wl.classList.toggle("need", !who); if (who) status("");
+      if (who && pending.length) { var pp = pending; pending = []; pp.forEach(function (x) { edit(x.ops, x.opts); }); }
     });
+    wi.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); wi.blur(); } });
     wl.appendChild(wi); nav.appendChild(wl);
     var st = mk("span", "qsstatus"); st.id = "qsStatus"; st.setAttribute("role", "status"); nav.appendChild(st);
     var out = mk("a", "qsout", "Sign out"); out.href = "#"; out.setAttribute("data-action", "signout"); nav.appendChild(out);
@@ -135,11 +140,16 @@
       var b = $("tab_" + x); b.classList.toggle("on", x === t); b.setAttribute("aria-selected", x === t ? "true" : "false");
     });
     if (t === "log") loadLog();
+    closeMenus(); fitAll();
     try { history.replaceState(null, "", location.pathname + location.search + "#" + t); } catch (e) { }
   }
 
   function status(text, bad) { var s = $("qsStatus"); if (s) { s.textContent = text; s.classList.toggle("bad", !!bad); } }
-  function needName() { var wl = $("qsWhoLabel"); if (wl) wl.classList.add("need"); status("Type your name at the top first.", true); var w = $("qsWho"); if (w) w.focus(); }
+  function needName(forEdit) {
+    var wl = $("qsWhoLabel"); if (wl) wl.classList.add("need");
+    status(forEdit ? "Type your name here first; your change saves as soon as you do." : "Type your name at the top first.", true);
+    var w = $("qsWho"); if (w) { w.focus(); try { w.scrollIntoView({ block: "nearest" }); } catch (e) { } }
+  }
 
   function drawAll() {
     $("qsTitle").textContent = doc().title || "";
@@ -170,6 +180,20 @@
 
   function drawToday() {
     var p = $("panel_today"); p.innerHTML = "";
+    var bar = mk("div", "qsedbar" + (editMode ? " on" : ""));
+    var tg = mk("button", "qsedtoggle" + (editMode ? " on" : "")); tg.type = "button"; tg.id = "qsEditToggle";
+    tg.setAttribute("aria-pressed", editMode ? "true" : "false");
+    tg.appendChild(mk("span", "qsknob")); tg.appendChild(mk("span", null, "Edit the list"));
+    tg.addEventListener("click", function () {
+      editMode = !editMode; closeMenus(); drawToday(); fitAll();
+      status(editMode ? "Editing the list. Tap a line to change it." : "");
+    });
+    bar.appendChild(tg);
+    bar.appendChild(mk("span", "qsedhint", editMode
+      ? "Changes save for everyone as you make them. Turn this off to tick the list again."
+      : "Turn on to change, add, move or hide lines."));
+    p.appendChild(bar);
+    if (editMode) { p.oninput = null; p.onchange = null; drawEditor(p); return; }
     if (draft.ref) {
       var fx = mk("div", "qsfixing");
       fx.appendChild(mk("span", null, "Fixing " + draft.refLine + ". Saving replaces it on the log."));
@@ -295,149 +319,261 @@
     });
   }
 
-  /* ---------- THE LIST: edit ---------- */
-  function edit(ops, done) {
-    if (!who) { needName(); return; }
+  /* ---------- THE LIST: one inline editor, used on "The list" and on Today when "Edit the list" is on ----------
+     Every line, section title and section line is a text field that looks like plain text until hovered or tapped.
+     Leaving the field (or Enter) saves it as ONE new version; Esc puts the words back. One small menu per line moves,
+     marks or hides it. Every change goes to the server as operations and comes back as a new version. */
+  function edit(ops, opts) {
+    opts = opts || {};
+    if (!who) { pending.push({ ops: ops, opts: opts }); needName(true); return false; }
+    inflight++;
     status("Saving...");
-    R.api("/" + SLUG + "/edit" + Q, { method: "POST", json: { saved_by: who, base: L.ver, ops: ops } }).then(answer).then(function (x) {
-      if (x.j && x.j.list) { L = x.j.list; }
-      if (x.s === 200 && x.j.ok) { editing = null; status("Saved " + clock()); drawAll(); if (done) done(true); }
-      else {
-        status("Not saved: " + ((x.j && x.j.error) || ("the server answered " + x.s)), true);
-        if (x.s === 403) needName();
-        if (x.s === 409) { editing = null; drawAll(); }
-        if (done) done(false);
-      }
-    }).catch(function (e) { if (e && e.message !== "signed out") status("Not saved: no connection.", true); if (done) done(false); });
+    var p = queue.then(function () {
+      return R.api("/" + SLUG + "/edit" + Q, { method: "POST", json: { saved_by: who, base: L.ver, ops: ops } }).then(answer).then(function (x) {
+        if (x.j && x.j.list) L = x.j.list;
+        if (x.s === 200 && x.j.ok) { status("Saved " + clock()); setFlash(opts.key, true, opts.okText || "Saved"); return true; }
+        var msg = (x.j && x.j.error) || ("the server answered " + x.s);
+        status("Not saved: " + msg, true);
+        setFlash(opts.key, false, "Not saved: " + msg);
+        if (x.s === 403) { pending.push({ ops: ops, opts: opts }); needName(true); }
+        if (x.s !== 409 && opts.keep) keepAfter = opts.keep;
+        return false;
+      }).catch(function (e) {
+        if (e && e.message === "signed out") return false;
+        status("Not saved: no connection.", true);
+        setFlash(opts.key, false, "Not saved: no connection. Try again.");
+        if (opts.keep) keepAfter = opts.keep;
+        return false;
+      }).then(function (ok) { inflight--; redraw(); return ok; });
+    });
+    queue = p.catch(function () { });
+    return true;
   }
 
-  function renameBox(host, value, onSave, label) {
-    host.innerHTML = "";
-    var i = mk("input", "qsrename"); i.type = "text"; i.maxLength = 300; i.value = value; i.setAttribute("aria-label", label || "New words");
-    host.appendChild(i);
-    var row = mk("div", "qsctl");
-    var save = function () { var v = i.value.replace(/\s+/g, " ").trim(); if (!v || v === value) { editing = null; drawList(); return; } onSave(v); };
-    row.appendChild(btn("Save", "", save));
-    row.appendChild(btn("Cancel", "alt", function () { editing = null; drawList(); }));
-    host.appendChild(row);
-    i.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); save(); } if (e.key === "Escape") { editing = null; drawList(); } });
-    setTimeout(function () { i.focus(); i.select(); }, 20);
+  function setFlash(key, ok, text) {
+    if (!key) return;
+    flash = { key: key, ok: ok, text: text, n: (flash ? flash.n : 0) + 1 };
+    var n = flash.n;
+    setTimeout(function () { if (flash && flash.n === n && flash.ok) { flash = null; var t = document.querySelectorAll(".qstick.good"); for (var i = 0; i < t.length; i++) t[i].remove(); } }, 2600);
+  }
+
+  function panelNow() { return $("panel_" + tab); }
+  function byKey(host, key) { return host ? host.querySelector('[data-ek="' + key.replace(/["\\]/g, "") + '"]') : null; }
+  function fit(t) { if (t && t.tagName === "TEXTAREA") { t.style.height = "auto"; if (t.scrollHeight) t.style.height = t.scrollHeight + "px"; } }
+  function fitAll() { var h = panelNow(); if (!h) return; var ts = h.querySelectorAll("textarea.qsinl"); for (var i = 0; i < ts.length; i++) fit(ts[i]); }
+
+  function showTick(key, ok, text) {
+    var f = byKey(panelNow(), key); if (!f) return;
+    var host = f.parentNode, old = host.querySelector(".qstick");
+    if (old) old.remove();
+    var t = mk("span", "qstick " + (ok ? "good" : "bad"), (ok ? "\u2713 " : "") + text); t.setAttribute("role", "status");
+    if (f.nextSibling) host.insertBefore(t, f.nextSibling); else host.appendChild(t);
+  }
+
+  /* Redraw after a save, keeping the field the person moved to (and anything already typed in it). */
+  function redraw() {
+    var ae = document.activeElement, key = ae && ae.getAttribute ? ae.getAttribute("data-ek") : null, val = null, s0 = 0, s1 = 0;
+    if (key) { val = ae.value; try { s0 = ae.selectionStart; s1 = ae.selectionEnd; } catch (e) { } }
+    redrawing = true;
+    try { drawAll(); } finally { redrawing = false; }
+    var host = panelNow();
+    if (keepAfter) { var k = byKey(host, keepAfter.key); if (k) { k.value = keepAfter.value; k.classList.add("dirty"); } keepAfter = null; }
+    if (key) {
+      var n = byKey(host, key);
+      if (n) {
+        if (val !== null && val !== n.getAttribute("data-orig") && n.getAttribute("data-orig") !== null) { n.value = val; n.classList.add("dirty"); }
+        n.focus(); try { n.setSelectionRange(s0, s1); } catch (e) { }
+      }
+    }
+    fitAll();
+    if (flash) showTick(flash.key, flash.ok, flash.text);
+  }
+
+  function inl(key, value, cls, label, placeholder, onCommit, allowEmpty) {
+    var t = mk("textarea", "qsinl " + cls); t.rows = 1; t.maxLength = 300; t.value = value;
+    t.setAttribute("data-ek", key); t.setAttribute("data-orig", value); t.setAttribute("aria-label", label);
+    t.setAttribute("enterkeyhint", "done"); t.title = "Tap to change the words";
+    if (placeholder) t.placeholder = placeholder;
+    var esc = false;
+    t.addEventListener("input", function () { fit(t); t.classList.toggle("dirty", t.value !== t.getAttribute("data-orig")); });
+    t.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); t.blur(); }
+      else if (e.key === "Escape") { e.preventDefault(); esc = true; t.value = t.getAttribute("data-orig"); t.classList.remove("dirty"); fit(t); t.blur(); }
+    });
+    t.addEventListener("blur", function () {
+      if (redrawing) return;
+      if (esc) { esc = false; return; }
+      var o = t.getAttribute("data-orig"), v = t.value.replace(/\s+/g, " ").trim();
+      if (v === o) { t.value = o; t.classList.remove("dirty"); fit(t); return; }
+      if (!v && !allowEmpty) { t.value = o; t.classList.remove("dirty"); fit(t); showTick(key, false, "An empty line is not saved. To take a line off, use \u22EF and Hide."); return; }
+      t.value = v; fit(t);
+      onCommit(v, o);
+    });
+    return t;
+  }
+
+  function menu(key, label, ents) {
+    var w = mk("div", "qsmenuw");
+    var b = mk("button", "qsdots", "\u22EF"); b.type = "button"; b.title = label;
+    b.setAttribute("aria-label", label); b.setAttribute("aria-haspopup", "true"); b.setAttribute("aria-expanded", "false"); b.setAttribute("data-menu", key);
+    var m = mk("div", "qsmenu"); m.setAttribute("role", "menu"); m.hidden = true;
+    ents.forEach(function (e) {
+      var x = mk("button", "qsmi" + (e[2] ? " " + e[2] : ""), e[0]); x.type = "button"; x.setAttribute("role", "menuitem");
+      x.addEventListener("click", function (ev) { ev.stopPropagation(); closeMenus(); e[1](); });
+      m.appendChild(x);
+    });
+    b.addEventListener("click", function (ev) {
+      ev.stopPropagation();
+      var opening = m.hidden;
+      closeMenus();
+      if (opening) { m.hidden = false; w.classList.add("open"); b.setAttribute("aria-expanded", "true"); menuOpen = key; }
+    });
+    w.appendChild(b); w.appendChild(m);
+    return w;
+  }
+  function closeMenus() {
+    menuOpen = null;
+    var ws = document.querySelectorAll(".qsmenuw.open");
+    for (var i = 0; i < ws.length; i++) {
+      ws[i].classList.remove("open");
+      ws[i].querySelector(".qsmenu").hidden = true;
+      ws[i].querySelector(".qsdots").setAttribute("aria-expanded", "false");
+    }
+  }
+  document.addEventListener("click", function (e) { if (menuOpen && !(e.target.closest && e.target.closest(".qsmenuw"))) closeMenus(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && menuOpen) closeMenus(); });
+
+  function clean(v) { return (v || "").replace(/\s+/g, " ").trim(); }
+
+  function addRow(key, placeholder, label, onAdd) {
+    var add = mk("div", "qsadd");
+    var ai = mk("input"); ai.type = "text"; ai.maxLength = 300; ai.placeholder = placeholder; ai.setAttribute("aria-label", label);
+    ai.setAttribute("data-ek", key); ai.setAttribute("enterkeyhint", "done");
+    var go = function () { var v = clean(ai.value); if (!v) { ai.focus(); return; } if (onAdd(v)) ai.value = ""; };
+    ai.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); go(); } });
+    add.appendChild(ai);
+    add.appendChild(btn("Add", "alt", go));
+    return add;
+  }
+
+  function drawEditor(host) {
+    var wrap = mk("div", "qsedwrap");
+    var secs = doc().sections;
+    var shownSecs = secs.filter(function (s) { return !s.hidden; });
+    shownSecs.forEach(function (s, si) {
+      var sc = mk("div", "qscard qseditsec"); sc.setAttribute("data-sec", s.id);
+      var hd = mk("div", "qsedrow qssechead");
+      var tx = mk("div", "qsedtext");
+      tx.appendChild(inl("st:" + s.id, s.title, "qsinltitle", "Section title", "Section title", function (v, o) {
+        edit([{ op: "set", target: s.id, field: "title", value: v, was: o }], { key: "st:" + s.id, keep: { key: "st:" + s.id, value: v } });
+      }));
+      tx.appendChild(inl("su:" + s.id, s.subtitle || "", "qsinlsub", "Short line under the section title", "Add a short line under the title (optional)", function (v, o) {
+        edit([{ op: "set", target: s.id, field: "subtitle", value: v, was: o }], { key: "su:" + s.id, keep: { key: "su:" + s.id, value: v } });
+      }, true));
+      hd.appendChild(tx);
+      var se = [];
+      if (si > 0) se.push(["Move section up", function () { edit([{ op: "move", target: s.id, dir: "up" }], { key: "st:" + s.id, okText: "Moved" }); }]);
+      if (si < shownSecs.length - 1) se.push(["Move section down", function () { edit([{ op: "move", target: s.id, dir: "down" }], { key: "st:" + s.id, okText: "Moved" }); }]);
+      se.push(["Hide this section", function () { edit([{ op: "hide", target: s.id }]); }, "warn"]);
+      hd.appendChild(menu("ms:" + s.id, "More for this section", se));
+      sc.appendChild(hd);
+
+      var ul = mk("ul", "qsedlist");
+      var shown = s.items.filter(function (i) { return !i.hidden; });
+      var others = shownSecs.filter(function (o) { return o.id !== s.id; });
+      shown.forEach(function (it, k) {
+        var li = mk("li", "qsedrow qseditem"); li.setAttribute("data-item", it.id);
+        var c = mk("div", "qsedtext");
+        c.appendChild(inl("t:" + it.id, it.text, "qsinlitem", "Line", "", function (v, o) {
+          edit([{ op: "set", target: it.id, field: "text", value: v, was: o }], { key: "t:" + it.id, keep: { key: "t:" + it.id, value: v } });
+        }));
+        li.appendChild(c);
+        if (it.confirm) { var q = mk("b", "qsqbadge", "?"); q.title = "Not confirmed yet"; li.appendChild(q); }
+        var ie = [];
+        if (k > 0) ie.push(["Move up", function () { edit([{ op: "move", target: it.id, dir: "up" }], { key: "t:" + it.id, okText: "Moved" }); }]);
+        if (k < shown.length - 1) ie.push(["Move down", function () { edit([{ op: "move", target: it.id, dir: "down" }], { key: "t:" + it.id, okText: "Moved" }); }]);
+        others.forEach(function (o) { ie.push(["Move to \u201C" + o.title + "\u201D", function () { edit([{ op: "move", target: it.id, to_section: o.id }], { key: "t:" + it.id, okText: "Moved here" }); }]); });
+        ie.push([it.confirm ? "Clear the \u201C?\u201D" : "Mark \u201C?\u201D (not sure yet)", function () {
+          edit([{ op: "set", target: it.id, field: "confirm", value: !it.confirm }], { key: "t:" + it.id, okText: it.confirm ? "\u201C?\u201D cleared" : "Marked \u201C?\u201D" });
+        }]);
+        ie.push(["Hide this line", function () { edit([{ op: "hide", target: it.id }], { key: "add:" + s.id, okText: "Hidden. It is under \u201CHidden lines\u201D." }); }, "warn"]);
+        li.appendChild(menu("mi:" + it.id, "More for this line", ie));
+        ul.appendChild(li);
+      });
+      sc.appendChild(ul);
+      sc.appendChild(addRow("add:" + s.id, "+ Add a line", "Add a line to this section", function (v) {
+        return edit([{ op: "add_item", section: s.id, text: v }], { key: "add:" + s.id, okText: "Added", keep: { key: "add:" + s.id, value: v } });
+      }));
+      var hid = s.items.filter(function (i) { return i.hidden; });
+      if (hid.length) {
+        var det = mk("details", "qshidden");
+        det.appendChild(mk("summary", null, "Hidden lines (" + hid.length + ")"));
+        hid.forEach(function (it) {
+          var r = mk("div", "qsedrow hiddenline"); r.setAttribute("data-hidden-item", it.id);
+          r.appendChild(mk("div", "qsedtext", it.text + (it.confirm ? " ?" : "")));
+          r.appendChild(btn("Bring back", "alt", function () { edit([{ op: "restore", target: it.id }], { key: "t:" + it.id, okText: "Brought back" }); }));
+          det.appendChild(r);
+        });
+        if (openHidden[s.id]) det.open = true;
+        det.addEventListener("toggle", function () { openHidden[s.id] = det.open; });
+        sc.appendChild(det);
+      }
+      wrap.appendChild(sc);
+    });
+
+    var hq = mk("div", "qscard");
+    var ht = mk("div", "qsedtext");
+    var held = doc().heldUp || {};
+    ht.appendChild(mk("small", "qsedlabel", "The question at the end of the form"));
+    ht.appendChild(inl("held", held.title || "", "qsinltitle", "The question at the end of the form", "", function (v, o) {
+      edit([{ op: "set", target: "heldUp", field: "title", value: v, was: o }], { key: "held", keep: { key: "held", value: v } });
+    }));
+    hq.appendChild(ht); wrap.appendChild(hq);
+
+    var hs = secs.filter(function (s) { return s.hidden; });
+    if (hs.length) {
+      var hd2 = mk("details", "qscard qshidden"); hd2.id = "";
+      hd2.appendChild(mk("summary", null, "Hidden sections (" + hs.length + ")"));
+      hs.forEach(function (s) {
+        var r = mk("div", "qsedrow hiddenline"); r.setAttribute("data-hidden-sec", s.id);
+        r.appendChild(mk("div", "qsedtext", s.title + " (" + s.items.filter(function (i) { return !i.hidden; }).length + " lines)"));
+        r.appendChild(btn("Bring back", "alt", function () { edit([{ op: "restore", target: s.id }], { key: "st:" + s.id, okText: "Brought back" }); }));
+        hd2.appendChild(r);
+      });
+      if (openHidden._secs) hd2.open = true;
+      hd2.addEventListener("toggle", function () { openHidden._secs = hd2.open; });
+      wrap.appendChild(hd2);
+    }
+
+    var ns = mk("div", "qscard qsadd qsaddsec");
+    ns.appendChild(mk("b", "qsedlabel", "Add a section"));
+    var ti = mk("input"); ti.type = "text"; ti.maxLength = 300; ti.placeholder = "Its title"; ti.setAttribute("aria-label", "New section title"); ti.setAttribute("data-ek", "nsT");
+    var si2 = mk("input"); si2.type = "text"; si2.maxLength = 300; si2.placeholder = "A short line under it (optional)"; si2.setAttribute("aria-label", "New section line"); si2.setAttribute("data-ek", "nsS");
+    var addSec = function () {
+      var v = clean(ti.value); if (!v) { ti.focus(); return; }
+      if (edit([{ op: "add_section", title: v, subtitle: si2.value }], { key: "nsT", okText: "Section added" })) { ti.value = ""; si2.value = ""; }
+    };
+    [ti, si2].forEach(function (x) { x.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); addSec(); } }); });
+    ns.appendChild(ti); ns.appendChild(si2);
+    ns.appendChild(btn("Add section", "alt", addSec));
+    wrap.appendChild(ns);
+
+    var vd = mk("details", "qscard qsversions");
+    vd.appendChild(mk("summary", null, "Earlier versions"));
+    var vl = mk("ol", "qsvlist"); vd.appendChild(vl);
+    vd.addEventListener("toggle", function () { if (vd.open) loadVersions(vl); });
+    wrap.appendChild(vd);
+    host.appendChild(wrap);
   }
 
   function drawList() {
     var p = $("panel_list"); if (!p) return; p.innerHTML = "";
-    var intro = mk("p", "qsnote", "Change the list here. Every change is saved as a new version with your name; nothing is ever deleted. Hidden lines can be brought back. The prints and the Word file always use the list as it stands.");
-    p.appendChild(intro);
-    var secs = doc().sections;
-    secs.forEach(function (s, si) {
-      var sc = mk("div", "qscard qseditsec" + (s.hidden ? " hiddenline" : "")); sc.setAttribute("data-sec", s.id);
-      var hd = mk("div", "qseditrow qssechead");
-      var tx = mk("div", "qseditext");
-      if (editing === "S:" + s.id) {
-        renameBox(tx, s.title, function (v) { edit([{ op: "set", target: s.id, field: "title", value: v, was: s.title }]); }, "Section title");
-      } else if (editing === "U:" + s.id) {
-        renameBox(tx, s.subtitle || "", function (v) { edit([{ op: "set", target: s.id, field: "subtitle", value: v, was: s.subtitle || "" }]); }, "Section line");
-      } else {
-        tx.appendChild(mk("b", null, s.title));
-        if (s.subtitle) tx.appendChild(mk("small", null, s.subtitle));
-        if (s.hidden) tx.appendChild(mk("em", "qshidtag", "Hidden"));
-      }
-      hd.appendChild(tx);
-      var ctl = mk("div", "qsctl");
-      if (!s.hidden) {
-        ctl.appendChild(btn("Rename", "alt", function () { editing = "S:" + s.id; drawList(); }));
-        ctl.appendChild(btn(s.subtitle ? "Change line" : "Add a line", "alt", function () { editing = "U:" + s.id; drawList(); }));
-        if (si > 0) ctl.appendChild(btn("Up", "alt", function () { edit([{ op: "move", target: s.id, dir: "up" }]); }, "Move this section up"));
-        if (si < secs.length - 1) ctl.appendChild(btn("Down", "alt", function () { edit([{ op: "move", target: s.id, dir: "down" }]); }, "Move this section down"));
-        ctl.appendChild(btn("Hide", "warn", function () { edit([{ op: "hide", target: s.id }]); }));
-      } else {
-        ctl.appendChild(btn("Bring back", "", function () { edit([{ op: "restore", target: s.id }]); }));
-      }
-      hd.appendChild(ctl);
-      sc.appendChild(hd);
-      if (!s.hidden) {
-        var ol = mk("ol", "qsedititems");
-        var shown = s.items.filter(function (i) { return !i.hidden; });
-        s.items.forEach(function (it) {
-          if (it.hidden) return;
-          var k = shown.indexOf(it);
-          var li = mk("li", "qseditrow"); li.setAttribute("data-item", it.id);
-          var t = mk("div", "qseditext");
-          if (editing === "I:" + it.id) {
-            renameBox(t, it.text, function (v) { edit([{ op: "set", target: it.id, field: "text", value: v, was: it.text }]); }, "Item");
-          } else {
-            t.appendChild(mk("span", null, it.text));
-            if (it.confirm) t.appendChild(mk("b", "qsq", " ?"));
-          }
-          li.appendChild(t);
-          var c = mk("div", "qsctl");
-          c.appendChild(btn("Rename", "alt", function () { editing = "I:" + it.id; drawList(); }));
-          c.appendChild(btn(it.confirm ? "Clear ?" : "Mark ?", "alt qsqbtn", function () { edit([{ op: "set", target: it.id, field: "confirm", value: !it.confirm }]); },
-            it.confirm ? "The crews have confirmed it: take the question mark off" : "Not sure about it yet: put a question mark on it"));
-          if (k > 0) c.appendChild(btn("Up", "alt", function () { edit([{ op: "move", target: it.id, dir: "up" }]); }));
-          if (k < shown.length - 1) c.appendChild(btn("Down", "alt", function () { edit([{ op: "move", target: it.id, dir: "down" }]); }));
-          var others = secs.filter(function (o) { return o.id !== s.id && !o.hidden; });
-          if (others.length) {
-            var sel = mk("select", "qsmove"); sel.setAttribute("aria-label", "Move to another section");
-            sel.appendChild(new Option("Move to...", ""));
-            others.forEach(function (o) { sel.appendChild(new Option(o.title, o.id)); });
-            sel.addEventListener("change", function () { if (sel.value) edit([{ op: "move", target: it.id, to_section: sel.value }]); });
-            c.appendChild(sel);
-          }
-          c.appendChild(btn("Hide", "warn", function () { edit([{ op: "hide", target: it.id }]); }));
-          li.appendChild(c);
-          ol.appendChild(li);
-        });
-        sc.appendChild(ol);
-        var add = mk("div", "qsadd");
-        var ai = mk("input"); ai.type = "text"; ai.maxLength = 300; ai.placeholder = "Add an item to this section"; ai.setAttribute("aria-label", "New item");
-        var ab = btn("Add", "", function () { var v = ai.value.replace(/\s+/g, " ").trim(); if (!v) { ai.focus(); return; } edit([{ op: "add_item", section: s.id, text: v }], function (ok) { if (ok) { var n = document.querySelector("[data-sec='" + s.id + "'] .qsadd input"); if (n) n.focus(); } }); });
-        ai.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); ab.click(); } });
-        add.appendChild(ai); add.appendChild(ab);
-        sc.appendChild(add);
-        var hid = s.items.filter(function (i) { return i.hidden; });
-        if (hid.length) {
-          var det = mk("details", "qshidden");
-          det.appendChild(mk("summary", null, "Hidden items (" + hid.length + ")"));
-          hid.forEach(function (it) {
-            var r = mk("div", "qseditrow hiddenline");
-            r.appendChild(mk("div", "qseditext", it.text + (it.confirm ? " ?" : "")));
-            var c2 = mk("div", "qsctl"); c2.appendChild(btn("Bring back", "", function () { edit([{ op: "restore", target: it.id }]); }));
-            r.appendChild(c2); det.appendChild(r);
-          });
-          if (editing === "open:" + s.id) det.open = true;
-          sc.appendChild(det);
-        }
-      }
-      p.appendChild(sc);
-    });
-
-    var hq = mk("div", "qscard");
-    var hr = mk("div", "qseditrow");
-    var ht = mk("div", "qseditext");
-    var held = doc().heldUp || {};
-    if (editing === "H") renameBox(ht, held.title || "", function (v) { edit([{ op: "set", target: "heldUp", field: "title", value: v, was: held.title || "" }]); }, "Closing question");
-    else { ht.appendChild(mk("small", null, "The question at the end of the form")); ht.appendChild(mk("b", null, held.title || "")); }
-    hr.appendChild(ht);
-    var hc = mk("div", "qsctl"); hc.appendChild(btn("Rename", "alt", function () { editing = "H"; drawList(); })); hr.appendChild(hc);
-    hq.appendChild(hr); p.appendChild(hq);
-
-    var ns = mk("div", "qscard qsadd qsaddsec");
-    var ti = mk("input"); ti.type = "text"; ti.maxLength = 300; ti.placeholder = "Add a section: its title"; ti.setAttribute("aria-label", "New section title");
-    var si2 = mk("input"); si2.type = "text"; si2.maxLength = 300; si2.placeholder = "and a short line under it (optional)"; si2.setAttribute("aria-label", "New section line");
-    ns.appendChild(ti); ns.appendChild(si2);
-    ns.appendChild(btn("Add section", "", function () { var v = ti.value.replace(/\s+/g, " ").trim(); if (!v) { ti.focus(); return; } edit([{ op: "add_section", title: v, subtitle: si2.value }]); }));
-    p.appendChild(ns);
-
-    var vd = mk("details", "qscard qsversions"); vd.id = "qsVersions";
-    vd.appendChild(mk("summary", null, "Earlier versions"));
-    var vl = mk("ol", "qsvlist"); vl.id = "qsVList"; vd.appendChild(vl);
-    vd.addEventListener("toggle", function () { if (vd.open) loadVersions(); });
-    p.appendChild(vd);
+    p.appendChild(mk("p", "qsnote", "Tap any line to change its words. It saves when you leave the line or press Enter; Esc puts the words back. The \u22EF button beside a line moves it, marks it \u201C?\u201D or hides it. Every change is a new version with your name, nothing is ever deleted, and the prints and the Word file always use the list as it stands."));
+    drawEditor(p);
   }
 
-  function loadVersions() {
-    var vl = $("qsVList"); if (!vl) return;
+  function loadVersions(vl) {
+    if (!vl) return;
     vl.innerHTML = ""; vl.appendChild(mk("li", null, "Loading..."));
     R.apiJSON("/" + SLUG + "/versions" + Q).then(function (d) {
       vl.innerHTML = "";
@@ -449,9 +585,9 @@
           var b = btn("Bring this version back", "alt", function () {
             b.hidden = true;
             var y = btn("Yes, bring it back", "", function () {
-              if (!who) { needName(); return; }
+              if (!who) { needName(true); return; }
               R.api("/" + SLUG + "/restore" + Q, { method: "POST", json: { saved_by: who, version: v.id, base: L.ver } }).then(answer).then(function (x) {
-                if (x.s === 200 && x.j.ok) { L = x.j.list; status("Saved " + clock()); drawAll(); }
+                if (x.s === 200 && x.j.ok) { L = x.j.list; status("Saved " + clock()); redraw(); }
                 else status("Not saved: " + ((x.j && x.j.error) || x.s), true);
               });
             });
@@ -536,7 +672,7 @@
     draft = { f: { date: e.date, crewLead: e.crewLead, menOnCrew: e.men === null ? "" : String(e.men), clockIn: e.clockIn, rollOut: e.rollOut, job: e.job },
               t: {}, held: e.heldUp || "", ref: e.id, refLine: "the morning of " + showDay(e.date) + (e.crewLead ? ", " + e.crewLead : "") };
     (e.ticks || []).forEach(function (t) { draft.t[t.id] = { done: !!t.done, who: t.who || "" }; });
-    saveDraft(); drawToday(); pick("today"); window.scrollTo(0, 0);
+    editMode = false; saveDraft(); drawToday(); pick("today"); window.scrollTo(0, 0);
   }
 
   function voidEntry(id) {
@@ -553,8 +689,9 @@
     if (document.hidden) return;
     R.apiJSON("/" + SLUG + "/board?part=state" + (TEST ? "&as=TEST" : "")).then(function (d) {
       if (!d || !d.ok || !d.list || d.list.ver === L.ver) return;
-      if (editing || (document.activeElement && document.activeElement.closest && document.activeElement.closest("#panel_list"))) return;
-      L = d.list; drawAll(); status("The list was changed by " + L.by + ". This is the new version.");
+      var ae = document.activeElement;
+      if (inflight || menuOpen || (ae && ae.closest && ae.closest(".qsedwrap"))) return;
+      L = d.list; redraw(); status("The list was changed by " + L.by + ". This is the new version.");
     }).catch(function () { });
     if (tab === "log") loadLog();
   }

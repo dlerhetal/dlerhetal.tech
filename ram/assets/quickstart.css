@@ -79,26 +79,64 @@ body { margin: 0; background: var(--qs-bg); color: var(--qs-ink);
 .qssaved.good { color: var(--qs-good); }
 .qssaved.bad { color: var(--qs-bad); }
 
-/* the list editor */
-.qseditrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 0; border-bottom: 1px solid var(--qs-line); }
-.qsedititems { margin: 0; padding: 0 0 0 1.4em; }
-.qsedititems li.qseditrow { display: list-item; }
-.qsedititems li .qseditext { margin-bottom: 4px; }
-.qseditext { flex: 1 1 260px; min-width: 0; }
-.qseditext small { display: block; color: var(--qs-muted); font-style: italic; }
-.qssechead .qseditext b { font-size: 1.15rem; color: var(--qs-blue); }
-.qsctl { display: flex; flex-wrap: wrap; gap: 6px; }
-.qsctl .qsbtn { padding: 8px 12px; font-size: 14px; }
-.qsmove { font: 15px Calibri, "Segoe UI", Arial, sans-serif; min-height: 44px; padding: 6px 8px; border: 1px solid #b9c2cf; border-radius: 6px;
-  background: #fff; color: var(--qs-blue); max-width: 100%; }
-.qsrename { display: block; width: 100%; font: 17px Calibri, "Segoe UI", Arial, sans-serif; padding: 8px 10px; min-height: 44px;
-  border: 2px solid var(--qs-blue); border-radius: 6px; margin-bottom: 6px; }
-.qsadd { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.qsadd input { flex: 1 1 220px; min-width: 0; font: 16px Calibri, "Segoe UI", Arial, sans-serif; padding: 8px 10px; min-height: 44px;
-  border: 1px dashed #8a93a3; border-radius: 6px; }
-.hiddenline { opacity: .6; }
-.qshidtag { margin-left: 8px; font-size: .85rem; color: var(--qs-bad); }
+/* the list editor: inline fields that look like text until hovered or tapped, one small menu per line */
+.qsedbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 0 0 14px; padding: 10px 14px;
+  background: #fff; border: 2px solid var(--qs-line); border-radius: 10px; }
+.qsedbar.on { background: var(--qs-goldsoft); border-color: var(--qs-gold); }
+.qsedtoggle { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 6px 16px 6px 8px; border-radius: 999px;
+  border: 2px solid var(--qs-blue); background: #fff; color: var(--qs-blue); font: bold 18px Calibri, "Segoe UI", Arial, sans-serif; cursor: pointer; }
+.qsknob { position: relative; flex: 0 0 auto; width: 46px; height: 26px; border-radius: 13px; background: #c5ccd8; transition: background .15s; }
+.qsknob::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,.3); transition: left .15s; }
+.qsedtoggle.on { background: var(--qs-blue); color: #fff; }
+.qsedtoggle.on .qsknob { background: var(--qs-gold); }
+.qsedtoggle.on .qsknob::after { left: 23px; }
+.qsedhint { flex: 1 1 14em; min-width: 0; color: var(--qs-muted); font-size: .95rem; }
+.qsedrow { display: flex; align-items: flex-start; gap: 6px; padding: 4px 0; border-bottom: 1px solid var(--qs-line); }
+.qsedlist { list-style: none; margin: 0; padding: 0; }
+.qseditem:last-child { border-bottom: 0; }
+.qssechead { border-bottom: 2px solid var(--qs-gold); margin-bottom: 4px; }
+.qsedtext { flex: 1 1 auto; min-width: 0; }
+.qsedlabel { display: block; color: var(--qs-muted); font-size: .9rem; font-style: italic; margin: 0 0 2px 8px; }
+b.qsedlabel { font-style: normal; color: var(--qs-blue); font-size: 1rem; margin: 0 0 4px; flex-basis: 100%; }
+.qsinl { display: block; width: 100%; margin: 0; padding: 8px; min-height: 44px; resize: none; overflow: hidden;
+  font: 17px/1.35 Calibri, "Segoe UI", Carlito, Arial, sans-serif; color: var(--qs-ink); background: transparent;
+  border: 1px solid transparent; border-radius: 6px; cursor: text; transition: background .1s, border-color .1s; }
+.qsinl:hover { background: #fffdf3; border-color: #b9c2cf; }
+.qsinl:focus { outline: none; background: #fff; border: 2px solid var(--qs-blue); padding: 7px; box-shadow: 0 0 0 3px rgba(26,60,110,.12); }
+.qsinl.dirty { background: var(--qs-goldsoft); }
+.qsinl::placeholder { color: #8a93a3; font-style: italic; }
+.qsinltitle { font-weight: 700; font-size: 1.2rem; color: var(--qs-blue); }
+.qsinlsub { font-style: italic; color: var(--qs-muted); font-size: .98rem; min-height: 38px; padding-top: 4px; padding-bottom: 4px; }
+.qsinlsub:focus { padding-top: 3px; padding-bottom: 3px; }
+@media (hover: none) { .qsinl { border-bottom: 1px dashed #c5ccd8; border-radius: 6px 6px 0 0; } .qsinl:focus { border-radius: 6px; } }
+.qstick { display: block; margin: 2px 8px 4px; font-size: .9rem; font-weight: 700; }
+.qstick.good { color: var(--qs-good); }
+.qstick.bad { color: var(--qs-bad); }
+.qsqbadge { flex: 0 0 auto; align-self: center; display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px;
+  border-radius: 50%; background: var(--qs-goldsoft); border: 1px solid var(--qs-gold); color: var(--qs-blue); font-size: 15px; }
+.qsmenuw { position: relative; flex: 0 0 auto; }
+.qsmenuw.open { z-index: 40; }
+.qsdots { width: 44px; height: 44px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--qs-blue);
+  font: bold 22px/1 Calibri, "Segoe UI", Arial, sans-serif; cursor: pointer; }
+.qsdots:hover, .qsmenuw.open .qsdots { background: #e8edf5; border-color: #c5ccd8; }
+.qsmenu { position: absolute; right: 0; top: 46px; z-index: 40; min-width: 15em; max-width: calc(100vw - 40px); padding: 6px;
+  background: #fff; border: 1px solid #b9c2cf; border-radius: 10px; box-shadow: 0 6px 22px rgba(0,0,0,.18); }
+.qsmenu[hidden] { display: none; }
+.qsmi { display: block; width: 100%; text-align: left; min-height: 44px; padding: 8px 12px; border: 0; border-radius: 6px; background: transparent;
+  color: var(--qs-ink); font: 16px Calibri, "Segoe UI", Arial, sans-serif; cursor: pointer; }
+.qsmi:hover, .qsmi:focus { background: #e8edf5; outline: none; }
+.qsmi.warn { color: var(--qs-bad); }
+.qsadd { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.qsadd input { flex: 1 1 200px; min-width: 0; font: 17px Calibri, "Segoe UI", Arial, sans-serif; padding: 8px 10px; min-height: 44px;
+  border: 1px dashed #8a93a3; border-radius: 6px; background: #fbfcfe; }
+.qsadd input:focus { outline: none; border: 2px solid var(--qs-blue); background: #fff; }
+.qsadd .qsbtn { padding: 8px 14px; }
+.qsaddsec input { flex-basis: 220px; }
+.hiddenline { opacity: .7; }
 .qshidden { margin-top: 8px; color: var(--qs-muted); }
+.qshidden .qsedrow { align-items: center; padding: 6px 0; }
+.qshidden .qsedtext { padding-left: 8px; }
 .qshidden summary, .qsversions summary { cursor: pointer; min-height: 44px; padding: 10px 0; font-weight: 700; color: var(--qs-blue); }
 .qsvlist { margin: 0; padding-left: 20px; }
 .qsvlist li { margin: 0 0 10px; }
