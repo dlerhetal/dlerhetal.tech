@@ -46,7 +46,7 @@
     who = TEST ? "TEST" : readWho();
     ["gate", "app", "gateCss"].forEach(function (id) { var n = $(id); if (n) n.parentNode.removeChild(n); });
     var css = document.createElement("link");
-    css.rel = "stylesheet"; css.href = "../assets/growth.css?v=1";
+    css.rel = "stylesheet"; css.href = "../assets/growth.css?v=2";
     var go = function () {
       go = function () { };
       document.title = C.title || "Working page";
@@ -57,12 +57,21 @@
       window.addEventListener("focus", poll);
       document.addEventListener("visibilitychange", function () { if (!document.hidden) poll(); });
       window.addEventListener("beforeunload", function (e) { if (Object.keys(dirty).length || busy()) { flushAll(); e.preventDefault(); e.returnValue = ""; } });
-      window.addEventListener("beforeprint", mirrors);
+      window.addEventListener("beforeprint", function () { mirrors(); openForPrint(true); });
+      window.addEventListener("afterprint", function () { openForPrint(false); });
+      try { window.matchMedia("print").addEventListener("change", function (e) { openForPrint(e.matches); }); } catch (e) { }
       document.body.setAttribute("data-growth-ready", TEST ? "test" : "yes");
     };
     css.onload = function () { go(); };
     css.onerror = function () { go(); };
     document.head.appendChild(css);
+  }
+  /* The folded section prints open; after printing it goes back to how it was. */
+  var wasOpen = null;
+  function openForPrint(on) {
+    var d = $("grMore"); if (!d) return;
+    if (on) { if (wasOpen === null) wasOpen = d.open; d.open = true; }
+    else if (wasOpen !== null) { d.open = wasOpen; wasOpen = null; }
   }
   function busy() { return Object.keys(inflight).some(function (k) { return inflight[k]; }); }
 
@@ -112,9 +121,24 @@
     (C.intro || []).forEach(function (t) { var p = mk("p"); p.innerHTML = t; intro.appendChild(p); });
     main.appendChild(intro);
 
+    /* Optional split (content-defined): a few cards up front under one line, the rest, with their section headings,
+       inside one closed section that opens for printing. Without it, every section is drawn in order. */
+    var front = (C.front && C.front.ids) || [], more = null;
+    if (front.length) {
+      var byId = {};
+      (C.sections || []).forEach(function (s) { (s.cards || []).forEach(function (c) { byId[c.id] = c; }); });
+      if (C.front.line) main.appendChild(mk("p", "grfront", C.front.line));
+      front.forEach(function (id) { if (byId[id]) main.appendChild(card(byId[id])); });
+      more = mk("details", "grmore"); more.id = "grMore";
+      more.appendChild(mk("summary", null, (C.more && C.more.title) || ""));
+      main.appendChild(more);
+    }
     (C.sections || []).forEach(function (s) {
-      main.appendChild(mk("h2", null, s.title));
-      (s.cards || []).forEach(function (c) { main.appendChild(card(c)); });
+      var rest = (s.cards || []).filter(function (c) { return front.indexOf(c.id) < 0; });
+      if (!rest.length) return;
+      var host = more || main;
+      host.appendChild(mk("h2", null, s.title));
+      rest.forEach(function (c) { host.appendChild(card(c)); });
     });
 
     var ov = mk("section", "grq groverall");
