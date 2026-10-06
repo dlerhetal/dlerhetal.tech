@@ -1,0 +1,80 @@
+/* Team skills grid: generic styles only. */
+:root{--bg:#fff;--fg:#1b1f24;--muted:#5a6370;--blue:#1A3C6E;--gold:#FFCD00;--card:#f4f6fa;--line:#d9dee7;--bad:#a4262c;--on:#e3f0e5;--fill:#fffbe6;--hover:#eef3fb}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#14171c;--fg:#e8ebf0;--muted:#a3acb9;--blue:#8fb3ec;--card:#1e232b;--line:#2f3642;--bad:#ff8a8a;--on:#23402a;--fill:#2a2716;--hover:#22304a}}
+:root[data-theme="dark"]{--bg:#14171c;--fg:#e8ebf0;--muted:#a3acb9;--blue:#8fb3ec;--card:#1e232b;--line:#2f3642;--bad:#ff8a8a;--on:#23402a;--fill:#2a2716;--hover:#22304a}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{margin:0;color:var(--fg);font:17px/1.4 Calibri,"Segoe UI",Arial,sans-serif;overflow-wrap:anywhere}
+.tgfail{margin:16px;padding:12px;border:2px solid var(--bad);color:var(--bad)}
+.tgnav{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:8px 16px;background:var(--card);border-bottom:1px solid var(--line);font-size:15px}
+.tgnav a{color:var(--blue)}
+.tgwho{display:flex;align-items:center;gap:6px;color:var(--muted)}
+.tgwho input{font:inherit;font-size:16px;width:11em;max-width:46vw;padding:6px 8px;border:1px solid var(--muted);border-radius:6px;background:var(--bg);color:var(--fg)}
+.tgwho.need input{border:2px solid var(--bad);background:var(--fill)}
+.tgstatus{flex:1 1 8em;min-width:0;color:var(--muted)}
+.tgstatus.bad{color:var(--bad);font-weight:bold}
+.tgbtn{font:inherit;font-size:16px;min-height:40px;padding:6px 14px;border-radius:6px;border:1px solid var(--blue);background:var(--blue);color:#fff;cursor:pointer}
+.tgbtn.small{min-height:44px}
+.tglink{font:inherit;font-size:15px;background:none;border:none;color:var(--blue);text-decoration:underline;cursor:pointer;padding:6px 4px;min-height:44px}
+main.tgmain{max-width:1400px;margin:0 auto;padding:12px 16px 60px}
+.tgmain h1{color:var(--blue);font-size:28px;margin:4px 0}
+.tgintro{font-size:19px;margin:2px 0 12px}
+.tghint{color:var(--muted);margin:4px 0 8px;font-size:15px}
+/* the grid: scrolls inside its own box, never the page */
+.tgwide{max-width:100%;max-height:calc(100vh - 150px);overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.tggrid{border-collapse:separate;border-spacing:0}
+.tggrid th,.tggrid td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:0;background:var(--bg)}
+.tggrid thead th{position:sticky;top:0;z-index:3;background:var(--card);color:var(--blue);font-size:15px;vertical-align:bottom;padding:6px 4px;text-align:center;width:80px;min-width:80px;max-width:80px;line-height:1.15}
+.tggrid thead th.tgcorner{left:0;z-index:5;text-align:left;width:240px;min-width:240px;max-width:240px;padding-left:10px}
+.tggrid th.tgskill{position:sticky;left:0;z-index:2;text-align:left;font-weight:normal;padding:4px 10px;width:240px;min-width:240px;max-width:240px;background:var(--bg)}
+.tggrid tr.tggrow th.tggroup{position:sticky;left:0;z-index:2;text-align:left;background:var(--card);color:var(--blue);font-size:16px;padding:8px 10px 4px;border-bottom:2px solid var(--gold)}
+.tggrid tr.tggrow td.tggfill{background:var(--card);border-bottom:2px solid var(--gold)}
+.tggrid td.tgcell{text-align:center;vertical-align:middle;cursor:pointer}
+.tggrid tbody tr:hover th.tgskill,.tggrid tbody tr:hover td.tgcell{background:var(--hover)}
+.tgbox{width:24px;height:24px;margin:8px;cursor:pointer;accent-color:var(--blue)}
+.tginfo{color:var(--muted);font-size:15px;min-height:1.4em;margin:8px 0}
+/* narrow fallback */
+.tgnarrow{display:none}
+.tgtabs{display:flex;gap:8px;margin:0 0 10px}
+.tgtab{flex:1 1 0;font:inherit;font-size:17px;min-height:46px;border:2px solid var(--blue);background:var(--bg);color:var(--blue);border-radius:8px;cursor:pointer}
+.tgtab.on{background:var(--blue);color:#fff}
+.tgsel{font:inherit;font-size:16px;min-height:44px;max-width:100%;padding:6px 8px;border:1px solid var(--muted);border-radius:6px;background:var(--bg);color:var(--fg)}
+.tgnarrow .tgsel{width:100%;font-size:18px}
+.tgcount{color:var(--muted);margin:6px 0}
+.tglisthead{color:var(--blue);font-size:17px;margin:14px 0 4px;border-bottom:2px solid var(--gold);padding-bottom:2px}
+.tglist{display:flex;flex-direction:column}
+.tgrow{display:flex;align-items:center;gap:10px;min-height:46px;border-bottom:1px solid var(--line);cursor:pointer}
+.tgrow .tgbox{margin:0 4px;flex:0 0 auto}
+@media (max-width:699px){.tgwide{display:none}.tgnarrow{display:block}}
+/* past list and the change box */
+.tgmore{margin:14px 0;border:1px solid var(--line);border-radius:8px;padding:4px 12px;background:var(--card)}
+.tgmore summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:bold;color:var(--blue)}
+.tgpast{display:flex;flex-wrap:wrap;align-items:center;gap:2px 12px;border-bottom:1px solid var(--line)}
+.tgpname{min-width:12em}
+.tgflag{color:var(--bad);font-size:14px;flex:1 1 14em}
+.tgform{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.tgfield{display:flex;flex-direction:column;gap:2px;font-size:15px;color:var(--muted);min-width:0;max-width:100%}
+.tgin{font:inherit;font-size:16px;min-height:44px;width:16em;max-width:100%;padding:6px 8px;border:1px solid var(--muted);border-radius:6px;background:var(--bg);color:var(--fg)}
+.tgform .tgsel{max-width:min(22em,100%)}
+.tgfoot{margin:24px 0 0;font-size:17px}
+.tgfoot a{color:var(--blue)}
+/* print: the grid on landscape pages */
+.tgprint{display:none}
+@media print{
+  @page{size:letter landscape;margin:0.4in}
+  body{background:#fff;color:#000;font-size:10pt}
+  .noprint,.tgnav{display:none !important}
+  .tgprint{display:block}
+  .tgprint h1{font-size:16pt;margin:0 0 2pt;color:#1A3C6E}
+  .tgprint p{margin:0 0 6pt}
+  .tgptable{border-collapse:collapse;width:100%}
+  .tgptable thead{display:table-header-group}
+  .tgptable tr{page-break-inside:avoid}
+  .tgptable th,.tgptable td{border:1px solid #888;padding:2pt 4pt;font-size:9pt}
+  .tgpcorner{text-align:left;vertical-align:bottom;width:2.6in}
+  .tgpname2{vertical-align:bottom;height:1.3in;width:0.45in}
+  .tgpname2 span{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;display:inline-block}
+  .tgpgroup th{text-align:left;background:#eee;font-size:10pt}
+  .tgpskill{text-align:left;font-weight:normal}
+  .tgpcell{text-align:center;font-size:11pt}
+}

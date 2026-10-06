@@ -39,7 +39,10 @@
     who = TEST ? "TEST" : readWho();
     ["gate", "app", "gateCss"].forEach(function (id) { var n = $(id); if (n) n.parentNode.removeChild(n); });
     var css = document.createElement("link");
-    css.rel = "stylesheet"; css.href = "../assets/team.css?v=1";
+    css.rel = "stylesheet";
+    /* the stylesheet sits beside this script, wherever the page is (/team/detail/ since 2026-10-06) */
+    var me = document.querySelector('script[src*="/team.js"]');
+    css.href = me ? me.src.replace(/\/team\.js[^\/]*$/, "/team.css?v=2") : "../../assets/team.css?v=2";
     var go = function () {
       go = function () { };
       document.title = C.title || "Working page";
@@ -110,6 +113,7 @@
     var pr = mk("button", "tmbtn", "Print"); pr.type = "button"; pr.id = "tmPrintBtn";
     pr.addEventListener("click", function () { flush(); buildPrint(); window.print(); });
     nav.appendChild(pr);
+    var back = mk("a", null, "Simple grid"); back.href = "../"; back.id = "tmBackGrid"; nav.appendChild(back);
     var out = mk("a", null, "Sign out"); out.href = "#"; out.setAttribute("data-action", "signout"); nav.appendChild(out);
     document.body.insertBefore(nav, document.body.firstChild);
     var main = mk("main", "tmmain noprint"); main.id = "tmMain";
