@@ -10,6 +10,8 @@
    the top of today as carried. It is the same item, so ticking it there finishes it. Nothing runs
    at night. The page asks the server for the state again every 30 seconds and when the tab regains
    focus; a poll never re-draws a feedback box, and a poll that started before a save is thrown away.
+   A flag carries the same feedback box and thread (no tick): its notes go to the same record under the
+   flag's id and come back apart from the items' state, as flagMarks.
 
    Editing in place: the server holds the plan as a document with versions. A browser in consultant
    mode gets edit controls: click a line to change it (Enter or leaving the box saves, Escape
@@ -27,6 +29,7 @@
   var EDIT = !!RAM.DALE_MODE;   // consultant mode: the edit controls are in the page
   var editor = "";        // the name changes are saved under
   var M = {};             // item id -> state replayed by the server (done, dropped, thread)
+  var FM = {};            // flag id -> { thread }: the feedback notes on a flag
   var TODAY = "", TZ = "";
   var ITEMS = [], BYID = {};
   var IX = {};            // id -> { t: kind of node, n: the node, sibs: the list it sits in, p: its parent }
@@ -133,10 +136,23 @@
     return '<ul>' + lines.map(function (n) { return "<li>" + line(ed(n.id, "text"), toolsBox("line", n.id)) + "</li>"; }).join("") + "</ul>" +
       addBtn("line", parent.id || (parent === D.agenda.rulings ? "rulings" : "outside"), addLabel || "Add a line");
   }
+  /* flagHtml(): a flag, with its own feedback box and thread. A flag is never ticked; a note on it is saved
+     and shown exactly as one on a daily item. The same flag can be on screen twice (under a day and in
+     "Every flag"); both boxes share one draft and both threads follow the record. */
   function flagHtml(key, tag, dayId) {
     var f = FLAG[key]; if (!f) return "";
     return '<div class="blk flag" data-flag="' + E(key) + '"><h3><span class="ftag">' + E(tag || "Flag") + '</span>' + ed(key, "title") + '</h3><p>' + ed(key, "text", "add the detail") + '</p>' +
-      toolsBox("flag", key, dayId || "") + '</div>';
+      flagNoteHtml(key) + toolsBox("flag", key, dayId || "") + '</div>';
+  }
+  function fstOf(id) { return FM[id] || { thread: [] }; }
+  function fthreadSig(id) { var t = fstOf(id).thread || []; return t.length + "-" + (t.length ? t[t.length - 1].id : 0); }
+  function flagNoteHtml(key) {
+    var d = drafts[key] || "";
+    return '<div class="fnote" data-fnote="' + E(key) + '"><div class="ifb noprint"><textarea data-fb="' + E(key) + '" rows="1"' + (d ? ' class="has"' : "") +
+      ' placeholder="Feedback on this flag" aria-label="Feedback on this flag">' + E(d) + '</textarea>' +
+      '<button type="button" class="btn fbsave" data-act="savefb">Save</button><span class="fbstate" data-part="fbstate" role="status"></span></div>' +
+      '<div class="ithread" data-part="thread" data-sig="' + fthreadSig(key) + '">' + notesHtml(fstOf(key).thread) + '</div>' +
+      '<div class="iask noprint" data-part="ask"></div></div>';
   }
   function st(s) { return '<span class="st ' + E(s) + '">' + E(STATUS[s] || s) + '</span>'; }
 
@@ -385,6 +401,10 @@
       var day = (D.agenda.days || []).filter(function (d) { return d.id === el.dataset.daycount; })[0];
       if (day) el.textContent = countLine(day, el.dataset.mode);
     });
+    each("[data-fnote]", function (el) {
+      var th = el.querySelector('[data-part="thread"]'), sig = fthreadSig(el.dataset.fnote);
+      if (th && th.dataset.sig !== sig) { th.innerHTML = notesHtml(fstOf(el.dataset.fnote).thread); th.dataset.sig = sig; }
+    });
     var cc = document.getElementById("carriedCount"); if (cc) cc.textContent = carriedCount(shownCarried);
   }
   /* typing(): the cursor is in a box on this page. */
@@ -437,6 +457,12 @@
         noted.push('<div class="wnote" data-witem="' + E(it.id) + '"><div class="wtxt">' + (it.when ? '<b class="iwhen">' + E(it.when) + '</b> ' : "") + E(it.text) +
           '<span class="wmeta">' + own + '. ' + (s.done ? "Done" : (s.dropped ? "Dropped" : "Open")) + '</span></div><div class="ithread">' + notesHtml(notes) + '</div></div>');
       }
+    });
+    (D.flags || []).forEach(function (f) {
+      var notes = (fstOf(f.id).thread || []).filter(function (t) { return inWeek(t.day); });
+      if (!notes.length) return;
+      nNotes += notes.length;
+      noted.push('<div class="wnote" data-wflag="' + E(f.id) + '"><div class="wtxt"><span class="ftag">Flag</span> ' + E(f.title) + '</div><div class="ithread">' + notesHtml(notes) + '</div></div>');
     });
     done.sort(function (a, b) { return a.at < b.at ? -1 : (a.at > b.at ? 1 : 0); });
     var h = '<h2>This week</h2><p class="lead" id="weekRange">' + E(longDate(w.sun)) + ' to ' + E(longDate(w.sat)) + '. What was done, what is still open, what was dropped, and everything said about it.</p>';
@@ -492,7 +518,7 @@
     var s = el && el.querySelector('[data-part="fbstate"]');
     if (s) { s.textContent = text; s.className = "fbstate" + (bad ? " bad" : ""); }
   }
-  function sayAll(id, text, bad) { each('#agenda .item[data-item="' + id + '"]', function (el) { say(el, text, bad); }); }
+  function sayAll(id, text, bad) { each('#agenda .item[data-item="' + id + '"], [data-fnote="' + id + '"]', function (el) { say(el, text, bad); }); }
   /* act(): one row to the record. Resolves true when it was saved. */
   function act(id, kind, text, el, after) {
     gen++;
@@ -501,6 +527,7 @@
       .then(function (r) {
         gen++;
         M = r.marks || {};
+        if (r.flagMarks) FM = r.flagMarks;
         if (after) after(r);
         sync(false);
         news(r);
@@ -957,8 +984,8 @@
       if (vers.open) { loadVersions(); var vb = document.getElementById("versions"); if (vb) vb.scrollIntoView({ block: "start" }); }
       return;
     }
-    var el = a.closest(".item"); if (!el) return;
-    var id = el.dataset.item;
+    var el = a.closest(".item") || a.closest("[data-fnote]"); if (!el) return;
+    var id = el.dataset.item || el.dataset.fnote;
     if (name === "savefb") {
       var ta = el.querySelector("textarea[data-fb]"), txt = ((ta && ta.value) || "").trim();
       if (!txt) { say(el, "Type something first.", true); if (ta) ta.focus(); return; }
@@ -1005,7 +1032,7 @@
 
   /* ---------------------------------------------------------------- staying current */
   function take(data) {
-    D = data; M = data.marks || {}; TODAY = data.today || ""; TZ = data.tz || "";
+    D = data; M = data.marks || {}; FM = data.flagMarks || {}; TODAY = data.today || ""; TZ = data.tz || "";
     indexDoc(); indexItems();
   }
   function drawAll() {
@@ -1049,6 +1076,7 @@
       polling = false;
       if (!r || !r.ok || g !== gen) return false;
       M = r.marks || {};
+      if (r.flagMarks) FM = r.flagMarks;
       sync(true);
       news(r);
       return true;

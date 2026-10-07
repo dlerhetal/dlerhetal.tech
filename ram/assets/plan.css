@@ -21,7 +21,9 @@
 .rulings{border-left:6px solid var(--gold)}
 .flag{border:2px solid var(--red);border-left-width:8px}
 .flag h3{color:var(--red);font-size:18px}
-.flag .ftag{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:var(--red);border-radius:6px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+.flag .ftag,.wnote .ftag{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:var(--red);border-radius:6px;padding:1px 8px;margin-right:6px;vertical-align:2px}
+.fnote{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+.fnote .ithread:empty{display:none}
 .links a,.doclink{color:var(--blue2);word-break:break-word}
 .links li{margin:4px 0}
 .doclink{font-weight:600}
