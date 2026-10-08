@@ -127,3 +127,12 @@
 .qbadmin .thread .ttext{font-size:15px}
 .qbfold{margin:32px 0 8px;border-top:2px solid var(--line,#ccc);padding-top:8px}
 .qbfold>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-size:20px;font-weight:600;color:var(--muted)}
+
+.qblist{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:4px 0 0}
+.qblist table{border-collapse:collapse;width:100%;font-size:15px}
+.qblist th{background:#1A3C6E;color:#fff;text-align:left;padding:7px 10px;white-space:nowrap}
+.qblist td{padding:7px 10px;border-top:1px solid var(--line)}
+.qblist tbody tr:nth-child(even) td{background:rgba(26,60,110,.05)}
+.qblist tfoot td{font-weight:700;border-top:2px solid #1A3C6E}
+.qblist .r{text-align:right;white-space:nowrap}
+.qblistnote{font-size:14px;opacity:.8;margin:6px 0 0}

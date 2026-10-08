@@ -121,7 +121,22 @@
       '<span class="qbchev" aria-hidden="true">&#8250;</span></button>';
   }
 
+  /* optional list table on a card: {title, cols, rows, total, num: [indexes of right-aligned columns]} */
+  function listHTML(c) {
+    var t = c.list_table;
+    if (!t || !t.rows || !t.rows.length) return "";
+    var num = t.num || [];
+    function cell(v, i, tag) { return "<" + tag + (num.indexOf(i) >= 0 ? ' class="r"' : "") + ">" + esc(v) + "</" + tag + ">"; }
+    var h = "<h3>" + esc(t.title || "The list") + "</h3><div class=\"qblist\"><table><thead><tr>" +
+      t.cols.map(function (v, i) { return cell(v, i, "th"); }).join("") + "</tr></thead><tbody>" +
+      t.rows.map(function (r) { return "<tr>" + r.map(function (v, i) { return cell(v, i, "td"); }).join("") + "</tr>"; }).join("") +
+      "</tbody>";
+    if (t.total) h += "<tfoot><tr>" + t.total.map(function (v, i) { return cell(v, i, "td"); }).join("") + "</tr></tfoot>";
+    return h + "</table></div>" + (t.note ? '<p class="qblistnote">' + fmt(t.note) + "</p>" : "");
+  }
+
   function evidenceHTML(c) {
+    if (c.list_table) return listHTML(c);
     if (!c.evidence || !c.evidence.length) return "";
     return "<h3>The evidence</h3><dl class=\"qbev\">" + c.evidence.map(function (e) {
       return "<div><dt>" + esc(e[0]) + "</dt><dd>" + esc(e[1]) + "</dd></div>";
