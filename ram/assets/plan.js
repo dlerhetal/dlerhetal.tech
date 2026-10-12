@@ -240,7 +240,7 @@
     else h += '<label class="chk"><input type="checkbox" data-act="tick"' + (s.done ? " checked" : "") + ' aria-label="Done: ' + E(plainText(it).slice(0, 90)) + '"><span class="cbox" aria-hidden="true"></span></label>';
     h += '<div class="ibody"><div class="itext">' +
       (mode === "carried" ? '<span class="ctag">Carried from ' + E(it.day.short || it.day.label) + '</span>' : "") +
-      textHtml(it, mode !== "carried") +
+      textHtml(it, mode !== "carried") + tagsHtml(it.id) +
       (mode === "carried" && it.kind !== "block" ? ' <span class="ictx">' + E(it.block.title) + '</span>' : "") + '</div>';
     h += '<div class="imeta" data-part="meta">' + metaHtml(it, mode) + '</div>';
     if (!ro) {
@@ -416,7 +416,7 @@
   function busy() {
     if (pending || cur || form || menu || vers.sure) return true;
     var ae = document.activeElement, tas = document.querySelectorAll("textarea[data-fb]");
-    if (ae && ae.matches && ae.matches("textarea[data-fb]")) return true;
+    if (ae && ae.matches && ae.matches("textarea[data-fb], textarea[data-pgta]")) return true;
     for (var i = 0; i < tas.length; i++) if (tas[i].value.trim()) return true;
     return false;
   }
@@ -819,17 +819,154 @@
     else if (a === "yes") { vers.sure = 0; sendOps([{ op: "restore", version: id }], null, "Made version " + id + " current,").then(function (res) { if (!res.ok) drawVersions(); }); }
   }
 
+  /* ---------------------------------------------------------------- where we are (progress) */
+  /* Everything this section shows arrives in D.progress (a data file on the server): the status ladder,
+     the groups, the rows with their history, the tags on agenda items and every label. Nothing about
+     it is written here. With no D.progress the section is empty and the syllabus draws as before.
+     In consultant mode each group, and the order of the groups, carries one box pre-filled with the
+     proposed wording; Save sends it to the page's talk-back record (who and when), and the newest
+     saved wording is what the box shows from then on. A viewer's page holds none of those boxes. */
+  var pgOpen = {}, pgDraft = {}, pgMsg = {};
+  function PG() { var p = D && D.progress; return p && p.statuses && p.deliverables && p.pairs ? p : null; }
+  function pgL(k, vars) {
+    var s = String((PG().labels || {})[k] || "");
+    Object.keys(vars || {}).forEach(function (v) { s = s.split("{" + v + "}").join(vars[v]); });
+    return s;
+  }
+  function pgDate(iso) { var p = String(iso || "").split("-"); return p.length === 3 ? (+p[1]) + "/" + (+p[2]) + "/" + p[0] : String(iso || ""); }
+  function pgLast(d) { var h = d.history || []; return h[h.length - 1] || { date: "", status: "", source: "" }; }
+  function pgLevel(status) { return Math.max(0, PG().statuses.indexOf(status)); }
+  function pgSteps(lv) {
+    var n = PG().statuses.length, h = '<span class="pgsteps lv' + lv + '" aria-hidden="true">';
+    for (var i = 0; i < n; i++) h += '<i' + (i <= lv ? ' class="on"' : '') + '></i>';
+    return h + (lv === n - 1 ? '<b class="pgck"></b>' : '') + '</span>';
+  }
+  function pgPair(id) { return (PG().pairs || []).filter(function (x) { return x.id === id; })[0] || null; }
+  function tagsHtml(id) {
+    var p = PG(), t = p && p.itemTags && p.itemTags[id];
+    if (!t || !t.length) return "";
+    return t.map(function (k) {
+      var pr = pgPair(k);
+      return pr ? ' <a class="ptag" href="#pair-' + E(k) + '" data-pgjump="' + E(k) + '" title="' + E(pgL("tagHint", { id: k, title: pr.title })) + '">' + E(k) + '</a>' : "";
+    }).join("");
+  }
+  function pgNote(key) {
+    var about = PG().noteAbout + ": " + key, ns = D.notes || [];
+    for (var i = 0; i < ns.length; i++) if (ns[i].about === about) return ns[i];
+    return null;
+  }
+  function pgSavedLine(n) { return pgL("saved", { by: n.answered_by, when: RAM.fmtTs(n.ts_utc) }); }
+  function pgBox(key, label, proposed) {
+    var n = pgNote(key), val = pgDraft[key] != null ? pgDraft[key] : (n ? n.text : proposed);
+    var bad = !!pgMsg[key], state = pgMsg[key] || (n ? pgSavedLine(n) : pgL("notSaved"));
+    return '<div class="pgtest noprint" data-pgbox="' + E(key) + '"><label for="pgta-' + E(key) + '">' + E(label) + '</label>' +
+      '<textarea id="pgta-' + E(key) + '" data-pgta="' + E(key) + '">' + E(val) + '</textarea>' +
+      '<p class="pgtestrow"><button type="button" class="btn pri" data-pgsave="' + E(key) + '">' + E(pgL("save")) + '</button>' +
+      '<span class="pgstate' + (bad ? " bad" : "") + '" role="status">' + E(state) + '</span></p>' +
+      '<p class="pgonly">' + E(pgL("consultantOnly")) + '</p></div>';
+  }
+  function pgRow(d) {
+    var l = pgLast(d), lv = pgLevel(l.status), open = !!pgOpen[d.code];
+    var h = '<div class="pgrow' + (open ? " open" : "") + '" data-pgrow="' + E(d.code) + '"><button type="button" class="pgbtn" data-pgtoggle="' + E(d.code) + '" aria-expanded="' + open + '">' +
+      pgSteps(lv) + '<span class="pgname">' + E(d.name) + '</span><span class="pgmeta"><span class="pgst">' + E(l.status) + '</span><span class="pgwhen">' + E(pgL("lastChanged")) + ' ' + E(pgDate(l.date)) + '</span></span>' +
+      '<span class="pgi noprint" aria-hidden="true">i</span></button>';
+    h += '<div class="pgdetail"' + (open ? "" : " hidden") + '><p class="pgcode">' + E(d.code) + ' &middot; ' + E(pgL("section")) + ': ' + E(d.section) + '</p>' +
+      '<h4>' + E(pgL("description")) + '</h4><p class="pgdesc">' + E(d.description) + '</p><h4>' + E(pgL("history")) + '</h4><ol class="pghist">' +
+      (d.history || []).map(function (r) { return '<li><b>' + E(pgDate(r.date)) + '</b> ' + E(r.status) + ' <span class="pgsrc">(' + E(r.source) + ')</span></li>'; }).join("") + '</ol></div>';
+    return h + '</div>';
+  }
+  function renderProgress() {
+    var box = document.getElementById("progress"); if (!box) return;
+    var p = PG();
+    each('a[href="#progress"]', function (a) { a.hidden = !p; });
+    box.hidden = !p;
+    if (!p) { box.innerHTML = ""; return; }
+    var dl = p.deliverables, n = p.statuses.length, counts = [], newest = "", i;
+    for (i = 0; i < n; i++) counts.push(0);
+    dl.forEach(function (d) {
+      counts[pgLevel(pgLast(d).status)]++;
+      (d.history || []).forEach(function (r) { if (r.date > newest) newest = r.date; });
+    });
+    var h = '<h2>' + E(p.title) + '</h2><p class="lead">' + E(p.intro || "") + '</p>';
+    h += '<div class="blk pgsum"><p class="pgline"><b>' + dl.length + '</b> ' + E(pgL("total")) + '</p>';
+    h += '<div class="pgbar" aria-hidden="true">' + counts.map(function (c, k) { return c ? '<span class="lv' + k + '" style="flex:' + c + ' 1 0"><b>' + c + '</b></span>' : ""; }).join("") + '</div>';
+    h += '<ul class="pglegend">' + p.statuses.map(function (s, k) { return '<li><i class="lv' + k + '"></i><b>' + counts[k] + '</b> ' + E(s) + '</li>'; }).join("") + '</ul>';
+    h += '<div class="pgminis">' + p.pairs.map(function (pr) {
+      var rows = dl.filter(function (d) { return d.pair === pr.id; });
+      return '<a class="pgmini" href="#pair-' + E(pr.id) + '" data-pgjump="' + E(pr.id) + '"><span class="pgletter">' + E(pr.id) + '</span><span class="pgmt">' + E(pr.title) + '</span><span class="pgdots" aria-hidden="true">' +
+        rows.map(function (d) { return '<i class="lv' + pgLevel(pgLast(d).status) + '"></i>'; }).join("") + '</span></a>';
+    }).join("") + '</div>';
+    h += '<p class="pgasof">' + E(pgL("asOf")) + ' ' + E(pgDate(newest)) + ' <button type="button" class="btn pgprint noprint" data-print="progress">' + E(pgL("print")) + '</button></p></div>';
+    var cards = p.pairs.map(function (pr) {
+      var rows = dl.filter(function (d) { return d.pair === pr.id; });
+      var done = rows.filter(function (d) { return pgLevel(pgLast(d).status) === n - 1; }).length;
+      var c = '<div class="blk pgcard" id="pair-' + E(pr.id) + '"><div class="pghead"><span class="pgletter">' + E(pr.id) + '</span><h3>' + E(pr.title) + '</h3>' +
+        '<span class="pgcount">' + E(pgL("groupDone", { done: done, n: rows.length })) + '</span></div>' + rows.map(pgRow).join("");
+      if (EDIT) c += pgBox(pr.id, pgL("testLabel", { id: pr.id }), pr.test || "");
+      return c + '</div>';
+    }).join("");
+    if (EDIT) cards += '<div class="blk pgcard pgorder noprint">' + pgBox("order", pgL("orderLabel"), p.order || "") + '</div>';
+    h += foldHtml("pgcards", '<span class="foldt">' + E(pgL("cardsFold")) + '</span><span class="foldn">' + E(pgL("cardsHint")) + '</span>', '<div class="pgcards">' + cards + '</div>', false, "");
+    var byDate = {};
+    dl.forEach(function (d) {
+      (d.history || []).forEach(function (r, k) { (byDate[r.date] = byDate[r.date] || []).push({ d: d, r: r, prev: k ? d.history[k - 1].status : "" }); });
+    });
+    var moved = Object.keys(byDate).sort().reverse().map(function (dt) {
+      var rs = byDate[dt];
+      var same = rs.length === dl.length && rs.every(function (x) { return !x.prev && x.r.status === rs[0].r.status; });
+      var body = same ? '<p>' + E(pgL("baseline", { n: rs.length, status: rs[0].r.status })) + '</p>' :
+        '<ul class="pgmoved">' + rs.map(function (x) {
+          return '<li>' + pgSteps(pgLevel(x.r.status)) + '<span><b>' + E(x.d.name) + '</b>' + (x.prev ? ' ' + E(pgL("from")) + ' ' + E(x.prev) : '') + ' ' + E(pgL("to")) + ' <b>' + E(x.r.status) + '</b></span></li>';
+        }).join("") + '</ul>';
+      return '<div class="blk pgday"><h3>' + E(pgDate(dt)) + ' <span class="ccount">' + E(rs[0].r.source) + (same ? "" : " (" + rs.length + ")") + '</span></h3>' + body + '</div>';
+    }).join("");
+    h += foldHtml("pgmoved", '<span class="foldt">' + E(pgL("movedFold")) + '</span><span class="foldn">' + E(pgL("movedHint")) + '</span>', moved, false, "");
+    box.innerHTML = h;
+  }
+  function pgToggle(code) {
+    pgOpen[code] = !pgOpen[code];
+    each('[data-pgrow="' + code + '"]', function (row) {
+      row.classList.toggle("open", pgOpen[code]);
+      var b = row.querySelector(".pgbtn"), d = row.querySelector(".pgdetail");
+      if (b) b.setAttribute("aria-expanded", pgOpen[code]);
+      if (d) d.hidden = !pgOpen[code];
+    });
+  }
+  function pgJump(id) {
+    setFold("pgcards", true);
+    var t = document.getElementById("pair-" + id); if (t) t.scrollIntoView({ block: "start" });
+  }
+  function pgSave(key, btn) {
+    var bx = btn.closest("[data-pgbox]"), ta = bx.querySelector("textarea"), stEl = bx.querySelector(".pgstate"), txt = ta.value.trim();
+    function tell(t, bad) { pgMsg[key] = bad ? t : ""; stEl.textContent = t; stEl.className = "pgstate" + (bad ? " bad" : ""); }
+    if (!txt) { tell("Type something first.", true); ta.focus(); return; }
+    btn.disabled = true; tell("Saving");
+    RAM.apiJSON("/plan/note", { method: "POST", json: { text: txt, about: PG().noteAbout + ": " + key, answered_by: TESTQ ? "TEST" : (who || editor) } })
+      .then(function (r) {
+        btn.disabled = false;
+        if (!r || !r.ok) { tell((r && r.error) || "Not saved. Try again.", true); return; }
+        D.notes = r.notes || D.notes; delete pgDraft[key];
+        var n = pgNote(key); tell(n ? pgSavedLine(n) : "Saved");
+        drawNotes(D.notes || []);
+      })
+      .catch(function () { btn.disabled = false; tell("Not saved: no connection. Your text is still in the box.", true); });
+  }
+  document.addEventListener("input", function (e) {
+    var t = e.target; if (t && t.dataset && t.dataset.pgta) pgDraft[t.dataset.pgta] = t.value;
+  });
+
   /* ---------------------------------------------------------------- syllabus */
   function renderSyllabus() {
     var s = D.syllabus, dl = s.deliverables, h = '<h2>' + E(s.title) + '</h2><p class="lead">' + ed("syllabus", "intro", "add an opening line") + '</p>';
-    h += '<div class="counts"><span><b>' + s.total + '</b> deliverables in the signed VEP</span><span>' + st("done") + ' ' + s.counts.done + '</span><span>' + st("started") + ' ' + s.counts.started + '</span><span>' + st("not") + ' ' + s.counts.not + '</span></div>';
+    var one = !!PG();   /* the progress section is then the one list of deliverables */
+    if (!one) h += '<div class="counts"><span><b>' + s.total + '</b> deliverables in the signed VEP</span><span>' + st("done") + ' ' + s.counts.done + '</span><span>' + st("started") + ' ' + s.counts.started + '</span><span>' + st("not") + ' ' + s.counts.not + '</span></div>';
     if (s.vep_change) h += '<div class="blk"><h3>What changed at signing</h3><p>' + E(s.vep_change) + '</p></div>';
     if (s.math && s.math.length) h += '<div class="blk"><h3>The only dates on this page, and where they come from</h3><ul>' + s.math.map(function (t) { return "<li>" + E(t) + "</li>"; }).join("") + '</ul></div>';
     h += '<div class="blk" id="calendar"><h3>Calendar anchors</h3><table class="ptable cal"><thead><tr><th style="width:26%">Date</th><th>What</th></tr></thead><tbody>' +
       s.calendar.map(function (c) {
         return '<tr data-cal="' + E(c.id) + '"><td data-l="Date" class="k' + E(c.kind || "") + '"><b>' + ed(c.id, "date") + '</b></td><td data-l="What" class="k' + E(c.kind || "") + '">' + line(ed(c.id, "text"), toolsBox("cal", c.id)) + '</td></tr>';
       }).join("") + '</tbody></table>' + addBtn("cal", "", "Add a date") + '</div>';
-    s.phases.forEach(function (p, pi) {
+    (one ? [] : s.phases).forEach(function (p, pi) {
       if (pi === 0) h += '<div class="keep"><h2 class="subh">The sequence: what must happen before what, and why</h2>';
       h += '<div class="blk phase" data-phase="' + E(p.id) + '"><div class="phasehead"><span class="phasen">Phase ' + p.n + '</span><h3>' + ed(p.id, "name") + '</h3></div>';
       h += '<p class="when"><b>When:</b> ' + ed(p.id, "when", "add when") + '</p><p class="why"><b>Why this order:</b> ' + ed(p.id, "why", "add why") + '</p>';
@@ -840,7 +977,7 @@
         }).join("") + '</tbody></table></div>';
       if (pi === 0) h += '</div>';
     });
-    s.groups.forEach(function (g, gi) {
+    (one ? [] : s.groups).forEach(function (g, gi) {
       if (gi === 0) h += '<div class="keep"><h2 class="subh">By SOFM: every deliverable, its status and the evidence</h2>';
       h += '<table class="ptable sofmtable"><thead><tr class="grow"><th colspan="6"><div class="grouphead"><h3>' + E(g.name) + ' <span class="sofm">(' + E(g.sofm) + ', ' + g.items.length + ')</span></h3><p class="lead">' + E(g.objective) + '</p></div></th></tr><tr><th style="width:11%">ID</th><th style="width:20%">Deliverable</th><th style="width:24%">What it is</th><th style="width:11%">Status</th><th>Evidence</th><th style="width:7%">Phase</th></tr></thead><tbody>' +
         g.items.map(function (id) {
@@ -893,6 +1030,8 @@
   }
   function drawNotes(notes) {
     var ul = document.getElementById("noteList"); if (!ul) return;
+    var pgp = PG(), pre = pgp && pgp.noteAbout ? pgp.noteAbout + ": " : "";
+    if (pre && !EDIT) notes = notes.filter(function (n) { return String(n.about).indexOf(pre) !== 0; });
     ul.innerHTML = notes.length ? notes.map(function (n) {
       return '<li><span class="meta">' + E(n.answered_by) + ', ' + E(RAM.fmtTs(n.ts_utc)) + ', about ' + E(n.about) + '</span><br>' + E(n.text) + '</li>';
     }).join("") : '<li class="meta">Nothing sent yet.</li>';
@@ -905,7 +1044,7 @@
       .then(function (r) {
         b.disabled = false;
         if (!r || !r.ok) { s.className = "notestate bad"; s.textContent = (r && r.error) || "Not saved. Try again."; return; }
-        t.value = ""; s.className = "notestate"; s.textContent = "Saved."; drawNotes(r.notes || []);
+        t.value = ""; s.className = "notestate"; s.textContent = "Saved."; D.notes = r.notes || []; drawNotes(D.notes);
       })
       .catch(function () { b.disabled = false; s.className = "notestate bad"; s.textContent = "Not saved: no connection. Your text is still in the box."; });
   }
@@ -937,10 +1076,11 @@
     document.getElementById("printFoot").innerHTML = '<span>Prepared by ' + E(D.consultant) + '. ' + E(D.source) + '</span>' + (D.logo ? '<img alt="" src="' + D.logo + '">' : '');
   }
 
-  var PRINTS = ["print-agenda", "print-syllabus", "print-both", "print-week"];
+  var PRINTS = ["print-agenda", "print-syllabus", "print-both", "print-week", "print-progress"];
   function doPrint(which) {
     var b = document.body, wk = TODAY ? weekOf(TODAY) : null;
-    var lbl = { agenda: D.agenda.title, syllabus: D.syllabus.title, both: D.agenda.title + ", and " + D.syllabus.title,
+    var pt = PG() ? PG().title : "";
+    var lbl = { agenda: D.agenda.title, syllabus: (pt ? pt + ", and " : "") + D.syllabus.title, both: (pt ? pt + ", " : "") + D.agenda.title + ", and " + D.syllabus.title, progress: pt,
       week: "This week" + (wk ? ": " + longDate(wk.sun) + " to " + longDate(wk.sat) : "") };
     if (cur) cancelEd();
     closeForm();
@@ -962,6 +1102,9 @@
     var d = e.target.closest("[data-doc]"); if (d) { e.preventDefault(); openDoc(d.dataset.doc); return; }
     var p = e.target.closest("[data-print]"); if (p && D) { e.preventDefault(); doPrint(p.dataset.print); return; }
     if (!D) return;
+    var gj = e.target.closest("[data-pgjump]"); if (gj) { e.preventDefault(); pgJump(gj.dataset.pgjump); return; }
+    var gt = e.target.closest("[data-pgtoggle]"); if (gt) { pgToggle(gt.dataset.pgtoggle); return; }
+    var gs = e.target.closest("[data-pgsave]"); if (gs) { pgSave(gs.dataset.pgsave, gs); return; }
     if (EDIT) {
       var fa = e.target.closest("[data-fact]"); if (fa && form) { if (fa.dataset.fact === "ok") submitForm(false); else closeForm(); return; }
       var mb = e.target.closest("[data-menu]"); if (mb) { toggleMenu(mb); return; }
@@ -1038,7 +1181,7 @@
   function drawAll() {
     var y = window.pageYOffset;
     needDraw = false;
-    heads(); renderAgenda(); renderWeek(); renderSyllabus(); drawAbout(); drawBar();
+    heads(); renderProgress(); renderAgenda(); renderWeek(); renderSyllabus(); drawAbout(); drawBar();
     window.scrollTo(0, y);
     if (afterDraw) { var f = afterDraw; afterDraw = null; f(); }
   }
@@ -1054,6 +1197,7 @@
   function news(r) {
     if (!r || !D || fetching) return;
     var moved = r.rev !== undefined && D.rev !== undefined ? r.rev !== D.rev : (r.built && r.built !== D.built);
+    if (r.progressRev !== undefined && D.progressRev !== undefined && r.progressRev !== D.progressRev) moved = true;
     if (!((r.today && r.today !== TODAY) || moved)) return;
     if (busy()) {
       var n = document.getElementById("planNews");

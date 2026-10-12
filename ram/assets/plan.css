@@ -157,6 +157,70 @@
 .wnote{padding:8px 0;border-top:1px solid var(--line);break-inside:avoid;page-break-inside:avoid}
 .wnote:first-of-type{border-top:0}
 
+/* where we are: the progress section and the group tags on agenda items. Every word comes from the server. */
+#progress{scroll-margin-top:120px}
+.lv0{--pg:#d3dae5;--pgb:#aab4c5;--pgt:#2b3342}
+.lv1{--pg:#FFCD00;--pgb:#c79f00;--pgt:#3d2f00}
+.lv2{--pg:#24508f;--pgb:#1A3C6E;--pgt:#fff}
+.lv3{--pg:#2e7d32;--pgb:#1f5c23;--pgt:#fff}
+.pgsum{border-left:6px solid var(--gold)}
+.pgline{font-size:20px;margin:0 0 8px !important}
+.pgbar{display:flex;height:32px;border-radius:8px;overflow:hidden;border:1px solid var(--line);background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pgbar span{display:flex;align-items:center;justify-content:center;min-width:30px;font-size:16px;background:var(--pg);color:var(--pgt)}
+.pglegend{list-style:none;margin:8px 0 0 !important;padding:0;display:flex;flex-wrap:wrap;gap:4px 22px;font-size:16px}
+.pglegend li{display:flex;align-items:center;gap:6px;margin:0}
+.pglegend i,.pgdots i{display:inline-block;width:14px;height:14px;border-radius:3px;background:var(--pg);border:1px solid var(--pgb);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pgminis{display:grid;grid-template-columns:1fr 1fr;gap:0 26px;margin-top:10px;border-top:1px solid var(--line);padding-top:6px}
+.pgmini{display:flex;align-items:center;gap:8px;min-height:44px;color:var(--ink);text-decoration:none;font-size:17px;border-bottom:1px solid #eef1f6}
+.pgmini:hover .pgmt{text-decoration:underline}
+.pgmt{flex:1 1 auto;min-width:0}
+.pgdots{display:inline-flex;gap:3px;flex:0 0 auto}
+.pgletter{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;background:var(--blue);color:#fff;font-weight:800;border-radius:8px;font-size:17px;flex:0 0 auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pgasof{font-size:15px;color:var(--muted);margin-top:10px !important;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.pgprint{min-height:44px;font-size:15px;padding:6px 14px;margin-left:auto}
+.pgcards{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.pgcards .blk{margin:0}
+.pghead{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;margin-bottom:4px}
+.pghead h3{margin:0;flex:1 1 0;min-width:0}
+.pgcount{flex:1 0 100%;font-size:14px;color:var(--muted)}
+.pgrow{border-top:1px solid var(--line);break-inside:avoid;page-break-inside:avoid}
+.pgbtn{display:grid;grid-template-columns:auto 1fr auto;gap:1px 10px;align-items:center;width:100%;text-align:left;font:inherit;background:none;border:0;border-radius:6px;padding:7px 2px;min-height:48px;cursor:pointer;color:var(--ink)}
+.pgbtn:hover{background:#f4f7fb}
+.pgbtn:focus-visible{outline:3px solid var(--gold);outline-offset:1px}
+.pgsteps{display:inline-flex;gap:3px;align-items:center;width:72px;flex:0 0 72px}
+.pgbtn .pgsteps{grid-row:1 / span 2}
+.pgsteps i{display:block;width:10px;height:18px;border-radius:3px;border:1.5px solid #aab4c5;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pgsteps i.on{background:var(--pg);border-color:var(--pgb)}
+.pgck{display:block;position:relative;width:18px;height:18px;border-radius:50%;background:var(--green);margin-left:2px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pgck::after{content:"";position:absolute;left:6px;top:3px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.pgname{grid-column:2;font-size:17px;font-weight:600;overflow-wrap:anywhere}
+.pgmeta{grid-column:2;font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:0 12px}
+.pgst{color:var(--ink)}
+.pgi{grid-column:3;grid-row:1 / span 2;display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;border:2px solid var(--blue2);color:var(--blue2);font:italic 700 15px Georgia,serif}
+.pgrow.open .pgi{background:var(--blue2);color:#fff}
+.pgdetail{padding:2px 6px 12px 84px;font-size:16px}
+.pgdetail h4{margin:8px 0 2px;font-size:13px}
+.pgcode{font-family:Consolas,monospace;font-size:13px;color:var(--muted)}
+.pghist{margin:2px 0 0 20px !important}
+.pgsrc{color:var(--muted);font-size:14px}
+.pgmoved{list-style:none;margin:4px 0 0 !important;padding:0}
+.pgmoved li{display:flex;gap:10px;align-items:flex-start;padding:5px 0;margin:0;border-top:1px solid #eef1f6;font-size:16px;break-inside:avoid;page-break-inside:avoid}
+.pgmoved li:first-child{border-top:0}
+.pgmoved .pgsteps{margin-top:2px}
+.pgday h3{font-size:18px}
+.pgtest{background:#fffdf3;border:1px solid #e0c040;border-radius:10px;padding:8px 10px;margin-top:10px}
+.pgtest label{display:block;font-weight:700;font-size:15px;color:#6b4e00;margin-bottom:4px}
+.pgtest textarea{display:block;width:100%;font:inherit;font-size:16px;line-height:1.35;padding:8px 10px;border:2px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);min-height:120px;resize:vertical}
+.pgtest textarea:focus{outline:none;border-color:var(--blue2);box-shadow:0 0 0 3px rgba(36,80,143,.15)}
+.pgtestrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:6px 0 0 !important}
+.pgtestrow .btn{min-height:44px;font-size:16px;padding:8px 18px}
+.pgstate{font-size:14px;color:var(--green);font-weight:600}
+.pgstate.bad{color:var(--red)}
+.pgonly{font-size:13px;color:var(--muted);margin:4px 0 0 !important}
+.pgorder{grid-column:1 / -1}
+.pgorder .pgtest{margin-top:0}
+.ptag{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 5px;border-radius:6px;background:var(--soft);color:var(--blue);border:1px solid #b9c7de;font-size:13px;font-weight:800;text-decoration:none;vertical-align:1px;margin-left:4px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+
 /* phone: tables become stacked cards */
 @media screen and (max-width:700px){
   body{font-size:17px}
@@ -173,6 +237,11 @@
   .item{gap:6px}
   .foldhead{font-size:18px;padding:8px 12px}
   .ictx{white-space:normal}
+  .pgminis,.pgcards{grid-template-columns:1fr}
+  .pgline{font-size:18px}
+  .pglegend{flex-direction:column;gap:2px}
+  .pgdetail{padding-left:6px}
+  .pgprint{margin-left:0}
 }
 
 /* print: letter portrait, half-inch margins, points, colors kept, no screen chrome */
@@ -241,6 +310,36 @@
   .wnote{padding:3pt 0}
   body.print-both #syllabus{break-before:page;page-break-before:always}
   .ptable td[data-l]::before{content:none}
+  /* where we are on paper: summary, the six groups in two columns, what moved; no boxes, no controls */
+  body.print-agenda #progress,body.print-week #progress{display:none !important}
+  body.print-progress #agenda,body.print-progress #week,body.print-progress #syllabus{display:none !important}
+  body.print-both #agenda,body.print-syllabus #syllabus{break-before:page;page-break-before:always}
+  .pgline{font-size:11pt;margin:0 0 4pt !important}
+  .pgbar{height:16pt;border-radius:4px}
+  .pgbar span{font-size:9pt;min-width:16pt}
+  .pglegend{font-size:9pt;gap:2pt 14pt;margin-top:4pt !important}
+  .pglegend i,.pgdots i{width:8pt;height:8pt;border-radius:2px}
+  .pgminis{gap:0 18pt;margin-top:5pt;padding-top:3pt}
+  .pgmini{min-height:0;padding:2pt 0;font-size:9.5pt;color:#1d2330}
+  .pgletter{min-width:14pt;height:14pt;font-size:9pt;border-radius:3px}
+  .pgasof{font-size:8pt;margin-top:4pt !important}
+  .pgcards{display:block;columns:2;column-gap:10pt}
+  .pgcards .blk{margin:0 0 6pt;break-inside:avoid;page-break-inside:avoid}
+  .pgcount{font-size:8pt}
+  .pgbtn{min-height:0;padding:1.6pt 0;gap:0 6pt}
+  .pgname{font-size:9pt}
+  .pgmeta{font-size:7.5pt;gap:0 6pt}
+  .pgcard{padding:5pt 7pt !important}
+  #fold-pgcards .foldn,#fold-pgmoved .foldn{display:none}
+  .pgsteps{width:40pt;flex-basis:40pt;gap:1.5pt}
+  .pgsteps i{width:5.5pt;height:10pt;border-width:.8pt;border-radius:1.5pt}
+  .pgck{width:9pt;height:9pt;margin-left:1pt}
+  .pgck::after{left:3pt;top:1.4pt;width:2pt;height:4.2pt;border-width:0 1.1pt 1.1pt 0}
+  .pgdetail{display:none !important}
+  .pgmoved{columns:2;column-gap:14pt}
+  .pgmoved li{font-size:8pt;padding:1.6pt 0;gap:5pt;border-top:0}
+  .pgday h3{font-size:10.5pt}
+  .ptag{min-width:11pt;height:11pt;font-size:7.5pt;padding:0 2.5pt;border-radius:3px;color:#1A3C6E}
 }
 
 /* editing in place: consultant mode only. A viewer's page holds none of these elements. */
