@@ -24,9 +24,12 @@
   var gen = 0;          // bumped by every save: a poll that started before a save is thrown away
   try { seen = JSON.parse(lsGet(K_SEEN) || "{}") || {}; } catch (e) { seen = {}; }
 
-  /* tiny markup: [[menu path]] -> path chip, **bold** -> bold. Escaped first. */
+  /* tiny markup: [[menu path]] -> path chip, **bold** -> bold, ((label|address)) -> a link that opens in a new tab
+     (the address must start with https://, ../ or /). Escaped first. */
+  var LINK = /\(\((.+?)\|((?:https:\/\/|\.\.\/|\/)[^\s()|]+)\)\)/g;
   function fmt(s) {
-    return esc(s).replace(/\[\[(.+?)\]\]/g, '<span class="path">$1</span>').replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+    return esc(s).replace(/\[\[(.+?)\]\]/g, '<span class="path">$1</span>').replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
+      .replace(LINK, '<a href="$2" target="_blank" rel="noopener">$1</a>');
   }
   function owner() { return (data && data.owner) || "the owner"; }
   function cpa() { return (data && data.cpa) || "the tax preparer"; }
@@ -390,7 +393,7 @@
       var n = s.steps.length, i = st.step || 0;
       step = "Picked: " + s.label + ". " + (i < n ? "Step " + (i + 1) + " of " + n + ": " + s.steps[i].replace(/^!\s*/, "") : "Checking it worked: " + s.check.join(" "));
     }
-    step = step.replace(/\[\[|\]\]|\*\*/g, "");
+    step = step.replace(LINK, "$1").replace(/\[\[|\]\]|\*\*/g, "");
     /* A card that carries ask_note (set in the served content) also hands the helper the card's own
        text: what it asks, the answers it offers, the one picked, and the note. All of it comes from
        the API after sign-in; the Ask panel puts it in front of the typed question. */
@@ -399,7 +402,7 @@
       var offered = c.scenarios.filter(function (x) { return x.id !== "other"; }).map(function (x, k) { return "(" + (k + 1) + ") " + x.label; }).join(" ");
       var picked = !st.scenario ? "none yet" : (st.scenario === "ask" ? (data.ask_label || "save it for the owner") : s.label);
       extra = ("Background from the card on screen (not typed by the person). What the card asks: " + String(c.what || "").slice(0, 900) +
-        " Answers the card offers: " + offered + " Answer picked: " + picked + ". " + c.ask_note).replace(/\[\[|\]\]|\*\*/g, "");
+        " Answers the card offers: " + offered + " Answer picked: " + picked + ". " + c.ask_note).replace(LINK, "$1").replace(/\[\[|\]\]|\*\*/g, "");
     }
     return { page: page.slice(0, 160), step: step.slice(0, 240), extra: extra };
   }
