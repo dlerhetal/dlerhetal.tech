@@ -61,7 +61,13 @@
   /* ---------------------------------------------------------------- replies on a card */
   function lastReply(id) { return stOf(id).last_reply_id || 0; }
   function isNew(id) { return lastReply(id) > (seen[id] || 0); }
-  function countNew() { return data.cards.filter(function (c) { return isNew(c.id); }).length; }
+  function countNew() { return shown().filter(function (c) { return isNew(c.id); }).length; }
+  /* A card the content marks archived is not drawn on this page (it stays in the record and on the
+     consultant's page). A section the content marks archived is skipped the same way. */
+  function shown() { return data.cards.filter(function (c) { return !c.archived; }); }
+  function anyArchived() { return data.cards.some(function (c) { return c.archived; }); }
+  function secOf(id) { var c = card(id); return c ? data.sections.find(function (s) { return s.id === c.section; }) : null; }
+  var collOpen = {};    // section id -> open, for sections the content marks collapsed (closed on every load)
   function markSeen(id) {
     if (!isNew(id)) return false;
     seen[id] = lastReply(id); lsSet(K_SEEN, JSON.stringify(seen)); return true;
@@ -98,6 +104,25 @@
   function renderSummary() {
     var s = view.summary;
     R.$("intro").textContent = data.intro || "";
+    if (anyArchived()) {   // count only what this page shows
+      var vis = shown(), nDone = 0, nWork = 0, nAsk = 0;
+      vis.forEach(function (c) {
+        var x = stOf(c.id);
+        if (x.status === "done") nDone++; else if (x.scenario) nWork++;
+        (x.asks || []).forEach(function (a) { if (!a.answer) nAsk++; });
+      });
+      var pct = vis.length ? Math.round(100 * nDone / vis.length) : 0;
+      R.$("sumLine").textContent = vis.length + " cards on this list. " + nDone + " of " + vis.length + " done.";
+      R.$("sumBar").style.width = pct + "%";
+      R.$("sumBarLbl").textContent = pct + "% done";
+      var g2 = R.$("sumGrid");
+      g2.innerHTML = '<span class="sumpill done"><b>' + nDone + "</b> done</span>" +
+        '<span class="sumpill"><b>' + nWork + "</b> in progress</span>" +
+        '<span class="sumpill"><b>' + nAsk + "</b> open questions for " + esc(owner()) + "</span>";
+      var n2 = countNew();
+      if (n2) g2.innerHTML += '<span class="sumpill reply" id="sumReplies"><b>' + n2 + "</b> new " + (n2 === 1 ? "reply" : "replies") + "</span>";
+      return;
+    }
     R.$("sumLine").textContent = s.problems + " problems found, plus " + s.prep + " setup steps. " + s.done + " of " + s.cards + " done.";
     R.$("sumBar").style.width = s.pct + "%";
     R.$("sumBarLbl").textContent = s.pct + "% done";
@@ -225,7 +250,7 @@
       (st.note_ts ? "Last saved by " + esc(st.note_by) + " " + esc(R.fmtTs(st.note_ts)) : "Not saved yet") + "</span></div>" +
       (st.note_ts && data.note_saved_line ? '<p class="notehint">' + esc(data.note_saved_line) + "</p>" : "") + "</div>";
     h += '<div class="thread" id="thread-' + esc(c.id) + '" data-sig="' + threadSig(c.id) + '">' + threadHTML(c.id) + "</div>";
-    var next = data.cards[data.cards.indexOf(c) + 1];
+    var vis = shown(), next = vis[vis.indexOf(c) + 1];
     if (next) h += '<p class="nextcard"><button type="button" class="btn" data-open="' + esc(next.id) + '">Next card: ' + esc(next.n + ". " + next.title) + "</button></p>";
     return h + "</div>";
   }
@@ -279,8 +304,17 @@
     var box = R.$("sections"); box.innerHTML = "";
     var target = box;
     data.sections.forEach(function (sec) {
-      var cards = data.cards.filter(function (c) { return c.section === sec.id; });
-      if (!cards.length) return;
+      var cards = data.cards.filter(function (c) { return c.section === sec.id && !c.archived; });
+      if (!cards.length || sec.archived) return;
+      if (sec.collapsed) {   // a group of its own, closed until pressed (content-defined)
+        var cd = document.createElement("details");
+        cd.className = "qbfold"; cd.id = "coll-" + sec.id; cd.open = !!collOpen[sec.id];
+        cd.innerHTML = "<summary>" + esc(sec.title) + " (" + cards.length + ")</summary>" + (sec.sub ? '<section class="qbsec"><p>' + esc(sec.sub) + "</p></section>" : "");
+        cd.addEventListener("toggle", function () { collOpen[sec.id] = cd.open; });
+        box.appendChild(cd);
+        cards.forEach(function (c) { cd.appendChild(cardEl(c)); });
+        return;
+      }
       if (sec.fold && target === box) {   // this section and every one after it sit in a closed fold (content-defined)
         var d = document.createElement("details");
         d.className = "qbfold"; d.open = foldOpen;
@@ -309,12 +343,16 @@
   function inFold(id) {   // true when the card's section is at or after the first section with a fold label
     var c = card(id), seen = false, hit = false;
     if (!c || !data) return false;
+    var own = secOf(id);
+    if (c.archived || (own && (own.archived || own.collapsed))) return true;
     data.sections.forEach(function (sec) { if (sec.fold) seen = true; if (sec.id === c.section) hit = seen; });
     return hit;
   }
 
   function openCard(id, scroll) {
-    if (inFold(id) && !foldOpen) { foldOpen = true; var f = document.querySelector("details.qbfold"); if (f) f.open = true; }
+    var osec = secOf(id);
+    if (osec && osec.collapsed) { collOpen[osec.id] = true; var cf = R.$("coll-" + osec.id); if (cf) cf.open = true; }
+    else if (inFold(id) && !foldOpen) { foldOpen = true; var f = document.querySelector("details.qbfold:not([id])"); if (f) f.open = true; }
     var prev = openId;
     openId = (openId === id && !scroll) ? "" : id;
     lsSet(K_OPEN, openId);
@@ -411,15 +449,17 @@
   R.gate(function () {
     Promise.all([R.apiJSON("/qb/cards"), R.apiJSON("/qb/state" + TESTQ)]).then(function (res) {
       data = res[0]; view = res[1];
-      document.title = data.client_name + ", " + (data.title || "QuickBooks fixes");
-      var sub = R.$("h1sub"); if (sub) { sub.textContent = data.title || "QuickBooks fixes"; sub.hidden = false; }
+      document.title = data.client_name + ", " + (data.title || "Office and finance");
+      var sub = R.$("h1sub"); if (sub) { sub.textContent = data.title || "Office and finance"; sub.hidden = false; }
       R.$("appSub").hidden = false;
       if (R.DALE_MODE) { var slot = document.querySelector('[data-dale-slot="qb"]'); if (slot) slot.innerHTML = '<a href="admin/" class="daleonly">Dale\'s view</a>'; }
       renderWho();
       var saved = lsGet(K_OPEN);
       openId = saved && card(saved) && !inFold(saved) ? saved : "";   // a reload never lands inside the fold
       renderAll();
-      setSaved(view.summary.done + " of " + view.summary.cards + " done");
+      var visAll = shown();
+      setSaved(anyArchived() ? visAll.filter(function (c) { return stOf(c.id).status === "done"; }).length + " of " + visAll.length + " done"
+        : view.summary.done + " of " + view.summary.cards + " done");
       if (window.RAMASK) {
         window.RAMASK.setContext(askContext);
         if (data.ask_code) window.RAMASK.setCode(data.ask_code);

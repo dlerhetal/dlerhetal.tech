@@ -50,7 +50,15 @@
     var tb = R.$("cardTable").querySelector("tbody");
     Array.prototype.forEach.call(tb.querySelectorAll("textarea[data-reply-text]"), function (t) { replyDrafts[t.dataset.replyText] = t.value; });
     tb.innerHTML = "";
+    var archHead = false;
     data.cards.forEach(function (c) {
+      if (c.archived && !archHead) {   // archived cards are not on the office's page; here they sit under one heading
+        archHead = true;
+        var asec = (data.sections || []).find(function (x) { return x.id === c.section; }) || {};
+        var hr = document.createElement("tr");
+        hr.innerHTML = '<td colspan="9"><b>' + esc(asec.title || "Archive") + "</b>" + (asec.sub ? '<br><span class="meta">' + esc(asec.sub) + "</span>" : "") + "</td>";
+        tb.appendChild(hr);
+      }
       var st = view.state[c.id] || {};
       var sc = c.scenarios.find(function (x) { return x.id === st.scenario; });
       var step = sc ? ((st.step || 0) >= sc.steps.length ? "check" : (st.step + 1) + " of " + sc.steps.length) : "";
