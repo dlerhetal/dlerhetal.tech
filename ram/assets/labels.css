@@ -1,0 +1,105 @@
+/* Label cards page: a sheet of cells laid out at true size, typed in place, printed at 100 percent.
+   Generic: no client wording here. Sizes arrive from the API; the script writes them as inline millimetres. */
+.lbtop { background: var(--blue); color: #fff; padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; }
+.lbtop h1 { margin: 0; font-size: 22px; font-weight: 600; }
+.lbtop .lblinks { display: flex; gap: 6px; flex-wrap: wrap; }
+.lbtop .lblinks a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; background: rgba(255,255,255,.14); color: #fff; text-decoration: none; font-size: 16px; }
+.lbmainwrap { max-width: 900px; margin: 0 auto; padding: 12px 16px 120px; }
+.lbtest { background: #fff3c4; border: 2px solid #c79a00; border-radius: 10px; padding: 8px 12px; margin: 0 0 10px; font-size: 16px; font-weight: 600; }
+.lbbar { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; }
+.lbrow { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.lbrow + .lbrow { margin-top: 10px; }
+.lbwho { display: flex; align-items: center; gap: 8px; font-size: 16px; }
+.lbwho input { font: inherit; font-size: 17px; padding: 8px 10px; border: 2px solid var(--line); border-radius: 8px; width: 170px; min-height: 44px; }
+.lbwho input.need { border-color: var(--red); background: #fff1ef; }
+.lbstatus { font-size: 16px; flex: 1 1 260px; min-width: 0; }
+.lbstatus.good { color: var(--green); }
+.lbstatus.wait { color: var(--muted); }
+.lbstatus.bad { color: var(--red); font-weight: 700; }
+.lbstatus button, .lbnote button { font: inherit; font-size: 15px; margin-left: 8px; padding: 4px 12px; min-height: 36px; border-radius: 8px; border: 2px solid currentColor; background: #fff; color: inherit; cursor: pointer; }
+.lbbtn { font: inherit; font-size: 17px; min-height: 44px; padding: 8px 16px; border-radius: 10px; border: 2px solid var(--blue); background: #fff; color: var(--blue); cursor: pointer; }
+.lbbtn.pri { background: var(--blue); color: #fff; font-weight: 600; }
+.lbbtn.on { background: var(--soft); }
+.lbbtn.warn { border-color: var(--red); color: var(--red); }
+.lbbtn:disabled { opacity: .55; cursor: default; }
+.lbcheck { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; min-height: 44px; cursor: pointer; }
+.lbcheck input { width: 22px; height: 22px; }
+.lbhint { color: var(--muted); font-size: 15px; margin: 8px 0 0; }
+.lbremind { font-size: 16px; font-weight: 600; margin: 8px 0 10px; }
+.lbnote { font-size: 16px; margin: 8px 0 0; }
+.lbnote.bad { color: var(--red); font-weight: 600; }
+.lbnote.good { color: var(--green); }
+.lbpanel { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+.lbpanel h2 { margin: 0 0 8px; font-size: 19px; color: var(--blue); }
+.lbpanel textarea { width: 100%; min-height: 150px; font: 16px/1.35 Consolas, "Courier New", monospace; padding: 8px; border: 2px solid var(--line); border-radius: 8px; }
+.lbpanel code { background: var(--soft); padding: 1px 5px; border-radius: 4px; font-size: 15px; }
+.lbcount { font-size: 19px; font-weight: 700; margin: 10px 0 4px; }
+.lbfields { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.lbfields label { display: block; font-size: 14px; color: var(--muted); }
+.lbfields input { display: block; width: 100%; font: inherit; font-size: 17px; padding: 8px; border: 2px solid var(--line); border-radius: 8px; min-height: 44px; }
+.lbvers { list-style: none; margin: 0; padding: 0; }
+.lbvers li { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); font-size: 15px; }
+.lbvers li:first-child { border-top: 0; }
+.lbvers .when { color: var(--muted); white-space: nowrap; }
+.lbvers .what { flex: 1 1 240px; min-width: 0; overflow-wrap: anywhere; }
+.lbvers .now { color: var(--green); font-weight: 600; }
+
+.lbsheets { margin-top: 4px; }
+.lbsheetlbl { font-size: 15px; color: var(--muted); margin: 14px 0 6px; }
+.lbscale { position: relative; overflow: hidden; }
+.lbsheet { width: var(--pw); height: var(--ph); position: relative; background: #fff; box-shadow: 0 1px 6px rgba(0,0,0,.25); transform-origin: 0 0; overflow: hidden; }
+.lbgrid { position: absolute; }
+.lbcell { position: absolute; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: stretch; overflow: hidden; cursor: text; }
+.lbcut { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.lbcut line { stroke: #777; stroke-width: .25; fill: none; }
+.lbcell input { display: block; width: 100%; min-width: 0; margin: 0; padding: 0; border: 0; border-radius: 0; outline: 0; background: transparent; color: #000; text-align: center; font-family: Arial, Helvetica, sans-serif; line-height: 1.2; height: 1.2em; flex: 0 0 auto; -webkit-appearance: none; appearance: none; }
+.lbcell .lbm { font-weight: 700; }
+.lbcell .lbs { font-weight: 400; display: none; }
+.lbcell.two .lbs, .lbcell.open .lbs { display: block; }
+.lbtag { position: absolute; right: 0; top: 0; font: 700 7px/8px Arial, sans-serif; padding: 0 3px; color: #fff; background: var(--red); display: none; text-transform: uppercase; letter-spacing: .3px; }
+.lbcell.long .lbtag, .lbcell.err .lbtag, .lbcell.conf .lbtag { display: block; }
+.lbdot { position: absolute; left: 2px; top: 2px; width: 6px; height: 6px; border-radius: 50%; display: none; }
+.lbcell.pend .lbdot { display: block; border: 1px dotted #555; }
+.lbcell.ok .lbdot { display: block; background: var(--green); }
+.lbruler { position: absolute; display: none; align-items: flex-start; gap: 2mm; font: 7pt/1.1 Arial, Helvetica, sans-serif; color: #000; }
+.lbruler .lbline { box-sizing: border-box; flex: 0 0 auto; border: 0 solid #000; }
+.lbruler.h .lbline { width: 50mm; height: 2mm; border-top-width: .5pt; border-left-width: .5pt; border-right-width: .5pt; }
+.lbruler.v { flex-direction: column; }
+.lbruler.v .lbline { height: 50mm; width: 2mm; border-left-width: .5pt; border-top-width: .5pt; border-bottom-width: .5pt; }
+.lbruler.v .lbrtext { writing-mode: vertical-rl; }
+.lbaddrow { margin: 14px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* the bottom editor on a narrow screen: the sheet is scaled down there, so typing happens in full-size boxes */
+.lbedit { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 3px solid var(--blue); padding: 10px 12px; box-shadow: 0 -4px 14px rgba(0,0,0,.2); z-index: 20; }
+.lbedit .lbewhich { font-size: 15px; color: var(--muted); margin: 0 0 6px; }
+.lbedit input { display: block; width: 100%; font: inherit; font-size: 18px; padding: 8px 10px; border: 2px solid var(--line); border-radius: 8px; margin-bottom: 6px; min-height: 46px; }
+.lbedit .lbrow { gap: 8px; }
+.lbedit .lbbtn { flex: 1; }
+
+@media screen {
+  .lbsheetbox:first-child .lbruler.show { display: flex; }
+  .lbcell:focus-within, .lbcell.sel { background: #fffbe0; box-shadow: inset 0 0 0 2px var(--gold); }
+  .lbcell.err, .lbcell.conf { background: #fde8e6; }
+  .lbcell.long { box-shadow: inset 0 0 0 2px var(--red); }
+  body.lbphone .lbcell input { pointer-events: none; }
+  body.lbphone .lbcell { cursor: pointer; }
+}
+@media (max-width: 700px) {
+  .lbmainwrap { padding: 10px 10px 230px; }
+  .lbwho input { width: 140px; }
+  .lbbtn { font-size: 16px; padding: 8px 12px; }
+}
+@media print {
+  html, body { background: #fff !important; margin: 0 !important; padding: 0 !important; }
+  .noprint, .lbtop, .lbbar, .lbpanel, .lbsheetlbl, .lbaddrow, .lbedit, .lbtag, .lbdot, .lbtest, #gate { display: none !important; }
+  .lbmainwrap { max-width: none; margin: 0; padding: 0; }
+  .lbsheets { margin: 0; }
+  .lbsheetbox.skip { display: none !important; }
+  .lbscale { width: auto !important; height: auto !important; overflow: visible; }
+  .lbsheet { height: calc(var(--ph) - 0.5mm); transform: none !important; box-shadow: none; break-after: page; page-break-after: always; break-inside: avoid; page-break-inside: avoid; }
+  .lbsheetbox.last .lbsheet { break-after: auto; page-break-after: auto; }
+  .lbsheetbox.first .lbruler.show { display: flex; }
+  .lbcell { break-inside: avoid; page-break-inside: avoid; background: none !important; box-shadow: none !important; }
+  .lbcell.open:not(.two) .lbs { display: none; }
+  .lbcut line { stroke: #000; stroke-width: .09; }
+}
