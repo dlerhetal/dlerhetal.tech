@@ -331,3 +331,119 @@ b.qsedlabel { font-style: normal; color: var(--qs-blue); font-size: 1rem; margin
   .qsprint .pgoal { font-weight: 700; color: var(--qs-blue); font-size: 11pt; text-align: right; }
   .pletter .pfoot { margin-top: .1in; }
 }
+
+/* ================= round two: kinds of line, sections that fold, ticks one by one, paste, paged print ================= */
+/* The four kinds wear the sticky-note colors. Color is never the only sign: each kind has its own mark and its word.
+   Every chip carries its own background and ink, so it reads the same whatever theme the device is in. */
+:root { --k-step: #E8730C; --k-danger: #E0B400; --k-safety: #C62828; --k-knack: #1F5FBF;
+  --k-step-ink: #8a3f00; --k-danger-ink: #6b5400; --k-safety-ink: #9c1c1c; --k-knack-ink: #17458f;
+  --k-step-bg: #fdebd9; --k-danger-bg: #fdf3c4; --k-safety-bg: #fbe0e0; --k-knack-bg: #dfeafb; }
+.k-step { --kc: var(--k-step); --kink: var(--k-step-ink); --kbg: var(--k-step-bg); }
+.k-danger { --kc: var(--k-danger); --kink: var(--k-danger-ink); --kbg: var(--k-danger-bg); }
+.k-safety { --kc: var(--k-safety); --kink: var(--k-safety-ink); --kbg: var(--k-safety-bg); }
+.k-knack { --kc: var(--k-knack); --kink: var(--k-knack-ink); --kbg: var(--k-knack-bg); }
+.qskmark { font-style: normal; }
+.k-step .qskmark::before { content: "\25CF"; }
+.k-danger .qskmark::before { content: "\25B2"; }
+.k-safety .qskmark::before { content: "\271A"; }
+.k-knack .qskmark::before { content: "\2605"; }
+.qskind { display: inline-flex; align-items: center; gap: 5px; flex: 0 0 auto; padding: 1px 9px 1px 7px; border-radius: 999px;
+  background: var(--kbg); color: #1d2430; border: 1.5px solid var(--kc); font-size: .8rem; font-weight: 700; line-height: 1.5; white-space: nowrap; }
+.qskind .qskmark { color: var(--kink); font-size: .8em; }
+.qslegend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 0 12px; padding: 8px 12px; background: #fff; border: 1px solid var(--qs-line); border-radius: 8px; }
+.qslegone { display: inline-flex; align-items: center; gap: 6px; }
+.qsleghint { font-size: .9rem; color: var(--qs-muted); }
+
+/* today: a section is a header you tap; the lines are under it */
+.qsshowall { margin: 0 0 10px; }
+.qssection { padding: 0; overflow: hidden; }
+.qssechd { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 56px; padding: 10px 14px; border: 0; background: #fff; cursor: pointer;
+  text-align: left; font: bold 1.15rem Calibri, "Segoe UI", Arial, sans-serif; color: var(--qs-blue); border-bottom: 2px solid var(--qs-gold); }
+.qssechd[aria-expanded="false"] { border-bottom-color: transparent; }
+.qssecname { flex: 1 1 auto; min-width: 0; }
+.qssecname small { display: block; font-weight: normal; font-style: italic; color: var(--qs-muted); font-size: .9rem; }
+.qsseccount { flex: 0 0 auto; padding: 2px 10px; border-radius: 999px; background: var(--qs-soft); color: var(--qs-ink); font-size: .95rem; font-variant-numeric: tabular-nums; }
+.qssechd.alldone .qsseccount { background: #dff1e4; color: var(--qs-good); }
+.qssechd.alldone .qsseccount::before { content: "\2713  "; }
+.qschev { flex: 0 0 auto; width: 10px; height: 10px; border-right: 3px solid var(--qs-blue); border-bottom: 3px solid var(--qs-blue); transform: rotate(45deg); margin: 0 6px 4px 2px; }
+.qssechd[aria-expanded="false"] .qschev { transform: rotate(-45deg); margin-bottom: 0; }
+.qsitems[hidden] { display: none; }
+.qssection .qsitems { padding: 0 10px 4px 0; }
+.qssection .qsitem { border-left: 7px solid var(--kc, var(--qs-line)); padding: 4px 0 4px 10px; }
+.qsbody { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; min-width: 0; }
+.qsts { flex: 0 0 auto; font-size: .8rem; white-space: nowrap; }
+.qsts.ok { color: var(--qs-good); }
+.qsts.wait { color: var(--qs-bad); font-weight: 700; }
+.qsts:empty { display: none; }
+.qsprog { position: sticky; bottom: 0; z-index: 15; margin: 0 -16px; padding: 8px 16px 10px; background: #fff; border-top: 3px solid var(--qs-gold);
+  box-shadow: 0 -2px 8px rgba(0,0,0,.08); }
+.qsprogtext { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; font-size: .95rem; }
+.qsprogtext b { font-size: 1.25rem; color: var(--qs-blue); font-variant-numeric: tabular-nums; }
+.qsprogstate { margin-left: auto; font-size: .85rem; color: var(--qs-good); }
+.qsprogstate.bad { color: var(--qs-bad); font-weight: 700; margin-left: 0; flex-basis: 100%; }
+.qsprogtrack { height: 8px; margin-top: 4px; background: var(--qs-soft); border-radius: 4px; overflow: hidden; }
+.qsprogfill { height: 100%; width: 0; background: var(--qs-blue); border-radius: 0 4px 4px 0; transition: width .15s; }
+
+/* editor: the kind picker, the paste box */
+.qskindsel { flex: 0 0 auto; align-self: flex-start; min-height: 44px; max-width: 7.2em; padding: 4px 4px 4px 8px; border-radius: 8px; border: 1.5px solid var(--kc); border-left: 7px solid var(--kc);
+  background: var(--kbg); color: #1d2430; font: bold 14px Calibri, "Segoe UI", Arial, sans-serif; }
+.qsadd .qskindsel { align-self: stretch; }
+.qspaste summary { cursor: pointer; min-height: 44px; padding: 10px 0; font-weight: 700; color: var(--qs-blue); }
+.qspasteex { margin: 0 0 10px; padding: 8px 12px; background: var(--qs-soft); border-radius: 6px; font: 14px/1.5 Consolas, "Courier New", monospace; white-space: pre-wrap; }
+.qspastetext { min-height: 220px; font: 15px/1.45 Consolas, "Courier New", monospace; background: #fff; }
+.qspastemodes { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 10px 0; }
+.qsradio { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; cursor: pointer; }
+.qsradio input { width: 22px; height: 22px; margin: 0; accent-color: var(--qs-blue); }
+.qspasteout { margin-top: 12px; }
+.qspastetable td, .qspastetable th { text-align: right; }
+.qspastetable td:first-child, .qspastetable th:first-child { text-align: left; }
+.qspastetable .qstotal td { font-weight: 700; border-top: 2px solid var(--qs-blue); }
+.qspasteline { margin: 10px 0 0; }
+.qssure { align-self: center; color: var(--qs-bad); }
+@media (max-width: 600px) {
+  .qsprog { margin: 0 -12px; padding-left: 12px; padding-right: 12px; }
+  .qssechd { font-size: 1.05rem; padding: 10px 12px; }
+  .qsedrow.qseditem { flex-wrap: wrap; }
+  .qsedrow.qseditem .qsedtext { flex-basis: 60%; }
+}
+
+/* ---- the sheet for the truck: built as whole pages by the page script. These rules are NOT inside a print block,
+        because the script measures every line at its printed size before dealing the lines onto pages. ---- */
+.qsprint.qssheet.measuring { display: block; position: absolute; left: -200in; top: 0; visibility: hidden; }
+.qssheet { width: 7.4in; color: #000; font: 11.5pt/1.3 Calibri, "Segoe UI", Carlito, Arial, sans-serif; overflow-wrap: anywhere; }
+.qssheet .sh-page { height: 10in; display: flex; flex-direction: column; break-after: page; page-break-after: always; overflow: hidden; }
+.qssheet .sh-page:last-child { break-after: auto; page-break-after: auto; }
+.qssheet .sh-body { flex: 1 1 auto; min-height: 0; overflow: hidden; }
+.qssheet .sh-foot { flex: 0 0 auto; display: flex; justify-content: space-between; align-items: baseline; gap: .2in; height: .26in; padding-top: .06in;
+  border-top: 1px solid #999; font-size: 8pt; color: #444; }
+.qssheet .sh-foot b { color: #000; white-space: nowrap; }
+.qssheet .sh-head { padding-bottom: .1in; }
+.qssheet .sh-top { display: flex; align-items: center; gap: .3in; border-bottom: 4px solid var(--qs-gold); padding-bottom: .08in; }
+.qssheet .sh-logo { height: .68in; width: auto; }
+.qssheet .sh-kicker { font-size: 10pt; letter-spacing: .06em; text-transform: uppercase; color: #444; }
+.qssheet .sh-h1 { font-size: 21pt; font-weight: 700; line-height: 1.1; color: var(--qs-blue); }
+.qssheet .sh-note { padding-top: .08in; font-size: 10pt; font-style: italic; color: #333; }
+.qssheet .sh-fields { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: .03in .3in; padding-top: .08in; }
+.qssheet .sh-field { display: flex; align-items: flex-end; gap: .1in; min-height: .33in; font-weight: 700; font-size: 11pt; color: var(--qs-blue); }
+.qssheet .sh-field i { flex: 1 1 auto; border-bottom: 1.5px solid #555; }
+.qssheet .sf_job { grid-column: 1 / 4; order: -2; }
+.qssheet .sf_date { order: -1; }
+.qssheet .sf_hours { display: none; }
+.qssheet .sh-legend { display: flex; flex-wrap: wrap; gap: .02in .22in; padding-top: .1in; font-size: 9pt; color: #222; }
+.qssheet .sh-kind { display: inline-flex; align-items: baseline; gap: .05in; }
+.qssheet .qskmark { color: var(--kink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.qssheet .sh-sec { padding: .1in 0 .04in; font-size: 13pt; font-weight: 700; color: var(--qs-blue); border-bottom: 1.5px solid #555; }
+.qssheet .sh-sec small { margin-left: .12in; font-weight: normal; font-style: italic; font-size: 10.5pt; color: #444; }
+.qssheet .sh-row { display: flex; align-items: center; min-height: .29in; border: 1.5px solid #555; border-top: 0; border-left: 5px solid var(--kc, #555);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.qssheet .sh-box { flex: 0 0 auto; width: .19in; height: .19in; margin: 0 .12in; border: 2px solid #222; background: #fff; }
+.qssheet .sh-kindcell { flex: 0 0 .78in; display: inline-flex; align-items: baseline; gap: .05in; font-size: 9pt; font-weight: 700; color: #111; }
+.qssheet .sh-text { flex: 1 1 auto; min-width: 0; padding: .03in .08in .03in 0; }
+.qssheet .sh-text b { color: var(--qs-blue); }
+.qssheet .sh-blank { background: #fffbe0; border-left-color: #555; }
+.qssheet .sh-end { padding-top: .04in; }
+.qssheet .sh-line { height: .3in; border-bottom: 1.5px solid #555; }
+.qssheet .sh-sum { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .3in; align-items: end; padding-top: .1in; }
+.qssheet .sh-goal { font-weight: 700; color: var(--qs-blue); font-size: 11pt; text-align: right; }
+.qssheet .sh-small { padding-top: .08in; font-size: 8.5pt; font-style: italic; color: #444; }
+@media print { .qsprint.qssheet { display: block; } }

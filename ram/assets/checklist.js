@@ -23,6 +23,11 @@
   var draft = null, busy = false, confirmVoid = null;
   var editMode = false, menuOpen = null, flash = null, pending = [], queue = Promise.resolve(), inflight = 0;
   var redrawing = false, keepAfter = null, openHidden = {}, openInfo = {}, openNote = {};
+  /* round two: line types, sections that fold, ticks sent one by one, a pasted list */
+  var KINDS = [], KMAP = {}, openSec = null, showAll = false;
+  var tickQ = [], tickSeq = 0, flushing = false, retryTimer = null, lineState = {};
+  var paste = { text: "", mode: "append", preview: null, err: "", open: false, sure: false, busy: false };
+  var PHONE = function () { try { return window.matchMedia("(max-width: 700px)").matches; } catch (e) { return false; } };
 
   function $(id) { return document.getElementById(id); }
   function mk(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined && text !== null) n.textContent = text; return n; }
@@ -37,6 +42,24 @@
   function doc() { return L.doc; }
   function base() { return "/" + NAME + "/" + DAY; }
   function draftKey() { return NSK + "_" + NAME + "_" + DAY + "_draft" + (TEST ? "_test" : ""); }
+  function queueKey() { return NSK + "_" + NAME + "_tickq" + (TEST ? "_test" : ""); }
+  function setKinds(list) {
+    KINDS = (list && list.length) ? list : [{ key: "step", label: "Step", hint: "", prefix: "S" }];
+    KMAP = {}; KINDS.forEach(function (k) { KMAP[k.key] = k; });
+  }
+  function kindOf(it) { return KMAP[it.kind] ? it.kind : KINDS[0].key; }
+  function kindChip(k) { var s = mk("span", "qskind k-" + k); s.appendChild(mk("i", "qskmark")); s.appendChild(mk("span", null, KMAP[k].label)); return s; }
+  function legend(host) {
+    if (KINDS.length < 2) return;
+    var lg = mk("div", "qslegend"); lg.setAttribute("aria-label", "The kinds of line");
+    KINDS.forEach(function (k) {
+      var one = mk("span", "qslegone"); one.appendChild(kindChip(k.key));
+      if (k.hint) one.appendChild(mk("span", "qsleghint", k.hint));
+      lg.appendChild(one);
+    });
+    host.appendChild(lg);
+  }
+  function newSheet() { var s = ""; while (s.length < 12) s += Math.random().toString(36).slice(2); return s.slice(0, 12); }
   function visibleSections() { return doc().sections.filter(function (s) { return !s.hidden; }).map(function (s) { return { s: s, items: s.items.filter(function (i) { return !i.hidden; }) }; }); }
   function fieldLabel(key, dflt) { var f = (doc().headerFields || []).filter(function (x) { return x.key === key; })[0]; return f ? f.label : dflt; }
   function goal() { var g = (doc().goal || {}).manHours; return typeof g === "number" && g > 0 ? g : null; }
@@ -80,11 +103,14 @@
   }
 
   function start(d) {
-    L = d.list; LOGO = d.logo || ""; TODAY = localDate();
+    L = d.list; LOGO = d.logo || ""; TODAY = localDate(); setKinds(d.kinds);
     who = TEST ? "TEST by Claude" : readWho();
+    try { tickQ = JSON.parse(load(queueKey()) || "[]") || []; } catch (e) { tickQ = []; }
+    if (!Array.isArray(tickQ)) tickQ = [];
+    tickQ.forEach(function (q) { tickSeq = Math.max(tickSeq, q.n || 0); });
     ["gate", "app", "gateCss"].forEach(function (id) { var n = $(id); if (n) n.parentNode.removeChild(n); });
     var css = document.createElement("link");
-    css.rel = "stylesheet"; css.href = "../assets/checklist.css?v=1";
+    css.rel = "stylesheet"; css.href = "../assets/checklist.css?v=2";
     var go = function () {
       go = function () { };
       document.title = HUB.title || "Working page";
@@ -95,7 +121,9 @@
       pick(["today", "list", "log"].indexOf(h) >= 0 ? h : (load(TAB_KEY) || "today"));
       loadLog();
       setInterval(poll, 30000);
-      window.addEventListener("focus", poll);
+      window.addEventListener("focus", function () { poll(); flush(); });
+      window.addEventListener("online", function () { flush(); });
+      flush();
       window.addEventListener("resize", fitAll);
       window.addEventListener("beforeprint", function () { if (!document.body.getAttribute("data-print")) prepPrint(); });
       window.addEventListener("afterprint", function () { document.body.removeAttribute("data-print"); });
@@ -168,6 +196,7 @@
     status("Loading...");
     loadBoard().then(function (d) {
       L = d.list; LOG = null; store(DAY_KEY, key); editMode = false; openInfo = {}; openNote = {}; confirmVoid = null;
+      setKinds(d.kinds); openSec = null; showAll = false; lineState = {}; paste = { text: "", mode: "append", preview: null, err: "", open: false, sure: false, busy: false };
       var bs = document.querySelectorAll(".qsday"); for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-day") === key);
       readDraft(); drawAll(); loadLog(); status("");
     }).catch(function (e) { DAY = old; if (e && e.message !== "signed out") status(e.message || "Could not load.", true); });
@@ -200,13 +229,16 @@
   function banner(host) { if (doc().note) { var n = mk("p", "qsnote qsdraft", doc().note); host.appendChild(n); } }
 
   /* ---------- TODAY: the form for one day on one job ---------- */
-  function emptyDraft() { return { f: { date: TODAY }, t: {}, held: "", ref: null, refLine: "" }; }
+  function emptyDraft() { openSec = null; lineState = {}; return { f: { date: TODAY }, t: {}, held: "", ref: null, refLine: "", sheet: newSheet() }; }
   function readDraft() {
     draft = null;
     try { draft = JSON.parse(load(draftKey()) || "null"); } catch (e) { draft = null; }
     if (!draft || typeof draft !== "object" || !draft.f) draft = emptyDraft();
     if (!draft.f.date) draft.f.date = TODAY;
     draft.t = draft.t || {};
+    if (!/^[a-z0-9]{6,32}$/.test(draft.sheet || "")) { draft.sheet = newSheet(); }
+    lineState = {};
+    tickQ.forEach(function (q) { if (q.sheet === draft.sheet) lineState[q.id] = "wait"; });
   }
   function saveDraft() { store(draftKey(), JSON.stringify(draft)); }
 
@@ -257,24 +289,46 @@
     card.appendChild(calc);
     p.appendChild(card);
 
-    visibleSections().forEach(function (v) {
-      var sc = mk("div", "qscard qssection");
-      var h = mk("h2"); h.appendChild(mk("span", null, v.s.title));
-      if (v.s.subtitle) h.appendChild(mk("small", null, v.s.subtitle));
-      sc.appendChild(h);
-      var ul = mk("ul", "qsitems");
+    legend(p);
+    var vs = visibleSections();
+    if (openSec === null) defaultOpen(vs);
+    if (vs.length > 1) {
+      var sa = mk("div", "qsshowall");
+      var sb = btn(showAll ? "Fold the finished and later sections" : "Show all sections", "alt", function () {
+        showAll = !showAll; if (!showAll) defaultOpen(visibleSections(), true); drawToday();
+      });
+      sb.id = "qsShowAll"; sb.setAttribute("aria-pressed", showAll ? "true" : "false");
+      sa.appendChild(sb); p.appendChild(sa);
+    }
+    vs.forEach(function (v) {
+      var sc = mk("div", "qscard qssection"); sc.setAttribute("data-sec", v.s.id);
+      var n = secCount(v), open = showAll || !!openSec[v.s.id];
+      var hb = mk("button", "qssechd" + (n.done === n.all && n.all ? " alldone" : "")); hb.type = "button";
+      hb.setAttribute("aria-expanded", open ? "true" : "false"); hb.setAttribute("data-sechd", v.s.id);
+      var ht = mk("span", "qssecname"); ht.appendChild(mk("span", null, v.s.title));
+      if (v.s.subtitle) ht.appendChild(mk("small", null, v.s.subtitle));
+      hb.appendChild(ht);
+      var cn = mk("span", "qsseccount", n.done + " / " + n.all); cn.setAttribute("data-seccount", v.s.id); hb.appendChild(cn);
+      hb.appendChild(mk("span", "qschev"));
+      hb.addEventListener("click", function () { setOpen(v.s.id, hb.getAttribute("aria-expanded") !== "true"); });
+      sc.appendChild(hb);
+      var ul = mk("ul", "qsitems"); ul.hidden = !open; ul.setAttribute("data-seclist", v.s.id);
       v.items.forEach(function (it) {
-        var t = draft.t[it.id] || {};
-        var li = mk("li", "qsitem"); li.setAttribute("data-id", it.id);
+        var t = draft.t[it.id] || {}, k = kindOf(it);
+        var li = mk("li", "qsitem k-" + k); li.setAttribute("data-id", it.id); li.setAttribute("data-insec", v.s.id);
         var lab = mk("label", "qschk");
         var cb = mk("input"); cb.type = "checkbox"; cb.checked = !!t.done; cb.setAttribute("data-tick", it.id);
         lab.appendChild(cb);
+        var body = mk("span", "qsbody");
+        body.appendChild(kindChip(k));
         var tx = mk("span", "qstext", it.text);
         if (it.confirm) tx.appendChild(mk("b", "qsq", " ?"));
-        lab.appendChild(tx);
+        body.appendChild(tx);
+        lab.appendChild(body);
         li.appendChild(lab);
+        var ts = mk("span", "qsts"); ts.setAttribute("data-ts", it.id); ts.setAttribute("role", "status"); li.appendChild(ts);
         if (it.info) {
-          var ib = mk("button", "qsi", "i"); ib.type = "button"; ib.setAttribute("aria-label", "More about this step");
+          var ib = mk("button", "qsi", "i"); ib.type = "button"; ib.setAttribute("aria-label", "More about this line");
           ib.setAttribute("aria-expanded", openInfo[it.id] ? "true" : "false"); ib.setAttribute("data-info", it.id);
           var note = mk("p", "qsinfo", it.info); note.hidden = !openInfo[it.id];
           ib.addEventListener("click", function () {
@@ -286,8 +340,9 @@
         }
         li.classList.toggle("done", !!t.done);
         ul.appendChild(li);
+        paintLine(it.id, ts);
       });
-      if (!v.items.length) ul.appendChild(mk("li", "qsmuted", "No steps here yet. Turn on Edit the list to add them."));
+      if (!v.items.length) ul.appendChild(mk("li", "qsmuted", "No lines here yet. Turn on Edit the list to add them."));
       sc.appendChild(ul);
       p.appendChild(sc);
     });
@@ -315,8 +370,104 @@
     hc.appendChild(row);
     var sd = mk("p", "qssaved"); sd.id = "qsSaved"; sd.setAttribute("role", "status"); hc.appendChild(sd);
     p.appendChild(hc);
+    var pg = mk("div", "qsprog"); pg.id = "qsProg";
+    var pt = mk("div", "qsprogtext"); var pb2 = mk("b"); pb2.id = "qsProgNum"; pt.appendChild(pb2); pt.appendChild(mk("span", null, " ticked today so far"));
+    var tsAll = mk("span", "qsprogstate"); tsAll.id = "qsTickState"; tsAll.setAttribute("role", "status"); pt.appendChild(tsAll);
+    pg.appendChild(pt);
+    var tr = mk("div", "qsprogtrack"); var fl = mk("div", "qsprogfill"); fl.id = "qsProgFill"; tr.appendChild(fl); pg.appendChild(tr);
+    p.appendChild(pg);
     p.oninput = onTodayInput; p.onchange = onTodayInput;
-    calcLine();
+    calcLine(); paintProgress(); paintTickState();
+  }
+
+  /* ---- sections that fold ---- */
+  function secCount(v) { var d = 0; v.items.forEach(function (it) { if ((draft.t[it.id] || {}).done) d++; }); return { done: d, all: v.items.length }; }
+  /* On a phone: the first section with a line still to tick is open, the rest are folded. On a wide screen all are open.
+     force = fold that way at any width (the "fold" half of the show-all button). */
+  function defaultOpen(vs, force) {
+    openSec = {};
+    var narrow = PHONE() || force, first = null;
+    vs.forEach(function (v) { var n = secCount(v); if (first === null && n.done < n.all) first = v.s.id; });
+    if (first === null && vs.length) first = vs[0].s.id;
+    vs.forEach(function (v) { openSec[v.s.id] = narrow ? v.s.id === first : true; });
+  }
+  function setOpen(id, open) {
+    openSec[id] = open;
+    var hb = document.querySelector('#panel_today [data-sechd="' + id + '"]'), ul = document.querySelector('#panel_today [data-seclist="' + id + '"]');
+    if (hb) hb.setAttribute("aria-expanded", (open || showAll) ? "true" : "false");
+    if (ul) ul.hidden = !(open || showAll);
+  }
+  function afterTick(secId) {
+    var vs = visibleSections(), idx = -1;
+    vs.forEach(function (v, i) { if (v.s.id === secId) idx = i; });
+    if (idx < 0) return;
+    var n = secCount(vs[idx]);
+    var cn = document.querySelector('#panel_today [data-seccount="' + secId + '"]'); if (cn) cn.textContent = n.done + " / " + n.all;
+    var hb = document.querySelector('#panel_today [data-sechd="' + secId + '"]'); if (hb) hb.classList.toggle("alldone", n.done === n.all && n.all > 0);
+    paintProgress();
+    if (n.all && n.done === n.all) {
+      /* the section is finished: open the next one that still has a line to tick; on a phone, fold this one */
+      var next = null;
+      for (var i = idx + 1; i < vs.length && !next; i++) { var m = secCount(vs[i]); if (m.done < m.all) next = vs[i].s.id; }
+      for (var j = 0; j < idx && !next; j++) { var m2 = secCount(vs[j]); if (m2.done < m2.all) next = vs[j].s.id; }
+      if (next) {
+        if (PHONE() && !showAll) setOpen(secId, false);
+        setOpen(next, true);
+        var nh = document.querySelector('#panel_today [data-sechd="' + next + '"]');
+        if (nh && PHONE()) { try { nh.scrollIntoView({ block: "start", behavior: "smooth" }); } catch (e) { } }
+      }
+    }
+  }
+  function paintProgress() {
+    var d = 0, a = 0; visibleSections().forEach(function (v) { var n = secCount(v); d += n.done; a += n.all; });
+    var b = $("qsProgNum"), f = $("qsProgFill");
+    if (b) b.textContent = d + " / " + a;
+    if (f) f.style.width = (a ? Math.round(d / a * 100) : 0) + "%";
+  }
+
+  /* ---- ticks go to the server one by one; a tick that could not be sent waits in this browser and is sent again ---- */
+  function saveQueue() { store(queueKey(), tickQ.length ? JSON.stringify(tickQ) : null); }
+  function paintLine(id, node) {
+    var n = node || document.querySelector('#panel_today [data-ts="' + id + '"]'); if (!n) return;
+    var s = lineState[id];
+    n.textContent = s === "wait" ? "not saved yet" : (s === "ok" ? "\u2713 saved" : "");
+    n.className = "qsts" + (s ? " " + s : "");
+  }
+  function paintTickState() {
+    var n = $("qsTickState"); if (!n) return;
+    var w = tickQ.length;
+    n.textContent = w ? w + (w === 1 ? " tick" : " ticks") + " not saved yet. Kept on this phone; it sends by itself when there is signal." : (Object.keys(lineState).length ? "All ticks saved." : "");
+    n.classList.toggle("bad", !!w);
+  }
+  function queueTick(id, done) {
+    tickQ = tickQ.filter(function (q) { return !(q.sheet === draft.sheet && q.id === id); });
+    tickQ.push({ n: ++tickSeq, day: DAY, sheet: draft.sheet, date: draft.f.date || TODAY, id: id, done: !!done });
+    saveQueue(); lineState[id] = "wait"; paintLine(id); paintTickState();
+    flush();
+  }
+  function flush() {
+    if (flushing || !tickQ.length) return;
+    if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
+    flushing = true;
+    var sheet = tickQ[0].sheet, qday = tickQ[0].day || DAY, batch = tickQ.filter(function (q) { return q.sheet === sheet; }).slice(0, 200);
+    var sent = {}; batch.forEach(function (q) { sent[q.n] = 1; });
+    var again = function () { flushing = false; paintTickState(); if (!retryTimer) retryTimer = setTimeout(function () { retryTimer = null; flush(); }, 5000); };
+    R.api("/" + NAME + "/" + qday + "/ticks" + Q, { method: "POST", json: { saved_by: who, sheet: sheet, date: batch[0].date,
+      ticks: batch.map(function (q) { return { id: q.id, done: q.done }; }) } }).then(answer).then(function (x) {
+      if (x.s === 200 && x.j.ok) {
+        tickQ = tickQ.filter(function (q) { return !sent[q.n]; });
+        saveQueue();
+        batch.forEach(function (q) {
+          if (q.sheet !== draft.sheet) return;
+          if (!tickQ.some(function (r) { return r.sheet === q.sheet && r.id === q.id; })) { lineState[q.id] = "ok"; paintLine(q.id); }
+        });
+        flushing = false; paintTickState();
+        if (tickQ.length) flush();
+      } else if (x.s >= 400 && x.s < 500 && x.s !== 401 && x.s !== 408 && x.s !== 429) {
+        /* the server will never take these as they are (a list that changed underneath): they stay in the saved day, not in the queue */
+        tickQ = tickQ.filter(function (q) { return !sent[q.n]; }); saveQueue(); flushing = false; paintTickState();
+      } else again();
+    }).catch(function () { again(); });
   }
 
   function onTodayInput(e) {
@@ -325,6 +476,9 @@
     else if (t.hasAttribute("data-tick")) {
       var id = t.getAttribute("data-tick"); draft.t[id] = draft.t[id] || {}; draft.t[id].done = t.checked;
       var li = t.closest("li"); if (li) li.classList.toggle("done", t.checked);
+      saveDraft(); queueTick(id, t.checked);
+      if (li) afterTick(li.getAttribute("data-insec"));
+      return;
     } else if (t.id === "qsHeld") draft.held = t.value;
     saveDraft(); calcLine();
   }
@@ -364,12 +518,12 @@
     visibleSections().forEach(function (v) {
       v.items.forEach(function (it) {
         var t = draft.t[it.id] || {};
-        ticks.push({ id: it.id, text: it.text, section: v.s.id, done: !!t.done });
+        ticks.push({ id: it.id, text: it.text, section: v.s.id, kind: kindOf(it), done: !!t.done });
       });
     });
     var f = draft.f, blank = function (v) { return v === undefined || v === "" ? null : v; };
     return { date: f.date || "", job: f.job || "", crewLead: f.crewLead || "", men: blank(f.men), start: f.start || "", finish: f.finish || "",
-             hours: blank(f.hours), heldUp: draft.held || "", ticks: ticks };
+             hours: blank(f.hours), heldUp: draft.held || "", ticks: ticks, sheet: draft.sheet };
   }
 
   function submit() {
@@ -528,11 +682,20 @@
 
   function clean(v) { return (v || "").replace(/\s+/g, " ").trim(); }
 
+  function kindSelect(value, label, onChange) {
+    var s = mk("select", "qskindsel k-" + value); s.setAttribute("aria-label", label);
+    KINDS.forEach(function (k) { var o = mk("option", null, k.label); o.value = k.key; if (k.key === value) o.selected = true; s.appendChild(o); });
+    s.addEventListener("change", function () { s.className = "qskindsel k-" + s.value; if (onChange) onChange(s.value); });
+    return s;
+  }
+
   function addRow(key, placeholder, label, onAdd) {
     var add = mk("div", "qsadd");
+    var ks = KINDS.length > 1 ? kindSelect(KINDS[0].key, "The kind of line to add") : null;
+    if (ks) add.appendChild(ks);
     var ai = mk("input"); ai.type = "text"; ai.maxLength = 300; ai.placeholder = placeholder; ai.setAttribute("aria-label", label);
     ai.setAttribute("data-ek", key); ai.setAttribute("enterkeyhint", "done");
-    var go = function () { var v = clean(ai.value); if (!v) { ai.focus(); return; } if (onAdd(v)) ai.value = ""; };
+    var go = function () { var v = clean(ai.value); if (!v) { ai.focus(); return; } if (onAdd(v, ks ? ks.value : null)) ai.value = ""; };
     ai.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); go(); } });
     add.appendChild(ai);
     add.appendChild(btn("Add", "alt", go));
@@ -565,7 +728,14 @@
       var shown = s.items.filter(function (i) { return !i.hidden; });
       var others = shownSecs.filter(function (o) { return o.id !== s.id; });
       shown.forEach(function (it, k) {
-        var li = mk("li", "qsedrow qseditem"); li.setAttribute("data-item", it.id);
+        var li = mk("li", "qsedrow qseditem k-" + kindOf(it)); li.setAttribute("data-item", it.id);
+        if (KINDS.length > 1) {
+          var sel = kindSelect(kindOf(it), "The kind of line", function (v) {
+            edit([{ op: "set", target: it.id, field: "kind", value: v }], { key: "t:" + it.id, okText: "Changed" });
+          });
+          sel.setAttribute("data-kindsel", it.id);
+          li.appendChild(sel);
+        }
         var c = mk("div", "qsedtext");
         c.appendChild(inl("t:" + it.id, it.text, "qsinlitem", "Step", "", function (v, o) {
           edit([{ op: "set", target: it.id, field: "text", value: v, was: o }], { key: "t:" + it.id, keep: { key: "t:" + it.id, value: v } });
@@ -599,8 +769,8 @@
         ul.appendChild(li);
       });
       sc.appendChild(ul);
-      sc.appendChild(addRow("add:" + s.id, "+ Add a step", "Add a step to this section", function (v) {
-        return edit([{ op: "add_item", section: s.id, text: v }], { key: "add:" + s.id, okText: "Added", keep: { key: "add:" + s.id, value: v } });
+      sc.appendChild(addRow("add:" + s.id, "+ Add a line", "Add a line to this section", function (v, kind) {
+        return edit([{ op: "add_item", section: s.id, text: v, kind: kind || undefined }], { key: "add:" + s.id, okText: "Added", keep: { key: "add:" + s.id, value: v } });
       }));
       var hid = s.items.filter(function (i) { return i.hidden; });
       if (hid.length) {
@@ -656,6 +826,8 @@
     ns.appendChild(btn("Add section", "alt", addSec));
     wrap.appendChild(ns);
 
+    drawPaste(wrap);
+
     var vd = mk("details", "qscard qsversions");
     vd.appendChild(mk("summary", null, "Earlier versions"));
     var vl = mk("ol", "qsvlist"); vd.appendChild(vl);
@@ -664,10 +836,93 @@
     host.appendChild(wrap);
   }
 
+  /* ---- Paste a list: many lines at once, checked by the server first, saved as ONE new version ---- */
+  function drawPaste(host) {
+    var det = mk("details", "qscard qspaste"); det.id = "qsPaste"; det.open = paste.open;
+    det.appendChild(mk("summary", null, "Paste a list"));
+    det.addEventListener("toggle", function () { paste.open = det.open; });
+    var letters = KINDS.map(function (k) { return "\u201C" + k.prefix + ": \u201D " + k.label; }).join(", ");
+    det.appendChild(mk("p", "qshelp", "One line per row. A row that starts with \u201C# \u201D starts a section. Start a row with a letter and a colon to say what kind of line it is: " + letters + ". No letter means " + KINDS[0].label + ". To put words behind the line\u2019s \u201Ci\u201D, type \u201C | \u201D and then the words."));
+    var ex = mk("pre", "qspasteex"); ex.textContent = "# Name of the section\nA plain line\n" + KINDS.slice(1).map(function (k) { return k.prefix + ": a " + k.label.toLowerCase() + " line"; }).join("\n") + "\nA line with a note | the note behind the i";
+    det.appendChild(ex);
+    var ta = mk("textarea", "qsheld qspastetext"); ta.id = "qsPasteText"; ta.rows = 10; ta.value = paste.text; ta.setAttribute("aria-label", "The list to paste"); ta.spellcheck = false;
+    ta.setAttribute("data-ek", "pasteText");
+    ta.addEventListener("input", function () { paste.text = ta.value; if (paste.preview || paste.err) { paste.preview = null; paste.err = ""; paste.sure = false; out.innerHTML = ""; } });
+    det.appendChild(ta);
+    var modes = mk("div", "qspastemodes");
+    [["append", "Add to the end of the list"], ["replace", "Replace the whole list"]].forEach(function (m) {
+      var lab = mk("label", "qsradio"); var r = mk("input"); r.type = "radio"; r.name = "qsPasteMode"; r.value = m[0]; r.checked = paste.mode === m[0];
+      r.addEventListener("change", function () { paste.mode = m[0]; paste.preview = null; paste.err = ""; paste.sure = false; out.innerHTML = ""; });
+      lab.appendChild(r); lab.appendChild(mk("span", null, m[1])); modes.appendChild(lab);
+    });
+    det.appendChild(modes);
+    var pv = btn("Check it first", "", function () { pasteSend(true); }); pv.id = "qsPastePreview";
+    det.appendChild(pv);
+    var out = mk("div", "qspasteout"); out.id = "qsPasteOut"; det.appendChild(out);
+    host.appendChild(det);
+    paintPaste();
+  }
+  function paintPaste() {
+    var out = $("qsPasteOut"); if (!out) return; out.innerHTML = "";
+    if (paste.err) { out.appendChild(mk("p", "qssaved bad", "Not right yet: " + paste.err)); return; }
+    var pv = paste.preview; if (!pv) return;
+    var t = mk("table", "qstable qspastetable"); t.id = "qsPasteTable";
+    var hr = mk("tr"); ["Section"].concat(KINDS.map(function (k) { return k.label; })).concat(["Lines"]).forEach(function (h) { hr.appendChild(mk("th", null, h)); });
+    var th = mk("thead"); th.appendChild(hr); t.appendChild(th);
+    var tb = mk("tbody");
+    pv.sections.forEach(function (s) {
+      var tr = mk("tr"); tr.appendChild(mk("td", null, s.title + (s.new ? " (new section)" : " (already there)")));
+      KINDS.forEach(function (k) { tr.appendChild(mk("td", null, String(s.counts[k.key] || 0))); });
+      tr.appendChild(mk("td", "qsbig", String(s.lines))); tb.appendChild(tr);
+    });
+    var tot = mk("tr", "qstotal"); tot.appendChild(mk("td", null, "All of it"));
+    KINDS.forEach(function (k) { tot.appendChild(mk("td", null, String(pv.counts[k.key] || 0))); });
+    tot.appendChild(mk("td", "qsbig", String(pv.lines))); tb.appendChild(tot);
+    t.appendChild(tb); out.appendChild(t);
+    var line = pv.mode === "replace"
+      ? "The list has " + pv.linesBefore + " lines now. After this it will have these " + pv.linesAfter + " lines in " + pv.sectionsAfter + " sections, and nothing else. The list as it is now stays under Earlier versions and can be brought back."
+      : "The list has " + pv.linesBefore + " lines now. After this it will have " + pv.linesAfter + " lines in " + pv.sectionsAfter + " sections.";
+    out.appendChild(mk("p", "qspasteline", line));
+    var row = mk("div", "qsrow");
+    if (pv.mode === "replace" && !paste.sure) {
+      var b1 = btn("Replace the whole list with these " + pv.lines + " lines", "warn", function () { paste.sure = true; paintPaste(); }); b1.id = "qsPasteSave"; row.appendChild(b1);
+    } else if (pv.mode === "replace") {
+      row.appendChild(mk("b", "qssure", "Sure?"));
+      var by = btn("Yes, replace it", "", function () { pasteSend(false); }); by.id = "qsPasteYes"; by.disabled = paste.busy; row.appendChild(by);
+      row.appendChild(btn("No", "alt", function () { paste.sure = false; paintPaste(); }));
+    } else {
+      var b2 = btn("Add these " + pv.lines + " lines as one new version", "", function () { pasteSend(false); }); b2.id = "qsPasteSave"; b2.disabled = paste.busy; row.appendChild(b2);
+    }
+    out.appendChild(row);
+  }
+  function pasteSend(previewOnly) {
+    if (paste.busy) return;
+    if (!previewOnly && !who) { needName(true); return; }
+    if (!clean(paste.text)) { paste.err = "there is nothing in the box."; paste.preview = null; paintPaste(); return; }
+    paste.busy = true; status(previewOnly ? "Checking..." : "Saving...");
+    R.api(base() + "/paste" + Q, { method: "POST", json: { saved_by: who, base: L.ver, mode: paste.mode, text: paste.text, preview: previewOnly } }).then(answer).then(function (x) {
+      paste.busy = false;
+      if (x.s === 200 && x.j.ok) {
+        if (previewOnly) { paste.preview = x.j.preview; paste.err = ""; paste.sure = false; status(""); paintPaste(); return; }
+        L = x.j.list; openSec = null;
+        var n = x.j.preview.lines, was = x.j.was;
+        paste = { text: "", mode: "append", preview: null, err: "", open: false, sure: false, busy: false };
+        redraw(); status("Saved " + clock() + ": " + n + " lines, version " + L.ver + ". The list before is version " + was + " under Earlier versions.");
+      } else {
+        paste.err = (x.j && x.j.error) || ("the server answered " + x.s); paste.preview = null; paste.sure = false; status("Not saved: " + paste.err, true); paintPaste();
+        if (x.s === 403) needName(true);
+      }
+    }).catch(function (e) {
+      paste.busy = false; if (e && e.message === "signed out") return;
+      paste.err = "no connection. Your pasted list is still in the box; try again."; paste.preview = null; status("Not saved: no connection.", true); paintPaste();
+    });
+  }
+
   function drawList() {
     var p = $("panel_list"); if (!p) return; p.innerHTML = "";
     banner(p);
-    p.appendChild(mk("p", "qshelp", "Tap any step to change its words. It saves when you leave the line or press Enter; Esc puts the words back. \u201C+ Add a step\u201D is under each section. The \u22EF button beside a step moves it, marks it \u201C?\u201D (not sure yet), adds a note behind an \u201Ci\u201D, or archives it. Every change is a new version with your name. Nothing is ever deleted: an archived step can be brought back, and so can any earlier version. The printed sheet always uses the list as it stands."));
+    p.appendChild(mk("p", "qshelp", "Tap any line to change its words. It saves when you leave the line or press Enter; Esc puts the words back. The small picker in front of a line says what kind of line it is. \u201C+ Add a line\u201D is under each section, and \u201CPaste a list\u201D near the bottom takes many lines at once. The \u22EF button beside a line moves it (up, down or to another section), marks it \u201C?\u201D (not sure yet), adds a note behind an \u201Ci\u201D, or archives it. Every change is a new version with your name. Nothing is ever deleted: an archived line can be brought back, and so can any earlier version. The printed sheet always uses the list as it stands."));
+    legend(p);
     drawEditor(p);
   }
 
@@ -812,9 +1067,9 @@
   function fixEntry(e) {
     draft = { f: { date: e.date, job: e.job, crewLead: e.crewLead, men: e.men === null ? "" : String(e.men), start: e.start, finish: e.finish,
                    hours: e.hours === null || e.hours === undefined ? "" : String(e.hours) },
-              t: {}, held: e.heldUp || "", ref: e.id, refLine: "the day of " + showDay(e.date) + (e.job ? ", " + e.job : "") };
+              sheet: newSheet(), t: {}, held: e.heldUp || "", ref: e.id, refLine: "the day of " + showDay(e.date) + (e.job ? ", " + e.job : "") };
     (e.ticks || []).forEach(function (t) { draft.t[t.id] = { done: !!t.done }; });
-    editMode = false; saveDraft(); drawToday(); pick("today"); window.scrollTo(0, 0);
+    openSec = null; lineState = {}; editMode = false; saveDraft(); drawToday(); pick("today"); window.scrollTo(0, 0);
   }
 
   function voidEntry(id) {
@@ -833,56 +1088,106 @@
     R.apiJSON(base() + "/board?part=state" + (TEST ? "&as=TEST" : "")).then(function (d) {
       if (day !== DAY || !d || !d.ok || !d.list || d.list.ver === L.ver) return;
       var ae = document.activeElement;
-      if (inflight || menuOpen || (ae && ae.closest && ae.closest(".qsedwrap"))) return;
+      if (inflight || menuOpen || paste.busy || paste.text || (ae && ae.closest && ae.closest(".qsedwrap"))) return;
       L = d.list; redraw(); status("The list was changed by " + L.by + ". This is the new version.");
     }).catch(function () { });
     if (tab === "log") loadLog();
   }
 
-  /* ---------- print: one Letter sheet for the truck, built from the current list ---------- */
+  /* ---------- print: the sheet for the truck, on as many Letter pages as the list needs ----------
+     The pages are built here, not left to the browser: every block is measured at its printed size, then dealt onto
+     pages. So a section that runs over shows its heading again with "(continued)", no line is ever cut in two, and
+     the foot of every page can say "Page x of y". The job block is on page 1 only; hours, man-hours and the goal
+     are at the very end; every section ends with blank lines to write on. */
   function prepPrint() {
-    $("qsPageSize").textContent = "@page { size: letter; margin: 0.45in 0.55in 0.5in; }";
+    $("qsPageSize").textContent = "@page { size: letter; margin: 0.45in 0.55in; }";
     document.body.setAttribute("data-print", "letter");
-    var pr = $("qsPrint"); pr.innerHTML = ""; pr.className = "qsprint pletter";
-    var top = mk("div", "ptop");
-    if (LOGO) { var im = mk("img", "plogo"); im.src = LOGO; im.alt = ""; top.appendChild(im); }
-    var tt = mk("div", "ptitle");
-    tt.appendChild(mk("p", "pkicker", HUB.title || ""));
-    tt.appendChild(mk("h1", null, doc().title || ""));
-    top.appendChild(tt);
-    pr.appendChild(top);
-    if (doc().note) pr.appendChild(mk("p", "pnote", doc().note));
-    var hf = mk("div", "pfields");
-    (doc().headerFields || []).forEach(function (f) { var d = mk("div", "pfield pf_" + f.key); d.appendChild(mk("span", null, f.label)); d.appendChild(mk("i")); hf.appendChild(d); });
-    pr.appendChild(hf);
+    var pr = $("qsPrint"); pr.innerHTML = ""; pr.className = "qsprint qssheet measuring";
     var blanks = Math.max(0, Math.min(20, parseInt(doc().blankLines, 10) || 0));
-    var vs = visibleSections();
-    vs.forEach(function (v, i) {
-      var s = mk("section", "psec");
-      var h = mk("h2"); h.appendChild(mk("span", null, v.s.title)); if (v.s.subtitle) h.appendChild(mk("small", null, v.s.subtitle)); s.appendChild(h);
-      var t = mk("table", "ptable");
-      var tb = mk("tbody");
-      var extra = []; if (i === vs.length - 1) for (var k = 0; k < blanks; k++) extra.push(null);
-      v.items.concat(extra).forEach(function (it) {
-        var tr = mk("tr", it ? null : "pblank");
-        var d = mk("td", "pdone"); d.appendChild(mk("span", "pbox")); tr.appendChild(d);
-        var tx = mk("td", "pitem"); if (it) { tx.appendChild(mk("span", null, it.text)); if (it.confirm) tx.appendChild(mk("b", "pq", " ?")); } tr.appendChild(tx);
-        tb.appendChild(tr);
-      });
-      t.appendChild(tb); s.appendChild(t);
-      if (i === vs.length - 1 && blanks) s.appendChild(mk("p", "padded", "The shaded lines are for steps that are missing: write them in, then add them to the list."));
-      pr.appendChild(s);
+    var el = function (tag, cls, text) { return mk(tag, cls, text); };
+    var blocks = [];   /* {node, kind: head | sec | row | end, title} in reading order */
+
+    var head = el("div", "sh-head");
+    var top = el("div", "sh-top");
+    if (LOGO) { var im = el("img", "sh-logo"); im.src = LOGO; im.alt = ""; top.appendChild(im); }
+    var tt = el("div", "sh-title"); tt.appendChild(el("div", "sh-kicker", HUB.title || "")); tt.appendChild(el("div", "sh-h1", doc().title || "")); top.appendChild(tt);
+    head.appendChild(top);
+    if (doc().note) head.appendChild(el("div", "sh-note", doc().note));
+    var hf = el("div", "sh-fields");
+    (doc().headerFields || []).forEach(function (f) { var d = el("div", "sh-field sf_" + f.key); d.appendChild(el("span", null, f.label)); d.appendChild(el("i")); hf.appendChild(d); });
+    head.appendChild(hf);
+    if (KINDS.length > 1) {
+      var lg = el("div", "sh-legend");
+      KINDS.forEach(function (k) { var o = el("span", "sh-kind k-" + k.key); o.appendChild(el("i", "qskmark")); o.appendChild(el("span", null, k.label + (k.hint ? ": " + k.hint : ""))); lg.appendChild(o); });
+      head.appendChild(lg);
+    }
+    blocks.push({ node: head, kind: "head" });
+
+    var secHead = function (title, sub, cont) {
+      var h = el("div", "sh-sec"); h.appendChild(el("span", null, title + (cont ? " (continued)" : "")));
+      if (sub && !cont) h.appendChild(el("small", null, sub));
+      return h;
+    };
+    var rowFor = function (it) {
+      var r = el("div", "sh-row" + (it ? " k-" + kindOf(it) : " sh-blank"));
+      r.appendChild(el("span", "sh-box"));
+      var kc = el("span", "sh-kindcell");
+      if (it && KINDS.length > 1) { kc.appendChild(el("i", "qskmark")); kc.appendChild(el("span", null, KMAP[kindOf(it)].label)); }
+      r.appendChild(kc);
+      var tx = el("span", "sh-text"); if (it) { tx.appendChild(el("span", null, it.text)); if (it.confirm) tx.appendChild(el("b", null, " ?")); }
+      r.appendChild(tx);
+      return r;
+    };
+    visibleSections().forEach(function (v) {
+      blocks.push({ node: secHead(v.s.title, v.s.subtitle, false), kind: "sec", title: v.s.title });
+      var rows = v.items.slice(); for (var k = 0; k < blanks; k++) rows.push(null);
+      rows.forEach(function (it, i) { blocks.push({ node: rowFor(it), kind: "row", title: v.s.title, first: i === 0 }); });
     });
-    var hq = mk("section", "psec pheld");
-    hq.appendChild(mk("h2", null, (doc().heldUp || {}).title || ""));
-    for (var n = 0; n < 2; n++) hq.appendChild(mk("div", "pline"));
-    pr.appendChild(hq);
-    var g = goal();
-    var sum = mk("div", "psum");
-    [["Hours", ""], ["Man-hours", ""]].forEach(function (x) { var d = mk("div", "pfield"); d.appendChild(mk("span", null, x[0])); d.appendChild(mk("i")); sum.appendChild(d); });
-    if (g !== null) sum.appendChild(mk("div", "pgoal", "Goal: " + num(g) + " man-hours"));
-    pr.appendChild(sum);
-    pr.appendChild(mk("p", "pfoot", "Version " + L.ver + " of the list, printed " + new Date().toLocaleDateString() + ". A \u201C?\u201D means not sure yet: keep it or cross it out."));
+    var end = el("div", "sh-end");
+    end.appendChild(el("div", "sh-sec", (doc().heldUp || {}).title || ""));
+    end.appendChild(el("div", "sh-line")); end.appendChild(el("div", "sh-line"));
+    var g = goal(), sum = el("div", "sh-sum");
+    ["Hours", "Man-hours"].forEach(function (x) { var d = el("div", "sh-field"); d.appendChild(el("span", null, x)); d.appendChild(el("i")); sum.appendChild(d); });
+    if (g !== null) sum.appendChild(el("div", "sh-goal", "Goal: " + num(g) + " man-hours"));
+    end.appendChild(sum);
+    end.appendChild(el("div", "sh-small", "The shaded lines are for what is missing: write it in, then add it to the list. A \u201C?\u201D means not sure yet: keep it or cross it out."));
+    blocks.push({ node: end, kind: "end" });
+
+    /* measure: one page-sized body, off screen, at the printed width */
+    var probePage = el("div", "sh-page"), probe = el("div", "sh-body"), pf = el("div", "sh-foot", "Page 0 of 0");
+    probePage.appendChild(probe); probePage.appendChild(pf); pr.appendChild(probePage);
+    var room = probe.getBoundingClientRect().height;
+    var contProbe = secHead("X", "", true); probe.appendChild(contProbe);
+    var contH = contProbe.getBoundingClientRect().height; probe.removeChild(contProbe);
+    blocks.forEach(function (b) { probe.appendChild(b.node); });
+    blocks.forEach(function (b) { b.h = b.node.getBoundingClientRect().height; });
+    pr.innerHTML = "";
+
+    /* deal the blocks onto pages */
+    var pages = [[]], used = 0, slack = 2;
+    var turn = function () { pages.push([]); used = 0; };
+    blocks.forEach(function (b, i) {
+      if (b.kind === "sec") {
+        var nxt = blocks[i + 1], need = b.h + (nxt && nxt.kind === "row" ? nxt.h : 0);
+        if (used && used + need > room - slack) turn();
+      } else if (b.kind === "row") {
+        if (used + b.h > room - slack) {
+          turn();
+          pages[pages.length - 1].push(secHead(b.title, "", true)); used += contH;
+        }
+      } else if (used && used + b.h > room - slack) turn();
+      pages[pages.length - 1].push(b.node); used += b.h;
+    });
+    var stamp = "Version " + L.ver + " of the list, printed " + new Date().toLocaleDateString();
+    pages.forEach(function (nodes, i) {
+      var pgEl = el("div", "sh-page"), body = el("div", "sh-body");
+      nodes.forEach(function (n) { body.appendChild(n); });
+      var ft = el("div", "sh-foot"); ft.appendChild(el("span", null, (doc().title || "") + ". " + stamp)); ft.appendChild(el("b", null, "Page " + (i + 1) + " of " + pages.length));
+      pgEl.appendChild(body); pgEl.appendChild(ft); pr.appendChild(pgEl);
+    });
+    pr.className = "qsprint qssheet";
+    pr.setAttribute("data-pages", String(pages.length));
+    return pages.length;
   }
   function doPrint() { prepPrint(); setTimeout(function () { window.print(); }, 60); }
   window.__qsPrep = prepPrint;   /* used by the automated print test */
