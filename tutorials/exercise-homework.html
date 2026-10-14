@@ -391,9 +391,16 @@ function doGet(e) {
 
     <p>You should now see a deployment confirmation with a <strong>Web app URL</strong>. It looks something like <code>https://script.google.com/macros/s/ABC123.../exec</code>.</p>
 
+    <div class="fill-box">
+      <label for="webAppUrl">Your Google Apps Script Web app URL &mdash; paste it here</label>
+      <input type="text" id="webAppUrl" spellcheck="false" autocomplete="off"
+             placeholder="https://script.google.com/macros/s/AKfycb.../exec">
+      <div class="fill-status" id="urlStatus"></div>
+    </div>
+
     <div class="substep" data-step="2-16">
       <input type="checkbox" id="s2-16">
-      <label for="s2-16">Copied the Web app URL and saved it somewhere (Section 4 gives you a box to paste it into)</label>
+      <label for="s2-16">Pasted the Web app URL into the box above (it fills in the Section 4 prompt for you)</label>
     </div>
 
     <div class="success-note">
@@ -463,14 +470,7 @@ function doGet(e) {
       <label for="s4-3">Started Claude Code</label>
     </div>
 
-    <p>Now give Claude the big prompt. Paste your Web app URL below and it drops straight into the prompt &mdash; there's nothing to hand-edit in the black box.</p>
-
-    <div class="fill-box">
-      <label for="webAppUrl">Your Google Apps Script Web app URL (from Section 2)</label>
-      <input type="text" id="webAppUrl" spellcheck="false" autocomplete="off"
-             placeholder="https://script.google.com/macros/s/AKfycb.../exec">
-      <div class="fill-status" id="urlStatus"></div>
-    </div>
+    <p>Now give Claude the big prompt. The Web app URL you pasted in Section 2 is already in it &mdash; there's nothing to hand-edit in the black box. (If the prompt still shows a placeholder, scroll up to Section 2 and paste the URL into the box there.)</p>
 
     <div class="code-block">
       <span class="code-label">Prompt: Build the homework form</span>
