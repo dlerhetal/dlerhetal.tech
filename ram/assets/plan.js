@@ -200,7 +200,7 @@
     daysSorted().forEach(function (day) {
       (day.blocks || []).forEach(function (b) {
         (b.items || []).forEach(function (it) {
-          var x = { id: it.id, kind: it.kind, when: it.when || "", text: it.text || "", day: day, block: b };
+          var x = { id: it.id, kind: it.kind, when: it.when || "", text: it.text || "", ask: it.ask || "", day: day, block: b };
           ITEMS.push(x); BYID[x.id] = x;
         });
       });
@@ -244,7 +244,7 @@
       (mode === "carried" && it.kind !== "block" ? ' <span class="ictx">' + E(it.block.title) + '</span>' : "") + '</div>';
     h += '<div class="imeta" data-part="meta">' + metaHtml(it, mode) + '</div>';
     if (!ro) {
-      h += '<div class="ifb noprint"><textarea data-fb="' + E(it.id) + '" rows="1"' + (d ? ' class="has"' : "") + ' placeholder="Feedback on this item" aria-label="Feedback on this item">' + E(d) + '</textarea>' +
+      h += '<div class="ifb noprint"><textarea data-fb="' + E(it.id) + '" rows="1"' + (d ? ' class="has"' : "") + (it.ask ? ' data-ask="' + E(it.ask) + '"' : "") + ' placeholder="' + E(it.ask || "Feedback on this item") + '" aria-label="Feedback on this item">' + E(d) + '</textarea>' +
         '<button type="button" class="btn fbsave" data-act="savefb">Save</button><span class="fbstate" data-part="fbstate" role="status"></span></div>';
     }
     h += '<div class="ithread" data-part="thread" data-sig="' + threadSig(it.id) + '">' + notesHtml(stOf(it.id).thread) + '</div>';
@@ -563,6 +563,22 @@
     var id = ta.dataset.fb; drafts[id] = ta.value;
     ta.classList.toggle("has", !!ta.value);
     each('textarea[data-fb="' + id + '"]', function (o) { if (o !== ta) { o.value = ta.value; o.classList.toggle("has", !!ta.value); } });
+  });
+
+  /* An item that carries "ask" (one line; " / " is a line break) gets its feedback box filled with those starter
+     words when the box is entered empty, cursor after the first line. Left unchanged, the box empties itself again
+     on leaving, so an untouched prefill is never a draft, never saved and never holds up a re-draw (busy()). */
+  function askText(ta) { return String(ta.dataset.ask || "").split(" / ").join("\n"); }
+  document.addEventListener("focusin", function (e) {
+    var ta = e.target; if (!ta.matches || !ta.matches("textarea[data-fb][data-ask]") || ta.value) return;
+    var v = askText(ta); if (!v) return;
+    ta.value = v; ta.classList.add("has");
+    var p = v.indexOf("\n"); p = p < 0 ? v.length : p;
+    try { ta.setSelectionRange(p, p); } catch (x) {}
+  });
+  document.addEventListener("focusout", function (e) {
+    var ta = e.target; if (!ta.matches || !ta.matches("textarea[data-fb][data-ask]")) return;
+    if (ta.value.trim() === askText(ta).trim()) { ta.value = ""; ta.classList.remove("has"); drafts[ta.dataset.fb] = ""; }
   });
 
   /* ---------------------------------------------------------------- editing in place (consultant mode) */
