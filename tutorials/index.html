@@ -881,6 +881,75 @@
     </div>
 
     <div class="success-note">You just had your first conversation with Claude Code. Everything from here is learning how to have BETTER conversations.</div>
+
+    <!-- ---- 6-7: one-click launcher ---- -->
+    <h3 id="launcher" style="color:#1A3C6E; font-size:16px; margin:22px 0 8px;">Make a one-click launcher (no more typing)</h3>
+    <p>You just opened Command Prompt, typed <code>cd C:\dev\Sandbox</code>, then typed <code>claude</code>. You'll do that every single time you sit down to work. A <strong>batch file</strong> is a tiny text file that types those same commands for you. Double-click it and Claude opens, already standing in your project folder. No syntax to remember.</p>
+
+    <div class="note"><strong>Turn on file extensions first</strong> (once). Windows hides the end of file names, which makes this step confusing. In File Explorer: <strong>View</strong> &rarr; <strong>Show</strong> &rarr; tick <strong>File name extensions</strong>. (On Windows 10 it's the <strong>View</strong> tab &rarr; tick <strong>File name extensions</strong>.) Now you can see whether a file really ends in <code>.bat</code>.</div>
+
+    <p><strong>Build it.</strong> Open <strong>Notepad</strong> (Start menu &rarr; type <strong>notepad</strong> &rarr; Enter) and paste these three lines. If your project lives somewhere other than <code>C:\dev\Sandbox</code>, change the middle line right here in the box before you copy it &mdash; that's the only line you ever change.</p>
+    <div class="code-block"><span class="code-label">Launch Claude.bat &mdash; editable</span><button class="copy-btn" onclick="copyEdit(this)">Copy</button><button class="copy-btn ghost" onclick="resetEdit(this)">Reset</button><textarea class="code-edit" spellcheck="false" rows="3">@echo off
+cd /d "C:\dev\Sandbox"
+claude</textarea></div>
+    <p>Line by line: <code>@echo off</code> keeps the window tidy, <code>cd /d</code> moves into your project folder (the <code>/d</code> lets it switch drives too), and <code>claude</code> starts Claude &mdash; exactly what you typed by hand.</p>
+
+    <p><strong>Save it the right way.</strong> In Notepad choose <strong>File</strong> &rarr; <strong>Save As</strong>, then:</p>
+    <ul>
+      <li>Go to your <code>C:\dev</code> folder (or your Desktop, if you'd rather it lived there).</li>
+      <li>Set <strong>Save as type</strong> to <strong>All files (*.*)</strong>.</li>
+      <li>Type the file name <code>Launch Claude.bat</code> and click <strong>Save</strong>.</li>
+    </ul>
+    <div class="warning-note"><strong>Watch for <code>.txt</code> on the end.</strong> If you leave Save as type on "Text documents", Notepad quietly saves <code>Launch Claude.bat.txt</code>, and double-clicking it just opens Notepad again. With file extensions turned on you'll spot it right away: rename the file and delete the <code>.txt</code>.</div>
+
+    <p><strong>Test it.</strong> Double-click <code>Launch Claude.bat</code>. A black window opens and Claude starts, already in your project folder. Type <code>exit</code> when you're done, same as before.</p>
+
+    <div class="explain-box">
+      <strong>Optional: a second launcher that picks up where you left off.</strong> Make another file the same way, name it <code>Continue Claude.bat</code>, and change the last line so Claude reopens your most recent conversation in that folder instead of starting fresh:
+    </div>
+    <div class="code-block"><span class="code-label">Continue Claude.bat &mdash; editable</span><button class="copy-btn" onclick="copyEdit(this)">Copy</button><button class="copy-btn ghost" onclick="resetEdit(this)">Reset</button><textarea class="code-edit" spellcheck="false" rows="3">@echo off
+cd /d "C:\dev\Sandbox"
+claude --continue</textarea></div>
+
+    <p><strong>Make it nice</strong> (all optional):</p>
+    <ul>
+      <li><strong>Desktop shortcut:</strong> right-click <code>Launch Claude.bat</code> &rarr; <strong>Send to</strong> &rarr; <strong>Desktop (create shortcut)</strong>. On Windows 11, click <strong>Show more options</strong> first to find <strong>Send to</strong>.</li>
+      <li><strong>Pin it to the taskbar:</strong> Windows won't pin a <code>.bat</code> file directly, so make a shortcut that runs it. Right-click an empty spot on the Desktop &rarr; <strong>New</strong> &rarr; <strong>Shortcut</strong>, paste the line below as the location, click <strong>Next</strong>, name it, and click <strong>Finish</strong>. Then right-click the new shortcut &rarr; <strong>Pin to taskbar</strong> (Windows 11: <strong>Show more options</strong> &rarr; <strong>Pin to taskbar</strong>).</li>
+    </ul>
+    <div class="cmd-block">
+      <span class="cmd-text">cmd.exe /k "C:\dev\Launch Claude.bat"</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+    <ul>
+      <li><strong>Give it an icon:</strong> right-click the shortcut &rarr; <strong>Properties</strong> &rarr; <strong>Change Icon</strong>, and pick one you like.</li>
+      <li><strong>Give it a friendly name:</strong> right-click the shortcut &rarr; <strong>Rename</strong> &rarr; call it <strong>Ask Claude</strong>.</li>
+      <li><strong>One launcher per project:</strong> when you start a new project, copy the <code>.bat</code> file, rename the copy after the project, and change the folder line. One double-click per project.</li>
+    </ul>
+
+    <div class="note">
+      <strong>On a Mac?</strong> The same idea is a <code>.command</code> file. Paste this one line into Terminal &mdash; it writes the launcher into your <code>dev</code> folder and marks it as something you're allowed to run. Change <code>Sandbox</code> if your folder is named differently. Then double-click <strong>Launch Claude.command</strong> in Finder.
+    </div>
+    <div class="cmd-block">
+      <span class="cmd-text">printf '#!/bin/zsh\ncd ~/dev/Sandbox\nclaude\n' > ~/dev/"Launch Claude.command" &amp;&amp; chmod +x ~/dev/"Launch Claude.command"</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+    <div class="note">
+      <strong>On Linux?</strong> Save the same three lines as a shell script (<code>#!/bin/bash</code>, then <code>cd ~/dev/Sandbox</code>, then <code>claude</code>) as <code>~/dev/launch-claude.sh</code>, run <code>chmod +x ~/dev/launch-claude.sh</code> once, and run it from your file manager's "Run in Terminal" option. If you want it in your app menu, a small <code>.desktop</code> file with <code>Terminal=true</code> and <code>Exec=bash -c "cd ~/dev/Sandbox &amp;&amp; claude"</code> does the job.
+    </div>
+
+    <div class="warning-note">
+      <strong>If it doesn't work:</strong>
+      <ul style="margin: 8px 0 0 18px; padding: 0;">
+        <li><strong>The window flashes and closes:</strong> either <code>claude</code> isn't installed where Windows can find it (go back to Section 4 and check <code>claude --version</code>), or the folder name in the middle line has a typo.</li>
+        <li><strong>It says <em>"'claude' is not recognized"</em>:</strong> same fix &mdash; Section 4.</li>
+        <li><strong>Your folder name has spaces in it:</strong> keep the quotes around the path, exactly as shown. Without them, Windows stops reading at the first space.</li>
+      </ul>
+    </div>
+
+    <div class="substep" data-step="6-7">
+      <input type="checkbox" id="s6-7">
+      <label for="s6-7">Made <code>Launch Claude.bat</code>, double-clicked it, and Claude opened in my project folder without me typing a thing</label>
+    </div>
   </div>
 </div>
 
