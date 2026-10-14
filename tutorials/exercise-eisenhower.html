@@ -270,6 +270,35 @@
     margin-top: 20px;
   }
   .reset-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+
+  /* ---- EDITABLE CODE BLOCKS (same as index.html) ---- */
+  .code-edit {
+    display: block;
+    width: 100%;
+    background: rgba(0,0,0,0.25);
+    color: #cdd6f4;
+    border: 1px dashed #585b70;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    resize: vertical;
+    overflow: hidden;
+  }
+  .code-edit:focus { outline: none; border: 1px solid #89b4fa; }
+  .code-block .copy-btn.ghost {
+    right: 84px;
+    background: transparent;
+    border: 1px solid #585b70;
+    color: #a6adc8;
+  }
+  .code-block .copy-btn.ghost:hover { border-color: #cdd6f4; color: #fff; background: transparent; }
+
+  .warning-note {
+    background: #fbe9e7; border-left: 4px solid #e74c3c; padding: 12px 16px;
+    border-radius: 0 6px 6px 0; margin: 10px 0; font-size: 13px; line-height: 1.6;
+  }
 </style>
 </head>
 <body>
@@ -347,7 +376,8 @@
     <div class="section-title">Set Up the Project</div>
   </div>
   <div class="step-body">
-    <p>Every project gets its own folder. Open Command Prompt (Start menu &rarr; type <strong>cmd</strong> &rarr; press Enter) and create one for this exercise:</p>
+    <p>Every exercise is its own project, so it gets its own folder and its own launcher.</p>
+    <p><strong>Make the folder.</strong> Open Command Prompt (Start menu &rarr; type <strong>cmd</strong> &rarr; press Enter), paste this line, and press Enter. That's all Command Prompt is for here; you can close it afterward.</p>
     <div class="cmd-block">
       <span class="cmd-text">mkdir C:\dev\EisenhowerMatrix</span>
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
@@ -355,29 +385,25 @@
 
     <div class="substep" data-step="2-1">
       <input type="checkbox" id="s2-1">
-      <label for="s2-1">Opened Command Prompt and created the project folder with <code>mkdir</code></label>
+      <label for="s2-1">Made the project folder <code>C:\dev\EisenhowerMatrix</code></label>
     </div>
 
-    <p>Now navigate there:</p>
-    <div class="cmd-block">
-      <span class="cmd-text">cd C:\dev\EisenhowerMatrix</span>
-      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-    </div>
+    <p><strong>Give this project its own launcher.</strong> Same recipe as the <code>Launch Claude.bat</code> you made on Page 1 (<a href="index.html#launcher">full how-to, plus the Mac version</a>). Open Notepad, copy these three lines in, then choose <strong>File</strong> &rarr; <strong>Save As</strong>, set <strong>Save as type</strong> to <strong>All files (*.*)</strong>, and save it as <code>C:\dev\Launch EisenhowerMatrix.bat</code>.</p>
+    <div class="code-block"><span class="code-label">Launch EisenhowerMatrix.bat &mdash; editable</span><button class="copy-btn" onclick="copyEdit(this)">Copy</button><button class="copy-btn ghost" onclick="resetEdit(this)">Reset</button><textarea class="code-edit" spellcheck="false" rows="3">@echo off
+cd /d "C:\dev\EisenhowerMatrix"
+claude</textarea></div>
+    <div class="warning-note"><strong>Watch for <code>.txt</code> on the end.</strong> If the file shows up as <code>Launch EisenhowerMatrix.bat.txt</code>, rename it and delete the <code>.txt</code>.</div>
 
     <div class="substep" data-step="2-2">
       <input type="checkbox" id="s2-2">
-      <label for="s2-2">Navigated to the project folder</label>
+      <label for="s2-2">Saved <code>Launch EisenhowerMatrix.bat</code> in <code>C:\dev</code></label>
     </div>
 
-    <p>Start Claude Code:</p>
-    <div class="cmd-block">
-      <span class="cmd-text">claude</span>
-      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-    </div>
+    <p><strong>Start Claude.</strong> Double-click <code>Launch EisenhowerMatrix.bat</code>. Claude opens, already standing in your project folder. Any time you come back to this exercise, double-click it again.</p>
 
     <div class="substep" data-step="2-3">
       <input type="checkbox" id="s2-3">
-      <label for="s2-3">Claude is running and waiting for input</label>
+      <label for="s2-3">Double-clicked the launcher and Claude is running in the project folder</label>
     </div>
 
     <p>First things first &mdash; let's have Claude set up the project files. Notice what's <em>not</em> in this prompt: who you are or how you work. Your global CLAUDE.md already covers that &mdash; the project CLAUDE.md only carries rules specific to <em>this</em> build. Give it this prompt:</p>
@@ -724,6 +750,33 @@ I close and reopen the browser."
       updateProgress();
     }
   }
+
+
+  /* ---- Editable code blocks (same as index.html) ---- */
+  function autoResize(ta) {
+    ta.style.height = 'auto';
+    ta.style.height = (ta.scrollHeight + 4) + 'px';
+  }
+
+  function copyEdit(btn) {
+    const ta = btn.closest('.code-block').querySelector('.code-edit');
+    navigator.clipboard.writeText(ta.value).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function resetEdit(btn) {
+    const ta = btn.closest('.code-block').querySelector('.code-edit');
+    ta.value = ta.defaultValue;
+    autoResize(ta);
+  }
+
+  document.querySelectorAll('.code-edit').forEach(ta => {
+    autoResize(ta);
+    ta.addEventListener('input', () => autoResize(ta));
+  });
 
   loadState();
 </script>

@@ -143,6 +143,30 @@
     padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; margin-top: 20px;
   }
   .reset-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+
+  /* ---- EDITABLE CODE BLOCKS (same as index.html) ---- */
+  .code-edit {
+    display: block;
+    width: 100%;
+    background: rgba(0,0,0,0.25);
+    color: #cdd6f4;
+    border: 1px dashed #585b70;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    resize: vertical;
+    overflow: hidden;
+  }
+  .code-edit:focus { outline: none; border: 1px solid #89b4fa; }
+  .code-block .copy-btn.ghost {
+    right: 84px;
+    background: transparent;
+    border: 1px solid #585b70;
+    color: #a6adc8;
+  }
+  .code-block .copy-btn.ghost:hover { border-color: #cdd6f4; color: #fff; background: transparent; }
 </style>
 </head>
 <body>
@@ -258,7 +282,7 @@
       <strong>If it says <em>"'python' is not recognized"</em>, or the Microsoft Store pops open</strong> &mdash; Windows can't find Python yet. Two things to try, in order:
       <ol style="margin: 8px 0 0 18px; padding: 0;">
         <li>Close every Command Prompt window and open a brand new one. A window opened before the install can't see it.</li>
-        <li>Start Claude Code in that new window and say: <em>"python --version isn't working after I installed Python. Fix my PATH."</em> This is exactly the kind of thing it sorts out for you.</li>
+        <li>Double-click the <code>Launch Claude.bat</code> you made on Page 1 and tell Claude: <em>"python --version isn't working after I installed Python. Fix my PATH."</em> This is exactly the kind of thing it sorts out for you.</li>
       </ol>
       If the Microsoft Store opens instead of printing a version, that's a Windows placeholder, not Python &mdash; close the Store and re-run the installer from <a href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener">python.org</a>.
     </div>
@@ -408,29 +432,34 @@
     <div class="section-title">Set Up the Project</div>
   </div>
   <div class="step-body">
-    <div class="substep" data-step="4-1">
-      <input type="checkbox" id="s4-1">
-      <label for="s4-1">Create a new folder: <code>C:\dev\BillImporter</code></label>
-    </div>
-
+    <p>Each exercise is its own project, so it gets its own folder and its own launcher.</p>
+    <p><strong>Make the folder.</strong> Open Command Prompt (Start menu &rarr; type <strong>cmd</strong> &rarr; press Enter), paste this line, and press Enter. That's all Command Prompt is for here; you can close it afterward.</p>
     <div class="cmd-block">
-      <span class="cmd-text">cd C:\dev\BillImporter</span>
+      <span class="cmd-text">mkdir C:\dev\BillImporter</span>
       <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
     </div>
+
+    <div class="substep" data-step="4-1">
+      <input type="checkbox" id="s4-1">
+      <label for="s4-1">Made the project folder <code>C:\dev\BillImporter</code></label>
+    </div>
+
+    <p><strong>Give this project its own launcher.</strong> Same recipe as the <code>Launch Claude.bat</code> you made on Page 1 (<a href="index.html#launcher">full how-to, plus the Mac version</a>). Open Notepad, copy these three lines in, then choose <strong>File</strong> &rarr; <strong>Save As</strong>, set <strong>Save as type</strong> to <strong>All files (*.*)</strong>, and save it as <code>C:\dev\Launch BillImporter.bat</code>.</p>
+    <div class="code-block"><span class="code-label">Launch BillImporter.bat &mdash; editable</span><button class="copy-btn" onclick="copyEdit(this)">Copy</button><button class="copy-btn ghost" onclick="resetEdit(this)">Reset</button><textarea class="code-edit" spellcheck="false" rows="3">@echo off
+cd /d "C:\dev\BillImporter"
+claude</textarea></div>
+    <div class="warning-note"><strong>Watch for <code>.txt</code> on the end.</strong> If the file shows up as <code>Launch BillImporter.bat.txt</code>, rename it and delete the <code>.txt</code>.</div>
 
     <div class="substep" data-step="4-2">
       <input type="checkbox" id="s4-2">
-      <label for="s4-2">Opened Command Prompt (Start menu &rarr; type <strong>cmd</strong> &rarr; press Enter) and navigated to the folder</label>
+      <label for="s4-2">Saved <code>Launch BillImporter.bat</code> in <code>C:\dev</code></label>
     </div>
 
-    <div class="cmd-block">
-      <span class="cmd-text">claude</span>
-      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
-    </div>
+    <p><strong>Start Claude.</strong> Double-click <code>Launch BillImporter.bat</code>. Claude opens, already standing in your project folder. Any time you come back to this exercise, double-click it again.</p>
 
     <div class="substep" data-step="4-3">
       <input type="checkbox" id="s4-3">
-      <label for="s4-3">Started Claude Code</label>
+      <label for="s4-3">Double-clicked the launcher and Claude is running in the project folder</label>
     </div>
 
     <p>First, have Claude set up the project structure. This prompt includes your Intuit credentials &mdash; <strong>replace the placeholders</strong> with your actual values:</p>
@@ -909,6 +938,33 @@ After building, start the Flask server so I can test.</div>
       updateProgress();
     }
   }
+
+
+  /* ---- Editable code blocks (same as index.html) ---- */
+  function autoResize(ta) {
+    ta.style.height = 'auto';
+    ta.style.height = (ta.scrollHeight + 4) + 'px';
+  }
+
+  function copyEdit(btn) {
+    const ta = btn.closest('.code-block').querySelector('.code-edit');
+    navigator.clipboard.writeText(ta.value).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function resetEdit(btn) {
+    const ta = btn.closest('.code-block').querySelector('.code-edit');
+    ta.value = ta.defaultValue;
+    autoResize(ta);
+  }
+
+  document.querySelectorAll('.code-edit').forEach(ta => {
+    autoResize(ta);
+    ta.addEventListener('input', () => autoResize(ta));
+  });
 
   loadState();
 </script>
