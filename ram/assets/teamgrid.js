@@ -18,7 +18,14 @@
 
    Wide screens: one grid, sticky skill column and sticky name row, scrolling sideways inside its own box only.
    Narrow screens (under 700px): "One person" (pick a person, key their skills top to bottom) and "One skill"
-   (pick a skill, see everyone). Print: the grid on landscape pages. */
+   (pick a skill, see everyone). Print: the grid on landscape pages.
+
+   Self-rated (2026-10-15): numbers loaded from a man's own skills sheet are saved under the author SELF_BY; the one
+   line the sheet's "Checked by" column marked is saved under CHK_BY + who checked it. Such a box carries a corner
+   mark and says so when pointed at; anything typed on the page later is saved under the typist's name as before.
+   "Where training stands" at the top is worked out from the record every time it is drawn: sheets in (a person on
+   the grid whose flag starts with "No skills sheet" is not counted), who is still out, the pump-set skills with who
+   self-rates 3, and the skills nobody with a sheet rates above 1. No names live in this file. */
 (function () {
   "use strict";
   var R = window.RAM;
@@ -26,12 +33,17 @@
   var Q = TEST ? "?as=TEST" : "";
   var WHO_KEY = R.NS.slice(1) + "_team_who";
   var VIEW_KEY = R.NS.slice(1) + "_team_view";
-  var CSS_V = "2";
+  var CSS_V = "3";
   var SCALE = [[0, "Never done it"], [1, "Done it with help"], [2, "Can do it alone, every time"], [3, "Can teach it to someone else"]];
   var S = null, who = "", busy = false, sending = false, lastError = "";
   var local = {};   /* "T:<s>:<p>|<field>" -> {key, field, value, st: queued | sending | failed} : changes not yet confirmed */
   var okAt = {};    /* same key -> time the server confirmed it, for the short "saved" mark */
   var view = { mode: "person", person: "", skill: "" };
+  var SELF_BY = "Skills sheet (self-rated)";
+  var CHK_BY = "Skills sheet, checked by ";
+  var NO_SHEET = /^No skills sheet/i;
+  /* setting a pump: the skills the job leans on (from the 10/15 seven-sheet read) */
+  var PUMP_SET = ["s4_01", "s4_03", "s4_06", "s4_02", "s4_04", "s4_07", "s6_03", "s1_10", "s2_08", "s2_09", "s2_10", "s6_10", "s6_12", "s6_11"];
 
   function $(id) { return document.getElementById(id); }
   function mk(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined && text !== null) n.textContent = text; return n; }
@@ -68,6 +80,20 @@
   function shown(sid, pid, field) { var h = held(sid, pid, field); return h ? h.value : saved(sid, pid, field); }
   function rate(sid, pid) { var v = shown(sid, pid, "r"); return v === null || v === undefined || v === "" ? null : Number(v); }
   function isOn(sid, pid) { return shown(sid, pid, "v") === "1"; }
+  /* where a box's value came from: "self" (his own sheet), "chk" (the sheet's Checked by column), or "" */
+  function origin(sid, pid, field) {
+    if (held(sid, pid, field)) return "";
+    var c = cell(sid, pid, field); if (!c || c.v === null || c.v === "") return "";
+    if (c.by === SELF_BY) return "self";
+    return c.by && c.by.indexOf(CHK_BY) === 0 ? "chk" : "";
+  }
+  function checkedBy(sid, pid, field) { var c = cell(sid, pid, field); return c && c.by ? c.by.slice(CHK_BY.length) : ""; }
+  function originText(sid, pid, field) {
+    var o = origin(sid, pid, field);
+    if (o === "self") return " Self-rated on his own skills sheet; not checked by a supervisor yet.";
+    if (o === "chk") return " From his skills sheet; the Checked by column is marked (checked by " + checkedBy(sid, pid, field) + ").";
+    return "";
+  }
   /* the name on the grid: the first name, or the whole name when two people on the grid share a first name */
   function shortName(p) {
     var full = fv(p, "name"), first = full.split(" ")[0];
@@ -98,11 +124,11 @@
     if (s && isYN(s)) {
       var t = cell(sid, pid, "v"), x = saved(sid, pid, "x");
       if (!t) return head + "not entered yet.";
-      return head + (t.v === "1" ? "yes" : "blank") + (x ? ", runs out " + showDate(x) : "") + ", changed by " + t.by + ", " + R.fmtTs(t.ts) + ".";
+      return head + (t.v === "1" ? "yes" : "blank") + (x ? ", runs out " + showDate(x) : "") + ", changed by " + t.by + ", " + R.fmtTs(t.ts) + "." + originText(sid, pid, "v");
     }
     var c = cell(sid, pid, "r");
     if (!c) return head + "not entered yet.";
-    return head + (c.v === null || c.v === "" ? "blanked" : c.v) + " by " + c.by + ", " + R.fmtTs(c.ts) + ".";
+    return head + (c.v === null || c.v === "" ? "blanked" : c.v) + " by " + c.by + ", " + R.fmtTs(c.ts) + "." + originText(sid, pid, "r");
   }
 
   /* ---------- start ---------- */
@@ -166,6 +192,58 @@
     main.addEventListener("focusin", onFocus);
   }
 
+  /* ---------- where training stands (top of the page, for the office) ---------- */
+  function hasSheet(p) {
+    return S.skills.some(function (s) { return origin(s.id, p.id, isYN(s) ? "v" : "r") !== ""; });
+  }
+  function fillStand() {
+    var box = $("tgStand"); if (!box || !S) return;
+    box.innerHTML = "";
+    var crew = people("grid").filter(function (p) { return !NO_SHEET.test(fv(p, "flag")); });
+    var inn = crew.filter(hasSheet), out = crew.filter(function (p) { return !hasSheet(p); });
+    var h = mk("h2", null, "Where team training stands"); h.id = "tgStandHead"; box.appendChild(h);
+    var p1 = mk("p", "tgsline"); p1.id = "tgSheetsIn";
+    p1.appendChild(mk("b", null, "Skills sheets in: " + inn.length + " of " + crew.length + "."));
+    if (out.length) p1.appendChild(document.createTextNode(" Still out: " + out.map(shortName).join(", ") + "."));
+    box.appendChild(p1);
+    var lg = mk("p", "tgsline"); lg.id = "tgStandKey";
+    lg.appendChild(document.createTextNode("0 never done it, 1 done it with help, 2 alone every time, 3 can teach it. "));
+    lg.appendChild(mk("span", "tgselfmark", ""));
+    lg.appendChild(document.createTextNode(" Self-rated: every number from a sheet is the man's own claim until a supervisor checks it (watches him do it, then watches him teach it)."));
+    box.appendChild(lg);
+    var rated = function (s) { return !isYN(s) && !fv(s, "archived"); };
+    var pump = PUMP_SET.map(function (id) { return byId(S.skills, id); }).filter(function (s) { return s && rated(s); });
+    if (pump.length && inn.length) {
+      var d = mk("div", "tgspump"); d.id = "tgPumpSet";
+      d.appendChild(mk("h3", null, "Setting a pump: who says he can teach each skill"));
+      d.appendChild(mk("p", "tgsnote", "Self-rated 3s: candidates to teach, not proven."));
+      var ul = mk("ul", "tgslist");
+      pump.forEach(function (s) {
+        var li = mk("li"); li.setAttribute("data-pump", s.id);
+        li.appendChild(mk("b", null, fv(s, "title") + ": "));
+        var who3 = inn.filter(function (p) { return rate(s.id, p.id) === 3; }).map(function (p) {
+          return shortName(p) + (origin(s.id, p.id, "r") === "chk" ? " (checked by " + checkedBy(s.id, p.id, "r") + ")" : "");
+        });
+        li.appendChild(document.createTextNode(who3.length ? who3.join(", ") : "nobody yet"));
+        ul.appendChild(li);
+      });
+      d.appendChild(ul);
+      box.appendChild(d);
+    }
+    var gaps = S.skills.filter(rated).filter(function (s) {
+      return inn.length > 0 && inn.every(function (p) { var v = rate(s.id, p.id); return v !== null && v <= 1; });
+    });
+    if (inn.length) {
+      var g = mk("div", "tgsgap"); g.id = "tgGaps";
+      g.appendChild(mk("h3", null, "Nobody of the " + inn.length + " with a sheet rates above 1"));
+      var gl = mk("ul", "tgslist");
+      if (!gaps.length) gl.appendChild(mk("li", null, "None."));
+      gaps.forEach(function (s) { var li = mk("li", null, fv(s, "title")); li.setAttribute("data-gap", s.id); gl.appendChild(li); });
+      g.appendChild(gl);
+      box.appendChild(g);
+    }
+  }
+
   /* ---------- drawing ---------- */
   function scaleKey() {
     var k = mk("div", "tgkey"); k.id = "tgKey";
@@ -192,6 +270,9 @@
     main.innerHTML = "";
     main.appendChild(mk("h1", null, "Team skills"));
     main.appendChild(mk("p", "tgintro", "Type a number in each box. It saves by itself and moves down to the next skill."));
+    var stand = mk("section", "tgstand"); stand.id = "tgStand"; stand.setAttribute("aria-labelledby", "tgStandHead");
+    main.appendChild(stand);
+    fillStand();
     main.appendChild(scaleKey());
     main.appendChild(gridView());
     main.appendChild(narrowView());
@@ -351,6 +432,11 @@
     el.classList.toggle("is-wait", !!h && h.st !== "failed");
     el.classList.toggle("is-err", !!h && h.st === "failed");
     el.classList.toggle("is-ok", !h && !!okAt[lk] && Date.now() - okAt[lk] < 2500);
+    if (f !== "x") {
+      var og = origin(sid, pid, f), host = f === "v" && el.parentNode ? el.parentNode : el;
+      host.classList.toggle("is-self", og === "self");
+      host.classList.toggle("is-chk", og === "chk");
+    }
     if (f === "r") {
       var v = rate(sid, pid), t = v === null ? "" : String(v);
       if (el.value !== t) el.value = t;
@@ -373,6 +459,7 @@
     var main = $("tgMain"); if (!main) return;
     each(".tgnum, .tgbox, .tgexp", paint, main);
     counts();
+    fillStand();
   }
   function counts() {
     var ppl = people("grid"), sk = skills(null, false);
