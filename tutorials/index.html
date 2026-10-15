@@ -325,6 +325,14 @@
   }
   .reset-btn:hover { border-color: #e74c3c; color: #e74c3c; }
 
+  /* ---- OPTIONAL SECTION + COLLAPSIBLE CODE ---- */
+  .section.optional { border-left-color: #FFCD00; }
+  .section.optional.done { border-left-color: #27ae60; }
+  #bank { scroll-margin-top: 110px; }
+  @media (max-width: 600px) { #bank { scroll-margin-top: 170px; } }
+  details.sf-code { margin: 8px 0 4px; }
+  details.sf-code summary { cursor: pointer; color: #1A3C6E; font-weight: 600; padding: 6px 0; }
+
   /* ---- EDITABLE CODE BLOCKS ---- */
   .code-edit {
     display: block;
@@ -1338,6 +1346,376 @@ Newest first.
   </div>
 </div>
 
+<!-- ==================== SECTION 10: CONNECT YOUR BANK (OPTIONAL) ==================== -->
+<div class="section optional" id="section10">
+  <div class="section-header">
+    <div class="step-number">10</div>
+    <div class="section-title" id="bank">Connect Your Bank (optional)</div>
+  </div>
+  <div class="step-body">
+    <div class="note"><strong>Optional, and not part of your score.</strong> The basics are done once Section 9 is ticked. Do this one only if you want your Claude to look at your bank and card activity for you. Skipping it costs you nothing.</div>
+
+    <p>Once Claude can see your bank activity, it can do things like check your books against the bank, flag a charge you don't recognize, or tell you what cleared last week, without you downloading a single statement. The service that makes that possible is called <strong>SimpleFIN Bridge</strong>.</p>
+
+    <div class="explain-box">
+      <strong>What SimpleFIN Bridge is, in plain words:</strong>
+      <ul style="margin: 8px 0;">
+        <li>A small paid service at <a href="https://simplefin.org" target="_blank" rel="noopener">simplefin.org</a> that lets your Claude <strong>read</strong> your bank and card activity: balances and transactions.</li>
+        <li><strong>It is read-only.</strong> Nobody can move money, pay a bill or change anything with it.</li>
+        <li><strong>It costs around 50 cents per bank per month.</strong> Prices change, so check their pricing page before you sign up.</li>
+        <li><strong>It refreshes about once a day.</strong> It is not a live, to-the-minute feed.</li>
+        <li><strong>It only has data from the day you connect forward.</strong> It cannot go back and fetch last year. Connect early if you want history to build up.</li>
+        <li>Your bank password is typed into SimpleFIN Bridge when you connect, and is not inside the link your Claude uses.</li>
+      </ul>
+    </div>
+
+    <div class="warning-note"><strong>The honest caveats.</strong> SimpleFIN Bridge is a small service, mostly used by personal-finance apps. Not every bank connects, and some connect only some of their accounts. The only way to know is to try yours. If yours doesn't connect, you've lost very little: stop here and carry on with the exercises.</div>
+
+    <div class="warning-note"><strong>Treat the access link like a password.</strong> When you set this up, SimpleFIN gives you an <strong>access link</strong>. Whoever holds that link can read every connected account until you turn it off. So: never paste it into a chat (including this one with Claude), a document, an email or a note, and never keep it in a shared or cloud-synced folder (OneDrive, Dropbox, Google Drive) or on GitHub. It lives in one file on your computer and nowhere else.</div>
+
+    <h3 style="color:#1A3C6E; font-size:16px; margin:22px 0 8px;">Keep an access log</h3>
+    <p>Here's the habit that makes this safe: your Claude <strong>never</strong> talks to SimpleFIN directly. Every call goes through one small program, <code>simplefin_pull.py</code>, that writes a row in a log on your computer <strong>before</strong> each call: the time, the computer's name, your internet address, who asked and why, and what was pulled. If you ever wonder "was that me?", the log answers it.</p>
+
+    <p><strong>1. Make a folder for it.</strong> Inside your project folder, make a folder named <code>simplefin</code> (so it ends up as <code>C:\dev\&lt;your project&gt;\simplefin\</code>). Or just tell Claude:</p>
+    <div class="cmd-block">
+      <span class="cmd-text">Make a folder called simplefin in this project. I'm about to save a program into it called simplefin_pull.py.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <p><strong>2. Save the program into that folder</strong> as <code>simplefin_pull.py</code>, exactly as written. Click <strong>Download</strong> (then move the file from your Downloads folder into <code>simplefin</code>), or open the code, click <strong>Copy</strong>, paste it into Notepad and save it with <strong>Save as type: All files</strong>, the same way you made the launcher. It uses plain Python with nothing extra to install. If you don't have Python yet, ask Claude to check and install it for you.</p>
+    <details class="sf-code">
+      <summary>Show the code (simplefin_pull.py)</summary>
+      <div class="code-block"><span class="code-label">simplefin_pull.py &mdash; save exactly as written</span><button class="copy-btn" onclick="copyEdit(this)">Copy</button><button class="copy-btn ghost" onclick="downloadCode(this, 'simplefin_pull.py')">Download</button><textarea class="code-edit" spellcheck="false" readonly rows="12" style="max-height:440px; overflow:auto;">"""simplefin_pull.py - the ONLY way this computer talks to SimpleFIN Bridge.
+
+Lives in its own folder (for example C:\\dev\\&lt;your project&gt;\\simplefin\\) next to:
+  .env                       one line: SIMPLEFIN_ACCESS_URL=https://...   (made by "claim"; never shared, never printed)
+  simplefin_access_log.csv   one row per call to SimpleFIN, written BEFORE the call, result filled in after
+  pulls\\                     the data each pull brought back (JSON, one file per pull)
+
+Commands (run from this folder):
+  python simplefin_pull.py claim [--replace]          turn a one-time setup token into the access link (.env)
+  python simplefin_pull.py accounts [options]         pull accounts and transactions
+        --start YYYY-MM-DD   first day (default: 7 days ago; SimpleFIN allows 90 days back per pull at most)
+        --end YYYY-MM-DD     last day (default: today)
+        --balances-only      balances only, no transactions
+        --why "reason"       who asked and why (default: "my Claude")
+  python simplefin_pull.py log [N]                    show the last N rows of the access log (default 20)
+
+Standard library only. Known SimpleFIN behaviour built in:
+  - the access link carries user:pass inside it; urllib cannot use that form, so it is split into a Basic-auth header
+  - the bridge refuses Python's default User-Agent (403), so a browser User-Agent is sent
+  - a setup token works ONCE; the claim saves the access link in the same run
+  - about 24 calls a day are allowed; this script warns from the 20th call of the day
+  - data exists only from the day the bank was connected; a pull covers at most 90 days
+"""
+import base64
+import csv
+import datetime as dt
+import getpass
+import json
+import os
+import platform
+import sys
+import urllib.error
+import urllib.parse
+import urllib.request
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ENV = os.path.join(HERE, ".env")
+LOG = os.path.join(HERE, "simplefin_access_log.csv")
+PULLS = os.path.join(HERE, "pulls")
+UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+      "Chrome/124.0 Safari/537.36")
+COLS = ["row", "local_time", "computer", "windows_user", "public_ip", "who_asked", "what", "result"]
+DAILY_WARN = 20
+
+
+# ------------------------------------------------------------------ the log
+def _now():
+    t = dt.datetime.now().astimezone()
+    return t.strftime("%Y-%m-%d %H:%M:%S ") + (t.tzname() or t.strftime("%z"))
+
+
+def _public_ip():
+    try:
+        req = urllib.request.Request("https://api.ipify.org", headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=6) as r:
+            ip = r.read().decode("ascii", "replace").strip()
+            return ip if 0 &lt; len(ip) &lt; 60 else "unknown"
+    except Exception:
+        return "unknown"
+
+
+def _read_rows():
+    if not os.path.exists(LOG):
+        return []
+    with open(LOG, newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+
+def _write_rows(rows):
+    tmp = LOG + ".tmp"
+    with open(tmp, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=COLS)
+        w.writeheader()
+        for r in rows:
+            w.writerow({k: r.get(k, "") for k in COLS})
+    os.replace(tmp, LOG)
+
+
+def log_before(who, what):
+    """Append the row BEFORE anything is sent. Returns the row number."""
+    rows = _read_rows()
+    today = dt.date.today().strftime("%Y-%m-%d")
+    n_today = sum(1 for r in rows if r.get("local_time", "").startswith(today))
+    if n_today &gt;= DAILY_WARN:
+        print("Warning: this is call number %d today. SimpleFIN allows about 24 a day." % (n_today + 1))
+    row = {"row": str(len(rows) + 1), "local_time": _now(),
+           "computer": os.environ.get("COMPUTERNAME") or platform.node() or "unknown",
+           "windows_user": getpass.getuser(), "public_ip": _public_ip(),
+           "who_asked": who, "what": what, "result": "pending"}
+    new = not os.path.exists(LOG)
+    with open(LOG, "a", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=COLS)
+        if new:
+            w.writeheader()
+        w.writerow(row)
+    return row["row"]
+
+
+def log_after(rowno, result):
+    rows = _read_rows()
+    for r in rows:
+        if r.get("row") == rowno:
+            r["result"] = result
+    _write_rows(rows)
+
+
+def show_log(n=20):
+    rows = _read_rows()[-n:]
+    if not rows:
+        print("The log is empty: nothing has called SimpleFIN from this computer yet.")
+        return
+    cols = ["row", "local_time", "computer", "windows_user", "public_ip", "who_asked", "what", "result"]
+    width = {c: max(len(c), *(len(r.get(c, "")) for r in rows)) for c in cols}
+    print("  ".join(c.ljust(width[c]) for c in cols))
+    print("  ".join("-" * width[c] for c in cols))
+    for r in rows:
+        print("  ".join(r.get(c, "").ljust(width[c]) for c in cols))
+
+
+# ------------------------------------------------------------------ the access link
+def read_access_url():
+    if not os.path.exists(ENV):
+        sys.exit("No .env here yet. Run:  python simplefin_pull.py claim")
+    with open(ENV, encoding="utf-8") as f:
+        for line in f:
+            if line.strip().startswith("SIMPLEFIN_ACCESS_URL="):
+                return line.split("=", 1)[1].strip()
+    sys.exit("The .env file has no SIMPLEFIN_ACCESS_URL line. Run:  python simplefin_pull.py claim")
+
+
+def split_auth(access_url):
+    """https://user:pass@host/path  -&gt;  (https://host/path, 'Basic ...')"""
+    p = urllib.parse.urlsplit(access_url)
+    if not (p.username and p.password):
+        sys.exit("The access link in .env does not look right (no user:pass part). Make a new one (see 'Lock it and make a new link').")
+    netloc = p.hostname + (":%d" % p.port if p.port else "")
+    base = urllib.parse.urlunsplit((p.scheme, netloc, p.path.rstrip("/"), "", ""))
+    token = base64.b64encode(("%s:%s" % (urllib.parse.unquote(p.username),
+                                         urllib.parse.unquote(p.password))).encode()).decode()
+    return base, "Basic " + token
+
+
+def claim(replace=False):
+    if os.path.exists(ENV) and not replace:
+        sys.exit("There is already an access link in .env. To swap in a new one, run:  "
+                 "python simplefin_pull.py claim --replace")
+    print("Paste the setup token from SimpleFIN Bridge and press Enter.")
+    print("(Nothing shows while you paste. That is on purpose.)")
+    tok = getpass.getpass("Setup token: ").strip()
+    try:
+        claim_url = base64.b64decode(tok + "=" * (-len(tok) % 4)).decode("utf-8").strip()
+    except Exception:
+        sys.exit("That does not look like a setup token. Copy it again from SimpleFIN Bridge.")
+    if not claim_url.startswith("https://"):
+        sys.exit("That does not look like a setup token. Copy it again from SimpleFIN Bridge.")
+    rowno = log_before("my Claude (setup)", "claim setup token -&gt; new access link")
+    req = urllib.request.Request(claim_url, data=b"", method="POST",
+                                 headers={"User-Agent": UA, "Content-Length": "0"})
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            access = r.read().decode("utf-8").strip()
+    except urllib.error.HTTPError as e:
+        log_after(rowno, "error %s" % e.code)
+        sys.exit("SimpleFIN said no (code %s). A setup token works only once: make a new one and try again." % e.code)
+    except Exception as e:
+        log_after(rowno, "error %s" % type(e).__name__)
+        sys.exit("Could not reach SimpleFIN (%s). Check the internet and try again with a NEW token." % type(e).__name__)
+    if not access.startswith("https://") or "@" not in access:
+        log_after(rowno, "error bad reply")
+        sys.exit("SimpleFIN's answer did not look like an access link. Make a new setup token and try again.")
+    with open(ENV, "w", encoding="utf-8") as f:
+        f.write("SIMPLEFIN_ACCESS_URL=" + access + "\n")
+    log_after(rowno, "ok")
+    print("Done. The access link is saved in .env in this folder. It was not shown and is not in the log.")
+
+
+# ------------------------------------------------------------------ a pull
+def _day(s, name):
+    try:
+        return dt.datetime.strptime(s, "%Y-%m-%d").date()
+    except ValueError:
+        sys.exit("%s must look like 2026-10-15" % name)
+
+
+def accounts(start=None, end=None, balances_only=False, why="my Claude"):
+    today = dt.date.today()
+    end_d = _day(end, "--end") if end else today
+    start_d = _day(start, "--start") if start else end_d - dt.timedelta(days=7)
+    if (end_d - start_d).days &gt; 90:
+        sys.exit("SimpleFIN gives at most 90 days per pull. Pick a shorter window.")
+    base, auth = split_auth(read_access_url())
+    q = {"start-date": int(dt.datetime.combine(start_d, dt.time.min).astimezone().timestamp()),
+         "end-date": int(dt.datetime.combine(end_d + dt.timedelta(days=1), dt.time.min).astimezone().timestamp())}
+    if balances_only:
+        q["balances-only"] = 1
+    what = "accounts %s to %s%s" % (start_d, end_d, ", balances only" if balances_only else ", with transactions")
+    rowno = log_before(why, what)
+    req = urllib.request.Request(base + "/accounts?" + urllib.parse.urlencode(q),
+                                 headers={"User-Agent": UA, "Authorization": auth})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            data = json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        log_after(rowno, "error %s" % e.code)
+        msg = {403: "SimpleFIN refused the link (403). If it was revoked on purpose, make a new one (see 'Lock it and make a new link')."}
+        sys.exit(msg.get(e.code, "SimpleFIN answered with error code %s." % e.code))
+    except Exception as e:
+        log_after(rowno, "error %s" % type(e).__name__)
+        sys.exit("Could not reach SimpleFIN (%s)." % type(e).__name__)
+    errs = data.get("errors") or []
+    log_after(rowno, "ok" + (" (bank messages: %d)" % len(errs) if errs else ""))
+    os.makedirs(PULLS, exist_ok=True)
+    out = os.path.join(PULLS, "pull_%s_row%s.json" % (dt.datetime.now().strftime("%Y%m%d_%H%M%S"), rowno))
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=1)
+    for a in data.get("accounts") or []:
+        print("%-40s balance %12s  as of %s  transactions %d" % (
+            (a.get("org") or {}).get("name", "") + " " + str(a.get("name", "")), a.get("balance", ""),
+            dt.datetime.fromtimestamp(int(a.get("balance-date") or 0)).strftime("%Y-%m-%d %H:%M"),
+            len(a.get("transactions") or [])))
+    for m in errs:
+        print("Message from the bank connection: %s" % m)
+    print("Saved: %s" % out)
+
+
+def main(argv):
+    if not argv or argv[0] in ("-h", "--help", "help"):
+        print(__doc__)
+        return
+    cmd, rest = argv[0], argv[1:]
+    if cmd == "log":
+        show_log(int(rest[0]) if rest and rest[0].isdigit() else 20)
+    elif cmd == "claim":
+        claim(replace="--replace" in rest)
+    elif cmd == "accounts":
+        opts = {"start": None, "end": None, "balances_only": False, "why": "my Claude"}
+        i = 0
+        while i &lt; len(rest):
+            a = rest[i]
+            if a == "--balances-only":
+                opts["balances_only"] = True
+            elif a in ("--start", "--end", "--why") and i + 1 &lt; len(rest):
+                opts[a[2:]] = rest[i + 1]
+                i += 1
+            else:
+                sys.exit("Unknown option: %s" % a)
+            i += 1
+        accounts(**opts)
+    else:
+        sys.exit("Unknown command. Use: claim, accounts, log")
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])</textarea></div>
+    </details>
+    <p style="margin-top:10px;">The program also keeps the data each pull brings back in a <code>pulls</code> folder next to it, so Claude can work from a saved copy instead of calling the bank again.</p>
+
+    <p><strong>3. Keep the link out of GitHub and out of the cloud.</strong> The access link will live in a file called <code>.env</code> in the <code>simplefin</code> folder. Tell Claude:</p>
+    <div class="cmd-block">
+      <span class="cmd-text">Add simplefin/.env and simplefin/pulls/ to this project's .gitignore so they never go to GitHub. If this project folder is backed up or synced to OneDrive or anywhere else, change that so simplefin\.env is left out, and show me it is.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <p><strong>4. Teach Claude the rule</strong>, so it holds in every future session. Tell Claude:</p>
+    <div class="cmd-block">
+      <span class="cmd-text">Add this rule to this project's CLAUDE.md: Only ever reach SimpleFIN through simplefin\simplefin_pull.py, always say why with --why, never open, print or copy simplefin\.env, and pull once for what you need instead of repeating pulls.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+
+    <h3 style="color:#1A3C6E; font-size:16px; margin:22px 0 8px;">Connect your bank</h3>
+    <ul>
+      <li><strong>Open your own account</strong> at <a href="https://simplefin.org" target="_blank" rel="noopener">simplefin.org</a> and follow their sign-up.</li>
+      <li><strong>Connect each bank and card</strong> you want Claude to see, one at a time. You type the bank login into SimpleFIN Bridge yourself; Claude never sees it. If this is for your business, connect business accounts only.</li>
+      <li><strong>Make a setup token</strong> in your SimpleFIN Bridge account. A setup token is a long code that works <strong>once</strong>: the program trades it for the access link.</li>
+    </ul>
+
+    <p><strong>Claim the token yourself, not through the chat.</strong> Open a fresh Command Prompt (Start menu &rarr; type <strong>cmd</strong> &rarr; Enter), go to the simplefin folder, and run the claim. Change <code>Sandbox</code> if your project has a different name.</p>
+    <div class="cmd-block">
+      <span class="cmd-text">cd /d "C:\dev\Sandbox\simplefin"</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+    <div class="cmd-block">
+      <span class="cmd-text">python simplefin_pull.py claim</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+    <p>Paste the setup token when it asks and press Enter. <strong>Nothing shows while you paste. That's on purpose.</strong> It says "Done" and saves the access link in <code>.env</code>. Neither you nor Claude ever needs to look at that link again. (On a Mac, type <code>python3</code> instead of <code>python</code>.)</p>
+
+    <p><strong>Test one pull.</strong> Back in Claude, say:</p>
+    <div class="cmd-block">
+      <span class="cmd-text">Run python simplefin_pull.py accounts --balances-only --why "First test pull" in the simplefin folder, then show me the log with python simplefin_pull.py log.</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+    <p>You should see each account and its balance, then a log with two rows (the claim and the test pull), each saying <strong>ok</strong>. Every call from now on adds a row, <em>before</em> it happens.</p>
+
+    <h3 style="color:#1A3C6E; font-size:16px; margin:22px 0 8px;">"SimpleFIN emailed me that my data was accessed"</h3>
+    <p>SimpleFIN can email you when your data is read. Most of the time it was you. To check:</p>
+    <ul>
+      <li><strong>Open the log.</strong> Ask Claude: <em>"show me the SimpleFIN log"</em> (it runs <code>python simplefin_pull.py log</code>).</li>
+      <li><strong>Find a row at the time in the email.</strong> The email may use a different time zone; every log row shows its time zone.</li>
+      <li><strong>Compare the internet address</strong> in the email with the <code>public_ip</code> in that row.</li>
+      <li><strong>They match:</strong> it was you. Nothing to do.</li>
+      <li><strong>No row at that time, or a different address:</strong> treat it as someone else. Turn the link off now and make a new one (next part).</li>
+    </ul>
+    <div class="note">Your internet address changes when you work from home, a hotel or a phone hotspot. If the time matches and the row shows <em>your</em> computer and <em>your</em> user name, that's still you.</div>
+
+    <h3 style="color:#1A3C6E; font-size:16px; margin:22px 0 8px;">Lock it and make a new link</h3>
+    <p>Use this if the log doesn't explain an email, or any time you want a fresh link. Nothing is lost, and because the link is read-only, nobody could have moved money with the old one.</p>
+    <ul>
+      <li><strong>Turn off the old link.</strong> Log in to your SimpleFIN Bridge account, find the app connection this link belongs to, and revoke or disable it. That ends the old link at once.</li>
+      <li><strong>Make a new setup token</strong>, the same way you made the first one.</li>
+      <li><strong>Claim it with the program</strong> in your own Command Prompt, in the simplefin folder:</li>
+    </ul>
+    <div class="cmd-block">
+      <span class="cmd-text">python simplefin_pull.py claim --replace</span>
+      <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+    </div>
+    <ul>
+      <li><strong>Test one pull</strong> through Claude, the same as before, with <code>--why "Test after making a new link"</code>.</li>
+      <li><strong>Look at the log</strong> and check the new rows say <strong>ok</strong>.</li>
+    </ul>
+
+    <h3 style="color:#1A3C6E; font-size:16px; margin:22px 0 8px;">The weekly habit</h3>
+    <p>Once a week, ask Claude <em>"show me this week's SimpleFIN log"</em> and read it: how many calls, from which computer, for what. Anything you don't recognize, run the email check above. Look at it every week and an alert email is never a surprise.</p>
+
+    <div class="substep" data-step="10-1">
+      <input type="checkbox" id="s10-1">
+      <label for="s10-1">(Optional) Connected my bank through SimpleFIN Bridge, claimed the token myself, ran one test pull, and saw it in my access log</label>
+    </div>
+  </div>
+</div>
+
 <!-- ==================== DONE / NEXT ==================== -->
 <div id="allDone" style="display:none; text-align:center; padding: 30px; background: #e8f5e9; border-radius: 12px; margin-top: 20px;">
   <h2 style="color: #27ae60; margin-bottom: 8px;">Setup Complete!</h2>
@@ -1368,7 +1746,9 @@ Newest first.
 <script>
   const STORAGE_KEY = 'tutorial_setup_state';
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  const totalSteps = checkboxes.length;
+  // Optional sections (class="optional") save and track like any step but don't count toward the score.
+  const requiredBoxes = Array.from(checkboxes).filter(cb => !cb.closest('.section.optional'));
+  const totalSteps = requiredBoxes.length;
 
   function loadState() {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -1392,7 +1772,7 @@ Newest first.
 
   function updateProgress() {
     let done = 0;
-    checkboxes.forEach(cb => { if (cb.checked) done++; });
+    requiredBoxes.forEach(cb => { if (cb.checked) done++; });
     const pct = Math.round((done / totalSteps) * 100);
     document.getElementById('progressFill').style.width = pct + '%';
     document.getElementById('progressLabel').textContent = done + ' / ' + totalSteps + ' steps (' + pct + '%)';
@@ -1443,6 +1823,19 @@ Newest first.
       btn.classList.add('copied');
       setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+
+  function downloadCode(btn, name) {
+    const ta = btn.closest('.code-block').querySelector('.code-edit');
+    const blob = new Blob([ta.value.replace(/\r?\n/g, '\r\n')], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    btn.textContent = 'Downloaded';
+    setTimeout(() => { btn.textContent = 'Download'; }, 2000);
   }
 
   function resetEdit(btn) {
@@ -1807,6 +2200,9 @@ Newest first.
   document.querySelectorAll('.code-edit').forEach(ta => {
     autoResize(ta);
     ta.addEventListener('input', () => autoResize(ta));
+  });
+  document.querySelectorAll('details.sf-code').forEach(d => {
+    d.addEventListener('toggle', () => { if (d.open) d.querySelectorAll('.code-edit').forEach(autoResize); });
   });
   initGate();
 </script>
