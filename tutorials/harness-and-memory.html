@@ -307,7 +307,7 @@
       <li>Claude asking permission for the same command every single time</li>
       <li>"Context window almost full" warning in the middle of a good session</li>
       <li>Re-explaining the project, the stack, or your preferences for the fourth time</li>
-      <li>Digging through old terminal scrollback to remember what approach you tried last Tuesday</li>
+      <li>Scrolling up through old conversation to remember what approach you tried last Tuesday</li>
       <li>Claude reading 30 files to answer one question, and now the conversation is sluggish</li>
     </ul>
 
@@ -335,7 +335,7 @@
 
     <div class="explain-box">
       <strong>Where it lives:</strong> <code>C:\Users\[you]\.claude\projects\[encoded-project-path]\memory\</code><br><br>
-      Inside that folder is a <code>MEMORY.md</code> index and a bunch of individual <code>.md</code> files, one per memory. Claude reads this folder at the start of every conversation in that project. You can open the files and edit them yourself &mdash; they're just text.
+      Inside that folder is a <code>MEMORY.md</code> index and a bunch of individual <code>.md</code> files, one per memory. Claude reads the <code>MEMORY.md</code> index at the start of every conversation in that project, and opens individual memory files when they look relevant. You can open the files and edit them yourself &mdash; they're just text.
     </div>
 
     <p><strong>Four types of memory</strong> (Claude decides which type based on what you're saving):</p>
@@ -385,6 +385,37 @@
   </div>
 </div>
 
+<!-- ==================== SECTION 2b: WHAT CLAUDE CAN SEE ==================== -->
+<div class="section" id="section2b">
+  <div class="section-header">
+    <div class="step-number">2b</div>
+    <div class="section-title">What Claude Can See, and From Where</div>
+  </div>
+  <div class="step-body">
+    <p>Every piece of memory belongs to a place. What Claude knows depends on which folder you opened it in.</p>
+    <table style="border-collapse:collapse;width:100%;margin:10px 0">
+      <tr><th style="border:1px solid #ccc;padding:6px 8px;text-align:left">What</th><th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Where it lives</th><th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Who sees it</th></tr>
+      <tr><td style="border:1px solid #ccc;padding:6px 8px">Global CLAUDE.md</td><td style="border:1px solid #ccc;padding:6px 8px">Your user profile</td><td style="border:1px solid #ccc;padding:6px 8px">Every session, every project</td></tr>
+      <tr><td style="border:1px solid #ccc;padding:6px 8px">Project CLAUDE.md</td><td style="border:1px solid #ccc;padding:6px 8px">The project folder</td><td style="border:1px solid #ccc;padding:6px 8px">Sessions opened in that folder</td></tr>
+      <tr><td style="border:1px solid #ccc;padding:6px 8px">Auto-memory</td><td style="border:1px solid #ccc;padding:6px 8px">Your profile, filed under the project's folder</td><td style="border:1px solid #ccc;padding:6px 8px">Sessions opened in that folder</td></tr>
+      <tr><td style="border:1px solid #ccc;padding:6px 8px">context/JOURNAL.md</td><td style="border:1px solid #ccc;padding:6px 8px">The project folder</td><td style="border:1px solid #ccc;padding:6px 8px">Only when Claude reads it (ask it to)</td></tr>
+    </table>
+    <div class="explain-box">
+      <strong>Why it's built this way.</strong> Your bookkeeping project shouldn't know what's in your website project, and the reverse is true too. The walls keep things separate.
+    </div>
+    <p><strong>What it means for you:</strong></p>
+    <ul>
+      <li>Open Claude in the folder of the project you're working on.</li>
+      <li>If Claude seems to have forgotten something, ask: "Did you read the journal?" The answer is often no.</li>
+      <li>If Claude states a fact about your week or your project, ask where it got it. "Your journal says so" is a source. "It's Thursday, so..." is a guess.</li>
+    </ul>
+    <div class="substep" data-step="2b-1">
+      <input type="checkbox" id="s2b-1">
+      <label for="s2b-1">I opened Claude in my project folder and asked "what do you know about this project, and where did each piece come from?"</label>
+    </div>
+  </div>
+</div>
+
 <!-- ==================== SECTION 3: THE HARNESS ==================== -->
 <div class="section" id="section3">
   <div class="section-header">
@@ -404,8 +435,17 @@
 
     <p><strong>Permissions &mdash; stop getting asked the same question every time.</strong></p>
 
-    <p>By default, Claude asks before running most shell commands. That's good. But after the tenth "yes, run <code>npm install</code>" prompt, you want to allowlist the safe ones. Example global <code>settings.json</code>:</p>
-
+    <p>By default, Claude asks before running most shell commands. That's good. But after the tenth "yes, run <code>npm install</code>" question, you want it to stop asking about the safe ones. You never need to open a settings file to do that. Two ways, easiest first:</p>
+    <ol>
+      <li><strong>At the question itself.</strong> When Claude asks permission, pick <strong>Yes, and don't ask again</strong>. Done, for good.</li>
+      <li><strong>Just tell Claude.</strong> Say it in plain words:</li>
+    </ol>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+Stop asking me before you run npm install. Add it to my allowlist.</div>
+    <p>To see what's on the list, type <code>/permissions</code>, or ask Claude: "What's on my allowlist?"</p>
+    <details>
+      <summary>What Claude writes for you (you don't need to touch this)</summary>
     <div class="code-block">
       <span class="code-label">~/.claude/settings.json</span>
       <button class="copy-btn" onclick="copyCode(this)">Copy</button>
@@ -415,14 +455,13 @@
       "Bash(npm install)",
       "Bash(npm run *)",
       "Bash(git status)",
-      "Bash(git diff *)",
-      "Bash(git log *)",
       "Read",
       "Grep",
       "Glob"
     ]
   }
 }</div>
+    </details>
 
     <p>Now Claude runs those without asking. Still asks for anything destructive &mdash; <code>rm</code>, <code>git push</code>, <code>git reset --hard</code>, editing files outside your project. That's the point.</p>
 
@@ -444,7 +483,7 @@
 
     <div class="substep" data-step="3-1">
       <input type="checkbox" id="s3-1">
-      <label for="s3-1">I know where <code>settings.json</code> lives. I allowlisted a few safe commands I use constantly.</label>
+      <label for="s3-1">I picked "don't ask again" on a safe command, or told Claude to add one to my allowlist.</label>
     </div>
   </div>
 </div>
@@ -617,8 +656,8 @@
     <ul>
       <li>Responses are getting slow &mdash; <code>/clear</code></li>
       <li>Claude keeps forgetting something you told it this session &mdash; say "remember that" to save it to auto-memory</li>
-      <li>You're scrolling scrollback to find something &mdash; that's a JOURNAL.md update you should have done last session</li>
-      <li>Same permission prompt for the fifth time &mdash; allowlist it in <code>settings.json</code></li>
+      <li>You're scrolling up through old conversation to find what you did last time &mdash; next time, type <code>/journal</code> before you leave, and start the next session with "read the journal and tell me where we left off"</li>
+      <li>Same permission question for the fifth time &mdash; pick <strong>Yes, and don't ask again</strong>, or tell Claude "stop asking before you run [the command]; add it to my allowlist"</li>
       <li>You gave a five-paragraph instruction and Claude only followed the last paragraph &mdash; break it into smaller steps</li>
     </ul>
 
