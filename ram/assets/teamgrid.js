@@ -215,7 +215,7 @@
     var pump = PUMP_SET.map(function (id) { return byId(S.skills, id); }).filter(function (s) { return s && rated(s); });
     if (pump.length && inn.length) {
       var d = mk("div", "tgspump"); d.id = "tgPumpSet";
-      d.appendChild(mk("h3", null, "Setting a pump: who says he can teach each skill"));
+      d.appendChild(mk("h3", null, "Setting a well pump: who says he can teach each skill"));
       d.appendChild(mk("p", "tgsnote", "Self-rated 3s: candidates to teach, not proven."));
       var ul = mk("ul", "tgslist");
       pump.forEach(function (s) {
